@@ -1,26 +1,48 @@
 import Link from 'next/link'
-import { CogIcon } from '@heroicons/react/solid'
+import { Button } from '../../plugins/@fuse-labs/core-ui'
+import { CubeIcon, GearIcon, HomeIcon } from '@radix-ui/react-icons'
+import * as Toolbar from '@radix-ui/react-toolbar'
 
 export default function Navbar() {
 	return (
-		<div className="navbar bg-neutral px-5">
-			<div className="flex-none">
+		<Toolbar.Root className="relative flex flex-row items-center h-14 dark:bg-gray-900 dark:text-gray-200">
+			<div className="flex-none w-20 flex items-center justify-center">
 				<span className="font-bold">Fuse</span>
 			</div>
-			<div className="flex-1">
-				<Link href="/" passHref>
-					<a className="btn btn-sm">
-						Printers
-					</a>
-				</Link>
+
+			<div className='flex-1 flex flex-row px-3'>
+				<div className="flex-1 flex flex-row space-x-3 items-center">
+					<Toolbar.Link asChild>
+						<Link href="/" passHref>
+							<Button rounded>
+								<HomeIcon />
+								<span className='ml-2'>Workspace</span>
+							</Button>
+						</Link>
+					</Toolbar.Link>
+
+					<Toolbar.Link asChild>
+						<Link href="/resources" passHref>
+							<Button rounded>
+								<CubeIcon />
+								<span className='ml-2'>File manager</span>
+							</Button>
+						</Link>
+					</Toolbar.Link>
+				</div>
+
+				<Toolbar.Separator />
+
+				<div>
+					<Toolbar.Link asChild>
+						<Link href="/settings" passHref>
+							<Button squared>
+								<GearIcon />
+							</Button>
+						</Link>
+					</Toolbar.Link>
+				</div>
 			</div>
-			<div>
-				<Link href="/settings" passHref>
-					<a className="btn btn-sm btn-square btn-ghost">
-						<CogIcon className="w-5 h-5"/>
-					</a>
-				</Link>
-			</div>
-		</div>
+		</Toolbar.Root>
 	)
 }

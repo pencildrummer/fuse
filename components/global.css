@@ -1,0 +1,13 @@
+/* Full height page */
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+  height: 100%;
+}
+
+html {
+  @apply dark:bg-gray-800;
+  @apply antialiased;
+}
