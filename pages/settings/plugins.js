@@ -1,4 +1,5 @@
 import { GearIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import plugin from "tailwindcss/plugin";
 import SettingPage from "../../components/pages/SettingPage";
 import { Button, Switch, Widget } from "../../plugins/@fuse-labs/core-ui";
@@ -105,20 +106,18 @@ export default function PluginsSettingsPage() {
                 </div>
                 <div className="flex flex-row items-center space-x-3">
                   <div className="text-xxs font-mono">
-                    <span className="rounded-[3px] bg-gray-800 px-1 py-0.5">{plugin.author}/{plugin.name}</span>
+                    <span className="rounded-[3px] bg-gray-800 px-1 py-0.5">{plugin.author}/{plugin.name}@{plugin.version}</span>
                   </div>
                 </div>
               </div>
 
               {plugin.config && <div className="w-20 flex items-center justify-center">
-                <Button rounded squared size="sm">
-                  <GearIcon />
-                </Button>
+                <Link href={`/plugins/${plugin.name}/settings`}>
+                  <Button rounded squared size="sm">
+                    <GearIcon />
+                  </Button>
+                </Link>
               </div>}
-              
-              <div className="w-20 flex items-center justify-start">
-                <span className="text-xs font-normal font-mono">v. {plugin.version}</span>
-              </div>
 
               <div className="flex items-center">
                 <Switch defaultChecked={plugin.active} disabled={plugin.system} />
