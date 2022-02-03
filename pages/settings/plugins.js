@@ -4,91 +4,100 @@ import plugin from "tailwindcss/plugin";
 import SettingPage from "../../components/pages/SettingPage";
 import { Button, Switch, Widget } from "../../plugins/@fuse-labs/core-ui";
 import DevicePluginsSettingsWidget from "../../plugins/@fuse-labs/core/components/DevicePluginsSettingsWidget/DevicePluginsSettingsWidget";
+import useSWRImmutable from 'swr/immutable'
+import { useEffect } from "react/cjs/react.development";
+import fetcher from "../../lib/client/fetcher";
 
 export default function PluginsSettingsPage() {
 
-  const plugins = [
-    {
-      title: 'Marlin Core',
-      name: 'marlin-core',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin CoreUI',
-      name: 'marlin-coreui',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Camera',
-      name: 'camera',
-      system: false,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true,
-      config: true,
-    },
-    {
-      title: 'Marlin Extruder',
-      name: 'marlin-extruder',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin GCode Viewer',
-      name: 'marlin-gcode-viewer',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin Move',
-      name: 'marlin-move',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin Extra',
-      name: 'marlin-misc',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin Temperature',
-      name: 'marlin-temp',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    },
-    {
-      title: 'Marlin Terminal',
-      name: 'marlin-terminal',
-      system: true,
-      version: '0.1',
-      author: '@fuse-labs',
-      active: true
-    }
-  ]
+  const { data: plugins, error, loading} = useSWRImmutable('/api/plugins/list', fetcher)
+
+  useEffect(_ => {
+    console.log('DATA', plugins)
+  }, [plugins])
+
+  // const plugins = [
+  //   {
+  //     title: 'Marlin Core',
+  //     name: 'marlin-core',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin CoreUI',
+  //     name: 'marlin-coreui',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Camera',
+  //     name: 'camera',
+  //     system: false,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true,
+  //     config: true,
+  //   },
+  //   {
+  //     title: 'Marlin Extruder',
+  //     name: 'marlin-extruder',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin GCode Viewer',
+  //     name: 'marlin-gcode-viewer',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin Move',
+  //     name: 'marlin-move',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin Extra',
+  //     name: 'marlin-misc',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin Temperature',
+  //     name: 'marlin-temp',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   },
+  //   {
+  //     title: 'Marlin Terminal',
+  //     name: 'marlin-terminal',
+  //     system: true,
+  //     version: '0.1',
+  //     author: '@fuse-labs',
+  //     active: true
+  //   }
+  // ]
 
   return (
     <SettingPage>
       <DevicePluginsSettingsWidget />
       <Widget>
         <ul className="flex flex-col divide-y divide-gray-700">
-          {plugins.map((plugin, i) => (
+          {plugins?.map((plugin, i) => (
             <li key={`plugin-${i}`} className="flex flex-row items-stretch space-x-3 py-2">
 
               <div className="w-10 h-10 bg-gray-700 bg-opacity-25 rounded-full overflow-hidden">
