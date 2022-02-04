@@ -1,0 +1,10 @@
+{
+  "name": "@fuse-labs/camera",
+  "description": "Camera core plugin for FUSE",
+  "version": "0.1",
+  "license": "MIT",
+  "fuse": {
+    "title": "Camera",
+    "logo": ""
+  }
+}
