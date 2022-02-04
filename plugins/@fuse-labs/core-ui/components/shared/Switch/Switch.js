@@ -9,7 +9,7 @@ export default function Switch({
     'transition-colors duration-150',
     'radix-state-unchecked:text-gray-50 dark:radix-state-unchecked:text-gray-700',
     'radix-state-checked:text-green-600',
-    'disabled:opacity-60',
+    'disabled:opacity-30',
   )} {...props}>
     <SwitchPrimitive.Thumb className={classNames(
       'block w-4 h-4 rounded-full shadow-sm bg-gray-50 dark:bg-gray-300',

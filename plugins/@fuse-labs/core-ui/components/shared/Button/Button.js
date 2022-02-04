@@ -12,13 +12,14 @@ const Button = React.forwardRef(({
   return <button
     ref={ref}
     className={classNames(
-      'inline-flex select-none items-center justify-center rounded-md text-sm font-medium',
+      'inline-flex select-none items-center justify-center text-sm font-medium',
       styles.btn,
       {
         'btn-sm': size == 'sm',
       },
       {
         'squared': squared,
+        'rounded-md': !rounded,
         'rounded-full': rounded
       },
       'transition-colors duration-100',

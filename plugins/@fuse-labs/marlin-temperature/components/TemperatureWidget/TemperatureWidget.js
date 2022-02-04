@@ -8,8 +8,7 @@ import {
   Tooltip
 } from 'chart.js'
 import { Line } from 'react-chartjs-2'
-import { useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useState, useEffect } from "react";
 
 ChartJS.register(
   CategoryScale,

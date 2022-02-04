@@ -1,4 +1,4 @@
-import Page from "../../../components/pages/Page"
+import Page from "../../../components/page-layouts/Page"
 import { Widget } from "../../../plugins/@fuse-labs/core-ui"
 import dynamic from "next/dynamic"
 import { getPlugins } from "../../../lib/core/plugins"

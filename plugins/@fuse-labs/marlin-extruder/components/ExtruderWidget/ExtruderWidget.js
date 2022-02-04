@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, ReloadIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import { Button, Slider } from "plugins/@fuse-labs/core-ui";
-import { useEffect, useState } from "react/cjs/react.development";
+import { useEffect, useState } from "react";
 import { Widget } from "../../../core-ui";
 import Label from "../../../core-ui/components/shared/Label/Label";
 import Select from "../../../core-ui/components/shared/Select/Select";

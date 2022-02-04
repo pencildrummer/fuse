@@ -1,4 +1,4 @@
-import SettingPage from "../../../../components/pages/SettingPage";
+import SettingPage from "../../../../components/page-layouts/SettingPage";
 import { Widget } from "../../core-ui";
 
 export default function SettingsPage() {

@@ -1,0 +1,28 @@
+{
+  "data": [
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/camera",
+    "@fuse-labs/marlin-extruder",
+    "@fuse-labs/marlin-extra",
+    "@fuse-labs/marlin-core",
+    "@fuse-labs/marlin-gcode-viewer",
+    "@fuse-labs/marlin-temperature",
+    "@fuse-labs/marlin-move",
+    "@fuse-labs/marlin-terminal"
+  ]
+}

@@ -1,20 +1,21 @@
 import { GearIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import plugin from "tailwindcss/plugin";
-import SettingPage from "../../components/pages/SettingPage";
+import SettingPage from "../../components/page-layouts/SettingPage";
 import { Button, Switch, Widget } from "../../plugins/@fuse-labs/core-ui";
 import DevicePluginsSettingsWidget from "../../plugins/@fuse-labs/core/components/DevicePluginsSettingsWidget/DevicePluginsSettingsWidget";
 import useSWRImmutable from 'swr/immutable'
-import { useEffect } from "react/cjs/react.development";
-import fetcher from "../../lib/client/fetcher";
+import fetcher, { fetcherPOST } from "../../lib/client/fetcher";
 
 export default function PluginsSettingsPage() {
 
   const { data: plugins, error, loading} = useSWRImmutable('/api/plugins/list', fetcher)
-
-  useEffect(_ => {
-    console.log('DATA', plugins)
-  }, [plugins])
+  
+  function setPluginActive(name, activate) {
+    console.log('Requesting activation:', name, activate)
+    fetcherPOST('/api/plugins/activate', { name: name, activate: activate })
+      .then(res => console.log('RES'))
+      .catch(e => console.error(e))
+  }
 
   return (
     <SettingPage>
@@ -57,7 +58,9 @@ export default function PluginsSettingsPage() {
               </div>}
 
               <div className="flex items-center">
-                <Switch defaultChecked={plugin.active} disabled={plugin.system} />
+                <Switch defaultChecked={plugin.active}
+                  disabled={plugin.fuse?.system} 
+                  onCheckedChange={v => setPluginActive(plugin.name, v)} />
               </div>
             </li>
           )

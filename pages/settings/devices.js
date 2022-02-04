@@ -1,4 +1,4 @@
-import SettingPage from "../../components/pages/SettingPage";
+import SettingPage from "../../components/page-layouts/SettingPage";
 import { Group, Label, Switch, Widget } from "../../plugins/@fuse-labs/core-ui";
 import DevicePluginsSettingsWidget from "../../plugins/@fuse-labs/core/components/DevicePluginsSettingsWidget/DevicePluginsSettingsWidget";
 

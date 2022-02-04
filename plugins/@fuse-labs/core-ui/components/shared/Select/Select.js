@@ -1,9 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { ChevronDownIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import { useMemo, useState } from 'react'
-import { useEffect, useRef } from 'react/cjs/react.development'
-import Button from '../Button/Button'
+import { useEffect, useRef, useMemo, useState } from 'react'
 
 function SelectOption(props) {
   return <DropdownMenu.Item className={classNames(

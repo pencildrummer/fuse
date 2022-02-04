@@ -1,7 +1,7 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import { useRef, useState } from "react";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 import { Button, Widget } from "../../../core-ui";
 import ScrollArea from "../../../core-ui/components/shared/ScrollArea/ScrollArea";
 

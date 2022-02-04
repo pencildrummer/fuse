@@ -1,11 +1,11 @@
-import PrinterDevicePage from "../../components/pages/PrinterDevicePage";
+import PrinterDevicePage from "../../components/page-layouts/PrinterDevicePage";
 import CameraWidget from "../../plugins/@fuse-labs/camera/components/CameraWidget/CameraWidget";
 
 import ExtruderWidget from "../../plugins/@fuse-labs/marlin-extruder/components/ExtruderWidget/ExtruderWidget";
-import MarlinMiscWidget from "../../plugins/@fuse-labs/marlin-misc/components/MarlinMiscWidget/MarlinMiscWidget";
+import MarlinMiscWidget from "../../plugins/@fuse-labs/marlin-extra/components/MarlinMiscWidget/MarlinMiscWidget";
 import FeedRateWidget from "../../plugins/@fuse-labs/marlin-move/components/FeedRateWidget/FeedRateWidget";
 import MoveWidget from "../../plugins/@fuse-labs/marlin-move/components/MoveWidget/MoveWidget";
-import TemperatureWidget from "../../plugins/@fuse-labs/marlin-temp/components/TemperatureWidget/TemperatureWidget";
+import TemperatureWidget from "../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
 
 export default function PrinterPage() {
 	return (

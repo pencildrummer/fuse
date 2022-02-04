@@ -1,0 +1,10 @@
+{
+  "name": "@fuse-labs/marlin-extruder",
+  "description": "Extruder plugin for FUSE for Marlin-based devices",
+  "version": "1.0",
+  "author": "FUSE Labs",
+  "license": "MIT",
+  "fuse": {
+    "title": "[Marlin] Extruder"
+  }
+}
