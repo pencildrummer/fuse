@@ -1,0 +1,8 @@
+.badge {
+  @apply font-semibold rounded-full;
+  @apply px-2 py-0.5 flex items-center justify-center;
+  @apply text-xs;
+  &:global(.badge-sm) {
+    @apply text-xxs py-0;
+  }
+}

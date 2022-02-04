@@ -122,6 +122,10 @@ function createPlugin(name, version, opts) {
   if (opts.title) {
     packageContent.fuse.title = opts.title;
   }
+  // Custom FUSE fields
+  if (opts.fuse) {
+    packageContent.fuse = {...packageContent.fuse, ...opts.fuse}
+  }
 
   fs.writeFileSync(
     path.join(root, 'package.json'),

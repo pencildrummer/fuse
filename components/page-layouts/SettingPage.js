@@ -49,6 +49,10 @@ export default function SettingPage(props) {
             </MenuItem>
           </ul>
         </div>
+        
+        <div className="text-xs font-bold text-center py-1 text-gray-600">
+          v. 0.1
+        </div>
       </div>
 
       <ScrollArea className="flex-1">
