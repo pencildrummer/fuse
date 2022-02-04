@@ -1,0 +1,9 @@
+{
+  "name": "@fuse-labs/file-manager",
+  "version": "0.1",
+  "license": "MIT",
+  "fuse": {
+    "title": "File manager"
+  },
+  "description": "Core file manager for FUSE"
+}

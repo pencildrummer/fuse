@@ -11,6 +11,8 @@ import Separator from './components/shared/Separator/Separator.js'
 import Select from './components/shared/Select/Select.js'
 import Input from './components/shared/Input/Input.js'
 
+import List from './components/shared/List/List.js'
+
 export {
   Button,
   Slider,
@@ -23,5 +25,7 @@ export {
   Input,
 
   Widget,
-  ToggleGroup
+  ToggleGroup,
+
+  List
 }

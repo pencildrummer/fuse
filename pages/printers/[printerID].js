@@ -6,6 +6,7 @@ import MarlinMiscWidget from "../../plugins/@fuse-labs/marlin-extra/components/M
 import FeedRateWidget from "../../plugins/@fuse-labs/marlin-move/components/FeedRateWidget/FeedRateWidget";
 import MoveWidget from "../../plugins/@fuse-labs/marlin-move/components/MoveWidget/MoveWidget";
 import TemperatureWidget from "../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
+import FileManagerWidget from "../../plugins/@fuse-labs/file-manager/components/FileManagerWidget/FileManagerWidget";
 
 export default function PrinterPage() {
 	return (
@@ -23,6 +24,8 @@ export default function PrinterPage() {
         <ExtruderWidget />
         <MarlinMiscWidget />
 
+				<FileManagerWidget />
+				
 				<div className="col-span-3">
 					<TemperatureWidget />
 				</div>
