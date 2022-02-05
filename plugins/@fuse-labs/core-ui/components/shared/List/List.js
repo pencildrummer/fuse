@@ -39,9 +39,7 @@ function Item({
       'space-x-1 py-1': size == 'compact',
     },
     className
-  )}>
-    {props.children}
-  </li>
+  )} {...props} />
 }
 
 List.Item = Item
