@@ -12,86 +12,32 @@ export default function DirectoryListing({
   let items = [
     {
       name: 'directory',
-      type: 'directory'
+      kind: 'directory'
     },
     {
-      name: 'image',
-      type: 'file',
-      ext: 'png'
-    },
-    {
-      name: 'file_3d_printer',
-      type: 'file',
-      ext: 'slt'
-    },
-    {
-      name: 'raw_file',
-      type: 'file',
-      ext: 'gcode'
-    },
-    {
-      name: 'image',
-      type: 'file',
-      ext: 'png'
+      name: '2018-jul-22-2-1200-1230-IMG_2937',
+      kind: 'file',
+      type: 'image',
+      mime: 'image/jpeg',
+      ext: 'jpg',
+      path: '/files/2018-jul-22-2-1200-1230-IMG_2937.JPG',
+      size: 6536005
     },
     {
       name: 'file_3d_printer',
-      type: 'file',
-      ext: 'slt'
+      kind: 'file',
+      ext: 'stl'
     },
     {
       name: 'raw_file',
-      type: 'file',
+      kind: 'file',
       ext: 'gcode'
     },
-    {
-      name: 'image',
-      type: 'file',
-      ext: 'png'
-    },
-    {
-      name: 'file_3d_printer',
-      type: 'file',
-      ext: 'slt'
-    },
-    {
-      name: 'raw_file',
-      type: 'file',
-      ext: 'gcode'
-    },{
-      name: 'image',
-      type: 'file',
-      ext: 'png'
-    },
-    {
-      name: 'file_3d_printer',
-      type: 'file',
-      ext: 'slt'
-    },
-    {
-      name: 'raw_file',
-      type: 'file',
-      ext: 'gcode'
-    },{
-      name: 'image',
-      type: 'file',
-      ext: 'png'
-    },
-    {
-      name: 'file_3d_printer',
-      type: 'file',
-      ext: 'slt'
-    },
-    {
-      name: 'raw_file',
-      type: 'file',
-      ext: 'gcode'
-    }
   ]
 
   return <List className="text-gray-400 text-xs py-1" divide={false} size="compact">
     {items?.map((item, i) => {
-      switch(item.type) {
+      switch(item.kind) {
         case 'directory': 
           return <DirectoryItem 
             key={`list-item-${i}`}

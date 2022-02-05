@@ -22,7 +22,7 @@ export default function Navbar() {
 					</Toolbar.Link>
 
 					<Toolbar.Link asChild>
-						<Link href="/resources" passHref>
+						<Link href="/file-manager" passHref>
 							<Button rounded>
 								<CubeIcon />
 								<span className='ml-2'>File manager</span>
