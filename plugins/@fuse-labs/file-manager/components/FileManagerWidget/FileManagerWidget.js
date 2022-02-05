@@ -1,4 +1,4 @@
-import { DotsVerticalIcon, DownloadIcon, TrashIcon } from "@radix-ui/react-icons";
+import { DotsVerticalIcon, DownloadIcon, Share2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { Button, Widget } from "../../../core-ui";
 import ContextMenu from "../../../core-ui/components/shared/ContextMenu/ContextMenu";
@@ -31,6 +31,18 @@ export default function FileManagerWidget({
             label: 'Delete',
             icon: TrashIcon,
             detail: '⌫'
+          },
+          {
+            label: 'Share',
+            icon: Share2Icon,
+            items: [
+              {
+                label: 'Copy'
+              },
+              {
+                label: 'Move'
+              }
+            ]
           },
           '-',
           {

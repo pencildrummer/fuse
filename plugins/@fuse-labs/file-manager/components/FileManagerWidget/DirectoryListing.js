@@ -90,14 +90,16 @@ export default function DirectoryListing({
   ]
 
   return <List className="text-gray-400 text-xs py-1" divide={false} size="compact">
-    {items?.map(item => {
+    {items?.map((item, i) => {
       switch(item.type) {
         case 'directory': 
           return <DirectoryItem 
+            key={`list-item-${i}`}
             directory={item} 
             onSelect={onSelect} />
         case 'file':      
           return <FileItem 
+            key={`list-item-${i}`}
             file={item} 
             onSelect={onSelect}
             selected={selectedItem?.type == 'file' && item.name == selectedItem?.name}/>
