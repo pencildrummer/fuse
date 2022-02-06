@@ -1,13 +1,41 @@
-import { CardStackIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { CardStackIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
+import { useState } from "react";
 import { List } from "../../../core-ui";
+import DirectoryListing from "./DirectoryListing";
 
 export default function DirectoryItem({
-  directory,
+  dirname,
+  item,
   ...props
 }) {
-  return <List.Item className="px-0.5 font-bold rounded-md hover:bg-white hover:bg-opacity-5 transition-colors duration-150">
-    <ChevronRightIcon className="text-gray-200" />
-    <span>{directory.name}</span>
-  </List.Item>
+
+  const [isOpen, setIsOpen] = useState(false)
+
+  function handleClick() { setIsOpen(o => !o) }
+
+  const path = dirname+'/'+item.name
+
+  return (
+    <>
+      <List.Item className={classNames(
+          'px-0.5 font-bold rounded-md',
+          'hover:bg-white hover:bg-opacity-5 transition-colors duration-150 cursor-pointer',
+          {
+            'opacity-50': item.name[0] == '.'
+          }
+        )}
+        onClick={handleClick}>
+        {isOpen ? <ChevronDownIcon className="text-gray-200" />
+          : <ChevronRightIcon className="text-gray-200" />}
+        <span className="select-none">{item.name}</span>
+      </List.Item>
+
+      {isOpen && (
+        <div className="pl-4">
+          <DirectoryListing path={path} />
+        </div>
+      )}
+    </>
+  )
 }

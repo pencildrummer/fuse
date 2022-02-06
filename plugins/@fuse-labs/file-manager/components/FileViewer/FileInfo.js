@@ -20,6 +20,17 @@ export default function FileInfo({
     resolution: 72,
   }
 
+  function formatFileType(file) {
+
+    function parseMimeForIntl(mime) {
+      return 'mime.'+mime.replace('/', '.')
+    }
+
+    if (!file.mime) 
+      return formatMessage({ id: 'unknown-file-type', defaultMessage: 'Unknown file type'})
+    return formatMessage({id: parseMimeForIntl(file.mime)})
+  }
+
   // TODO - Move into plugin file meta parser
   function parseMeta(key, value) {
     if (key == 'dimensions') {
@@ -31,21 +42,17 @@ export default function FileInfo({
     }
   }
 
-  function parseMimeForIntl(mime) {
-    return 'mime.'+mime.replace('/', '.')
-  }
-
   return (
     <div className="flex flex-col">
       <Group>
         <span className="font-semibold text-xl">
-          {file.name}.{file.ext}
+          {file.name}
         </span>
       </Group>
 
       <Group className="font-semibold text-gray-500">
         <span>
-          {formatMessage({id: parseMimeForIntl(file.mime)})} - {filesize(file.size, { round: 1 })}
+          {formatFileType(file)} - {filesize(file.size, { round: 1 })}
         </span>
       </Group>
 
@@ -54,7 +61,7 @@ export default function FileInfo({
           {metadata && Object.keys(metadata).map((key, i) => {
             let value = metadata[key];
             return (
-            <li className="px-0.5 py-1 flex flex-row justify-between">
+            <li key={key} className="px-0.5 py-1 flex flex-row justify-between">
               <span className="font-semibold text-gray-500">
                 {key}
               </span>

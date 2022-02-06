@@ -1,56 +1,40 @@
 import classNames from "classnames"
+import socket from "lib/client/socket"
+import { useEffect, useState } from "react"
 import { List } from "../../../core-ui"
+import { useFileManagerContext } from "../FileManagerProvider"
 import DirectoryItem from "./DirectoryItem"
 import FileItem from "./FileItem"
 
 export default function DirectoryListing({
+  path = '.',
   selectedItem,
   onSelect,
   ...props
 }) {
 
-  let items = [
-    {
-      name: 'directory',
-      kind: 'directory'
-    },
-    {
-      name: '2018-jul-22-2-1200-1230-IMG_2937',
-      kind: 'file',
-      type: 'image',
-      mime: 'image/jpeg',
-      ext: 'jpg',
-      path: '/files/2018-jul-22-2-1200-1230-IMG_2937.JPG',
-      size: 6536005
-    },
-    {
-      name: 'file_3d_printer',
-      kind: 'file',
-      ext: 'stl'
-    },
-    {
-      name: 'raw_file',
-      kind: 'file',
-      ext: 'gcode'
-    },
-  ]
+  const { file, setFile } = useFileManagerContext()
+  const [items, setItems] = useState([])
 
-  return <List className="text-gray-400 text-xs py-1" divide={false} size="compact">
+  useEffect(_ => {
+    // Request socket to read directory
+    socket.emit('@fuse-labs.file-manager.readDir', { path }, data => {
+      setItems(data)
+    })
+  }, [])
+
+  return <List className="text-gray-400 text-xs" divide={false} size="compact">
     {items?.map((item, i) => {
-      switch(item.kind) {
-        case 'directory': 
-          return <DirectoryItem 
-            key={`list-item-${i}`}
-            directory={item} 
-            onSelect={onSelect} />
-        case 'file':      
-          return <FileItem 
-            key={`list-item-${i}`}
-            file={item} 
-            onSelect={onSelect}
-            selected={selectedItem?.type == 'file' && item.name == selectedItem?.name}/>
-      }
-      return null
+      return item.isDir
+        ? <DirectoryItem 
+          key={`list-item-${i}`}
+          dirname={path}
+          item={item} />
+        : <FileItem 
+          key={`list-item-${i}`}
+          item={item}
+          onSelect={setFile}
+          selected={item.path == file?.path}/>
     })}
   </List>
 }

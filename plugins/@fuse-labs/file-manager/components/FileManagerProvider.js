@@ -1,6 +1,8 @@
 import React, { useContext, useState } from "react"
 
-export const FileManagerContext = React.createContext()
+const FileManagerContext = React.createContext()
+
+export const FileManagerContextConsumer = FileManagerContext.Consumer
 
 export function useFileManagerContext() {
   const ctx = useContext(FileManagerContext)

@@ -1,27 +1,29 @@
-import { useState } from "react";
-import MainLayout from "../../../../components/layouts/MainLayout";
-import { Widget } from "../../core-ui";
-import FileManagerProvider, { FileManagerContext, useFileManagerContext } from "../components/FileManagerProvider";
+import { ScrollArea, Widget } from "../../core-ui";
+import FileManagerProvider, { FileManagerContextConsumer } from "../components/FileManagerProvider";
 import DirectoryListing from "../components/FileManagerWidget/DirectoryListing";
-import FileManagerWidget from "../components/FileManagerWidget/FileManagerWidget";
+import FileManagerWidgetContextMenu from "../components/FileManagerWidget/FileManagerWidgetContextMenu";
 import FileViewer from "../components/FileViewer/FileViewer";
 
 export default function IndexPage() {
 
   return (
     <FileManagerProvider>
-      <FileManagerContext.Consumer>{ ({ setFile}) =>
+      <FileManagerContextConsumer>{ ({ setFile, file }) =>
         <div className="p-3 h-full flex flex-row space-x-2">
           <div className="w-full max-w-[300px]">
             <Widget className="h-full w-full">
-              <DirectoryListing onSelect={setFile}/>
+              <ScrollArea className="flex-1 overflow-hidden">
+                <FileManagerWidgetContextMenu>
+                  <DirectoryListing onSelect={setFile} selectedItem={file} />
+                </FileManagerWidgetContextMenu>
+              </ScrollArea>
             </Widget>
           </div>
           <div className="flex-1">
             <FileViewer />
           </div>
         </div>
-      }</FileManagerContext.Consumer>
+      }</FileManagerContextConsumer>
     </FileManagerProvider>
   )
 }
