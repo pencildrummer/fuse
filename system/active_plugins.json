@@ -1,6 +1,10 @@
-[
-  "@fuse-labs/core",
-  "@fuse-labs/core-ui",
-  "@fuse-labs/core",
-  "@fuse-labs/core-ui"
-]
+{
+  "data": [
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/core",
+    "@fuse-labs/core-ui",
+    "@fuse-labs/camera",
+    "@fuse-labs/marlin-terminal"
+  ]
+}

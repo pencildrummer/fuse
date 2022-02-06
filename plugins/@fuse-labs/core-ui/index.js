@@ -12,6 +12,7 @@ import Select from './components/shared/Select/Select.js'
 import Input from './components/shared/Input/Input.js'
 
 import List from './components/shared/List/List.js'
+import ScrollArea from './components/shared/ScrollArea/ScrollArea.js'
 
 export {
   Button,
@@ -27,5 +28,6 @@ export {
   Widget,
   ToggleGroup,
 
-  List
+  List,
+  ScrollArea
 }

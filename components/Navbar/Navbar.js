@@ -35,7 +35,7 @@ export default function Navbar() {
 
 				<div>
 					<Toolbar.Link asChild>
-						<Link href="/settings" passHref>
+						<Link href="/settings/general" passHref>
 							<Button squared>
 								<GearIcon />
 							</Button>

@@ -1,7 +1,7 @@
 import Page from "../../../../components/page-layouts/Page"
 import { Widget } from "../../../../plugins/@fuse-labs/core-ui"
 import dynamic from "next/dynamic"
-import { getPluginInfo, getPlugins } from "../../../../lib/core/plugins"
+import { getPluginInfo, getPlugins } from "../../../../lib/core/plugins.js"
 
 const InstalledPluginSettingsPage = ({
   plugin,

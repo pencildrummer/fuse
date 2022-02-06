@@ -1,5 +1,5 @@
-import { getPlugins } from 'lib/core/plugins'
-import { getActivePlugins } from '../../../lib/core/plugins'
+import { getPlugins } from 'lib/core/plugins.js'
+import { getActivePlugins } from '../../../lib/core/plugins.js'
 
 export default async function (req, res) {
   let plugins = await getPlugins()

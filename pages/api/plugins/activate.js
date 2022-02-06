@@ -1,4 +1,4 @@
-import { setPluginActive } from "../../../lib/core/plugins"
+import { setPluginActive } from "../../../lib/core/plugins.js"
 
 export default async function (req, res) {
   // TODO - Check plugin is not a system one
