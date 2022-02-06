@@ -7,7 +7,7 @@ export class Terminal {
   _socket: Socket;
 
   constructor() {
-    this._socket = socket()
+    this._socket = socket
     this._socket.on('connection', _ => {
       console.log('Connected')
     })
