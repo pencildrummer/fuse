@@ -14,7 +14,13 @@ export class Terminal {
   }
 
   sendMessage(message: String) {
-    this._socket.emit(Event.Message, message)
+    let data = {
+      id: this.generateUniqueID(),
+      message,
+      from: 'user'
+    }
+    this._socket.emit(Event.Message, data)
+    return data
   }
 
   onMessageReceived(listener: ([...args]: [any]) => void) {
@@ -24,6 +30,19 @@ export class Terminal {
   offMessageReceived(listener: ([...args]: [any]) => void) {
     this._socket.off(Event.Message, listener)
   }
+
+  // Private
+
+  generateUniqueID() {
+    let s4 = () => {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    //return id of format 'aaaaaaaa'-'aaaa'-'aaaa'-'aaaa'-'aaaaaaaaaaaa'
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  }
+
 }
 
 export default new Terminal()

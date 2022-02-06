@@ -12,35 +12,35 @@ export default function Navbar() {
 
 			<div className='flex-1 flex flex-row px-3'>
 				<div className="flex-1 flex flex-row space-x-3 items-center">
-					<Toolbar.Link asChild>
-						<Link href="/" passHref>
+					<Link href="/" passHref>
+						<Toolbar.Link asChild>
 							<Button rounded>
 								<HomeIcon />
 								<span className='ml-2'>Workspace</span>
 							</Button>
-						</Link>
-					</Toolbar.Link>
+						</Toolbar.Link>
+					</Link>
 
-					<Toolbar.Link asChild>
-						<Link href="/file-manager" passHref>
+					<Link href="/file-manager" passHref>
+						<Toolbar.Link asChild>
 							<Button rounded>
 								<CubeIcon />
 								<span className='ml-2'>File manager</span>
 							</Button>
-						</Link>
-					</Toolbar.Link>
+						</Toolbar.Link>
+					</Link>
 				</div>
 
 				<Toolbar.Separator />
 
 				<div>
-					<Toolbar.Link asChild>
-						<Link href="/settings/general" passHref>
+					<Link href="/settings/general" passHref>
+						<Toolbar.Link asChild>
 							<Button squared>
 								<GearIcon />
 							</Button>
-						</Link>
-					</Toolbar.Link>
+						</Toolbar.Link>
+					</Link>
 				</div>
 			</div>
 		</Toolbar.Root>

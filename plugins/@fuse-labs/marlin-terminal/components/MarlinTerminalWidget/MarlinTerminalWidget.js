@@ -3,7 +3,7 @@ import classNames from "classnames";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Widget, ScrollArea } from "../../../core-ui";
 import terminal from "../../lib/client/terminal.ts";
-import TerminalMessage from "./TerminalMessage";
+import TerminalLine from "./TerminalMessage";
 
 export default function MarlinTerminalWidget() {
 
@@ -11,10 +11,24 @@ export default function MarlinTerminalWidget() {
   const scrollAreaViewport = useRef()
 
   const [inputMessage, setInputMessage] = useState('')
-  const [messages, setMessages] = useState([])
+  const [data, setData] = useState([])
 
-  const appendMessage = msg => {
-    setMessages(messages => [...messages, msg])
+  const appendData = newItem => {
+    setData(data => {
+      if (newItem.from == 'user') {
+        // Check if already in data array
+        let itemIndex = data.findIndex(item => item.id == newItem.id)
+        // If server broadcasted same user message, then replace it in the array
+        if (itemIndex > -1) {
+          let newData = [...data]
+          newData[itemIndex] = newItem
+          return newData
+        }
+      }
+      // Simply add, do not check for duplicates?
+      return [...data, newItem]
+    })
+    // Scroll automatically to bottom of terminal window
     setTimeout(scrollToBottom, 50)
   }
 
@@ -30,7 +44,7 @@ export default function MarlinTerminalWidget() {
 
   useEffect(_ => {
     // Configure listeners
-    let listener = (message) => appendMessage(message)
+    let listener = (data) => appendData(data)
     terminal.onMessageReceived(listener)
     return _ => {
       terminal.offMessageReceived(listener)
@@ -42,7 +56,8 @@ export default function MarlinTerminalWidget() {
     e.stopPropagation()
     if (inputMessage.length) {
       // Send message to terminal
-      terminal.sendMessage(inputMessage)
+      let data = terminal.sendMessage(inputMessage)
+      appendData(data)
       setInputMessage('')
     }
   }
@@ -51,7 +66,7 @@ export default function MarlinTerminalWidget() {
 
     <div className="flex-1 overflow-hidden">
       <ScrollArea ref={scrollArea} className="h-full px-1 rounded-md bg-gray-800 text-gray-300 font-mono text-xs">
-        {messages?.map((msg, i) => <TerminalMessage key={`message-${i}`} message={msg} />)}
+        {data?.map((dataItem, i) => <TerminalLine key={`line-${dataItem.id}`} data={dataItem} />)}
       </ScrollArea>
     </div>
 
