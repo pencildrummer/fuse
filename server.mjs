@@ -59,7 +59,6 @@ app.prepare().then(() => {
 
     // Register all socket binds
     await registerSocketPlugins(socket)
-    //registerSocketPlugins(socket)
     
   })
   

@@ -1,43 +1,29 @@
-import { Widget } from "../../../core-ui";
+import { Button, Group, Input, Label, Widget } from "../../../core-ui";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  TimeScale,
   PointElement,
   LineElement,
   Tooltip
 } from 'chart.js'
+import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
+import socket from "lib/client/socket";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
+  TimeScale,
   PointElement,
   LineElement,
   Tooltip
 )
 
-function fakeTemp(k, min, max, inc, randK) {
-  let startTemp = min
-  let targetTemp = max
-  let currentTemp = startTemp
-  let data = []
-  for (let i = 0; i < k; i++) {
-    data.push(currentTemp)
-
-    // Inc random
-    if (currentTemp > targetTemp) {
-      currentTemp -= inc
-    } else {
-      currentTemp += inc * Math.floor(Math.random() * randK)
-    }
-  }
-  return data
-}
-
 const DEFAULT_DATA = {
-  labels: [],
   datasets: [
     {
       label: 'Heatbed',
@@ -54,20 +40,61 @@ const DEFAULT_DATA = {
 
 export default function TemperatureWidget() {
   
+  const [targetNozzle, setTargetNozzle] = useState('')
+  const [targetHeatbed, setTargetHeatbed] = useState('')
+
+  function requestTargetNozzle() {
+    socket.emit('@fuse-labs.marlin-temperature.setTarget.nozzle', parseInt(targetNozzle))
+  }
+
+  function requestTargetHeatbed() {
+    socket.emit('@fuse-labs.marlin-temperature.setTarget.heatbed', parseInt(targetHeatbed))
+  }
+
   const [data, setData] = useState(DEFAULT_DATA)
 
   useEffect(_ => {
-    let k = 50
-    let fakeData = DEFAULT_DATA
-    for (let i = 0; i < k; i++) { fakeData.labels.push((new Date()).getTime()) }
-    fakeData.datasets[0].data = fakeTemp(k, 12, 70, 2, 3)
-    fakeData.datasets[1].data = fakeTemp(k, 5, 250, 5, 4)
-    setData(fakeData)
+    socket.on('@fuse-labs.marlin-temperature.getTemp.nozzle', (temperature) => {
+      appendNozzleTemp(temperature)
+    })
+  
+    socket.on('@fuse-labs.marlin-temperature.getTemp.heatbed', (temperature) => {
+      appendHeatbedTemp(temperature)
+    })
   }, [])
+  
+  function appendNozzleTemp(temperature) {
+    setData(prevData => {
+      let data = {...prevData}
+      data.datasets[1].data.push({
+        x: (new Date()).getTime(),
+        y: temperature,
+      })
+      return data
+    })
+  }
+  
+  function appendHeatbedTemp(temperature) {
+    setData(prevData => {
+      let data = {...prevData}
+      data.datasets[0].data.push({
+        x: (new Date()).getTime(),
+        y: temperature,
+      })
+      return data
+    })
+  }
+
+  let minDate = (_ => {
+    let date = new Date()
+    date.setMinutes(date.getMinutes() - 1)
+    return date.getTime()
+  })()
 
   return <Widget title="Temperature" version="0.1">
     <Line options={{
       responsive: true,
+      //animation: false,
       datasets: {
         line: {
           tension: 0.6,
@@ -86,10 +113,16 @@ export default function TemperatureWidget() {
       },
       scales: {
         x: {
-          display: false,
+          type: 'time',
+          parsing: false,
+          time: {
+            unit: 'second',
+          },
           grid: {
             display: false,
-          }
+          },
+          min: minDate,
+          max: (new Date()).getTime(),
         },
         y: {
           suggestedMax: 150,
@@ -98,5 +131,22 @@ export default function TemperatureWidget() {
       }
     }}
       data={data} />
+
+    <Group>
+      <Label>Nozzle target</Label>
+      <Input value={targetNozzle} onChange={e => setTargetNozzle(e.target.value)} />
+      <Button onClick={requestTargetNozzle} squared>
+        <CheckIcon />
+      </Button>
+    </Group>
+
+    <Group>
+      <Label>Heatbed target</Label>
+      <Input value={targetHeatbed} onChange={e => setTargetHeatbed(e.target.value)} />
+      <Button onClick={requestTargetHeatbed} squared>
+        <CheckIcon />
+      </Button>
+    </Group>
+
   </Widget>
 }

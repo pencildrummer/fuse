@@ -2,6 +2,7 @@
   "data": [
     "@fuse-labs/camera",
     "@fuse-labs/file-manager",
-    "@fuse-labs/marlin-terminal"
+    "@fuse-labs/marlin-terminal",
+    "@fuse-labs/marlin-temperature"
   ]
 }
