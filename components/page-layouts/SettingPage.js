@@ -11,17 +11,24 @@ function MenuItem({
 }) {
 
   const router = useRouter()
-  const active = useMemo(_ => router.pathname.includes(href), [router.pathname])
+  const active = useMemo(_ => router.pathname.startsWith(href), [router.pathname])
 
   return <li className={classNames(
-    'rounded-md text-sm px-2 py-1 font-medium',
+    'rounded-md text-sm font-medium',
+    'transition-colors duration-150',
     {
+      'hover:bg-gray-800 hover:bg-opacity-40': !active,
       'bg-blue-600': active
     }
   )}>
     {href
-    ? <Link href={href} passHref><a>{props.children}</a></Link>
-    : props.children}
+    ? (
+      <Link href={href} passHref>
+        <a className="block px-2 py-1 w-full h-full">
+          {props.children}
+        </a>
+      </Link>
+    ) : props.children}
   </li>
 }
 

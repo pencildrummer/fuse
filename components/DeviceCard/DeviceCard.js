@@ -3,15 +3,16 @@ import Progress from '../react-daisyui/Progress/Progress'
 import { CameraIcon, Link1Icon, LinkBreak1Icon, StarIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import GCodeViewer from "./viewers/GCodeViewer/GCodeViewer";
+import { Widget } from "../../plugins/@fuse-labs/core-ui";
 
 export default function DeviceCard({ device }) {
 
   const percentage = 0
 
   return (
-    <Link href={`/devices/${device.id}`}>
-      <div className={classNames(
-        'rounded-lg dark:bg-gray-900 dark:text-gray-200 p-3 card bg-neutral h-80 cursor-pointer',
+    <Link href={`/workspace/devices/${device.id}`}>
+      <Widget className={classNames(
+        'h-80 cursor-pointer',
         'duration-250',
         'translate-y-0 hover:-translate-y-1 transition-transform'
         )}>
@@ -73,7 +74,7 @@ export default function DeviceCard({ device }) {
 
           </div>
         </div>
-      </div>
+      </Widget>
     </Link>
   )
 }

@@ -4,7 +4,9 @@
       "id": "1",
       "type": "fdm_printer",
       "brand": "Longer",
-      "name": "LK4 Pro"
+      "model": "LK4 PRO",
+      "name": "LK4 Shelf 1",
+      "connected": true
     }
   ]
 }

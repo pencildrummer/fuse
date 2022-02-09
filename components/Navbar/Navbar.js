@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '../../plugins/@fuse-labs/core-ui'
 import { CubeIcon, GearIcon, HomeIcon } from '@radix-ui/react-icons'
 import * as Toolbar from '@radix-ui/react-toolbar'
+import TabItem from './TabItem'
 
 export default function Navbar() {
 	return (
@@ -10,37 +11,24 @@ export default function Navbar() {
 				<span className="font-bold">Fuse</span>
 			</div>
 
-			<div className='flex-1 flex flex-row px-3'>
-				<div className="flex-1 flex flex-row space-x-3 items-center">
-					<Link href="/" passHref>
-						<Toolbar.Link asChild>
-							<Button rounded>
-								<HomeIcon />
-								<span className='ml-2'>Workspace</span>
-							</Button>
-						</Toolbar.Link>
-					</Link>
-
-					<Link href="/file-manager" passHref>
-						<Toolbar.Link asChild>
-							<Button rounded>
-								<CubeIcon />
-								<span className='ml-2'>File manager</span>
-							</Button>
-						</Toolbar.Link>
-					</Link>
-				</div>
+			<div className='h-full flex-1 flex flex-row px-3 items-end'>
+				<ul className="flex-1 flex flex-row items-end">
+					<TabItem href="/workspace">
+						<HomeIcon />
+						<span className='ml-2'>Workspace</span>
+					</TabItem>
+					<TabItem href="/file-manager">
+						<CubeIcon />
+						<span className='ml-2'>File manager</span>
+					</TabItem>
+				</ul>
 
 				<Toolbar.Separator />
 
 				<div>
-					<Link href="/settings/general" passHref>
-						<Toolbar.Link asChild>
-							<Button squared>
-								<GearIcon />
-							</Button>
-						</Toolbar.Link>
-					</Link>
+					<TabItem href="/settings">
+						<GearIcon />
+					</TabItem>
 				</div>
 			</div>
 		</Toolbar.Root>

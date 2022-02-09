@@ -1,9 +1,9 @@
 import { getPlugins } from 'lib/core/plugins.js'
-import { getActivePlugins } from '../../../lib/core/plugins.js'
+import { getActivePluginsNames } from '../../../lib/core/plugins.js'
 
 export default async function (req, res) {
   let plugins = await getPlugins()
-  let activePlugins = getActivePlugins()
+  let activePlugins = getActivePluginsNames()
   
   plugins = plugins.map(plugin => {
     return {

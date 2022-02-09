@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic'
-import getServerSideDeviceProp from '../../../lib/server/getServerSideDeviceProp.js'
-import DevicePage from '../../../components/page-layouts/DevicePage.js'
-import PrinterDevicePage from '../../../components/page-layouts/PrinterDevicePage.js'
-import CNCDevicePage from '../../../components/page-layouts/CNCDevicePage.js'
-import { getActivePluginsWithInfo } from '../../../lib/core/plugins.js'
+import getServerSideDeviceProp from '../../../../lib/server/getServerSideDeviceProp.js'
+import PrinterDevicePage from '../../../../components/page-layouts/PrinterDevicePage.js'
+import CNCDevicePage from '../../../../components/page-layouts/CNCDevicePage.js'
 import signale from 'signale'
 import chalk from 'chalk'
+import DevicePage from '../../../../components/page-layouts/DevicePage.js'
+import { getActivePluginsWithInfo } from '../../../../lib/core/plugins.js'
 
 // Return which type of page (in pages-layout) to use based on device type
 function getPageComponent(deviceType) {
@@ -22,7 +22,7 @@ export default function DevicePluginPage({
 }) {
 
   const DevicePageComponent = getPageComponent(device.type);
-  const PluginComponent = dynamic(_ => import(`../../../plugins/${plugin.name}/pages/index.js`))
+  const PluginComponent = dynamic(_ => import(`plugins/${plugin.name}/pages/index.js`))
 
 	return (
 		<DevicePageComponent device={device}>

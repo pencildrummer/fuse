@@ -7,7 +7,7 @@ div#__next > div {
   height: 100%;
 }
 
-html {
+html, body {
   @apply dark:bg-gray-800;
   @apply antialiased;
 }
