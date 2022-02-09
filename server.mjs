@@ -1,22 +1,10 @@
 import { createServer } from 'http'
 import { parse } from 'url'
 import next from 'next'
-import path from 'path'
-import signale from 'signale'
 
 import express from 'express'
 import { Server as SocketServer } from 'socket.io'
 import registerSocketPlugins from './lib/server/registerSocketPlugins.js'
-
-// const { createServer } = require('http')
-// const { parse } = require('url')
-// const next = require('next')
-// const path = require('path')
-// const signale = require('signale')
-
-// const express = require('express')
-// const { Server: SocketServer } = require('socket.io')
-// const registerSocketPlugins = require('./lib/server/registerSocketPlugins')
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'

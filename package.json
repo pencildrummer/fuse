@@ -1,9 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "node server.mjs",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.mjs"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
@@ -48,8 +48,6 @@
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.11",
-    "@types/node": "^17.0.14",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
     "tailwindcss": "^3.0.18"

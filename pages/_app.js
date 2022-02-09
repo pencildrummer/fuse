@@ -1,8 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import '../components/global.css'
 import { IntlProvider } from 'react-intl'
-import dynamic from 'next/dynamic'
-import * as messages from 'lang'
+import * as messages from '../lang/index'
 
 function MyApp({ Component, pageProps }) {
   const locale = 'en'
