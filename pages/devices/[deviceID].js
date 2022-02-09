@@ -8,9 +8,13 @@ import MoveWidget from "../../plugins/@fuse-labs/marlin-move/components/MoveWidg
 import TemperatureWidget from "../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
 import FileManagerWidget from "../../plugins/@fuse-labs/file-manager/components/FileManagerWidget/FileManagerWidget";
 
-export default function PrinterPage() {
+import getServerSideDeviceProp from "../../lib/server/getServerSideDeviceProp";
+
+export default function DeviceHomePage({
+  device
+}) {
 	return (
-		<PrinterDevicePage>
+		<PrinterDevicePage device={device}>
 			<div className="grid gap-2 grid-cols-3">
 
 				<div className="col-span-3">
@@ -32,4 +36,14 @@ export default function PrinterPage() {
       </div>
 		</PrinterDevicePage>
 	)
+}
+
+export async function getServerSideProps(ctx) {
+  let device = await getServerSideDeviceProp(ctx)
+  if (!device) return { notFound: true }
+  return {
+    props: {
+      device
+    }
+  }
 }

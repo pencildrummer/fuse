@@ -29,7 +29,7 @@ export async function getServerSideProps({ query }) {
   let name = pluginName.replace('*', '/')
 
   // TODO - Get plugin object
-  let plugin = await getPluginInfo(name)
+  let plugin = getPluginInfo(name)
 
   // TODO - Redirect if no plugin is found?
   if (!plugin) {

@@ -9,7 +9,7 @@ export default function DeviceCard({ device }) {
   const percentage = 0
 
   return (
-    <Link href={`/printers/${device.id}`}>
+    <Link href={`/devices/${device.id}`}>
       <div className={classNames(
         'rounded-lg dark:bg-gray-900 dark:text-gray-200 p-3 card bg-neutral h-80 cursor-pointer',
         'duration-250',

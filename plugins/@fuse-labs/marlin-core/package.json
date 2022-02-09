@@ -6,6 +6,10 @@
   "license": "MIT",
   "fuse": {
     "title": "[Marlin] Core",
-    "type": "driver"
+    "type": "driver",
+    "devices": [ "fdm_printer" ],
+    "pagesUrl": "marlin/config",
+    "icon": "MixerHorizontalIcon",
+    "tooltip": "Configuration"
   }
 }

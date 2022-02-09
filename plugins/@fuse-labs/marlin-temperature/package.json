@@ -5,6 +5,10 @@
   "author": "FUSE Labs",
   "license": "MIT",
   "fuse": {
-    "title": "[Marlin] Temperature monitor"
+    "title": "[Marlin] Temperature monitor",
+    "pagesUrl": "temperature",
+    "icon": "BarChartIcon",
+    "tooltip": "Temperature",
+    "devices": [ "fdm_printer" ]
   }
 }

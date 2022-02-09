@@ -5,6 +5,10 @@
   "author": "FUSE Labs",
   "license": "MIT",
   "fuse": {
-    "title": "[Marlin] GCode Viewer"
+    "title": "[Marlin] GCode Viewer",
+    "pagesUrl": "gcode-viewer",
+    "icon": "CodeIcon",
+    "tooltip": "GCode monitor",
+    "devices": [ "fdm_printer" ]
   }
 }
