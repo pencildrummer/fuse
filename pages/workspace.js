@@ -1,8 +1,8 @@
+import AddDeviceForm from "components/AddDeviceForm/AddDeviceForm";
 import Page from "components/page-layouts/Page";
 import PageTopBar from "components/page-layouts/Page/PageTopBar";
-import { Button } from "plugins/@fuse-labs/core-ui";
+import { Button, Dialog } from "plugins/@fuse-labs/core-ui";
 import DevicesGrid from "../components/DevicesGrid/DevicesGrid";
-import MainLayout from "../components/layouts/MainLayout";
 import { getDevices } from "../lib/core/devices";
 
 export default function Home({
@@ -12,9 +12,11 @@ export default function Home({
     <Page>
       
       <PageTopBar>
-        <Button size="sm">
-          Add new device
-        </Button>
+        <Dialog title="New device" content={<AddDeviceForm />}>
+          <Button size="sm">
+            Add new device
+          </Button>
+        </Dialog>
       </PageTopBar>
 
       <DevicesGrid devices={devices}/>

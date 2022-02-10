@@ -25,7 +25,7 @@ export default function Navbar() {
 
 						let Icon = icons[plugin.fuse.icon]
 						return (
-							<TabItem href={`/${plugin.fuse.url || plugin.name}`}>
+							<TabItem href={`/${plugin.fuse.url || plugin.name}`} key={`tab-${plugin.name}`}>
 								{Icon && <Icon className="mr-2"/>}
 								<span>{plugin.fuse.title}</span>
 							</TabItem>

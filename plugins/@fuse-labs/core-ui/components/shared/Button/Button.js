@@ -3,13 +3,14 @@ import React, { useMemo } from "react"
 import styles from './Button.module.scss'
 
 const Button = React.forwardRef(({
+  as: Component = "a",
   squared,
   rounded,
   className,
   size,
   ...props
 }, ref) => {
-  return <button
+  return <Component
     ref={ref}
     className={classNames(
       'inline-flex select-none items-center justify-center text-sm font-medium',

@@ -5,6 +5,7 @@ function WidgetTitle({
   ...props
 }) {
   return <div className={classNames(
+    'flex flex-row items-center',
     'dark:text-gray-500',
     'border-b dark:border-gray-800',
     'text-xxs uppercase',
