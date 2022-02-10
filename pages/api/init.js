@@ -4,7 +4,7 @@ import { getPlugins } from "lib/core/plugins"
 export default async (req, res) => {
 
   let data = {
-    device: getDevices(),
+    devices: getDevices(),
     plugins: getPlugins()
   }
 

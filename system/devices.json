@@ -7,6 +7,14 @@
       "model": "LK4 PRO",
       "name": "LK4 Shelf 1",
       "connected": true
+    },
+    {
+      "id": "2",
+      "type": "msla_printer",
+      "brand": "Elegoo",
+      "model": "Mars",
+      "name": "Mars",
+      "connected": true
     }
   ]
 }

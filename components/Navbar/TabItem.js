@@ -24,7 +24,7 @@ export default function TabItem({
       'group',
       {
         'z-[9999]': active,
-        'hover:bg-gray-800 hover:bg-opacity-40': !active,
+        'hover:bg-gray-800/40': !active,
         'bg-gray-800 text-gray-100': active
       },
       {

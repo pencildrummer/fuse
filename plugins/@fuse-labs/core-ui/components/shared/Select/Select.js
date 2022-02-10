@@ -18,6 +18,7 @@ function SelectOption(props) {
 }
 
 export default function Select({
+  trigger: TriggerComponent,
   options,
   onChange,
   className,
@@ -48,24 +49,30 @@ export default function Select({
         'flex flex-row items-center space-x-2',
         className
       )}>
-        <DropdownMenu.Trigger className={classNames(
-          'w-full min-w-[180px]',
-          'flex flex-row items-center justify-between space-x-2',
-          'text-xs',
-          'px-1.5 h-[26px]',
-          'leading-none',
-          'rounded-md',
-          'select-none touch-none',
-          'font-mono font-medium',
-          'bg-gray-900 border border-gray-600 text-gray-300',
-          'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
-          'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
-        )} disabled={props.disabled}>
-          <span>
-            {selectedOptionDisplayText}
-          </span>
-          <ChevronDownIcon />
-        </DropdownMenu.Trigger>
+        {(TriggerComponent || props.children) ? (
+          <DropdownMenu.Trigger asChild disabled={props.disabled}>
+            {TriggerComponent ? <TriggerComponent /> : props.children}
+          </DropdownMenu.Trigger>
+        ) : (
+          <DropdownMenu.Trigger className={classNames(
+            'w-full min-w-[180px]',
+            'flex flex-row items-center justify-between space-x-2',
+            'text-xs',
+            'px-1.5 h-[26px]',
+            'leading-none',
+            'rounded-md',
+            'select-none touch-none',
+            'font-mono font-medium',
+            'bg-gray-900 border border-gray-600 text-gray-300',
+            'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
+            'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
+          )} disabled={props.disabled}>
+            <span>
+              {selectedOptionDisplayText}
+            </span>
+            <ChevronDownIcon />
+          </DropdownMenu.Trigger>
+        )}
       </div>
 
       <DropdownMenu.Content className={classNames(
