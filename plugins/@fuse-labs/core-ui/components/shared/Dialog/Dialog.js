@@ -37,6 +37,7 @@ function DialogContent({
 
       <Widget className={classNames(
         'w-[90vw] max-h-[85vh]',
+        className
       )} title={(
         <>
           {title && (

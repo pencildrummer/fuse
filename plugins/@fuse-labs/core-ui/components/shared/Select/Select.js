@@ -22,11 +22,12 @@ export default function Select({
   options,
   onChange,
   className,
+  defaultValue,
   ...props
 }) {
 
   const triggerContainerEl = useRef()
-  const [selectedOption, setSelectedOption] = useState()
+  const [selectedOption, setSelectedOption] = useState(defaultValue)
   const [contentWidth, setContentWidth] = useState()
 
   useEffect(_ => {
@@ -67,7 +68,7 @@ export default function Select({
             'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
             'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
           )} disabled={props.disabled}>
-            <span>
+            <span className='whitespace-nowrap truncate'>
               {selectedOptionDisplayText}
             </span>
             <ChevronDownIcon />

@@ -5,7 +5,7 @@ export default async (req, res) => {
 
   let data = {
     devices: getDevices(),
-    plugins: getPlugins()
+    plugins: getPlugins(),
   }
 
   return res.status(200).json(data)

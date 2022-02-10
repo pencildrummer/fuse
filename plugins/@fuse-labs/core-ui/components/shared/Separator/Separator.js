@@ -6,14 +6,16 @@ const Separator = React.forwardRef(({
   className,
   ...props
 }, ref) => {
-  return <SeparatorPrimitive.Root ref={ref}
-    className={classNames(
-      'bg-gray-600',
+  return <SeparatorPrimitive.Root ref={ref} {...props} >
+    <div className={classNames(
+      'border-b dark:border-gray-700',
+      'my-2',
       {
         'h-px min-w-full self-stretch': props.orientation == 'horizontal' || !props.orientation,
         'min-h-full w-px self-stretch': props.orientation == 'vertical',
       },
       className
-    )} {...props} />
+    )} />
+  </SeparatorPrimitive.Root>
 })
 export default Separator
