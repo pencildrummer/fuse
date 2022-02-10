@@ -13,8 +13,6 @@ export default function DeviceCard({ device }) {
     <Link href={`/workspace/devices/${device.id}`}>
       <Widget className={classNames(
         'h-80 cursor-pointer',
-        'duration-250',
-        'translate-y-0 hover:-translate-y-1 transition-transform'
         )}>
         <div className="card-body">
           <div className="flex-1 flex flex-col space-y-2">

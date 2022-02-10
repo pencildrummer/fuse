@@ -5,7 +5,7 @@ export default function Page(props) {
   return (
     <MainLayout>
 			<ScrollArea className="flex-1 h-full">
-        <div className="p-3 flex flex-col space-y-3">
+        <div className="flex flex-col space-y-2">
           {props.children}
         </div>
       </ScrollArea>

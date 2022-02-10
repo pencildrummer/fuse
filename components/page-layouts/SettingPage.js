@@ -36,7 +36,7 @@ export default function SettingPage(props) {
   return <MainLayout>
     <div className="flex-1 h-full flex flex-row">
 
-      <div className="flex-none py-3 pl-3">
+      <div className="flex-none py-2 pl-2">
         <div className={classNames(
           'dark:bg-gray-900 dark:text-gray-200',
           'w-44',
@@ -63,7 +63,7 @@ export default function SettingPage(props) {
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-3 flex flex-col space-y-3">
+        <div className="p-2 flex flex-col space-y-3">
           {props.children}
         </div>
       </ScrollArea>
