@@ -12,6 +12,7 @@ export default function MainLayout(props) {
       </Head>
 
       <Navbar />
+      
       <div className="flex-1 overflow-hidden">
         {props.children}
       </div>
