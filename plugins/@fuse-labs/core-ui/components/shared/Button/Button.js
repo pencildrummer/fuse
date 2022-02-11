@@ -3,14 +3,18 @@ import React, { useMemo } from "react"
 import styles from './Button.module.scss'
 
 const Button = React.forwardRef(({
-  as: Component = "a",
+  as = "a",
   squared,
   rounded,
   className,
   size,
   ...props
 }, ref) => {
-  return <Component
+
+  let ButtonComponent = as
+  if (props.type == 'submit') { ButtonComponent = 'button' }
+
+  return <ButtonComponent
     ref={ref}
     className={classNames(
       'inline-flex select-none items-center justify-center text-sm font-medium',

@@ -5,6 +5,7 @@ import Slider from './components/shared/Slider/Slider.js'
 import Switch from './components/shared/Switch/Switch.js'
 import Dialog from './components/shared/Dialog/Dialog.js'
 
+import Form from './components/shared/Form/Form.js'
 import Group from './components/shared/Group/Group.js'
 import Label from './components/shared/Label/Label.js'
 import Separator from './components/shared/Separator/Separator.js'
@@ -19,6 +20,8 @@ export {
   Slider,
   Switch,
   Dialog,
+
+  Form,
   Group,
   Label,
   Separator,

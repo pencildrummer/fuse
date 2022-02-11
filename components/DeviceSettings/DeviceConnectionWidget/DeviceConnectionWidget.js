@@ -2,7 +2,6 @@ import { Button, Widget } from "../../../plugins/@fuse-labs/core-ui";
 import Group from "../../../plugins/@fuse-labs/core-ui/components/shared/Group/Group";
 import Label from "../../../plugins/@fuse-labs/core-ui/components/shared/Label/Label";
 import Switch from "../../../plugins/@fuse-labs/core-ui/components/shared/Switch/Switch";
-import Checkbox from "../../../plugins/@fuse-labs/core-ui/components/shared/Checkbox/Checkbox";
 import Separator from "../../../plugins/@fuse-labs/core-ui/components/shared/Separator/Separator";
 import BaudRateSelect from "./components/BaudRateSelect/BaudRateSelect";
 import SerialPortSelect from "./components/SerialPortSelect/SerialPortSelect";
