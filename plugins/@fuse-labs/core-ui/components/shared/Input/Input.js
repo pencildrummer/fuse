@@ -6,8 +6,8 @@ export default function Input({
   ...props
 }) {
 
-  const [field, meta] = useField(props)
-  
+  const [field, meta, helpers] = useField(props)
+
   return <input className={classNames(
     'text-xs px-1.5',
     'h-[26px]',
@@ -18,7 +18,7 @@ export default function Input({
     'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
     'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
     {
-      'border-red-600 ring-1 ring-red-600': meta.error && meta.touched
+      'border-red-600 ring-1 ring-red-600': field.name && meta.error && meta.touched
     },
     'transition-colors duration-150',
     className
