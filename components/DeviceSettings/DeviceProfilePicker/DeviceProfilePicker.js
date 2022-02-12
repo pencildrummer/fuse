@@ -59,10 +59,11 @@ export default function DeviceProfilePicker({
             divide={false} 
             hideEmptyGroups
             items={filteredProfiles} 
-            onSelect={(value, key) => setSelectedProfileID(value)}
+            onSelect={(key, value) => setSelectedProfileID(key)}
             selectedItem={selectedProfileID}
             itemComponent={DeviceProfileListItem}
             maxDepth={1}
+            keyTransform={(key, value, isGroup) => isGroup ? key : value.id}
             groupDisplayTransform={group => titleCase(group)} />  
         </div>
       ) : (

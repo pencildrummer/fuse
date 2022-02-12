@@ -74,7 +74,7 @@ function GroupCompactListItem({
     {open && (
       <div className="pl-3">
         <CompactListRoot
-          data-item-key={props['data-item-key']}
+          data-group-key={props['data-group-key']}
           items={items}
           itemComponent={itemComponent}/>
       </div>
@@ -94,9 +94,9 @@ function CompactListRoot({
 
   const { 
     selectedItemKey,
-    setSelectedItemKey,
-    onSelect,
-    maxDepth
+    handleSelect,
+    maxDepth,
+    keyTransform,
   } = React.useContext(ListSelectionContext)
 
   const contents = (items) => {
@@ -106,36 +106,38 @@ function CompactListRoot({
       // Group by keys listing only keys
       return Object.keys(items).map(key => {
 
+        let currentDepth = props['data-group-key']?.split('.').length || 0
+
         let value = items[key]
-        let dataItemKey = [props['data-item-key'], key].filter(Boolean).join('.')
-        let currentDepth = dataItemKey.split('.').length - 1
 
-        let renderGroup = !isPrimitive(value) && currentDepth < maxDepth
-        if (typeof isGroupTransform === 'function') {
-          renderGroup = isGroupTransform(key, value, dataItemKey)
-        }
+        let isGroup = isGroupTransform?.(key, value) || (!isPrimitive(value) && currentDepth < maxDepth)
 
-        if (renderGroup) {
+        let itemKey = keyTransform?.(key, value, isGroup) || key
+               
+        let dataItemKey = [props['data-group-key'], itemKey].filter(Boolean).join('.')
+        
+        if (isGroup) {
           if (hideEmptyGroups && !value?.length) {
             return null
           } else {
             return (
               <GroupCompactListItem 
-                key={`group-${key}`}
-                data-item-key={dataItemKey}
-                items={items[key]} 
+                key={`group-${itemKey}`}
+                data-group-key={dataItemKey}
+                items={value} 
                 itemComponent={ItemComponent} >
-                {groupDisplayTransform ? groupDisplayTransform(key) : key}
+                {groupDisplayTransform ? groupDisplayTransform(key, value) : key}
               </GroupCompactListItem>
             )
           }
         } else {
+          console.log('Item keys', itemKey, dataItemKey)
           return <ItemComponent
-            key={`item-${key}`}
+            key={`item-${itemKey}`}
             data-item-key={dataItemKey}
             selected={selectedItemKey === dataItemKey}
             item={itemDisplayTransform ? itemDisplayTransform(value) : value} 
-            onClick={_ => setSelectedItemKey(dataItemKey)}/>
+            onClick={_ => handleSelect(dataItemKey, value)}/>
         }
       })
     } else {
@@ -157,18 +159,18 @@ export default function CompactList(props) {
 
   const [selectedItemKey, setSelectedItemKey] = useState(props.defaultValue)
 
-  useEffect(_ => handleSelect(selectedItemKey), [selectedItemKey])
-
-  function handleSelect(item) {
-    props.onSelect?.(item)
+  function handleSelect(key, value) {
+    setSelectedItemKey(key)
+    props.onSelect?.(key, value)
   }
 
   return <ListSelectionContext.Provider value={{
     selectedItemKey,
     setSelectedItemKey,
-    onSelect: handleSelect, // Pass internal select handler that trigger the prop provided one to allow for more control
+    handleSelect, // Pass internal select handler that trigger the prop provided one to allow for more control
     
-    maxDepth: props.maxDepth
+    maxDepth: props.maxDepth,
+    keyTransform: props.keyTransform,
   }}>
     <CompactListRoot {...props} className="text-xs" size="compact"/>
   </ListSelectionContext.Provider>
