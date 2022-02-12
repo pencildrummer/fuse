@@ -8,7 +8,16 @@ export default function Input({
 
   const [field, meta, helpers] = useField(props)
 
-  return <input className={classNames(
+  return <RawInput error={field.name && meta.error && meta.touched} {...props} />
+}
+
+// Raw input to be use outside Formik forms
+export function RawInput({
+  error,
+  ...props
+}) {
+
+  return <input {...props} className={classNames(
     'text-xs px-1.5',
     'h-[26px]',
     'rounded-md',
@@ -18,9 +27,9 @@ export default function Input({
     'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
     'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
     {
-      'border-red-600 ring-1 ring-red-600': field.name && meta.error && meta.touched
+      'border-red-600 ring-1 ring-red-600': error
     },
     'transition-colors duration-150',
-    className
-  )} {...field} {...props} />
+    props.className
+  )} />
 }

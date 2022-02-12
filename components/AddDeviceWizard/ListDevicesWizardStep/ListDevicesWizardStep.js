@@ -1,5 +1,4 @@
 import { CaretRightIcon } from "@radix-ui/react-icons"
-import { useAppContext } from "components/AppProvider/AppProvider"
 import { usePorts } from "lib/client/ports"
 import Table from "plugins/@fuse-labs/core-ui/components/shared/Table/Table"
 
