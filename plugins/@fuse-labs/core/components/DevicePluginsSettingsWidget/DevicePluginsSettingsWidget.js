@@ -1,3 +1,4 @@
+import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import { Button, Group, Input, Label, Widget } from "../../../core-ui";
 
 export default function DevicePluginsSettingsWidget() {
@@ -5,7 +6,7 @@ export default function DevicePluginsSettingsWidget() {
     <div className="grid grid-cols-2 gap-3">
       <Group className="justify-between">
         <Label>Plugin install directory</Label>
-        <Input value="/plugins" disabled />
+        <InputRaw value="/plugins" disabled />
       </Group>
       <Group>
         <Button size="sm">Install plugin</Button>

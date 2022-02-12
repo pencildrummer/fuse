@@ -1,5 +1,5 @@
-import { CheckIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Group, Select, Separator, Widget } from "../../../core-ui";
+import { SelectRaw } from "plugins/@fuse-labs/core-ui/components/shared/Select/Select";
+import { Button, Dialog, Group, Separator, Widget } from "../../../core-ui";
 import SettingsWidget from "../../../core-ui/components/SettingsWidget/SettingsWidget";
 import PrinterProfileForm from "../PrinterProfileForm/PrinterProfileForm";
 
@@ -14,7 +14,7 @@ export default function PrinterProfileWidget({
 
   return <Widget title="Printer">
     <Group>
-      <Select id="profile" options={profiles} />
+      <SelectRaw id="profile" options={profiles} />
       <Button size="sm">
         Save
       </Button>

@@ -13,6 +13,7 @@ import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
 import socket from "lib/client/socket";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 
 ChartJS.register(
   CategoryScale,
@@ -134,7 +135,7 @@ export default function TemperatureWidget() {
 
     <Group>
       <Label>Nozzle target</Label>
-      <Input value={targetNozzle} onChange={e => setTargetNozzle(e.target.value)} />
+      <InputRaw value={targetNozzle} onChange={e => setTargetNozzle(e.target.value)} />
       <Button onClick={requestTargetNozzle} squared>
         <CheckIcon />
       </Button>
@@ -142,7 +143,7 @@ export default function TemperatureWidget() {
 
     <Group>
       <Label>Heatbed target</Label>
-      <Input value={targetHeatbed} onChange={e => setTargetHeatbed(e.target.value)} />
+      <InputRaw value={targetHeatbed} onChange={e => setTargetHeatbed(e.target.value)} />
       <Button onClick={requestTargetHeatbed} squared>
         <CheckIcon />
       </Button>

@@ -88,6 +88,7 @@ function CompactListRoot({
   itemDisplayTransform,
   groupDisplayTransform,
   isGroupTransform,
+  hideEmptyGroups = false,
   ...props
 }) {
 
@@ -115,15 +116,19 @@ function CompactListRoot({
         }
 
         if (renderGroup) {
-          return (
-            <GroupCompactListItem 
-              key={`group-${key}`}
-              data-item-key={dataItemKey}
-              items={items[key]} 
-              itemComponent={ItemComponent} >
-              {groupDisplayTransform ? groupDisplayTransform(key) : key}
-            </GroupCompactListItem>
-          )
+          if (hideEmptyGroups && !value?.length) {
+            return null
+          } else {
+            return (
+              <GroupCompactListItem 
+                key={`group-${key}`}
+                data-item-key={dataItemKey}
+                items={items[key]} 
+                itemComponent={ItemComponent} >
+                {groupDisplayTransform ? groupDisplayTransform(key) : key}
+              </GroupCompactListItem>
+            )
+          }
         } else {
           return <ItemComponent
             key={`item-${key}`}

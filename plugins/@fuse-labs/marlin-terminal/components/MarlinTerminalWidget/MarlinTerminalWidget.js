@@ -1,5 +1,6 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
+import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Widget, ScrollArea } from "../../../core-ui";
 import terminal from "../../lib/client/terminal.ts";
@@ -71,7 +72,7 @@ export default function MarlinTerminalWidget() {
     </div>
 
     <form onSubmit={handleSubmit} className="flex flex-row space-x-2">
-      <input type="text" 
+      <InputRaw type="text" 
         value={inputMessage}
         onChange={e => setInputMessage(e.target.value)}
         className={classNames(

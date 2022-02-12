@@ -8,11 +8,11 @@ export default function Input({
 
   const [field, meta, helpers] = useField(props)
 
-  return <RawInput error={field.name && meta.error && meta.touched} {...props} />
+  return <InputRaw error={field.name && meta.error && meta.touched} {...props} />
 }
 
 // Raw input to be use outside Formik forms
-export function RawInput({
+export function InputRaw({
   error,
   ...props
 }) {

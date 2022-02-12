@@ -4,7 +4,7 @@ import { Button, Slider } from "plugins/@fuse-labs/core-ui";
 import { useEffect, useState } from "react";
 import { Widget } from "../../../core-ui";
 import Label from "../../../core-ui/components/shared/Label/Label";
-import Select from "../../../core-ui/components/shared/Select/Select";
+import { SelectRaw } from "../../../core-ui/components/shared/Select/Select";
 import Separator from "../../../core-ui/components/shared/Separator/Separator";
 
 export default function ExtruderWidget() {
@@ -21,7 +21,7 @@ export default function ExtruderWidget() {
         <Label htmlFor="e-motor">
           Motor
         </Label>
-        <Select id="e-motor" options={[
+        <SelectRaw id="e-motor" options={[
           { value: 'all', label: 'All motors' },
           { value: 'e1', label: 'Extruder 1' },
           { value: 'e2', label: 'Extruder 2' }

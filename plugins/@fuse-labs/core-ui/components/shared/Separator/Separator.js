@@ -3,18 +3,19 @@ import classNames from 'classnames'
 import React from 'react'
 
 const Separator = React.forwardRef(({
-  className,
   ...props
 }, ref) => {
-  return <SeparatorPrimitive.Root ref={ref} {...props} >
+  return <SeparatorPrimitive.Root ref={ref} {...props} asChild>
     <div className={classNames(
-      'border-b dark:border-gray-700',
-      'my-2',
+      'flex-none',
+      'border-gray-500 dark:border-gray-700',
       {
+        'my-2 border-b': props.orientation == 'horizontal' || !props.orientation,
         'h-px min-w-full self-stretch': props.orientation == 'horizontal' || !props.orientation,
+        'mx-2 border-r': props.orientation == 'vertical',
         'min-h-full w-px self-stretch': props.orientation == 'vertical',
       },
-      className
+      props.className
     )} />
   </SeparatorPrimitive.Root>
 })

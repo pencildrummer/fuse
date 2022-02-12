@@ -18,20 +18,19 @@ function SelectOption(props) {
   )} {...props} />
 }
 
-export default function Select({
+export function SelectRaw({
   trigger: TriggerComponent,
+  error,
   options,
   className,
   defaultValue,
+  onChange,
+  onBlur,
+  onOpenChange,
   ...props
 }) {
-
-  const [field, meta, helpers] = useField(props.name)
-  const { value, initialValue } = meta
-  const { setValue, setTouched } = helpers
-
   const triggerContainerEl = useRef()
-  const [selectedOption, setSelectedOption] = useState(initialValue)
+  const [selectedOption, setSelectedOption] = useState(defaultValue)
   const [contentWidth, setContentWidth] = useState()
 
   useEffect(_ => {
@@ -41,9 +40,9 @@ export default function Select({
 
   useEffect(_ => {
     if (typeof selectedOption == 'object')
-      setValue(selectedOption?.value)
+      onChange?.(selectedOption?.value)
     else
-      setValue(selectedOption)
+      onChange?.(selectedOption)
   }, [selectedOption])
 
   let selectedOptionDisplayText = useMemo(_ => {
@@ -53,13 +52,13 @@ export default function Select({
 
   function isSelected(option) {
     return typeof option === 'object'
-      ? value === option.value
-      : value === option
+      ? selectedOption?.value === option.value
+      : selectedOption === option
   }
 
   return <div>
     <DropdownMenu.Root
-      onOpenChange={open => open && setTouched(true)}>
+      onOpenChange={onOpenChange}>
       <div ref={triggerContainerEl} className={classNames(
         'flex flex-row items-center space-x-2',
         className
@@ -71,7 +70,7 @@ export default function Select({
         ) : (
           <DropdownMenu.Trigger 
             disabled={props.disabled}
-            onBlur={_ => field.onBlur(field.name)}
+            onBlur={onBlur}
             className={classNames(
               'w-full min-w-[180px]',
               'flex flex-row items-center justify-between space-x-2',
@@ -85,7 +84,7 @@ export default function Select({
               'focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600',
               'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
               {
-                'border-red-600 ring-1 ring-red-600': meta.touched && meta.error
+                'border-red-600 ring-1 ring-red-600': error
               },
             )} >
             <span className='whitespace-nowrap truncate'>
@@ -116,4 +115,17 @@ export default function Select({
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   </div>
+}
+
+export default function Select(props) {
+  
+  const [field, meta, helpers] = useField(props.name)
+  const { initialValue } = meta
+  const { setValue, setTouched } = helpers
+
+  return <SelectRaw error={meta.touched && meta.error}
+    defaultValue={initialValue}
+    onChange={setValue}
+    onOpenChange={open => open && setTouched(true)}
+    onBlur={_ => field.onBlur(field.name)}/>
 }

@@ -1,4 +1,4 @@
-import Select from "../../../../../plugins/@fuse-labs/core-ui/components/shared/Select/Select"
+import { SelectRaw } from "plugins/@fuse-labs/core-ui/components/shared/Select/Select"
 
 export default function SerialPortSelect({
   ...props
@@ -15,5 +15,5 @@ export default function SerialPortSelect({
     }
   ]
 
-  return <Select options={ports} {...props} />
+  return <SelectRaw options={ports} {...props} />
 }

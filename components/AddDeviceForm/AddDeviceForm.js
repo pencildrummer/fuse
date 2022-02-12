@@ -4,7 +4,7 @@ import DeviceTypeSelect from "components/DeviceSettings/DeviceTypeSelect/DeviceT
 import { Field, useFormikContext } from "formik";
 import { usePorts } from "lib/client/ports";
 import { Button, Group, Input, Label, Select, Separator, Form } from "plugins/@fuse-labs/core-ui";
-import { RawInput } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
+import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import * as Yup from 'yup'
 
 export default function AddDeviceForm({
@@ -21,13 +21,11 @@ export default function AddDeviceForm({
   return (
     <Form initialValues={{
       'name': '',
-      'type': '',
       'profile': '',
       'port': device?.port.path || '',
       'baudrate': ''
     }} validationSchema={Yup.object({
       name: Yup.string().required(),
-      type: Yup.string().required(),
       profile: Yup.string().required(),
       port: Yup.string().required(),
       baudrate: Yup.number().required()
@@ -38,16 +36,11 @@ export default function AddDeviceForm({
           <Label htmlFor="name">Name</Label>
           <Input type="text" name="name" className="w-full" />
         </Group>
-
-        <Group className="justify-between">
-          <Label htmlFor="type">Device type</Label>
-          <DeviceTypeSelect name="type" />
-        </Group>
         
         <Group orientation="vertical">
           <Group className="justify-between">
             <Label htmlFor="profile">Device profile</Label>
-            <RawInput placeholder="No profile selected"
+            <InputRaw placeholder="No profile selected"
               className="!bg-transparent !border-dashed !ring-0"
               error={formProps.submitCount && errors.profile}
               disabled

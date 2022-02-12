@@ -1,4 +1,4 @@
-import Select from "../../../../../plugins/@fuse-labs/core-ui/components/shared/Select/Select"
+import { SelectRaw } from "plugins/@fuse-labs/core-ui/components/shared/Select/Select"
 
 export default function BaudRateSelect({
   ...props
@@ -15,5 +15,5 @@ export default function BaudRateSelect({
     115200
   ]
 
-  return <Select options={rates} {...props} />
+  return <SelectRaw options={rates} {...props} />
 }
