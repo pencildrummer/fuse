@@ -17,7 +17,6 @@ export default (socket) => {
   */
 
   socket.on('core.devices.add', async ({ name, profile, profileId, port, baudrate }, fn) => {
-    signale.debug(name, profile, profileId, port, baudrate)
     if (profile) {
       // TODO - Add device profile on the go, for custom profiles while saving device
       profileId = profile.id

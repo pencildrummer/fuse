@@ -1,33 +1,16 @@
 {
   "data": [
     {
-      "id": "1",
-      "name": "LK4 Shelf 1",
-      "profileId": "alfawise.lk4_pro",
-      "port": "/test_port",
-      "baudrate": "auto"
-    },
-    {
-      "id": "a3250336-f8a6-4d82-986a-0d2c2484c9d5",
-      "name": "qwe",
+      "id": "423dcc49-865e-4628-a0dc-95001883c280",
+      "name": "Longer LK4 Pro",
+      "profileId": "longer.lk4_pro",
       "port": "/dev/tty.Bluetooth-Incoming-Port",
       "baudrate": "auto"
     },
     {
-      "id": "241cd3e7-abd2-4737-9271-b98ec1518dde",
-      "name": "asd",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto"
-    },
-    {
-      "id": "733d9ea5-e75d-4a60-bb49-36800b151aee",
-      "name": "t",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto"
-    },
-    {
-      "id": "5088891b-c3de-4271-b844-6c4f8d09002c",
-      "name": "Yeah",
+      "id": "6ff2776f-d1a7-469b-b261-d2f9d4db621c",
+      "name": "Ender 3",
+      "profileId": "creality.ender_3",
       "port": "/dev/tty.Bluetooth-Incoming-Port",
       "baudrate": "auto"
     }

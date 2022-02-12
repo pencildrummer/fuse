@@ -131,7 +131,6 @@ function CompactListRoot({
             )
           }
         } else {
-          console.log('Item keys', itemKey, dataItemKey)
           return <ItemComponent
             key={`item-${itemKey}`}
             data-item-key={dataItemKey}

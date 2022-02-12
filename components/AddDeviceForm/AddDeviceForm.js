@@ -47,7 +47,7 @@ export default function AddDeviceForm({
               className="!bg-transparent !border-dashed !ring-0"
               error={formProps.submitCount && errors.profile}
               disabled
-              defaultValue={values.profile}/>
+              defaultValue={values.profileId}/>
           </Group>
           <Field name="profileId" component={DeviceProfilePicker} />
         </Group>
