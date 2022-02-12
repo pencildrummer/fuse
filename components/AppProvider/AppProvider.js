@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+import socket from 'lib/client/socket'
+import React, { useContext, useEffect, useState } from 'react'
 import { IntlProvider } from 'react-intl'
 import * as messages from '../../lang/index'
 
@@ -11,8 +12,18 @@ export default function AppProvider({
 
   const locale = 'en'
 
+  const [devices, setDevices] = useState(appData?.devices)
+
+  useEffect(_ => {
+		// Add socket listener for newly created device
+		socket.on('core.devices.added', (device) => {
+      setDevices(devices => [...devices, device])
+		})
+	}, [])
+
   return <AppContext.Provider value={{
-    ...appData
+    ...appData,
+    devices
   }}>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages[locale]}>
       {props.children}

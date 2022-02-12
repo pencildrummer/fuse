@@ -3,6 +3,7 @@ import DeviceProfilePicker from "components/DeviceSettings/DeviceProfilePicker/D
 import DeviceTypeSelect from "components/DeviceSettings/DeviceTypeSelect/DeviceTypeSelect";
 import { Field, useFormikContext } from "formik";
 import { usePorts } from "lib/client/ports";
+import socket from "lib/client/socket";
 import { Button, Group, Input, Label, Select, Separator, Form } from "plugins/@fuse-labs/core-ui";
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import * as Yup from 'yup'
@@ -14,27 +15,29 @@ export default function AddDeviceForm({
   const ports = usePorts()
 
   function handleSubmit(values, options) {
-    console.log(values)
-    console.log(options)
+    socket.emit('core.devices.add', values, (device) => {
+      console.log('Created device')
+      console.debug(device)
+    })
   }
   
   return (
     <Form initialValues={{
       'name': '',
-      'profile': '',
+      'profileId': '',
       'port': device?.port.path || '',
-      'baudrate': ''
+      'baudrate': 'auto'
     }} validationSchema={Yup.object({
       name: Yup.string().required(),
-      profile: Yup.string().required(),
+      profileId: Yup.string().required(),
       port: Yup.string().required(),
-      baudrate: Yup.number().required()
+      baudrate: Yup.mixed().required()
     })} onSubmit={handleSubmit}>{ ({ values, errors, touched, ...formProps }) => (
       <Group orientation="vertical">
 
         <Group orientation="vertical">
           <Label htmlFor="name">Name</Label>
-          <Input type="text" name="name" className="w-full" />
+          <Input type="text" name="name" className="w-full" autoComplete="off" />
         </Group>
         
         <Group orientation="vertical">
@@ -44,9 +47,9 @@ export default function AddDeviceForm({
               className="!bg-transparent !border-dashed !ring-0"
               error={formProps.submitCount && errors.profile}
               disabled
-              value={values.profile}/>
+              defaultValue={values.profile}/>
           </Group>
-          <Field name="profile" component={DeviceProfilePicker} />
+          <Field name="profileId" component={DeviceProfilePicker} />
         </Group>
         <Separator />
 

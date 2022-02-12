@@ -1,14 +1,11 @@
 import classNames from "classnames";
 import { useField } from "formik";
 
-export default function Input({
-  className,
-  ...props
-}) {
+export default function Input(props) {
 
   const [field, meta, helpers] = useField(props)
 
-  return <InputRaw error={field.name && meta.error && meta.touched} {...props} />
+  return <InputRaw {...field} {...props} error={field.name && meta.error && meta.touched} />
 }
 
 // Raw input to be use outside Formik forms
@@ -16,7 +13,6 @@ export function InputRaw({
   error,
   ...props
 }) {
-
   return <input {...props} className={classNames(
     'text-xs px-1.5',
     'h-[26px]',

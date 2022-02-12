@@ -127,5 +127,6 @@ export default function Select(props) {
     defaultValue={initialValue}
     onChange={setValue}
     onOpenChange={open => open && setTouched(true)}
-    onBlur={_ => field.onBlur(field.name)}/>
+    onBlur={_ => field.onBlur(field.name)}
+    {...props} />
 }

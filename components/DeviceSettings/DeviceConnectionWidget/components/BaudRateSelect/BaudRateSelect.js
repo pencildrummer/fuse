@@ -1,11 +1,11 @@
-import { SelectRaw } from "plugins/@fuse-labs/core-ui/components/shared/Select/Select"
+import Select from "plugins/@fuse-labs/core-ui/components/shared/Select/Select"
 
 export default function BaudRateSelect({
   ...props
 }) {
 
   const rates = [
-    { label: 'Auto', value: 0 },
+    { label: 'Auto', value: 'auto' },
     4800,
     9600,
     14400,
@@ -15,5 +15,5 @@ export default function BaudRateSelect({
     115200
   ]
 
-  return <SelectRaw options={rates} {...props} />
+  return <Select options={rates} {...props} />
 }
