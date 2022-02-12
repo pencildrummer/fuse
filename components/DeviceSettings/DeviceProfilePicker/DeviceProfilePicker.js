@@ -1,5 +1,5 @@
 import { InfoCircledIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import { Group, Input, Label, ScrollArea } from "plugins/@fuse-labs/core-ui"
+import { Group, Label, ScrollArea } from "plugins/@fuse-labs/core-ui"
 import { RawInput } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input"
 import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/CompactList/CompactList"
 import { useEffect, useMemo, useState } from "react"
@@ -12,14 +12,18 @@ var titleCase = s => s
   .replace(/([a-z])([A-Z])/g, (a, b, c) => `${b} ${c}`); // Add space between uppercase and lowercase letters
 
 export default function DeviceProfilePicker({
-  
+  ...props
 }) {
 
   const { profiles } = useAppContext()
 
   const [selectedProfileID, setSelectedProfileID] = useState()
 
-  useEffect(_ => console.log('profile', selectedProfileID), [selectedProfileID])
+  useEffect(_ => {
+    if (props.field?.name && typeof props.form?.setFieldValue === 'function') {
+      props.form.setFieldValue(props.field.name, selectedProfileID)
+    }
+  }, [selectedProfileID])
 
   return (
     <ScrollArea className="h-[200px] bg-gray-800 rounded-lg overflow-hidden">
@@ -31,7 +35,7 @@ export default function DeviceProfilePicker({
         <CompactList 
           divide={false} 
           items={profiles} 
-          onSelect={(value, key) => setSelectedProfileID(key)}
+          onSelect={(value, key) => setSelectedProfileID(value)}
           selectedItem={selectedProfileID}
           itemComponent={DeviceProfileListItem}
           maxDepth={1}

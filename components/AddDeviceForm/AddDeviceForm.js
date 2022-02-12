@@ -1,8 +1,10 @@
 import BaudRateSelect from "components/DeviceSettings/DeviceConnectionWidget/components/BaudRateSelect/BaudRateSelect";
 import DeviceProfilePicker from "components/DeviceSettings/DeviceProfilePicker/DeviceProfilePicker";
 import DeviceTypeSelect from "components/DeviceSettings/DeviceTypeSelect/DeviceTypeSelect";
+import { Field, useFormikContext } from "formik";
 import { usePorts } from "lib/client/ports";
 import { Button, Group, Input, Label, Select, Separator, Form } from "plugins/@fuse-labs/core-ui";
+import { RawInput } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import * as Yup from 'yup'
 
 export default function AddDeviceForm({
@@ -29,7 +31,7 @@ export default function AddDeviceForm({
       profile: Yup.string().required(),
       port: Yup.string().required(),
       baudrate: Yup.number().required()
-    })} onSubmit={handleSubmit}>
+    })} onSubmit={handleSubmit}>{ ({ values, errors, touched, ...formProps }) => (
       <Group orientation="vertical">
 
         <Group orientation="vertical">
@@ -41,15 +43,17 @@ export default function AddDeviceForm({
           <Label htmlFor="type">Device type</Label>
           <DeviceTypeSelect name="type" />
         </Group>
-
-        <Group className="justify-between">
-          <Label htmlFor="profile">Device profile</Label>
-          <Select name="profile" options={['Custom', 'profile printer 1', 'profile printer 2']} />
-        </Group>
         
         <Group orientation="vertical">
-          <Label htmlFor="profile">Device profile</Label>
-          <DeviceProfilePicker />
+          <Group className="justify-between">
+            <Label htmlFor="profile">Device profile</Label>
+            <RawInput placeholder="No profile selected"
+              className="!bg-transparent !border-dashed !ring-0"
+              error={formProps.submitCount && errors.profile}
+              disabled
+              value={values.profile}/>
+          </Group>
+          <Field name="profile" component={DeviceProfilePicker} />
         </Group>
         <Separator />
 
@@ -74,6 +78,6 @@ export default function AddDeviceForm({
           </Button>
         </Group>
       </Group>
-    </Form>
+    )}</Form>
   )
 }

@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import classNames from "classnames"
 import { List } from "plugins/@fuse-labs/core-ui"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useContext, useEffect, useMemo, useState } from "react"
 
 function isPrimitive(val) {
   if (val === null) return true
@@ -50,6 +50,7 @@ function GroupCompactListItem({
   itemComponent,
   ...props
 }) {
+
   const [open, setOpen] = useState(false)
 
   return <>
@@ -84,7 +85,6 @@ function GroupCompactListItem({
 function CompactListRoot({
   items,
   itemComponent: ItemComponent = CompactListItem,
-  onSelect,
   itemDisplayTransform,
   groupDisplayTransform,
   isGroupTransform,
@@ -94,6 +94,7 @@ function CompactListRoot({
   const { 
     selectedItemKey,
     setSelectedItemKey,
+    onSelect,
     maxDepth
   } = React.useContext(ListSelectionContext)
 
@@ -119,8 +120,7 @@ function CompactListRoot({
               key={`group-${key}`}
               data-item-key={dataItemKey}
               items={items[key]} 
-              itemComponent={ItemComponent} 
-              onSelect={onSelect}>
+              itemComponent={ItemComponent} >
               {groupDisplayTransform ? groupDisplayTransform(key) : key}
             </GroupCompactListItem>
           )
@@ -145,7 +145,6 @@ function CompactListRoot({
     </List>
   )
 }
-CompactList.Item = CompactListItem
 
 const ListSelectionContext = React.createContext()
 
@@ -162,9 +161,11 @@ export default function CompactList(props) {
   return <ListSelectionContext.Provider value={{
     selectedItemKey,
     setSelectedItemKey,
-
+    onSelect: handleSelect, // Pass internal select handler that trigger the prop provided one to allow for more control
+    
     maxDepth: props.maxDepth
   }}>
     <CompactListRoot {...props} className="text-xs" size="compact"/>
   </ListSelectionContext.Provider>
 }
+CompactList.Item = CompactListItem
