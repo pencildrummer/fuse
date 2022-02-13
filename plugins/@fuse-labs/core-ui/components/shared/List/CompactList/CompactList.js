@@ -51,7 +51,18 @@ function GroupCompactListItem({
   ...props
 }) {
 
+  const { 
+    selectedItemKey,
+  } = React.useContext(ListSelectionContext)
+
   const [open, setOpen] = useState(false)
+
+  const showGroupSelection = useMemo(_ => {
+    let groupKey = props["data-group-key"]
+
+    console.log(groupKey, selectedItemKey)
+    return !open && selectedItemKey.startsWith(groupKey)
+  }, [open, props["data-group-key"], selectedItemKey])
 
   return <>
     <List.Item {...props} className={classNames(
@@ -68,7 +79,14 @@ function GroupCompactListItem({
     )} onClick={_ => setOpen(o => !o)}>
       {open ? <ChevronDownIcon className="text-gray-200" />
         : <ChevronRightIcon className="text-gray-200" />}
-      {props.children}
+      <div className="flex-1">
+        {props.children}
+      </div>
+      {showGroupSelection && (
+        <div className="w-[15px] h-[15px] flex items-center justify-center">
+          <div className="w-2 h-2 rounded-full bg-blue-700 self-center" />
+        </div>
+      )}
     </List.Item>
 
     {open && (

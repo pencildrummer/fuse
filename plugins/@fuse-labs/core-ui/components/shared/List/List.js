@@ -33,7 +33,7 @@ function Item({
   const { size } = useContext(ListContext)
 
   return <li className={classNames(
-    'flex flex-row items-stretch',
+    'flex flex-row items-center',
     {
       'space-x-3 py-2': size == 'normal',
       'space-x-1 py-1': size == 'compact',
