@@ -1,6 +1,6 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import classNames from 'classnames'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 export default function Tooltip({
   size,
@@ -26,12 +26,25 @@ export default function Tooltip({
     }
   }, [size])
 
+  const defaultProps = useMemo(_ => {
+    switch (size) {
+      case 'hint':
+        return {
+          side: "bottom",
+          sideOffset: 3,
+          align: "start",
+          alignOffset: 15
+        }
+        break
+    }
+  }, [size])
+
   return (
     <TooltipPrimitive.Root delayDuration={delayDuration || preferredDelayDuration}>
       <TooltipPrimitive.Trigger asChild>
         {props.children}
       </TooltipPrimitive.Trigger>
-      <TooltipPrimitive.Content {...props}
+      <TooltipPrimitive.Content {...defaultProps} {...props}
         className={classNames(
           'leading-none',
           'bg-gray-700 text-gray-100 font-bold shadow-sm',

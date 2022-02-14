@@ -1,4 +1,4 @@
-import { CopyIcon, InfoCircledIcon, MagnifyingGlassIcon, PlusCircledIcon, PlusIcon } from "@radix-ui/react-icons"
+import { CopyIcon, Cross1Icon, Cross2Icon, CrossCircledIcon, InfoCircledIcon, MagnifyingGlassIcon, PlusCircledIcon, PlusIcon } from "@radix-ui/react-icons"
 import { Button, Group, Label, ScrollArea, Separator } from "plugins/@fuse-labs/core-ui"
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input"
 import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/CompactList/CompactList"
@@ -24,16 +24,26 @@ export default function DeviceProfilesList({
     }
   }, [selectedProfileID])
 
+  const [query, setQuery] = useState('')
   const [filters, setFilters] = useState({})
+
   const filteredProfiles = useMemo(_ => {
     let filtered = {...profiles} // Make copy - TODO: Freeze app context profiles var
+    // Filter by type
     if (filters.type) {
       Object.keys(filtered).map(brand => {
         filtered[brand] = filtered[brand].filter(device => device.type == filters.type)
       })
     }
+    // Filter by query
+    if (query?.length) {
+      let regex = new RegExp(`.?(${query}).?`, 'i')
+      Object.keys(filtered).map(brand => {
+        filtered[brand] = filtered[brand].filter(device => regex.test(device.model))
+      })
+    }
     return filtered
-  }, [profiles, filters])
+  }, [profiles, filters, query])
 
   const itemsCount = useMemo(_ =>
      Object.keys(filteredProfiles).reduce((count, brand) => count + filteredProfiles[brand].length, 0)
@@ -44,12 +54,30 @@ export default function DeviceProfilesList({
       <div className="h-10 px-2 py-1 flex flex-row space-x-2 absolute top-0 inset-x-0 items-center border-b border-gray-700 bg-gray-800/80 rounded-t-lg overflow-hidden">
         <DeviceProfilePickerTypeFilter onChange={type => setFilters(f => ({...f, type: type}))} />
         <Separator orientation="vertical" />
+
         <MagnifyingGlassIcon className="flex-none"/>
-        <InputRaw className="w-full bg-gray-800"/>
+        <div className="relative flex items-center">
+          <InputRaw className={classNames(
+            'w-full bg-gray-800',
+            {
+              '!pr-[22px]': query?.length
+            }
+          )} placeholder="Search model..." value={query} onChange={e => setQuery(e.target.value)}/>
+          {Boolean(query?.length) && <div className="absolute right-0 inset-y-0 px-1 flex items-center">
+            <div className=" bg-gray-600 rounded-full cursor-pointer hover:bg-gray-500 transition-colors duration-150"
+              onClick={_ => setQuery('')}>
+              <Cross2Icon className="scale-75"/>
+            </div>
+          </div>}
+        </div>          
+        
         <Separator orientation="vertical" />
-        <Button squared size="sm">
-          <PlusIcon />
-        </Button>
+        
+        <Tooltip size="hint" content="Add profile">
+          <Button squared size="sm">
+            <PlusIcon />
+          </Button>
+        </Tooltip>
       </div>
       {itemsCount ? (
         <div className="pt-11 px-1">
