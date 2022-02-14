@@ -30,7 +30,7 @@ const DevicePickerTrigger = React.forwardRef( ({ device, open, ...props }, ref) 
       </span>
       <span className="text-gray-500">•</span>
       <span className="text-xxs text-gray-500">
-        {device.brand} {device.model}
+        {device.profile.brand} {device.profile.model}
       </span>
       <div className={classNames(
         'absolute right-0',
@@ -109,7 +109,7 @@ export default function DevicePicker({
               </span>
               <span className="text-gray-500 group-hover:text-gray-300">•</span>
               <span className="text-xxs text-gray-500 group-hover:text-gray-300 truncate">
-                {device.brand} {device.model}
+                {device.profile.brand} {device.profile.model}
               </span>
             </li>
           )

@@ -1,6 +1,5 @@
 import BaudRateSelect from "components/DeviceSettings/DeviceConnectionWidget/components/BaudRateSelect/BaudRateSelect";
 import DeviceProfilePicker from "components/DeviceSettings/DeviceProfilePicker/DeviceProfilePicker";
-import DeviceTypeSelect from "components/DeviceSettings/DeviceTypeSelect/DeviceTypeSelect";
 import { Field, useFormikContext } from "formik";
 import { usePorts } from "lib/client/ports";
 import socket from "lib/client/socket";

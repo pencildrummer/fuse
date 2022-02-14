@@ -61,7 +61,7 @@ function GroupCompactListItem({
     let groupKey = props["data-group-key"]
 
     console.log(groupKey, selectedItemKey)
-    return !open && selectedItemKey.startsWith(groupKey)
+    return !open && selectedItemKey?.startsWith(groupKey)
   }, [open, props["data-group-key"], selectedItemKey])
 
   return <>

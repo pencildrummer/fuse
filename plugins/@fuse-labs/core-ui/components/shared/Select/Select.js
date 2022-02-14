@@ -1,13 +1,14 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { ChevronDownIcon } from '@radix-ui/react-icons'
+import { CheckIcon, ChevronDownIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import { useField } from 'formik'
 import { useEffect, useRef, useMemo, useState } from 'react'
 
 function SelectOption(props) {
   return <DropdownMenu.Item className={classNames(
+    'flex flex-row space-x-2 items-center',
     'text-sm font-medium',
-    'py-0.5 px-3',
+    'py-0.5 px-1.5',
     'w-full',
     'rounded-sm',
     'transition-colors duration-75',
@@ -15,7 +16,16 @@ function SelectOption(props) {
     'cursor-default',
     'text-gray-800 dark:text-gray-300',
     'focus:text-gray-50 focus:bg-blue-600'
-  )} {...props} />
+  )} {...props}>
+    <div class="flex-1">
+      {props.children}
+    </div>
+    {props.selected && (
+      <div className=''>
+        <CheckIcon className='text-gray-800 bg-blue-600 rounded-full'/>
+      </div>
+    )}
+  </DropdownMenu.Item>
 }
 
 export function SelectRaw({
@@ -30,7 +40,10 @@ export function SelectRaw({
   ...props
 }) {
   const triggerContainerEl = useRef()
-  const [selectedOption, setSelectedOption] = useState(defaultValue)
+  const [selectedOption, setSelectedOption] = useState(_ => {
+    if (!defaultValue) return undefined
+    return options?.find(o => (typeof o == 'object') ? o.value == defaultValue : o === defaultValue)
+  })
   const [contentWidth, setContentWidth] = useState()
 
   useEffect(_ => {
@@ -43,6 +56,8 @@ export function SelectRaw({
       onChange?.(selectedOption?.value)
     else
       onChange?.(selectedOption)
+
+    console.log(selectedOption)
   }, [selectedOption])
 
   let selectedOptionDisplayText = useMemo(_ => {

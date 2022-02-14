@@ -1,7 +1,7 @@
-import { SelectRaw } from "plugins/@fuse-labs/core-ui/components/shared/Select/Select";
+import Select from "plugins/@fuse-labs/core-ui/components/shared/Select/Select";
 
 export default function DeviceTypeSelect(props) {
-  return <SelectRaw options={[
+  return <Select options={[
     { value: 'fdm_printer', label: 'FDM Printer' },
     { value: 'msla_printer', label: 'MSLA Printer' },
     { value: 'cnc', label: 'CNC' }

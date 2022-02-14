@@ -62,7 +62,7 @@ export default function SettingPage(props) {
         </div>
       </div>
 
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 max-w-screen-lg">
         <div className="p-2 flex flex-col space-y-3">
           {props.children}
         </div>

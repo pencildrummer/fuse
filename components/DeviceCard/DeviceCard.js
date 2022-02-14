@@ -34,7 +34,7 @@ export default function DeviceCard({ device }) {
                   }
                 </div>
                 <div className="flex-1">
-                  {device.brand} • {device.model}
+                  {device.profile.brand} • {device.profile.model}
                 </div>
                 <div>
                   v 1.0

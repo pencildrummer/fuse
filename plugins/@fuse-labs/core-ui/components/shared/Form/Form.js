@@ -5,7 +5,7 @@ export default function Form({
   ...props
 }) {
   return <Formik {...props}>{ (formikProps) => (
-    <FormikBaseForm>
+    <FormikBaseForm className={props.className}>
       {typeof children === 'function' ? children(formikProps) : children}
     </FormikBaseForm>
   )}</Formik>
