@@ -1,4 +1,4 @@
-import { CopyIcon, Cross1Icon, Cross2Icon, CrossCircledIcon, InfoCircledIcon, MagnifyingGlassIcon, PlusCircledIcon, PlusIcon } from "@radix-ui/react-icons"
+import { CopyIcon, Cross1Icon, Cross2Icon, CrossCircledIcon, InfoCircledIcon, MagnifyingGlassIcon, Pencil2Icon, PlusCircledIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons"
 import { Button, Group, Label, ScrollArea, Separator } from "plugins/@fuse-labs/core-ui"
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input"
 import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/CompactList/CompactList"
@@ -113,9 +113,17 @@ function DeviceProfileListItem({
         <span className="mr-auto">
           {item.model}
         </span>
-        <div className="text-gray-500 hover:text-gray-300 transition-colors duration-150">
-          <Tooltip content="Copy" size="hint" side="bottom" sideOffset={10} align="start" alignOffset={5}>
+        <div className="flex flex-row items-center space-x-1 text-gray-500 hover:text-gray-300 transition-colors duration-150">
+          <Tooltip content="Copy" size="hint" >
             <CopyIcon className="invisible group-hover:visible" />
+          </Tooltip>
+
+          <Tooltip content="Edit" size="hint" >
+            <Pencil2Icon className="invisible group-hover:visible" />
+          </Tooltip>
+
+          <Tooltip content="Delete" size="hint" >
+            <TrashIcon className="invisible group-hover:visible" />
           </Tooltip>
         </div>
       </Group>

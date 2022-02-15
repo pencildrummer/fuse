@@ -1,4 +1,4 @@
-import PrinterDevice from "../../../../lib/server/models/PrinterDevice.js";
+import PrinterDevice from "../../../../lib/shared/models/PrinterDevice.js";
 
 // TEST - Move in some shared lib
 let device;

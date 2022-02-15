@@ -4,8 +4,20 @@
     @apply px-1.5;
   }
 
+  &:global(.btn-xs) {
+    @apply min-w-[20px] h-[20px];
+    @apply text-xxs;
+    @apply p-0.5;
+    &>svg {
+      @apply scale-75;
+    }
+  }
+
   &:global(.btn-sm) {
     @apply h-[1.625rem];
     @apply text-xs;
+    &>svg {
+      @apply scale-90;
+    }
   }
 }

@@ -20,6 +20,7 @@ const Button = React.forwardRef(({
       'inline-flex select-none items-center justify-center text-sm font-medium',
       styles.btn,
       {
+        'btn-xs': size == 'xs',
         'btn-sm': size == 'sm',
       },
       {

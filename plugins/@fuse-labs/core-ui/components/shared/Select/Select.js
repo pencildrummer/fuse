@@ -17,11 +17,11 @@ function SelectOption(props) {
     'text-gray-800 dark:text-gray-300',
     'focus:text-gray-50 focus:bg-blue-600'
   )} {...props}>
-    <div class="flex-1">
+    <div className="flex-1">
       {props.children}
     </div>
     {props.selected && (
-      <div className=''>
+      <div>
         <CheckIcon className='text-gray-800 bg-blue-600 rounded-full'/>
       </div>
     )}
@@ -42,9 +42,20 @@ export function SelectRaw({
   const triggerContainerEl = useRef()
   const [selectedOption, setSelectedOption] = useState(_ => {
     if (!defaultValue) return undefined
-    return options?.find(o => (typeof o == 'object') ? o.value == defaultValue : o === defaultValue)
+    return getOptionForValue(defaultValue)
   })
   const [contentWidth, setContentWidth] = useState()
+
+  // Listen for changes on default value and update selection if no selected option is already present
+  useEffect(_ => {
+    if (selectedOption) return
+    setSelectedOption(getOptionForValue(defaultValue))
+  }, [defaultValue])
+
+  // Internal helper
+  function getOptionForValue(value) {
+    return options?.find(o => (typeof o == 'object') ? o.value == value : o === value)
+  }
 
   useEffect(_ => {
     let size = triggerContainerEl.current.getBoundingClientRect()
@@ -56,8 +67,6 @@ export function SelectRaw({
       onChange?.(selectedOption?.value)
     else
       onChange?.(selectedOption)
-
-    console.log(selectedOption)
   }, [selectedOption])
 
   let selectedOptionDisplayText = useMemo(_ => {

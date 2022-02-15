@@ -1,10 +1,8 @@
 import DeviceProfileForm from "components/DeviceSettings/DeviceProfileForm/DeviceProfileForm";
-import DeviceProfilePicker from "components/DeviceSettings/DeviceProfilePicker/DeviceProfilePicker";
 import DeviceProfilesList from "components/DeviceSettings/DeviceProfilesList/DevicesProfilesList";
 import SerialPortListWidget from "components/SerialPortListWidget/SerialPortListWidget";
 import SettingPage from "../../components/page-layouts/SettingPage";
 import { Group, Label, Switch, Widget } from "../../plugins/@fuse-labs/core-ui";
-import DevicePluginsSettingsWidget from "../../plugins/@fuse-labs/core/components/DevicePluginsSettingsWidget/DevicePluginsSettingsWidget";
 
 export default function DevicesSettingsPage() {
   return (
