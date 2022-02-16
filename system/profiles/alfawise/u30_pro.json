@@ -8,6 +8,5 @@
     "depth": 100
   },
   "heatbed": true,
-  "extruders": 1,
   "max_speed": 100
 }

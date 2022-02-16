@@ -115,6 +115,7 @@ function CompactListRoot({
     handleSelect,
     maxDepth,
     keyTransform,
+    itemProps,
   } = React.useContext(ListSelectionContext)
 
   const contents = (items) => {
@@ -154,7 +155,9 @@ function CompactListRoot({
             data-item-key={dataItemKey}
             selected={selectedItemKey === dataItemKey}
             item={itemDisplayTransform ? itemDisplayTransform(value) : value} 
-            onClick={_ => handleSelect(dataItemKey, value)}/>
+            onClick={_ => handleSelect(dataItemKey, value)}
+            {...itemProps}
+            />
         }
       })
     } else {
@@ -181,6 +184,13 @@ export default function CompactList(props) {
     props.onSelect?.(key, value)
   }
 
+  let itemProps = Object.keys(props)
+      .filter(prop => prop.startsWith('itemOn'))
+      .reduce((prev, propKey) => ({
+        ...prev,
+        [propKey.replace('itemOn', 'on')]: props[propKey]
+    }), {})
+
   return <ListSelectionContext.Provider value={{
     selectedItemKey,
     setSelectedItemKey,
@@ -188,6 +198,8 @@ export default function CompactList(props) {
     
     maxDepth: props.maxDepth,
     keyTransform: props.keyTransform,
+
+    itemProps,
   }}>
     <CompactListRoot {...props} className="text-xs" size="compact"/>
   </ListSelectionContext.Provider>

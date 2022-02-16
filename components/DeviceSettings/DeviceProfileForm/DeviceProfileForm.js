@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import socket from "lib/client/socket";
 
 export default function DeviceProfileForm({
-  device,
+  profile,
 }) {
 
   const [deviceType, setDeviceType] = useState('fdm_printer')
@@ -43,6 +43,7 @@ export default function DeviceProfileForm({
         xAxis: { maxSpeed: 6000 },
         yAxis: { maxSpeed: 6000 },
         zAxis: { maxSpeed: 3000 },
+        ...profile
       }
       case 'msla_printer': return {
         ...defaults,
@@ -50,13 +51,15 @@ export default function DeviceProfileForm({
           width: 120,
           depth: 85,
           height: 130
-        }
+        },
+        ...profile
       }
       default: return {
-        ...defaults
+        ...defaults,
+        ...profile
       }
     }
-  }, [deviceType])
+  }, [deviceType, profile])
 
   function handleSubmit(values) {
     console.log('Submitted values')

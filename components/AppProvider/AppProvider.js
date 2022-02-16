@@ -37,8 +37,6 @@ export default function AppProvider({
     })
 	}, [])
 
-  console.log('PROFILES', profiles)
-
   return <AppContext.Provider value={{
     ...appData,
     devices,
