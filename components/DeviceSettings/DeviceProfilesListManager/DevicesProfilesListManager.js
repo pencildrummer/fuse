@@ -5,14 +5,12 @@ import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/Compa
 import { useEffect, useMemo, useState } from "react"
 import { useAppContext } from "components/AppProvider/AppProvider"
 import Tooltip from "plugins/@fuse-labs/core-ui/components/shared/Tooltip/Tooltip"
-import { titleCase } from "lib/shared/strings"
 import DeviceProfilePickerTypeFilter from "../DeviceProfilePicker/DeviceProfilePickerTypeFilter"
 import classNames from "classnames"
 import DeviceProfileList from "../DeviceProfileList/DeviceProfileList"
 import DeviceProfileForm from "../DeviceProfileForm/DeviceProfileForm"
 
 export default function DeviceProfilesListManager({
-  //itemComponent = DeviceProfileListItem,
   ...props,
 }) {
 
@@ -20,14 +18,6 @@ export default function DeviceProfilesListManager({
 
   const [query, setQuery] = useState('')
   const [filters, setFilters] = useState({})
-  const [selectedProfileID, setSelectedProfileID] = useState()
-
-  useEffect(_ => {
-    if (props.field?.name && typeof props.form?.setFieldValue === 'function') {
-      props.form.setFieldValue(props.field.name, selectedProfileID)
-    }
-    props.onSelect?.(selectedProfileID)
-  }, [selectedProfileID])
 
   const filteredProfiles = useMemo(_ => {
     let filtered = {...profiles} // Make copy - TODO: Freeze app context profiles var
@@ -115,8 +105,6 @@ export default function DeviceProfilesListManager({
         <div className="pt-11 px-1">
           <DeviceProfileList 
             items={filteredProfiles} 
-            onSelect={(key, value) => setSelectedProfileID(key)}
-            selectedItem={selectedProfileID}
             itemComponent={DeviceProfileListItem}
             itemOnCopy={handleCopyItem}
             itemOnEdit={handleEditItem}

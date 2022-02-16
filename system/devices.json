@@ -5,12 +5,43 @@
       "name": "Longer LK4 Pro",
       "profileId": "longer.lk4_pro",
       "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto"
+      "baudrate": "auto",
+      "profile": {
+        "brand": "Longer",
+        "model": "LK4 Pro",
+        "type": "fdm_printer",
+        "volume": {
+          "width": 100,
+          "height": 100,
+          "depth": 100
+        },
+        "heatbed": true,
+        "max_speed": 100,
+        "id": "longer.lk4_pro"
+      }
     },
     {
       "id": "6ff2776f-d1a7-469b-b261-d2f9d4db621c",
       "name": "Ender 3",
       "profileId": "creality.ender_3",
+      "port": "/dev/tty.Bluetooth-Incoming-Port",
+      "baudrate": "auto",
+      "profile": {
+        "brand": "Creality",
+        "model": "Ender 3",
+        "type": "fdm_printer",
+        "volume": {
+          "width": 100,
+          "height": 100,
+          "depth": 100
+        },
+        "id": "creality.ender_3"
+      }
+    },
+    {
+      "id": "045c9348-53cd-477a-b3b5-45636578a272",
+      "name": "NIU",
+      "profileId": "alfawise.u30",
       "port": "/dev/tty.Bluetooth-Incoming-Port",
       "baudrate": "auto"
     }

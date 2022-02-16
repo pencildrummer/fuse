@@ -59,8 +59,6 @@ function GroupCompactListItem({
 
   const showGroupSelection = useMemo(_ => {
     let groupKey = props["data-group-key"]
-
-    console.log(groupKey, selectedItemKey)
     return !open && selectedItemKey?.startsWith(groupKey)
   }, [open, props["data-group-key"], selectedItemKey])
 
