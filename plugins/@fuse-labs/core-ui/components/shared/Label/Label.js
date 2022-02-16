@@ -7,7 +7,7 @@ export default function Label({
 }) {
   return <LabelPrimitive.Root className={classNames(
     'font-semibold',
-    'text-xs',
+    //'text-xs',
     'select-none cursor-default',
     'text-gray-800 dark:text-gray-300',
     className

@@ -8,6 +8,9 @@ import Dialog from './components/shared/Dialog/Dialog.js'
 import Form from './components/shared/Form/Form.js'
 import Group from './components/shared/Group/Group.js'
 import Label from './components/shared/Label/Label.js'
+import DisplayGroup from './components/shared/DisplayGroup/DisplayGroup.js'
+import DisplayLabel from './components/shared/DisplayLabel/DisplayLabel.js'
+import DisplayValue from './components/shared/DisplayValue/DisplayValue.js'
 import Separator from './components/shared/Separator/Separator.js'
 import Select from './components/shared/Select/Select.js'
 import Input from './components/shared/Input/Input.js'
@@ -24,6 +27,9 @@ export {
   Form,
   Group,
   Label,
+  DisplayGroup,
+  DisplayLabel,
+  DisplayValue,
   Separator,
   Select,
   Input,

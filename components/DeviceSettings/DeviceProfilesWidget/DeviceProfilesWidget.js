@@ -2,17 +2,19 @@ import { Dialog, Widget } from "plugins/@fuse-labs/core-ui";
 import { useState } from "react";
 import DeviceProfileForm from "../DeviceProfileForm/DeviceProfileForm";
 import DeviceProfilesListManager from "../DeviceProfilesListManager/DevicesProfilesListManager";
+import DeviceProfilePreview from "./DeviceProfilePreview";
 
 export default function DeviceProfilesWidget() {
 
-  const [showForm, setShowForm] = useState()
+  const [selectedProfile, setSelectedProfile] = useState()
 
   return (
     <Widget title="Profiles">
       <div className="grid grid-cols-2 gap-2">
-        <DeviceProfilesListManager className="h-[400px]" />
+        <DeviceProfilesListManager className="h-[400px]"
+          onSelect={(k, profile) => setSelectedProfile(profile)}/>
         <div className="flex-1">
-          Profile preview
+          <DeviceProfilePreview profile={selectedProfile} />
         </div>
       </div>
     </Widget>

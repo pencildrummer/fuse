@@ -12,9 +12,6 @@ export default function DeviceProfileList({
     <CompactList 
       divide={false} 
       hideEmptyGroups
-      //items={filteredProfiles} 
-      //onSelect={(key, value) => setSelectedProfileID(key)}
-      //selectedItem={selectedProfileID}
       itemComponent={itemComponent}
       maxDepth={1}
       keyTransform={(key, value, isGroup) => isGroup ? key : value.id}
