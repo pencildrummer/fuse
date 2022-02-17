@@ -51,6 +51,23 @@ export default function AppProvider({
         return updatedProfiles
       })
     })
+
+    socket.on('core.profiles.deleted', (id) => {
+      // Remove deleted profiles form the in memory ones
+      setProfiles(profiles => {
+        let keyPath = id.split('.')
+        let brand = pathCase(keyPath[0])
+        let model = pathCase(keyPath[1])
+        if (profiles[brand]) {
+          let updateProfiles = {...profiles}
+          updateProfiles[brand] = updateProfiles[brand].filter(p => p.id != id)
+          return updateProfiles
+        } else {
+          console.warn('Received deleted profile event for profile "'+id+'" but profile is not found')
+          return profiles
+        }
+      })
+    })
 	}, [])
 
   return <AppContext.Provider value={{

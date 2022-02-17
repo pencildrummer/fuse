@@ -4,6 +4,7 @@ import Button from './components/shared/Button/Button'
 import Slider from './components/shared/Slider/Slider.js'
 import Switch from './components/shared/Switch/Switch.js'
 import Dialog from './components/shared/Dialog/Dialog.js'
+import ConfirmDialog from './components/shared/ConfirmDialog/ConfirmDialog.js'
 
 import Form from './components/shared/Form/Form.js'
 import Group from './components/shared/Group/Group.js'
@@ -23,7 +24,8 @@ export {
   Slider,
   Switch,
   Dialog,
-
+  ConfirmDialog,
+  
   Form,
   Group,
   Label,

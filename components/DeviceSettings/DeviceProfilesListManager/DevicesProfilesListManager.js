@@ -1,5 +1,5 @@
 import { CopyIcon, Cross1Icon, Cross2Icon, CrossCircledIcon, InfoCircledIcon, MagnifyingGlassIcon, Pencil2Icon, PlusCircledIcon, PlusIcon, TrashIcon } from "@radix-ui/react-icons"
-import { Button, Dialog, Group, Label, ScrollArea, Separator } from "plugins/@fuse-labs/core-ui"
+import { Button, ConfirmDialog, Dialog, Group, Label, ScrollArea, Separator } from "plugins/@fuse-labs/core-ui"
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input"
 import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/CompactList/CompactList"
 import { useEffect, useMemo, useState } from "react"
@@ -9,6 +9,7 @@ import DeviceProfilePickerTypeFilter from "../DeviceProfilePicker/DeviceProfileP
 import classNames from "classnames"
 import DeviceProfileList from "../DeviceProfileList/DeviceProfileList"
 import DeviceProfileForm from "../DeviceProfileForm/DeviceProfileForm"
+import socket from "lib/client/socket"
 
 export default function DeviceProfilesListManager({
   ...props,
@@ -44,7 +45,9 @@ export default function DeviceProfilesListManager({
   // Item action handlers
 
   const [showForm, setShowForm] = useState()
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState()
   const [editingProfile, setEditingProfile] = useState()
+  const [deletingProfile, setDeletingProfile] = useState()
 
   function handleEditItem(item) {
     console.log('Edit', item)
@@ -54,13 +57,19 @@ export default function DeviceProfilesListManager({
 
   function handleDeleteItem(item) {
     console.log('Delete', item)
+    setDeletingProfile(item)
+    setShowDeleteConfirm(true)
   }
 
-  function handleCopyItem(item) {
-    console.log('Copy', item)
+  function handleConfirmDelete() {
+    console.log('Should delete')
+    socket.emit('core.profiles.delete', deletingProfile.id, (profile) => {
+      console.log('Deleted profile', profile)
+    })
   }
 
   return (
+    <>
     <ScrollArea className={classNames('bg-gray-800 rounded-lg overflow-hidden', props.className)}>
       <div className="h-10 px-2 py-1 flex flex-row space-x-2 absolute top-0 inset-x-0 items-center border-b border-gray-700 bg-gray-800/80 rounded-t-lg overflow-hidden">
         <DeviceProfilePickerTypeFilter onChange={type => setFilters(f => ({...f, type: type}))} />
@@ -84,31 +93,22 @@ export default function DeviceProfilesListManager({
         
         <Separator orientation="vertical" />
         
-        <Dialog.Root open={showForm} onOpenChange={setShowForm}>
-
-          <Tooltip size="hint" content="Add profile">
-            <Button squared size="sm" onClick={_ => {
-              setEditingProfile(undefined)
-              setShowForm(true)
-            }}>
-              <PlusIcon />
-            </Button>
-          </Tooltip>
-
-          <Dialog.Content title="Device profile">
-            <ScrollArea className="h-full">
-              <DeviceProfileForm profile={editingProfile}/>
-            </ScrollArea>
-          </Dialog.Content>
-        </Dialog.Root>
+        <Tooltip size="hint" content="Add profile">
+          <Button squared size="sm" onClick={_ => {
+            setEditingProfile(undefined)
+            setShowForm(true)
+          }}>
+            <PlusIcon />
+          </Button>
+        </Tooltip>
 
       </div>
+
       {itemsCount ? (
         <div className="pt-11 px-1">
           <DeviceProfileList 
             items={filteredProfiles} 
             itemComponent={DeviceProfileListItem}
-            itemOnCopy={handleCopyItem}
             itemOnEdit={handleEditItem}
             itemOnDelete={handleDeleteItem}
             {...props} />  
@@ -121,6 +121,23 @@ export default function DeviceProfilesListManager({
         </div>
       )}
     </ScrollArea>
+
+    <Dialog.Root open={showForm} onOpenChange={setShowForm}>
+      <Dialog.Content title="Device profile">
+        <ScrollArea className="h-full">
+          <DeviceProfileForm profile={editingProfile}/>
+        </ScrollArea>
+      </Dialog.Content>
+    </Dialog.Root>
+
+    <ConfirmDialog.Root open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+      <ConfirmDialog.Content title="Delete profile" onConfirm={handleConfirmDelete}>
+        <span className="font-medium">
+          Are you sure you want do delete <span className="font-bold text-blue-500">{deletingProfile?.id}</span> profile?
+        </span>
+      </ConfirmDialog.Content>
+    </ConfirmDialog.Root>
+    </>
   )
 }
 
@@ -128,9 +145,15 @@ function DeviceProfileListItem({
   item,
   onEdit,
   onDelete,
-  onCopy,
   ...props
 }) {
+
+  function handleDeleteClick(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    onDelete?.(item)
+  }
+
   return <CompactList.Item selectable {...props} className="group">
     <Group orientation="vertical" className="flex-1">
       <Group className="flex-1">
@@ -138,16 +161,12 @@ function DeviceProfileListItem({
           {item.model}
         </span>
         <div className="flex flex-row items-center space-x-1 text-gray-500 hover:text-gray-300 transition-colors duration-150">
-          <Tooltip content="Copy" size="hint" >
-            <CopyIcon className="invisible group-hover:visible" onClick={_ => onCopy?.(item)} />
-          </Tooltip>
-
           <Tooltip content="Edit" size="hint" >
             <Pencil2Icon className="invisible group-hover:visible" onClick={_ => onEdit?.(item)} />
           </Tooltip>
 
           <Tooltip content="Delete" size="hint" >
-            <TrashIcon className="invisible group-hover:visible" onClick={_ => onDelete?.(item)} />
+            <TrashIcon className="invisible group-hover:visible" onClick={handleDeleteClick} />
           </Tooltip>
         </div>
       </Group>
