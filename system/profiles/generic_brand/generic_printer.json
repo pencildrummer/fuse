@@ -1,8 +1,8 @@
 {
-  "id": "creality.ender_3",
+  "id": "generic_brand.generic_printer",
   "type": "fdm_printer",
-  "brand": "Creality",
-  "model": "Ender 3",
+  "brand": "Generic brand",
+  "model": "Generic printer",
   "volume": {
     "width": 200,
     "depth": 200,
@@ -13,6 +13,13 @@
   "bed": {
     "heated": true
   },
+  "extruders": [
+    {
+      "nozzleDiameter": 0.4,
+      "xOffset": 0,
+      "yOffset": 0
+    }
+  ],
   "gCodeVersion": "marlin",
   "xAxis": {
     "maxSpeed": 6000

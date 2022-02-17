@@ -35,6 +35,22 @@ export default function AppProvider({
         return newProfiles
       })
     })
+
+    socket.on('core.profiles.updated', (profile) => {
+      // Updated received profile to in memory ones
+      setProfiles(profiles => {
+        let brand = pathCase(profile.brand)
+        let editIndex = profiles[brand].findIndex(p => p.id == profile.id)
+        if (editIndex == -1) {
+          console.error('Unable to find index for received updated profile with id', profile.id)
+          return profiles
+        }
+        // Replace received profile with old one
+        let updatedProfiles = {...profiles}
+        updatedProfiles[brand].splice(editIndex, 1, profile)
+        return updatedProfiles
+      })
+    })
 	}, [])
 
   return <AppContext.Provider value={{

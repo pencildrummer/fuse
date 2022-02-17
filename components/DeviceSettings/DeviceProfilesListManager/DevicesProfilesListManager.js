@@ -96,7 +96,9 @@ export default function DeviceProfilesListManager({
           </Tooltip>
 
           <Dialog.Content title="Device profile">
-            <DeviceProfileForm profile={editingProfile}/>
+            <ScrollArea className="h-full">
+              <DeviceProfileForm profile={editingProfile}/>
+            </ScrollArea>
           </Dialog.Content>
         </Dialog.Root>
 

@@ -91,6 +91,7 @@ function GroupCompactListItem({
       <div className="pl-3">
         <CompactListRoot
           data-group-key={props['data-group-key']}
+          data-internal-key={props['data-internal-key']}
           items={items}
           itemComponent={itemComponent}/>
       </div>
@@ -110,11 +111,22 @@ function CompactListRoot({
 
   const { 
     selectedItemKey,
+    selectedItemInternalKey,
     handleSelect,
     maxDepth,
     keyTransform,
     itemProps,
   } = React.useContext(ListSelectionContext)
+
+  useEffect(_ => {
+    // Trigger automatically handleSelect when items prop is updated
+    if (selectedItemInternalKey) {
+      // Retrieve value from key
+      let value = selectedItemInternalKey.split('.')
+        .reduce((obj, key) => obj[key], items)
+      handleSelect(selectedItemKey, value, selectedItemInternalKey)
+    }
+  }, [items])
 
   const contents = (items) => {
     if (!items) return null
@@ -133,6 +145,9 @@ function CompactListRoot({
                
         let dataItemKey = [props['data-group-key'], itemKey].filter(Boolean).join('.')
         
+        // Generate internal key, replace key dots into dashes to avoid conflict when splitting key path
+        let dataInternalKey = [props['data-internal-key'], key.replace('.', '-')].filter(Boolean).join('.')
+
         if (isGroup) {
           if (hideEmptyGroups && !value?.length) {
             return null
@@ -141,6 +156,7 @@ function CompactListRoot({
               <GroupCompactListItem 
                 key={`group-${itemKey}`}
                 data-group-key={dataItemKey}
+                data-internal-key={dataInternalKey}
                 items={value} 
                 itemComponent={ItemComponent} >
                 {groupDisplayTransform ? groupDisplayTransform(key, value) : key}
@@ -151,9 +167,10 @@ function CompactListRoot({
           return <ItemComponent
             key={`item-${itemKey}`}
             data-item-key={dataItemKey}
+            data-internal-key={dataInternalKey}
             selected={selectedItemKey === dataItemKey}
             item={itemDisplayTransform ? itemDisplayTransform(value) : value} 
-            onClick={_ => handleSelect(dataItemKey, value)}
+            onClick={_ => handleSelect(dataItemKey, value, dataInternalKey)}
             {...itemProps}
             />
         }
@@ -175,13 +192,19 @@ const ListSelectionContext = React.createContext()
 
 export default function CompactList(props) {
 
+  // TODO - Better handle key-value and defaultValue (now is key)
   const [selectedItemKey, setSelectedItemKey] = useState(props.defaultValue)
+  const [selectedItemInternalKey, setSelectedItemInternalKey] = useState(props.defaultValue)
 
-  function handleSelect(key, value) {
+
+  function handleSelect(key, value, internalKey) {
     setSelectedItemKey(key)
+    setSelectedItemInternalKey(internalKey)
+    // Propagate to parents
     props.onSelect?.(key, value)
   }
 
+  // Extract item specific props to automatically hapend handlers to each item from the root list props
   let itemProps = Object.keys(props)
       .filter(prop => prop.startsWith('itemOn'))
       .reduce((prev, propKey) => ({
@@ -192,6 +215,8 @@ export default function CompactList(props) {
   return <ListSelectionContext.Provider value={{
     selectedItemKey,
     setSelectedItemKey,
+    selectedItemInternalKey,
+    setSelectedItemInternalKey,
     handleSelect, // Pass internal select handler that trigger the prop provided one to allow for more control
     
     maxDepth: props.maxDepth,

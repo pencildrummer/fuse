@@ -1,12 +1,26 @@
 {
+  "id": "alfawise.u30",
+  "type": "fdm_printer",
   "brand": "Alfawise",
   "model": "U30",
-  "type": "fdm_printer",
   "volume": {
-    "width": 100,
-    "height": 100,
-    "depth": 100
+    "width": 100000,
+    "height": 600,
+    "depth": 200,
+    "formFactor": "rectangular",
+    "origin": "lower-left"
   },
-  "heatbed": true,
-  "max_speed": 100
+  "bed": {
+    "heated": true
+  },
+  "gCodeVersion": "marlin",
+  "xAxis": {
+    "maxSpeed": 6000
+  },
+  "yAxis": {
+    "maxSpeed": 6000
+  },
+  "zAxis": {
+    "maxSpeed": 3000
+  }
 }

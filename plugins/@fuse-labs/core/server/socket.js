@@ -4,7 +4,7 @@
 import { addDevice } from "../../../../lib/core/devices.js"
 import SerialPort from "serialport"
 import signale from "signale"
-import { addProfile } from "../../../../lib/core/profiles.js"
+import { addProfile, updateProfile } from "../../../../lib/core/profiles.js"
 
 export default (socket) => {
   socket.on('core.serial.list', async (name, fn) => {
@@ -39,6 +39,14 @@ export default (socket) => {
     let profile = addProfile(profileData)
     if (profile) {
       socket.emit('core.profiles.added', profile)
+    }
+    fn(profile)
+  })
+
+  socket.on('core.profiles.update', async(id, profileData, fn) => {
+    let profile = updateProfile(id, profileData)
+    if (profile) {
+      socket.emit('core.profiles.updated', profile)
     }
     fn(profile)
   })

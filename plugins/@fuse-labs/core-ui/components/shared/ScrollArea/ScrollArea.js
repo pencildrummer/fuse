@@ -1,4 +1,5 @@
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+import classNames from 'classnames'
 import React from 'react'
 
 const ScrollArea = React.forwardRef(({
@@ -6,8 +7,12 @@ const ScrollArea = React.forwardRef(({
   ...props
 }, ref) => {
   return (
-    <ScrollAreaPrimitive.Root ref={ref} {...props}>
-      <ScrollAreaPrimitive.Viewport className="w-full h-full">
+    <ScrollAreaPrimitive.Root ref={ref} {...props} className={classNames(
+      'overflow-hidden',
+      'flex',
+      props.className
+    )}>
+      <ScrollAreaPrimitive.Viewport className="flex-1">
         {children}
       </ScrollAreaPrimitive.Viewport>
       <ScrollAreaPrimitive.Scrollbar orientation="vertical"

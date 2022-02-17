@@ -1,4 +1,4 @@
-import { DisplayGroup, Separator } from "plugins/@fuse-labs/core-ui";
+import { DisplayGroup, Separator, Group } from "plugins/@fuse-labs/core-ui";
 
 export default function FDMPrinterDeviceProfilePreview({
   profile
@@ -25,9 +25,9 @@ export default function FDMPrinterDeviceProfilePreview({
     <Separator />
     
     <DisplayGroup label="Extruders" value={profile.extruders?.length || 0} />
-    {profile.extruders?.map(extruder => (
-      <Group orientation="vertical">
-        <DisplayGroup label="Nozzle diameter" value={extruder.nozzle} />
+    {profile.extruders?.map((extruder, i) => (
+      <Group key={`extruder-${i}`} orientation="vertical">
+        <DisplayGroup label="Nozzle diameter" value={extruder.nozzleDiameter} />
         <DisplayGroup label="X offset" value={extruder.xOffset} />
         <DisplayGroup label="Y offset" value={extruder.yOffset} />
       </Group>

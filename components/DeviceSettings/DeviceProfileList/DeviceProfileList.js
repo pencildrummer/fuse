@@ -1,5 +1,5 @@
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { titleCase } from "lib/shared/strings";
+import { titleCase, pathCase } from "lib/shared/strings";
 import { Group } from "plugins/@fuse-labs/core-ui";
 import CompactList from "plugins/@fuse-labs/core-ui/components/shared/List/CompactList/CompactList";
 import Tooltip from "plugins/@fuse-labs/core-ui/components/shared/Tooltip/Tooltip";
@@ -14,7 +14,7 @@ export default function DeviceProfileList({
       hideEmptyGroups
       itemComponent={itemComponent}
       maxDepth={1}
-      keyTransform={(key, value, isGroup) => isGroup ? key : value.id}
+      keyTransform={(key, value, isGroup) => isGroup ? key : pathCase(value.model)}
       groupDisplayTransform={group => titleCase(group)}
       {...props} />
   )

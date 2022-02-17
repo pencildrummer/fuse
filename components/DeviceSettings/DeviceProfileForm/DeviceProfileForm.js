@@ -62,11 +62,16 @@ export default function DeviceProfileForm({
   }, [deviceType, profile])
 
   function handleSubmit(values) {
-    console.log('Submitted values')
-    console.log(values)
-    socket.emit('core.profiles.add', values, (profile) => {
-      console.log('Added profile', profile)
-    })
+    // Check if we are editing or creating
+    if (profile.id) {
+      socket.emit('core.profiles.update', profile.id, values, (profile) => {
+        console.log('Updated profile', profile)
+      })
+    } else {
+      socket.emit('core.profiles.add', values, (profile) => {
+        console.log('Added profile', profile)
+      })
+    }
   }
   
   return <Form onSubmit={handleSubmit}
@@ -92,15 +97,15 @@ function DeviceProfileFormContent({
       <Group orientation="vertical">
         <Group>
           <Label>Brand</Label>
-          <Input name="brand" />
+          <Input name="brand" disabled={values?.id}/>
         </Group>
         <Group>
           <Label>Model</Label>
-          <Input name="model" />
+          <Input name="model" disabled={values?.id}/>
         </Group>
         <Group>
           <Label>Device type</Label>
-          <DeviceTypeSelect name="type" />
+          <DeviceTypeSelect name="type" disabled={values?.id}/>
         </Group>
       </Group>
       <Separator />
