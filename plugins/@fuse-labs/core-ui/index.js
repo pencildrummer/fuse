@@ -15,6 +15,7 @@ import DisplayValue from './components/shared/DisplayValue/DisplayValue.js'
 import Separator from './components/shared/Separator/Separator.js'
 import Select from './components/shared/Select/Select.js'
 import Input from './components/shared/Input/Input.js'
+import Progress from './components/shared/Progress/Progress.js'
 
 import List from './components/shared/List/List.js'
 import ScrollArea from './components/shared/ScrollArea/ScrollArea.js'
@@ -35,6 +36,7 @@ export {
   Separator,
   Select,
   Input,
+  Progress,
 
   Widget,
   ToggleGroup,

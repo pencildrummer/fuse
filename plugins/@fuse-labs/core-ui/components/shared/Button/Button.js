@@ -8,6 +8,7 @@ const Button = React.forwardRef(({
   rounded,
   className,
   size,
+  type = 'normal',
   ...props
 }, ref) => {
 
@@ -24,13 +25,14 @@ const Button = React.forwardRef(({
         'btn-sm': size == 'sm',
       },
       {
+        'btn-normal': type == 'normal',
+        'btn-ghost': type == 'ghost',
+      },
+      {
         'squared': squared,
         'rounded-md': !rounded,
         'rounded-full': rounded
       },
-      'transition-colors duration-100',
-      'bg-white text-gray-700 hover:bg-gray-50',
-      'dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
       'focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 focus-visible:ring-opacity-75',
       'disabled:select-none disabled:touch-none',
       'dark:disabled:opacity-40 dark:disabled:bg-gray-800',

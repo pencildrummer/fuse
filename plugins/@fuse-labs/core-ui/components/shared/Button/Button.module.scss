@@ -1,7 +1,17 @@
 .btn {
   @apply px-3 py-1.5;
+  @apply transition-colors duration-150;
+  
   &:global(.squared) {
     @apply px-1.5;
+  }
+
+  &:global(.btn-normal) {
+    @apply bg-white text-gray-700 hover:bg-gray-50;
+    @apply dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600;
+  }
+  &:global(.btn-ghost) {
+    @apply bg-transparent hover:bg-gray-900/30 dark:hover:bg-gray-50/10;
   }
 
   &:global(.btn-xs) {

@@ -9,8 +9,8 @@ export default function FileInfo({
   const { formatMessage } = useIntl()
 
   const metadata = {
-    created_at: new Date(),
-    modified_at: new Date(),
+    created_at: new Date(file.birthtimeMs),
+    modified_at: new Date(file.mtimeMs),
 
     // Image metadata
     dimensions: {

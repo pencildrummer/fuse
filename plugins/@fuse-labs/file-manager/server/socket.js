@@ -1,5 +1,7 @@
+const { writeFileSync } = require("fs")
 const { readdirSync, statSync } = require("fs-extra")
 const path = require('path')
+const signale = require("signale")
 
 module.exports = (socket) => {
   socket.on('@fuse-labs.file-manager.readDir', ({ path: targetPath }, fn) => {
@@ -24,9 +26,18 @@ module.exports = (socket) => {
             ext: path.extname(item),
             size: stats.size,
             path: itemPath,
+            mtimeMs: stats.mtimeMs,
+            birthtimeMs: stats.birthtimeMs
           }]
         }
       }, [])
     fn(contents)
+  })
+
+  socket.on('@fuse-labs.file-manager.file:add', ({ filename }, fileData, fn) => {
+    // TODO - Check file exists already
+    let filePath = path.join(process.cwd(), 'storage', filename)
+    writeFileSync(filePath, fileData)
+    fn?.(true)
   })
 }
