@@ -33,11 +33,11 @@ export default function FileManagerTabTopBar() {
         <span className="font-bold">File manager</span>
       </div>
       <div className="flex flex-row items-center space-x-0.5">
-        <Button squared type="ghost" onClick={handleAddFileClick}>
+        <Button squared mode="ghost" onClick={handleAddFileClick}>
           <FilePlusIcon />
           <input type="file" ref={fileInputRef} onChange={handleChangedFile} className="hidden invisible" />
         </Button>
-        <Button squared type="ghost">
+        <Button squared mode="ghost">
           <CardStackIcon />
         </Button>
       </div>

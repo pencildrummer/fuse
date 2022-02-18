@@ -24,7 +24,7 @@ function PendingFileListItem({
         <span className="font-bold text-xs truncate">
           {file.name}
         </span>
-        <Button size="xs" type="ghost" squared rounded>
+        <Button size="xs" mode="ghost" squared rounded>
           <Cross2Icon />
         </Button>
       </Group>

@@ -9,6 +9,6 @@
     "pagesUrl": "terminal",
     "icon": "ReaderIcon",
     "tooltip": "Terminal",
-    "devices": [ "fdm_printer" ]
+    "devices": [ "fdm_printer", "cnc" ]
   }
 }

@@ -8,7 +8,7 @@ const Button = React.forwardRef(({
   rounded,
   className,
   size,
-  type = 'normal',
+  mode = 'normal',
   ...props
 }, ref) => {
 
@@ -25,8 +25,8 @@ const Button = React.forwardRef(({
         'btn-sm': size == 'sm',
       },
       {
-        'btn-normal': type == 'normal',
-        'btn-ghost': type == 'ghost',
+        'btn-normal': mode == 'normal',
+        'btn-ghost': mode == 'ghost',
       },
       {
         'squared': squared,

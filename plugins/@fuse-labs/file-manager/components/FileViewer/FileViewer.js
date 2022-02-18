@@ -20,12 +20,12 @@ export default function FileViewer({
 
     <Group className="bg-black/60 px-1 h-9 !space-x-1">
       <div className="flex-1">
-        <Button size="sm" type="ghost">
+        <Button size="sm" mode="ghost">
           Print
         </Button>
       </div>
       <Separator orientation="vertical"/>
-      <Button squared type="ghost"><TrashIcon /></Button>
+      <Button squared mode="ghost"><TrashIcon /></Button>
     </Group>
 
     <div className="p-3">

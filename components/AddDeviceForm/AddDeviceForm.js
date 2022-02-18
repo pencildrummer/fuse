@@ -33,6 +33,7 @@ export default function AddDeviceForm({
       baudrate: Yup.mixed().required()
     })} onSubmit={handleSubmit}>{ ({ values, errors, touched, ...formProps }) => (
       <Group orientation="vertical">
+        {console.log(values, errors)}
 
         <Group orientation="vertical">
           <Label htmlFor="name">Name</Label>
@@ -68,7 +69,7 @@ export default function AddDeviceForm({
         <Separator />
 
         <Group className="justify-end">
-          <Button size="sm" type="submit">
+          <Button type="submit">
             Save
           </Button>
         </Group>
