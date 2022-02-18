@@ -32,8 +32,8 @@ function DialogContent({
   ...props
 }) {
   return <DialogPrimitive.Portal>
-    <DialogPrimitive.Overlay className='fixed inset-0 bg-gray-900/50 backdrop-blur-sm'/>
-    <DialogPrimitive.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+    <DialogPrimitive.Overlay className='fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40'/>
+    <DialogPrimitive.Content className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50'>
 
       <Widget className={classNames(
         'w-[90vw] max-h-[85vh]',

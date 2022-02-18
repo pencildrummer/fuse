@@ -27,10 +27,10 @@ export default function FileManagerTabTopBar() {
   }
 
   return (
-    <Group className="bg-black p-1 rounded-md">
+    <Group className="h-9 bg-black/60 p-1">
       <div className="flex flex-row items-center flex-1">
         <DotsVerticalIcon />
-        <span>File manager</span>
+        <span className="font-bold">File manager</span>
       </div>
       <div className="flex flex-row items-center space-x-0.5">
         <Button squared type="ghost" onClick={handleAddFileClick}>

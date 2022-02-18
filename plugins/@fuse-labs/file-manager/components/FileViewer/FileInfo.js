@@ -26,8 +26,7 @@ export default function FileInfo({
       return 'mime.'+mime.replace('/', '.')
     }
 
-    if (!file.mime) 
-      return formatMessage({ id: 'unknown-file-type', defaultMessage: 'Unknown file type'})
+    if (!file.mime) return null
     return formatMessage({id: parseMimeForIntl(file.mime)})
   }
 
@@ -52,7 +51,7 @@ export default function FileInfo({
 
       <Group className="font-semibold text-gray-500">
         <span>
-          {formatFileType(file)} - {filesize(file.size, { round: 1 })}
+          {[formatFileType(file), filesize(file.size, { round: 1 })].filter(Boolean).join(' - ')}
         </span>
       </Group>
 

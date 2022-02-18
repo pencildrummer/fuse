@@ -15,7 +15,7 @@ export default function TabItem({
   return (
     <li className={classNames(
       'relative',
-      'z-0 hover:z-50',
+      'z-0 hover:z-20',
       'flex items-center',
       'text-sm leading-none',
       'font-medium',
@@ -23,7 +23,7 @@ export default function TabItem({
       'transition-all duration-300',
       'group',
       {
-        'z-[9999]': active,
+        'z-30': active,
         'hover:bg-gray-800/40': !active,
         'bg-gray-800 text-gray-100': active
       },

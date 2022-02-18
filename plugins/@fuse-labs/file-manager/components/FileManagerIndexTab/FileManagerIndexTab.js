@@ -13,10 +13,11 @@ export default function FileManagerIndexTab() {
   return (
     <div className="p-3 h-full flex flex-row space-x-2">
       <div className="w-full max-w-[300px]">
-        <Widget className="h-full w-full">
+        <Widget full className="h-full w-full">
+
           <FileManagerTabTopBar />
 
-          <ScrollArea className="flex-1 overflow-hidden">
+          <ScrollArea className="flex-1 overflow-hidden px-3">
             <FileManagerWidgetContextMenu>
               <DirectoryListing path="storage"
                 onSelect={setFile} selectedItem={file} />

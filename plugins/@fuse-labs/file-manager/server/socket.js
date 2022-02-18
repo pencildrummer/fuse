@@ -1,6 +1,4 @@
 import path from "path"
-import signale from "signale"
-import FileManager from "../../../../lib/shared/models/FileManager.js"
 import File from "../../../../lib/shared/models/File.js"
 import Directory from "../../../../lib/shared/models/Directory.js"
 
