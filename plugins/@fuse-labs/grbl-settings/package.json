@@ -1,0 +1,11 @@
+{
+  "name": "@fuse-labs/grbl-settings",
+  "version": "0.1",
+  "license": "MIT",
+  "fuse": {
+    "title": "GRBL Settings",
+    "icon": "MixerHorizontalIcon",
+    "devices": [ "cnc" ]
+  },
+  "description": "Plugin to view and edit GRBL device settings"
+}

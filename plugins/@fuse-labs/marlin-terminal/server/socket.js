@@ -17,7 +17,7 @@ export default (socket) => {
 
     // Get existing port if any
     let serialPort
-
+    
     serialPort = serialPorts[port]
 
     if (serialPort && serialPort.isOpen) {
@@ -40,10 +40,23 @@ export default (socket) => {
     serialPort = new SerialPort({
       path: port,
       baudRate: baudrate
+    }, (err) => {
+      if (err) {
+        signale.error('Error opening serial connection on port path', port, '@', baudrate)
+        fn?.(false)
+      } else {
+        fn?.(true)
+      }
     })
 
     serialPort.on('open', _ => {
       signale.success('Opened connection on', chalk.greenBright(serialPort.path))
+      // Broadcast open connection result
+      socket.emit('@fuse-labs.terminal.connected', {
+        port: serialPort.port,
+        baudrate: serialPort.baudRate
+      })
+      // Send human readable message
       socket.emit('@fuse-labs.terminal.message', {
         id: 'device-'+generateUniqueID(),
         from: 'device',
@@ -106,12 +119,16 @@ export default (socket) => {
     // Get params
     const { port, message } = args
 
+    // Validate parameters
+    if (!port) throw new Error('No port path provided!')
+    if (!message) throw new Error('No message provided')
+
     // Retrieve requested serial port
     let serialPort = serialPorts[port]
 
     if (!serialPort) {
       fn?.(false)
-      throw new Error('No serial port initialized for path ', port)
+      throw new Error(`No serial port initialized for path '${port}'`)
     }
     
     // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
@@ -129,7 +146,7 @@ export default (socket) => {
 
     if (!serialPort) {
       fn?.(false)
-      throw new Error('No serial port initialize for path ', port)
+      throw new Error(`No serial port initialized for path '${port}'`)
     }
 
     // Request close of connection

@@ -8,6 +8,7 @@
     "@fuse-labs/marlin-gcode-viewer",
     "@fuse-labs/camera",
     "@fuse-labs/marlin-terminal",
-    "@fuse-labs/marlin-extruder"
+    "@fuse-labs/marlin-extruder",
+    "@fuse-labs/grbl-settings"
   ]
 }

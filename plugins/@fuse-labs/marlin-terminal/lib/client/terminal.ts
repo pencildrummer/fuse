@@ -37,11 +37,15 @@ export class Terminal {
     }
   }
 
-  connect() {
+  connect(onConnect: () => void = null) {
     this._socket.emit('@fuse-labs.terminal.connect', {
       port: this.port,
       baudrate: this.baudrate
-    }, open => this._isOpen = open)
+    }, open => {
+      console.log('Callback on connect, result:', open)
+      this._isOpen = open
+      if (open) onConnect?.()
+    })
   }
 
   disconnect() {
@@ -50,7 +54,7 @@ export class Terminal {
     })
   }
 
-  sendMessage(message: String) {
+  sendMessage(message: string) {
     let data = {
       id: generateUniqueID(),
       message: this.formatMessage(message),
@@ -71,7 +75,7 @@ export class Terminal {
   }
 
   // Internal
-  formatMessage(message: String): String {
+  formatMessage(message: string): string {
     switch (this.lineEnding) {
       case LineEnding.NewLine:                  
         return message.trim() + '\n'

@@ -5,6 +5,7 @@ export default function DisplayLabel(props) {
     'font-semibold',
     'select-none cursor-default',
     'text-gray-800 dark:text-gray-400',
+    'truncate',
     props.className
   )}/>
 }
