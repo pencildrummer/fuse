@@ -10,17 +10,15 @@ export default function MarlinTerminalSettingsWidget({
   ...props
 }) {
 
-  const { device } = useDeviceContext()
+  const { device, terminal } = useDeviceContext()
 
   function handleConnectClick() {
     // TODO - Make a provider to use same terminal obj
-    let terminal = new Terminal(device.port, device.baudrate, { autoConnect: false })
     terminal.connect()
   }
 
   function handleDisconnectClick() {
     // TODO - Make a provider to use same terminal obj
-    let terminal = new Terminal(device.port, device.baudrate, { autoConnect: false })
     terminal.disconnect()
   }
 

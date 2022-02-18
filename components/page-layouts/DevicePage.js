@@ -1,7 +1,5 @@
-import * as icons from "@radix-ui/react-icons";
 import React from "react";
 import ScrollArea from "../../plugins/@fuse-labs/core-ui/components/shared/ScrollArea/ScrollArea";
-import Tooltip from "../../plugins/@fuse-labs/core-ui/components/shared/Tooltip/Tooltip";
 import DeviceProvider from "../DeviceProvider/DeviceProvider";
 import MainLayout from "../layouts/MainLayout";
 import DevicePageSidebar from "./DevicePage/DevicePageSidebar";
