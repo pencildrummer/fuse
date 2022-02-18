@@ -1,9 +1,8 @@
 import Link from "next/link";
-import Progress from '../react-daisyui/Progress/Progress'
 import { CameraIcon, Link1Icon, LinkBreak1Icon, StarIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import GCodeViewer from "./viewers/GCodeViewer/GCodeViewer";
-import { Widget } from "../../plugins/@fuse-labs/core-ui";
+import { Widget, Progress } from "../../plugins/@fuse-labs/core-ui";
 
 export default function DeviceCard({ device }) {
 

@@ -1,0 +1,46 @@
+import { CardStackIcon, DotsVerticalIcon, FilePlusIcon } from "@radix-ui/react-icons";
+import socket from "lib/client/socket";
+import { Button, Group } from "plugins/@fuse-labs/core-ui";
+import { useRef } from "react";
+import { useFileManagerContext } from "../FileManagerProvider";
+
+export default function FileManagerTabTopBar() {
+
+  const { setPendingFiles } = useFileManagerContext()
+  const fileInputRef = useRef()
+
+  function handleAddFileClick() {
+    fileInputRef.current.click()
+  }
+
+  function handleChangedFile(e) {
+    setPendingFiles(files => [...files, ...e.target.files])
+    // Request add file
+    let filesArray = [ ...e.target.files ]
+    filesArray.forEach((file, i) => {
+      // Request file add
+      socket.emit('@fuse-labs.file-manager.file:add', { filename: file.name, data: file }, (file) => {
+        // Remove file from pending list
+        setPendingFiles(files => files.splice(i, 1))
+      })
+    })
+  }
+
+  return (
+    <Group className="bg-black p-1 rounded-md">
+      <div className="flex flex-row items-center flex-1">
+        <DotsVerticalIcon />
+        <span>File manager</span>
+      </div>
+      <div className="flex flex-row items-center space-x-0.5">
+        <Button squared type="ghost" onClick={handleAddFileClick}>
+          <FilePlusIcon />
+          <input type="file" ref={fileInputRef} onChange={handleChangedFile} className="hidden invisible" />
+        </Button>
+        <Button squared type="ghost">
+          <CardStackIcon />
+        </Button>
+      </div>
+    </Group>
+  )
+}

@@ -13,7 +13,7 @@ export default function FileViewer({
   if (!file) return null
 
   return <Widget className={classNames(
-    '',
+    'h-full',
     className
   )}>
 
