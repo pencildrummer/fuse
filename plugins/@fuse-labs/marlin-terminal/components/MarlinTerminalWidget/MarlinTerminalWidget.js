@@ -1,12 +1,16 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
+import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Widget, ScrollArea } from "../../../core-ui";
-import terminal from "../../lib/client/terminal.ts";
+import { Terminal } from "../../lib/client/terminal.ts";
 import TerminalLine from "./TerminalMessage";
 
 export default function MarlinTerminalWidget() {
+
+  const { device } = useDeviceContext()
+  const terminal = useRef()
 
   const scrollArea = useRef()
   const scrollAreaViewport = useRef()
@@ -44,20 +48,27 @@ export default function MarlinTerminalWidget() {
   }
 
   useEffect(_ => {
-    // Configure listeners
+    if (!device)
+      return console.warn('Unable to init terminal, missing device')
+
+    // Init terminal for device
+    terminal.current = new Terminal(device.port, device.baudrate)
+    console.log('Terminal for device initialized')
+
+    // Configure listeners for socket terminal communication
     let listener = (data) => appendData(data)
-    terminal.onMessageReceived(listener)
-    return _ => {
-      terminal.offMessageReceived(listener)
-    }
-  }, [])
+    terminal.current.onMessageReceived(listener)
+    
+    // Return cleanup to remove listener on unmount
+    return _ => terminal.current.offMessageReceived(listener)
+  }, [device])
 
   function handleSubmit(e) {
     e.preventDefault()
     e.stopPropagation()
     if (inputMessage.length) {
       // Send message to terminal
-      let data = terminal.sendMessage(inputMessage)
+      let data = terminal.current.sendMessage(inputMessage)
       appendData(data)
       setInputMessage('')
     }
@@ -66,7 +77,7 @@ export default function MarlinTerminalWidget() {
   return <Widget title="Terminal" version="0.1" className="h-96">
 
     <div className="flex-1 overflow-hidden">
-      <ScrollArea ref={scrollArea} className="h-full px-1 rounded-md bg-gray-800 text-gray-300 font-mono text-xs">
+      <ScrollArea ref={scrollArea} className="h-full px-1 rounded-md bg-gray-800 text-gray-200 font-semibold font-mono text-xs">
         {data?.map((dataItem, i) => <TerminalLine key={`line-${dataItem.id}`} data={dataItem} />)}
       </ScrollArea>
     </div>

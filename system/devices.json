@@ -90,7 +90,7 @@
       "id": "fb38885f-d4f3-42dd-88d9-5cb0f9e08e43",
       "name": "CNC",
       "profileId": "vevor.3018",
-      "port": "/dev/tty.usbmodem14101",
+      "port": "/dev/tty.usbmodem14201",
       "baudrate": 115200
     }
   ]

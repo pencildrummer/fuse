@@ -1,6 +1,5 @@
 // Use radix primitive to allow custom style instead of using standard FUSE UI Select component
 import * as PopoverPrimitive from '@radix-ui/react-popover'
-import { Select } from 'plugins/@fuse-labs/core-ui'
 import { CaretDownIcon, RotateCounterClockwiseIcon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
 import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
@@ -90,20 +89,21 @@ export default function DevicePicker({
       )} style={{minWidth: width}} sideOffset={6} align="start" alignOffset={-3}>
         {devices?.map(device => {
           return (
-            <li className={classNames(
-              'cursor-pointer select-none',
-              'flex flex-row space-x-1',
-              'text-sm font-medium',
-              'py-0.5 px-1',
-              'w-full',
-              'rounded-[4px]',
-              'transition-colors duration-75',
-              'cursor-default',
-              'text-gray-800 dark:text-gray-300',
-              'hover:text-gray-50 hover:bg-blue-600',
-              'group',
-              'flex-nowrap truncate'
-            )} onClick={_ => handleDeviceClick(device)}>
+            <li key={`device-${device.id}`}
+              className={classNames(
+                'cursor-pointer select-none',
+                'flex flex-row space-x-1',
+                'text-sm font-medium',
+                'py-0.5 px-1',
+                'w-full',
+                'rounded-[4px]',
+                'transition-colors duration-75',
+                'cursor-default',
+                'text-gray-800 dark:text-gray-300',
+                'hover:text-gray-50 hover:bg-blue-600',
+                'group',
+                'flex-nowrap truncate'
+              )} onClick={_ => handleDeviceClick(device)}>
               <span>
                 {device.name}
               </span>

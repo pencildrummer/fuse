@@ -1,9 +1,5 @@
-// const { addDevice } = require("../../../../lib/core/devices")
-// const SerialPort = require("serialport/lib")
-// const signale = require('signale')
 import { addDevice } from "../../../../lib/core/devices.js"
-import SerialPort from "serialport"
-import signale from "signale"
+import { SerialPort } from "serialport"
 import { addProfile, updateProfile, deleteProfile } from "../../../../lib/core/profiles.js"
 
 export default (socket) => {
