@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useIntl } from 'react-intl'
 import SettingField from '../lib/client/SettingField'
 
-import GRBLSetting from '../lib/shared/GRBLSetting.ts'
+import GRBLSetting from '../lib/shared/GRBLSettingId.ts'
 import GRBLSettingKey from '../lib/shared/GRBLSettingKey.ts'
 
 function parseSettingMessage(message) {

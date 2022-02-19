@@ -1,4 +1,4 @@
-const enum GRBLSetting {
+const enum GRBLSettingId {
   STEP_PULSE = 0,
   STEP_DELAY = 1,
   STEP_PORT_INVERT = 2,
@@ -42,4 +42,4 @@ const enum GRBLSetting {
   Z_MAX_TRAVEL = 132,
 }
 
-export default GRBLSetting
+export default GRBLSettingId
