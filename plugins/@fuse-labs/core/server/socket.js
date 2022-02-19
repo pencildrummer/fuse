@@ -13,13 +13,26 @@ export default (socket) => {
   ** Devices
   */
 
-  socket.on('core.devices.add', async ({ name, profile, profileId, port, baudrate }, fn) => {
+  socket.on('core.devices.add', async ({
+    name, 
+    profile,
+    profileId,
+    port,
+    baudrate,
+    serialNumber,
+    vendorId,
+    productId
+  }, fn) => {
     if (profile) {
       // TODO - Add device profile on the go, for custom profiles while saving device
       profileId = profile.id
     }
     // Add device to the system
-    let device = addDevice(name, profileId, port, baudrate)
+    let device = addDevice(name, profileId, port, baudrate, {
+      serialNumber,
+      vendorId,
+      productId
+    })
     if (device) {
       // Broadcast new device creation
       socket.emit('core.devices.added', device)

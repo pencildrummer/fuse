@@ -34,7 +34,7 @@ export function InputRaw({
     )}>
       <input {...props} className={classNames(
         'text-xs px-1.5',
-        'h-full min-w-0',
+        'h-full min-w-0 w-full',
         'ring-0 outline-none',
         'bg-gray-900 text-gray-300',
         'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',

@@ -1,4 +1,5 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { SwitchRaw } from "plugins/@fuse-labs/core-ui/components/shared/Switch/Switch";
 import { Button, Widget, Switch } from "../../../core-ui";
 
 export default function MarlinMiscWidget() {
@@ -11,7 +12,7 @@ export default function MarlinMiscWidget() {
 
     <div className="flex flex-row space-x-2">
       <span>Fan status</span>
-      <Switch />
+      <SwitchRaw />
     </div>
   </Widget>
 }

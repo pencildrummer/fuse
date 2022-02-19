@@ -10,5 +10,5 @@ export default function DeviceProfilePicker({
     }
   }
 
-  return <DeviceProfilesListManager onSelect={handleSelect}/>
+  return <DeviceProfilesListManager onSelect={handleSelect} className="h-[200px]"/>
 }

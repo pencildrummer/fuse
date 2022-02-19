@@ -91,7 +91,44 @@
       "name": "CNC",
       "profileId": "vevor.3018",
       "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200
+      "baudrate": 115200,
+      "profile": {
+        "brand": "Vevor",
+        "model": "3018",
+        "type": "cnc",
+        "volume": {
+          "width": 300,
+          "height": 180
+        },
+        "id": "vevor.3018"
+      }
+    },
+    {
+      "id": "149dd208-a604-44d3-99b7-7327102daed3",
+      "name": "Arduino Uno R3",
+      "profileId": "vevor.3018",
+      "port": "/dev/tty.usbmodem14201",
+      "baudrate": 115200,
+      "profile": {
+        "brand": "Vevor",
+        "model": "3018",
+        "type": "cnc",
+        "volume": {
+          "width": 300,
+          "height": 180
+        },
+        "id": "vevor.3018"
+      }
+    },
+    {
+      "id": "67582d90-91f3-47de-b12d-d594219c30d9",
+      "name": "Arduino Uno R3",
+      "profileId": "vevor.3018",
+      "port": "/dev/tty.usbmodem14201",
+      "baudrate": "auto",
+      "serialNumber": "7593531363635161D1B1",
+      "vendorId": "2341",
+      "productId": "0043"
     }
   ]
 }

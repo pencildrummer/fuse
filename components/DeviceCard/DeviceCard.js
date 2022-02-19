@@ -33,7 +33,7 @@ export default function DeviceCard({ device }) {
                   }
                 </div>
                 <div className="flex-1">
-                  {device.profile.brand} • {device.profile.model}
+                  {device.profile?.brand} • {device.profile?.model}
                 </div>
                 <div>
                   v 1.0
@@ -46,7 +46,7 @@ export default function DeviceCard({ device }) {
                 <div>Nome_file.m3f</div>
                 <div>{percentage ?? 0} %</div>
               </div>
-              <Progress value="20" max="100" />
+              <Progress value={20} max={100} />
             </div>
 
             {device.camera &&

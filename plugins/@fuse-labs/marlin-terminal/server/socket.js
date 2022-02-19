@@ -37,17 +37,27 @@ export default (socket) => {
     })
 
     // Create serial port
-    serialPort = new SerialPort({
-      path: port,
-      baudRate: baudrate
-    }, (err) => {
-      if (err) {
-        signale.error('Error opening serial connection on port path', port, '@', baudrate)
-        fn?.(false)
-      } else {
-        fn?.(true)
-      }
-    })
+    try {
+      serialPort = new SerialPort({
+        path: port,
+        baudRate: baudrate
+      }, (err) => {
+        if (err) {
+          signale.error('Error opening serial connection on port path', port, '@', baudrate)
+          fn?.(false)
+        } else {
+          fn?.(true)
+        }
+      })
+    } catch (error) {
+      signale.error('Error creating serial port', error)
+      socket.emit('@fuse-labs.terminal.message', {
+        id: 'server-'+generateUniqueID(),
+        from: 'server',
+        message: 'Error: '+error.message
+      })
+      return fn?.(false)
+    }
 
     serialPort.on('open', _ => {
       signale.success('Opened connection on', chalk.greenBright(serialPort.path))
