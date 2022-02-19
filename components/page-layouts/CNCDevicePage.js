@@ -1,3 +1,4 @@
+import GRBLMoveWidget from "plugins/@fuse-labs/grbl-move/components/GRBLMoveWidget/GRBLMoveWidget";
 import DevicePage from "./DevicePage";
 
 export default function CNCDevicePage({
@@ -5,6 +6,7 @@ export default function CNCDevicePage({
   ...props
 }) {
   return <DevicePage {...props}>
+    <GRBLMoveWidget />
     {children}
   </DevicePage>
 }

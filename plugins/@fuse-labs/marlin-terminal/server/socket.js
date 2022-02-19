@@ -1,26 +1,27 @@
 // TODO - Find a way to import event.ts for nodejs
 
 import { generateUniqueID } from "../../../../lib/shared/uuid.js"
-import { SerialPort, ReadlineParser } from "serialport"
+import { ReadlineParser } from "serialport"
+import DeviceTerminal from '../lib/server/DeviceTerminal.js'
 import signale from "signale"
 import chalk from "chalk";
-
-let serialPorts = {};
+import { getDevice } from "../../../../lib/core/devices.js";
 
 export default (socket) => {
   // Register terminal listeners
   
-  socket.on('@fuse-labs.terminal.connect', (args, fn) => {
+  socket.on('@fuse-labs.terminal.connect', (deviceId, fn) => {
 
-    // Get params
-    const { port, baudrate } = args
+    let device = getDevice(deviceId)
 
-    // Get existing port if any
-    let serialPort
-    
-    serialPort = serialPorts[port]
+    // Check for existing device terminal
+    if (!device.terminal) {
+      // Create DeviceTerminal
+      device.terminal = new DeviceTerminal(device)
+      signale.info('Added terminal to device ', device.id)
+    }
 
-    if (serialPort && serialPort.isOpen) {
+    if (device.terminal.isOpen) {
       socket.emit('@fuse-labs.terminal.message', {
         id: 'server-'+generateUniqueID(),
         from: 'server',
@@ -36,45 +37,22 @@ export default (socket) => {
       message: 'Connecting to device...'
     })
 
-    // Create serial port
-    try {
-      serialPort = new SerialPort({
-        path: port,
-        baudRate: baudrate
-      }, (err) => {
-        if (err) {
-          signale.error('Error opening serial connection on port path', port, '@', baudrate)
-          fn?.(false)
-        } else {
-          fn?.(true)
-        }
-      })
-    } catch (error) {
-      signale.error('Error creating serial port', error)
-      socket.emit('@fuse-labs.terminal.message', {
-        id: 'server-'+generateUniqueID(),
-        from: 'server',
-        message: 'Error: '+error.message
-      })
-      return fn?.(false)
-    }
-
-    serialPort.on('open', _ => {
-      signale.success('Opened connection on', chalk.greenBright(serialPort.path))
+    // TODO - Create on method for terminal
+    device.terminal.serialPort.on('open', _ => {
+      signale.success('Opened connection on', chalk.greenBright(device.terminal.serialPort.path))
       // Broadcast open connection result
-      socket.emit('@fuse-labs.terminal.connected', {
-        port: serialPort.port,
-        baudrate: serialPort.baudRate
-      })
+      socket.emit('@fuse-labs.terminal.connected', deviceId)
       // Send human readable message
       socket.emit('@fuse-labs.terminal.message', {
         id: 'device-'+generateUniqueID(),
         from: 'device',
         message: 'Connection opened'
       })
+      // Call callback function
+      fn?.(true)
     })
 
-    serialPort.on('close', error => {
+    device.terminal.serialPort.on('close', error => {
       if (error) {
         signale.error('Closed connection due to error', error)
         socket.emit('@fuse-labs.terminal.message', {
@@ -89,12 +67,12 @@ export default (socket) => {
           from: 'device',
           message: 'Connection closed'
         })
-        // Discard this serial port from array
-        delete serialPorts[serialPort.path]
+        // Remove device terminal
+        delete device.terminal
       }
     })
 
-    serialPort.on('error', error => {
+    device.terminal.serialPort.on('error', error => {
       signale.error('Error received', error)
       socket.emit('@fuse-labs.terminal.message', {
         id: 'device-'+generateUniqueID(),
@@ -103,7 +81,7 @@ export default (socket) => {
       })
     })
 
-    let parser = serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
+    let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
     // Attach data listener on parser instead of port to get data already parsed
     parser.on('data', data => {
       socket.emit('@fuse-labs.terminal.message', {
@@ -112,9 +90,6 @@ export default (socket) => {
         message: data
       })
     })
-
-    // Push new serial port to global array
-    serialPorts[serialPort.path] = serialPort
   })
 
   // Received terminal message from socket
@@ -126,40 +101,31 @@ export default (socket) => {
       received: true
     })
 
-    // Get params
-    const { port, message } = args
+    const { message, deviceId } = args
 
-    // Validate parameters
-    if (!port) throw new Error('No port path provided!')
-    if (!message) throw new Error('No message provided')
+    let device = getDevice(deviceId)
 
-    // Retrieve requested serial port
-    let serialPort = serialPorts[port]
-
-    if (!serialPort) {
+    if (!device.terminal) {
       fn?.(false)
-      throw new Error(`No serial port initialized for path '${port}'`)
+      throw new Error(`No terminal serial port initialized for device '${deviceId}'`)
     }
     
     // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
-    serialPort.write(message)
+    device.terminal.send(message)
     fn?.(true)
   })
 
   /**
    * Disconnect from serial port
    */
-  socket.on('@fuse-labs.terminal.disconnect', (args, fn) => {
-    const { port } = args
-    // Retrieve requested serial port
-    let serialPort = serialPorts[port]
-
-    if (!serialPort) {
+  socket.on('@fuse-labs.terminal.disconnect', (deviceId, fn) => {
+    let device = getDevice(deviceId)
+    if (!device.terminal) {
       fn?.(false)
-      throw new Error(`No serial port initialized for path '${port}'`)
+      throw new Error(`No serial port to close for device '${deviceId}'`)
     }
 
     // Request close of connection
-    serialPort.close()
+    device.terminal.close()
   })
 }

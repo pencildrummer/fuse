@@ -1,0 +1,10 @@
+{
+  "name": "@fuse-labs/grbl-move",
+  "version": "0.1",
+  "license": "MIT",
+  "fuse": {
+    "title": "GRBL Movement and position",
+    "devices": [ "cnc" ]
+  },
+  "description": "Plugin for FUSE to support GRBL device movements"
+}

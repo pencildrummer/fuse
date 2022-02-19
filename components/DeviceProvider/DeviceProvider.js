@@ -15,7 +15,7 @@ export default function DeviceProvider({
       return console.warn('Unable to init terminal, missing device')
 
     // Init terminal for device
-    let terminal = new Terminal(device.port, device.baudrate, { autoConnect: false })
+    let terminal = new Terminal(device, { autoConnect: false })
     // Save in state the initialized terminal
     console.log(`Terminal for device "${device.id}" initialized`)
     setTerminal(terminal)

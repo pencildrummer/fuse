@@ -19,15 +19,13 @@ export class Terminal {
     return this._isOpen
   }
   
-  port: string;
-  baudrate: Number;
+  device
 
   lineEnding: LineEnding = LineEnding.NewLine  
   useCarriageReturn: Boolean = false
 
-  constructor(port: string, baudrate: Number, { autoConnect = true } = {}) {
-    this.port = port
-    this.baudrate = baudrate
+  constructor(device, { autoConnect = true } = {}) {
+    this.device = device
     // Init socket to pass messages to backend
     this._socket = socket
 
@@ -38,10 +36,7 @@ export class Terminal {
   }
 
   connect(onConnect: () => void = null) {
-    this._socket.emit('@fuse-labs.terminal.connect', {
-      port: this.port,
-      baudrate: this.baudrate
-    }, open => {
+    this._socket.emit('@fuse-labs.terminal.connect', this.device.id, open => {
       console.log('Callback on connect, result:', open)
       this._isOpen = open
       if (open) onConnect?.()
@@ -49,9 +44,7 @@ export class Terminal {
   }
 
   disconnect() {
-    this._socket.emit('@fuse-labs.terminal.disconnect', {
-      port: this.port,
-    })
+    this._socket.emit('@fuse-labs.terminal.disconnect', this.device.id)
   }
 
   sendMessage(message: string) {
@@ -59,8 +52,7 @@ export class Terminal {
       id: generateUniqueID(),
       message: this.formatMessage(message),
       from: 'user',
-      port: this.port,
-      baudrate: this.baudrate,
+      deviceId: this.device.id
     }
     this._socket.emit(Event.Message, data)
     return data
