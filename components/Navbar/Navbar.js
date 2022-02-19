@@ -32,14 +32,16 @@ export default function Navbar() {
 						)
 					})}
 				</ul>
+				
+				<ul className='flex flex-row items-end'>
+					<TabItem href="/marketplace">
+						<icons.CubeIcon />
+					</TabItem>
 
-				<Toolbar.Separator />
-
-				<div>
 					<TabItem href="/settings">
 						<icons.GearIcon />
 					</TabItem>
-				</div>
+				</ul>
 			</div>
 		</Toolbar.Root>
 	)

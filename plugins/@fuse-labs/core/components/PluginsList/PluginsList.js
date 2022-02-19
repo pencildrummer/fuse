@@ -6,7 +6,7 @@ export default function PluginsList({
   ...props
 }) {
 
-  return <Widget>
+  return <Widget title="Installed plugins">
     <ul className="flex flex-col divide-y divide-gray-700">
       {plugins?.map((plugin, i) => 
         <PluginListItem key={`plugin-${i}`} plugin={plugin} />
