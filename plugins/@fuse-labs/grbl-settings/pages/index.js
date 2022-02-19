@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import SettingField from '../lib/client/SettingField'
 
 import GRBLSetting from '../lib/shared/GRBLSettingId.ts'
-import { getSettingFieldType } from '../lib/shared/settingFieldType'
+import { getSettingFieldType } from '../lib/shared/getSettingFieldType'
 
 function parseSettingMessage(message) {
   let matches = message.match(/\$(?<settingId>[0-9]*)=(?<settingValue>.*)/)

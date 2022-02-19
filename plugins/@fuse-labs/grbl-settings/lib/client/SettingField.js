@@ -1,11 +1,9 @@
-import classNames from "classnames"
-import { useField } from "formik"
 import { Group, Input, Label, Switch } from "plugins/@fuse-labs/core-ui"
-import { useEffect } from "react"
 import { useIntl } from "react-intl"
 import GRBLSettingId from '../shared/GRBLSettingId.ts'
 import GRBLSettingKey from '../shared/GRBLSettingKey.ts'
-import { getSettingFieldType } from "../shared/settingFieldType"
+import { getSettingFieldType } from "../shared/getSettingFieldType"
+import getSettingFieldUnit from "../shared/getSettingFieldUnit"
 
 export default function SettingField({
   fieldKey,
@@ -31,7 +29,8 @@ export default function SettingField({
         <Switch id={fieldKey} name={fieldKey} disabled={disabled} />
       )}
       {fieldType == Number && (
-        <Input type="number" id={fieldKey} name={fieldKey} disabled={disabled} className='w-28' />
+        <Input type="number" id={fieldKey} name={fieldKey} disabled={disabled} className='w-36'
+          detailContent={getSettingFieldUnit(GRBLSettingId[fieldKey])} />
       )}
     </Group>
   )
