@@ -5,6 +5,9 @@ import classNames from 'classnames'
 import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
 import React, { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
+import DeviceTypeIcon from 'components/DeviceTypeIcon/DeviceTypeIcon'
+import DeviceConnectionStatus from 'components/DeviceConnectionStatus/DeviceConnectionStatus'
+import { Separator } from 'plugins/@fuse-labs/core-ui'
 
 const DevicePickerTrigger = React.forwardRef( ({ device, open, ...props }, ref) => {
   return (
@@ -24,6 +27,7 @@ const DevicePickerTrigger = React.forwardRef( ({ device, open, ...props }, ref) 
       'pl-[3px] ml-[-3px]', // To add left bg space when hovering
       'transition-all duration-300',
     )}>
+      <DeviceTypeIcon device={device} />
       <span>
         {device.name}
       </span>
@@ -63,14 +67,8 @@ export default function DevicePicker({
 
   function handleDeviceClick(device) {
     setOpen(false)
-    // Push router to same page for requested device
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        deviceID: device.id
-      }
-    })
+    // Push router to index page for requested device
+    router.push(`/workspace/devices/${device.id}`)
   }
 
   return (
@@ -92,7 +90,7 @@ export default function DevicePicker({
             <li key={`device-${device.id}`}
               className={classNames(
                 'cursor-pointer select-none',
-                'flex flex-row space-x-1',
+                'flex flex-row space-x-1 items-center',
                 'text-sm font-medium',
                 'py-0.5 px-1',
                 'w-full',
@@ -104,13 +102,18 @@ export default function DevicePicker({
                 'group',
                 'flex-nowrap truncate'
               )} onClick={_ => handleDeviceClick(device)}>
+              <DeviceTypeIcon device={device} />
               <span>
                 {device.name}
               </span>
               <span className="text-gray-500 group-hover:text-gray-300">•</span>
-              <span className="text-xxs text-gray-500 group-hover:text-gray-300 truncate">
+              <span className="text-xxs text-gray-500 group-hover:text-gray-300 truncate flex-1">
                 {device.profile.brand} {device.profile.model}
               </span>
+              <Separator orientation="vertical" className="!border-gray-500 pl-2"/>
+              <div className="pl-1">
+                <DeviceConnectionStatus device={device} />
+              </div>
             </li>
           )
         })}

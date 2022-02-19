@@ -1,7 +1,8 @@
 import { GearIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
+import { SwitchRaw } from "plugins/@fuse-labs/core-ui/components/shared/Switch/Switch"
 import { fetcherPOST } from "../../../../../lib/client/fetcher"
-import { Button, Switch } from "../../../core-ui"
+import { Button } from "../../../core-ui"
 import Badge from "../../../core-ui/components/shared/Badge/Badge"
 
 export default function PluginListItem({
@@ -52,7 +53,7 @@ export default function PluginListItem({
       </div>}
 
       <div className="flex items-center">
-        <Switch defaultChecked={plugin.active}
+        <SwitchRaw defaultChecked={plugin.active}
           disabled={plugin.fuse?.system} 
           onCheckedChange={v => setPluginActive(plugin.name, v)} />
       </div>

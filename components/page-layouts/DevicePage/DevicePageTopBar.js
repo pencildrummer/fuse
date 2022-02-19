@@ -2,10 +2,12 @@ import { useAppContext } from "components/AppProvider/AppProvider";
 import DeviceConnectionStatus from "components/DeviceConnectionStatus/DeviceConnectionStatus";
 import PageTopBar from "../Page/PageTopBar";
 import DevicePicker from "./DevicePicker";
+import { useDeviceContext } from "components/DeviceProvider/DeviceProvider"
 
 export default function DevicePageTopBar() {
 
   const { devices } = useAppContext()
+  const { device } = useDeviceContext()
 
   return (
     <PageTopBar>
@@ -16,7 +18,7 @@ export default function DevicePageTopBar() {
       </div>
       <div className="w-px h-full bg-gray-600" />
       <div>
-        <DeviceConnectionStatus />
+        <DeviceConnectionStatus device={device} />
       </div>
     </PageTopBar>
   )

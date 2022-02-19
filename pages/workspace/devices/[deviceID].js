@@ -9,12 +9,17 @@ import TemperatureWidget from "../../../plugins/@fuse-labs/marlin-temperature/co
 import FileManagerWidget from "../../../plugins/@fuse-labs/file-manager/components/FileManagerWidget/FileManagerWidget";
 
 import getServerSideDeviceProp from "../../../lib/server/getServerSideDeviceProp";
+import getDevicePageComponent from "components/page-layouts/getDevicePageComponent";
 
 export default function DeviceHomePage({
   device
 }) {
+  console.log(device)
+  const DevicePageComponent = getDevicePageComponent(device.profile.type);
+
 	return (
-		<PrinterDevicePage device={device}>
+    // TODO - Return correct page based on device type
+		<DevicePageComponent device={device}>
 			<div className="grid gap-2 grid-cols-3">
 
 				<div className="col-span-3">
@@ -34,7 +39,7 @@ export default function DeviceHomePage({
 					<TemperatureWidget />
 				</div>
       </div>
-		</PrinterDevicePage>
+		</DevicePageComponent>
 	)
 }
 

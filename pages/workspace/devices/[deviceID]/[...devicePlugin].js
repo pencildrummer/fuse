@@ -6,22 +6,14 @@ import signale from 'signale'
 import chalk from 'chalk'
 import DevicePage from '../../../../components/page-layouts/DevicePage.js'
 import { getActivePluginsWithInfo } from '../../../../lib/core/plugins.js'
-
-// Return which type of page (in pages-layout) to use based on device type
-function getPageComponent(deviceType) {
-  switch (deviceType) {
-    case 'fdm_printer':   return PrinterDevicePage
-    case 'cnc':           return CNCDevicePage
-    default:              return DevicePage
-  }
-}
+import getDevicePageComponent from 'components/page-layouts/getDevicePageComponent.js'
 
 export default function DevicePluginPage({
   device,
   plugin
 }) {
 
-  const DevicePageComponent = getPageComponent(device.type);
+  const DevicePageComponent = getDevicePageComponent(device.profile.type);
   const PluginComponent = dynamic(_ => import(`plugins/${plugin.name}/pages/index.js`))
 
 	return (

@@ -42,6 +42,17 @@ export default (socket) => {
   })
 
   /**
+   * Device connections
+   */
+
+  // Check if device is available by searching and comparing metadata of serial ports avaialble
+  socket.on('core.devices.connection.check', async (device, fn) => {
+    let list = await SerialPort.list()
+    let devicePort = list.find(port => port.path == device.port)
+    return fn?.(devicePort)
+  })
+
+  /**
    * Profiles
    */
   socket.on('core.profiles.add', async(profileData, fn) => {

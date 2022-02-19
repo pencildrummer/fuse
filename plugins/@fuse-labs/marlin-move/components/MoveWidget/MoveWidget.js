@@ -1,4 +1,5 @@
 import { HomeIcon, ThickArrowDownIcon, ThickArrowLeftIcon, ThickArrowRightIcon, ThickArrowUpIcon } from '@radix-ui/react-icons'
+import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
 import socket from 'lib/client/socket'
 import { Widget, ToggleGroup } from 'plugins/@fuse-labs/core-ui/index.js'
 import { useState } from 'react'
@@ -14,9 +15,7 @@ function MoveButton({
 
 export default function MoveWidget() {
 
-  // TODO
-  //const { device } = useDeviceContext()
-  const device = { id: 'TEST', portPath: 'serialPortPath', baudRate: 0 }
+  const { device } = useDeviceContext()
 
   const [distanceInc, setDistanceInc] = useState("1")
 
@@ -48,14 +47,14 @@ export default function MoveWidget() {
         <div className='grid grid-cols-3 grid-rows-3 gap-2'>
           <div />
           <div>
-            <MoveButton onClick={handleMove('up')}>
+            <MoveButton onClick={_ => handleMove('up')}>
               <ThickArrowUpIcon />
             </MoveButton>
           </div>
           <div />
 
           <div>
-            <MoveButton onClick={handleMove('left')}>
+            <MoveButton onClick={_ => handleMove('left')}>
               <ThickArrowLeftIcon />
             </MoveButton>
           </div>
@@ -73,14 +72,14 @@ export default function MoveWidget() {
             </div>
           </div>
           <div>
-            <MoveButton onClick={handleMove('right')}>
+            <MoveButton onClick={_ => handleMove('right')}>
               <ThickArrowRightIcon />
             </MoveButton>
           </div>
 
           <div />
           <div>
-            <MoveButton onClick={handleMove('down')}>
+            <MoveButton onClick={_ => handleMove('down')}>
               <ThickArrowDownIcon />
             </MoveButton>
           </div>

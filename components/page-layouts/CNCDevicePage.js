@@ -5,6 +5,6 @@ export default function CNCDevicePage({
   ...props
 }) {
   return <DevicePage {...props}>
-    {props.children}
+    {children}
   </DevicePage>
 }

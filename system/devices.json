@@ -1,92 +1,6 @@
 {
   "data": [
     {
-      "id": "423dcc49-865e-4628-a0dc-95001883c280",
-      "name": "Longer LK4 Pro",
-      "profileId": "longer.lk4_pro",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto",
-      "profile": {
-        "brand": "Longer",
-        "model": "LK4 Pro",
-        "type": "fdm_printer",
-        "volume": {
-          "width": 100,
-          "height": 100,
-          "depth": 100
-        },
-        "heatbed": true,
-        "max_speed": 100,
-        "id": "longer.lk4_pro"
-      }
-    },
-    {
-      "id": "6ff2776f-d1a7-469b-b261-d2f9d4db621c",
-      "name": "Ender 3",
-      "profileId": "creality.ender_3",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto",
-      "profile": {
-        "id": "creality.ender_3",
-        "type": "fdm_printer",
-        "brand": "Creality",
-        "model": "Ender 3",
-        "volume": {
-          "width": 200,
-          "depth": 200,
-          "height": 200,
-          "origin": "lower-left",
-          "formFactor": "rectangular"
-        },
-        "bed": {
-          "heated": true
-        },
-        "gCodeVersion": "marlin",
-        "xAxis": {
-          "maxSpeed": 6000
-        },
-        "yAxis": {
-          "maxSpeed": 6000
-        },
-        "zAxis": {
-          "maxSpeed": 3000
-        }
-      }
-    },
-    {
-      "id": "045c9348-53cd-477a-b3b5-45636578a272",
-      "name": "NIU",
-      "profileId": "alfawise.u30",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto",
-      "profile": {
-        "id": "alfawise.u30",
-        "type": "fdm_printer",
-        "brand": "Alfawise",
-        "model": "U30",
-        "volume": {
-          "width": 100000,
-          "height": 600,
-          "depth": 200,
-          "formFactor": "rectangular",
-          "origin": "lower-left"
-        },
-        "bed": {
-          "heated": true
-        },
-        "gCodeVersion": "marlin",
-        "xAxis": {
-          "maxSpeed": 6000
-        },
-        "yAxis": {
-          "maxSpeed": 6000
-        },
-        "zAxis": {
-          "maxSpeed": 3000
-        }
-      }
-    },
-    {
       "id": "fb38885f-d4f3-42dd-88d9-5cb0f9e08e43",
       "name": "CNC",
       "profileId": "vevor.3018",
@@ -128,7 +42,76 @@
       "baudrate": "auto",
       "serialNumber": "7593531363635161D1B1",
       "vendorId": "2341",
-      "productId": "0043"
+      "productId": "0043",
+      "profile": {
+        "brand": "Vevor",
+        "model": "3018",
+        "type": "cnc",
+        "volume": {
+          "width": 300,
+          "height": 180
+        },
+        "id": "vevor.3018"
+      }
+    },
+    {
+      "id": "925ab30f-4add-4e13-8fc1-43ca848e1f97",
+      "name": "Arduino Uno R3",
+      "profileId": "longer.lk4_pro",
+      "port": "/dev/tty.usbmodem14201",
+      "baudrate": 115200,
+      "serialNumber": "7593531363635161D1B1",
+      "vendorId": "2341",
+      "productId": "0043",
+      "profile": {
+        "brand": "Longer",
+        "model": "LK4 Pro",
+        "type": "fdm_printer",
+        "volume": {
+          "width": 100,
+          "height": 100,
+          "depth": 100
+        },
+        "heatbed": true,
+        "max_speed": 100,
+        "id": "longer.lk4_pro"
+      }
+    },
+    {
+      "id": "f56b2567-1462-4512-8260-3a5582b43cbf",
+      "name": "Test bugfix",
+      "profileId": "creality.ender_3",
+      "port": "/dev/tty.usbmodem14201",
+      "baudrate": 115200,
+      "serialNumber": "7593531363635161D1B1",
+      "vendorId": "2341",
+      "productId": "0043",
+      "profile": {
+        "id": "creality.ender_3",
+        "type": "fdm_printer",
+        "brand": "Creality",
+        "model": "Ender 3",
+        "volume": {
+          "width": 200,
+          "depth": 200,
+          "height": 200,
+          "origin": "lower-left",
+          "formFactor": "rectangular"
+        },
+        "bed": {
+          "heated": true
+        },
+        "gCodeVersion": "marlin",
+        "xAxis": {
+          "maxSpeed": 6000
+        },
+        "yAxis": {
+          "maxSpeed": 6000
+        },
+        "zAxis": {
+          "maxSpeed": 3000
+        }
+      }
     }
   ]
 }
