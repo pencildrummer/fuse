@@ -1,12 +1,36 @@
 import * as SwitchPrimitive from '@radix-ui/react-switch'
 import classNames from 'classnames'
+import { useField } from 'formik'
+import { useEffect, useState } from 'react'
 
-export default function Switch({
+export default function Switch(props) {
+
+  const [field, meta, helpers] = useField(props.name)
+  
+  const { value } = meta
+  const { setValue } = helpers
+
+  return <SwitchRaw {...field} {...props} 
+    checked={Boolean(value)}
+    onCheckedChange={setValue}
+    error={field.name && meta.error && meta.touched}
+    dirty={meta.touched && !meta.error && meta.value != meta.initialValue}/>
+}
+
+export function SwitchRaw({
+  error,
+  dirty,
   ...props
 }) {
   return <SwitchPrimitive.Root className={classNames(
-    'w-8 h-4 rounded-full bg-current ring-2 ring-current',
+    'w-8 h-4 rounded-full bg-current',
     'transition-colors duration-150',
+    'ring-2',
+    {
+      'ring-current': !dirty && !error,
+      'ring-offset-2 ring-offset-current ring-red-500': error,
+      'ring-offset-2 ring-offset-current ring-yellow-500': dirty && !error,
+    },
     'radix-state-unchecked:text-gray-50 dark:radix-state-unchecked:text-gray-700',
     'radix-state-checked:text-blue-600',
     'disabled:opacity-30',
