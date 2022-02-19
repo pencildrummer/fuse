@@ -15,9 +15,6 @@ export default function SettingField({
 
   const { formatMessage } = useIntl()
 
-  const [field, meta, helpers] = useField(fieldKey)
-  const { value, initialValue, touched, error } = meta
-
   const fieldType = getSettingFieldType(GRBLSettingId[fieldKey])
 
   return (

@@ -2,21 +2,40 @@ import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
 import { Form, Group, Label, Loader, Widget, Input, Button } from 'plugins/@fuse-labs/core-ui'
 import TerminalProvider from 'plugins/@fuse-labs/marlin-terminal/components/MarlinTerminalWidget/TerminalProvider'
 import { useEffect, useMemo, useState } from 'react'
-import { useIntl } from 'react-intl'
 import SettingField from '../lib/client/SettingField'
 
 import GRBLSetting from '../lib/shared/GRBLSettingId.ts'
-import GRBLSettingKey from '../lib/shared/GRBLSettingKey.ts'
+import { getSettingFieldType } from '../lib/shared/settingFieldType'
 
 function parseSettingMessage(message) {
   let matches = message.match(/\$(?<settingId>[0-9]*)=(?<settingValue>.*)/)
   if (matches) {
     return {
       id: matches.groups.settingId,
-      value: matches.groups.settingValue
+      value: parseSettingValue(matches.groups.settingId, matches.groups.settingValue)
     }
   }
   return null
+}
+
+function parseSettingValue(settingId, value) {
+  let settingType = getSettingFieldType(settingId)
+  switch (settingType) {
+    case Boolean:
+      return Boolean(parseInt(value))
+    default:
+      return value
+  }
+}
+
+function convertSettingValue(settingId, value) {
+  let settingType = getSettingFieldType(settingId)
+  switch (settingType) {
+    case Boolean:
+      return value ? 1 : 0
+    default:
+      return value
+  }
 }
 
 function defaultSettings() {
@@ -46,8 +65,8 @@ export default function GRBLSettingsPage() {
   }, [settings])
 
   function handleReceivedMessage(message) {
+    console.log('New message', message)
     if (message.from != 'device') return
-    console.log('New message from device', message.message)
     let setting = parseSettingMessage(message.message)
     if (setting) {
       setSettings(settings => ({
@@ -113,9 +132,10 @@ export default function GRBLSettingsPage() {
 
     // Send update request
     Object.keys(changedValues).forEach(key => {
-      let GRBLId = GRBLSetting[key]
-      let value = changedValues[key]
-      terminal.sendMessage(`$${GRBLId}=${value}`)
+      let settingId = GRBLSetting[key]
+      let value = convertSettingValue(settingId, changedValues[key])
+      // Change Boolean to Number values
+      terminal.sendMessage(`$${settingId}=${value}`)
     })
   }
 

@@ -7,14 +7,14 @@ export default function Switch(props) {
 
   const [field, meta, helpers] = useField(props.name)
   
-  const { value } = meta
+  const { value, initialValue, error, touched } = meta
   const { setValue } = helpers
 
   return <SwitchRaw {...field} {...props} 
     checked={Boolean(value)}
     onCheckedChange={setValue}
-    error={field.name && meta.error && meta.touched}
-    dirty={meta.touched && !meta.error && meta.value != meta.initialValue}/>
+    error={field.name && error && touched}
+    dirty={touched && !error && value != initialValue}/>
 }
 
 export function SwitchRaw({
