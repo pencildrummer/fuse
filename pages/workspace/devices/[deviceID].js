@@ -8,13 +8,20 @@ import MoveWidget from "../../../plugins/@fuse-labs/marlin-move/components/MoveW
 import TemperatureWidget from "../../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
 import FileManagerWidget from "../../../plugins/@fuse-labs/file-manager/components/FileManagerWidget/FileManagerWidget";
 
-import getServerSideDeviceProp from "../../../lib/server/getServerSideDeviceProp";
 import getDevicePageComponent from "components/page-layouts/getDevicePageComponent";
+import { useAppContext } from "components/AppProvider/AppProvider";
+import { useRouter } from "next/router";
 
-export default function DeviceHomePage({
-  device
-}) {
-  console.log(device)
+export default function DeviceHomePage() {
+
+  const router = useRouter()
+  const { query } = router
+  const { deviceID } = query
+
+  const { devices } = useAppContext()
+  // TODO - This should a client helper or a class
+  const device = devices.find(device => device.id == deviceID )
+
   const DevicePageComponent = getDevicePageComponent(device.profile.type);
 
 	return (
@@ -41,14 +48,4 @@ export default function DeviceHomePage({
       </div>
 		</DevicePageComponent>
 	)
-}
-
-export async function getServerSideProps(ctx) {
-  let device = await getServerSideDeviceProp(ctx)
-  if (!device) return { notFound: true }
-  return {
-    props: {
-      device
-    }
-  }
 }

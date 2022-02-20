@@ -123,8 +123,9 @@ function CompactListRoot({
     if (selectedItemInternalKey) {
       // Retrieve value from key
       let value = selectedItemInternalKey.split('.')
-        .reduce((obj, key) => obj[key], items)
-      handleSelect(selectedItemKey, value, selectedItemInternalKey)
+        .reduce((obj, key) => obj ? obj[key] : undefined, items)
+      if (value)
+        handleSelect(selectedItemKey, value, selectedItemInternalKey)
     }
   }, [items])
 

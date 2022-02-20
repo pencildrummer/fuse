@@ -20,8 +20,19 @@ export default function DeviceProfilesListManager({
   const [query, setQuery] = useState('')
   const [filters, setFilters] = useState({})
 
+  const groupedProfiles = useMemo(_ => {
+    return Object.keys(profiles).reduce((grouped, profileId) => {
+      let profile = profiles[profileId]
+      let brand = profile.brand || 'Generic'
+      if (!grouped[brand])
+        grouped[brand] = []
+      grouped[brand].push(profile)
+      return grouped
+    }, {})
+  }, [profiles])
+
   const filteredProfiles = useMemo(_ => {
-    let filtered = {...profiles} // Make copy - TODO: Freeze app context profiles var
+    let filtered = {...groupedProfiles} // Make copy - TODO: Freeze app context profiles var
     // Filter by type
     if (filters.type) {
       Object.keys(filtered).map(brand => {
@@ -36,7 +47,7 @@ export default function DeviceProfilesListManager({
       })
     }
     return filtered
-  }, [profiles, filters, query])
+  }, [groupedProfiles, filters, query])
 
   const itemsCount = useMemo(_ =>
      Object.keys(filteredProfiles).reduce((count, brand) => count + filteredProfiles[brand].length, 0)

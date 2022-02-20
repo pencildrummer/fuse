@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDeviceContext } from "components/DeviceProvider/DeviceProvider"
+import { useAppContext } from 'components/AppProvider/AppProvider'
 import * as icons from "@radix-ui/react-icons";
 import Tooltip from "plugins/@fuse-labs/core-ui/components/shared/Tooltip/Tooltip";
 import classNames from "classnames";
@@ -7,6 +8,7 @@ import Link from 'next/link'
 
 export default function DevicePageSidebar() {
 
+  const { plugins } = useAppContext()
   const { device } = useDeviceContext()
 
   return (
@@ -16,7 +18,9 @@ export default function DevicePageSidebar() {
           <SidebarMenuItem icon={icons.DashboardIcon} href={`/workspace/devices/${device.id}/`} />
         </Tooltip>
 
-        {device.plugins?.map(plugin => {
+        {plugins?.map(plugin => {
+            // Check if plugin support this type of device
+            if (!plugin.fuse.devices?.includes(device.profile.type)) return
             // Check if plugin has additional pages to allow for a link
             if (!plugin.fuse.hasPages) return
             let icon = icons[plugin.fuse.icon] || icons.QuestionMarkIcon

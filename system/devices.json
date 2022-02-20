@@ -7,14 +7,14 @@
       "port": "/dev/tty.usbmodem14201",
       "baudrate": 115200,
       "profile": {
+        "id": "vevor.3018",
+        "type": "cnc",
         "brand": "Vevor",
         "model": "3018",
-        "type": "cnc",
         "volume": {
           "width": 300,
           "height": 180
-        },
-        "id": "vevor.3018"
+        }
       }
     },
     {
@@ -24,14 +24,14 @@
       "port": "/dev/tty.usbmodem14201",
       "baudrate": 115200,
       "profile": {
+        "id": "vevor.3018",
+        "type": "cnc",
         "brand": "Vevor",
         "model": "3018",
-        "type": "cnc",
         "volume": {
           "width": 300,
           "height": 180
-        },
-        "id": "vevor.3018"
+        }
       }
     },
     {
@@ -44,14 +44,14 @@
       "vendorId": "2341",
       "productId": "0043",
       "profile": {
+        "id": "vevor.3018",
+        "type": "cnc",
         "brand": "Vevor",
         "model": "3018",
-        "type": "cnc",
         "volume": {
           "width": 300,
           "height": 180
-        },
-        "id": "vevor.3018"
+        }
       }
     },
     {
@@ -64,17 +64,15 @@
       "vendorId": "2341",
       "productId": "0043",
       "profile": {
+        "id": "longer.lk4_pro",
+        "type": "fdm_printer",
         "brand": "Longer",
         "model": "LK4 Pro",
-        "type": "fdm_printer",
         "volume": {
           "width": 100,
           "height": 100,
           "depth": 100
-        },
-        "heatbed": true,
-        "max_speed": 100,
-        "id": "longer.lk4_pro"
+        }
       }
     },
     {
@@ -110,6 +108,24 @@
         },
         "zAxis": {
           "maxSpeed": 3000
+        }
+      }
+    },
+    {
+      "id": "754f7076-bf4b-44cf-9db2-7fd1d514cc33",
+      "name": "NUOVO",
+      "profileId": "longer.lk4_pro",
+      "port": "/dev/tty.Bluetooth-Incoming-Port",
+      "baudrate": "auto",
+      "profile": {
+        "id": "longer.lk4_pro",
+        "type": "fdm_printer",
+        "brand": "Longer",
+        "model": "LK4 Pro",
+        "volume": {
+          "width": 100,
+          "height": 100,
+          "depth": 100
         }
       }
     }

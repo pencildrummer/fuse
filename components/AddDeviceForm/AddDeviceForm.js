@@ -37,8 +37,6 @@ export default function AddDeviceForm({
       baudrate: Yup.mixed().required()
     })} onSubmit={handleSubmit}>{ ({ values, initialValues, errors, touched, ...formProps }) => (
       <Group orientation="vertical">
-        {console.log(values, initialValues, errors)}
-
         <Group orientation="vertical">
           <Label htmlFor="name">Name</Label>
           <Input type="text" name="name" className="w-full" autoComplete="off" />
