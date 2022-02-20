@@ -1,9 +1,11 @@
+import { Widget } from "plugins/@fuse-labs/core-ui";
 import DeviceConnectionWidget from "../../../../components/DeviceSettings/DeviceConnectionWidget/DeviceConnectionWidget";
-import PrinterProfileWidget from "../components/PrinterProfileWidget/PrinterProfileWidget";
 
 export default function () {
   return (<>
     <DeviceConnectionWidget />
-    <PrinterProfileWidget />
+    <Widget>TODO: Add support to change connection settings</Widget>
+
+    <Widget>TODO: Add profile picker to change device profile</Widget>
   </>)
 }

@@ -1,9 +1,9 @@
-import { Group, Label, Select, Separator, Input, Button } from "../../../core-ui/";
+import { Group, Label, Select, Separator, Input, Button, Form } from "../../../core-ui/";
 
 export default function PrinterProfileForm({
   ...props
 }) {
-  return <form className="grid grid-cols-2 gap-3">
+  return <Form className="grid grid-cols-2 gap-3">
     <Group>
       <Label htmlFor="brand">Brand</Label>
       <Input id="brand" />
@@ -51,5 +51,5 @@ export default function PrinterProfileForm({
         </Button>
       </Group>
     </div>
-  </form>
+  </Form>
 }
