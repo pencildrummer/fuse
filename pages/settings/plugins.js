@@ -1,12 +1,11 @@
 import SettingPage from "../../components/page-layouts/SettingPage";
 import DevicePluginsSettingsWidget from "../../plugins/@fuse-labs/core/components/DevicePluginsSettingsWidget/DevicePluginsSettingsWidget";
-import useSWRImmutable from 'swr/immutable'
-import fetcher from "../../lib/client/fetcher";
 import PluginsList from "../../plugins/@fuse-labs/core/components/PluginsList/PluginsList";
+import { useAppContext } from "components/AppProvider/AppProvider";
 
 export default function PluginsSettingsPage() {
 
-  const { data: plugins, error} = useSWRImmutable('/api/plugins/list', fetcher)
+  const { plugins } = useAppContext()
 
   return (
     <SettingPage>

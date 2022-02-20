@@ -15,6 +15,7 @@ export default function AppProvider({
 
   const [devices, setDevices] = useState(appData?.devices || [])
   const [profiles, setProfiles] = useState(appData?.profiles || {})
+  const [plugins, setPlugins] = useState(appData?.plugins || [])
 
   useEffect(_ => {
 		// Add socket listener for newly created device
@@ -73,7 +74,8 @@ export default function AppProvider({
   return <AppContext.Provider value={{
     ...appData,
     devices,
-    profiles
+    profiles,
+    plugins,
   }}>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages[locale]}>
       {props.children}

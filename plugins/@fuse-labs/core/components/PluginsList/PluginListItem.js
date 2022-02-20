@@ -53,7 +53,7 @@ export default function PluginListItem({
       </div>}
 
       <div className="flex items-center">
-        <SwitchRaw defaultChecked={plugin.active}
+        <SwitchRaw defaultChecked={plugin.fuse.isActive}
           disabled={plugin.fuse?.system} 
           onCheckedChange={v => setPluginActive(plugin.name, v)} />
       </div>

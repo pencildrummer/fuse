@@ -1,4 +1,4 @@
-import { getPluginInfo } from "lib/core/plugins";
+import { getPlugin } from "lib/core/plugins";
 import dynamic from "next/dynamic";
 import MainLayout from "../components/layouts/MainLayout";
 
@@ -19,7 +19,7 @@ export async function getServerSideProps(ctx) {
   const { tab } = query
 
   let pluginName = tab.join('/')
-  let plugin = getPluginInfo(pluginName)
+  let plugin = getPlugin(pluginName)
 
   if (!plugin) {
     return {

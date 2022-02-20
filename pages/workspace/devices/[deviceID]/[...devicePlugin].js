@@ -1,11 +1,8 @@
 import dynamic from 'next/dynamic'
 import getServerSideDeviceProp from '../../../../lib/server/getServerSideDeviceProp.js'
-import PrinterDevicePage from '../../../../components/page-layouts/PrinterDevicePage.js'
-import CNCDevicePage from '../../../../components/page-layouts/CNCDevicePage.js'
 import signale from 'signale'
 import chalk from 'chalk'
-import DevicePage from '../../../../components/page-layouts/DevicePage.js'
-import { getActivePluginsWithInfo } from '../../../../lib/core/plugins.js'
+import { getActivePlugins } from '../../../../lib/core/plugins.js'
 import getDevicePageComponent from 'components/page-layouts/getDevicePageComponent.js'
 
 export default function DevicePluginPage({
@@ -34,7 +31,7 @@ export async function getServerSideProps(ctx) {
   }
 
   // Retrieve active plugins with info to find the requested one to render
-  let plugins = getActivePluginsWithInfo()
+  let plugins = getActivePlugins()
 
   let pluginUrl = ctx.query.devicePlugin.join('/')
   // Get the requested plugin from URL,

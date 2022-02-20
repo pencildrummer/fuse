@@ -1,7 +1,7 @@
 import Page from "../../../../components/page-layouts/Page"
 import { Widget } from "../../../../plugins/@fuse-labs/core-ui"
 import dynamic from "next/dynamic"
-import { getPluginInfo, getPlugins } from "../../../../lib/core/plugins.js"
+import { getPlugin } from "../../../../lib/core/plugins.js"
 
 const InstalledPluginSettingsPage = ({
   plugin,
@@ -23,15 +23,13 @@ export default dynamic(_ => Promise.resolve(InstalledPluginSettingsPage), { ssr:
 export async function getServerSideProps({ query }) {
   const { pluginName } = query
 
-  const plugins = await getPlugins()
-
   // Normalize plugin name from query
   let name = pluginName.replace('*', '/')
 
-  // TODO - Get plugin object
-  let plugin = getPluginInfo(name)
+  // Get plugin object
+  let plugin = getPlugin(name)
 
-  // TODO - Redirect if no plugin is found?
+  // Redirect if no plugin is found?
   if (!plugin) {
     return {
       redirect: {
