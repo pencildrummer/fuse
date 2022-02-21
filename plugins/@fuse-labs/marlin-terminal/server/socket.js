@@ -1,7 +1,7 @@
 // TODO - Find a way to import event.ts for nodejs
 
 import { generateUniqueID } from "../../../../lib/shared/uuid.js"
-import { ReadlineParser } from "serialport"
+import { ReadlineParser, ReadyParser } from "serialport"
 import DeviceTerminal from '../lib/server/DeviceTerminal.js'
 import signale from "signale"
 import chalk from "chalk";
@@ -50,6 +50,44 @@ export default (socket) => {
       })
       // Call callback function
       fn?.(true)
+
+      // Add reader listener
+      signale.info('Port is open?', device.terminal.isOpen)
+      
+      signale.info('Attaching listener for data')
+
+      // This is for Marlin based
+      // Attach readyParser and then pipi readline parser to readyParser
+      let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
+      readyParser.on('ready', _ => signale.success('READY received!'))
+      let parser = readyParser.pipe(new ReadlineParser({ delimiter: '\n' }))
+      //let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\n' }))
+      parser.on('data', data => {
+        signale.info('Received data from parser', data)
+        socket.emit('@fuse-labs.terminal.message', {
+          id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
+          from: 'device',
+          message: data
+        })
+      })
+
+      // let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
+      // readyParser.on('ready', _ => signale.info('READY received!'))
+      // readyParser.on('data', data => signale.debug('Received data on parser', data))
+
+      //
+      // This is for - ARDUINO - GRBL - MAke different conneciton based on device connecte
+      //
+      // let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
+      // // Attach data listener on parser instead of port to get data already parsed
+      // parser.on('data', data => {
+      //   signale.info('Received data from parser', data)
+      //   socket.emit('@fuse-labs.terminal.message', {
+      //     id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
+      //     from: 'device',
+      //     message: data
+      //   })
+      // })
     })
 
     device.terminal.serialPort.on('close', error => {
@@ -61,6 +99,7 @@ export default (socket) => {
           message: 'Connection closed due to error: '+error.message
         })
       } else {
+        signale.info('Closed connection for ', device.id)
         // Normal close request
         socket.emit('@fuse-labs.terminal.message', {
           id: 'device-'+generateUniqueID(),
@@ -78,16 +117,6 @@ export default (socket) => {
         id: 'device-'+generateUniqueID(),
         from: 'device',
         message: 'Error: '+error.message
-      })
-    })
-
-    let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
-    // Attach data listener on parser instead of port to get data already parsed
-    parser.on('data', data => {
-      socket.emit('@fuse-labs.terminal.message', {
-        id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
-        from: 'device',
-        message: data
       })
     })
   })
