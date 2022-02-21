@@ -36,9 +36,10 @@ function PortRow({
   ...props
 }) {
 
-  const productInfo = useMemo(_ => 
-    getProductInfo(port.vendorId, port.productId)
-  , [port.vendorId, port.productId])
+  const productInfo = useMemo(_ => {
+    if (!port.vendorId) return null
+    return getProductInfo(port.vendorId, port.productId)
+  }, [port.vendorId, port.productId])
 
   return <Table.Row className="select-none cursor-pointer h-14 max-h-14" {...props}>
     <Table.Data className="w-52">
