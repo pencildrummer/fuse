@@ -6,30 +6,38 @@ import socket from "lib/client/socket";
 import getSuggestedName from "lib/shared/devices/getSuggestedName";
 import { Button, Group, Input, Label, Select, Separator, Form, DisplayGroup } from "plugins/@fuse-labs/core-ui";
 import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
+import { useMemo } from "react";
 import * as Yup from 'yup'
 
-export default function AddDeviceForm({
+export default function DeviceForm({
   device
 }) {
 
   const ports = usePorts()
 
   function handleSubmit(values, options) {
-    socket.emit('core.devices.add', values, (device) => {
-      console.log('Created device')
-      console.debug(device)
-    })
+    if (!device.id) {
+      socket.emit('core.devices.add', values, (device) => {
+        console.log('Created device')
+        console.info(device)
+      })
+    } else {
+      socket.emit('core.devices.update', device.id, values, (device) => {
+        console.log('Updated device')
+        console.info(device)
+      })
+    }
   }
-  
+
   return (
-    <Form initialValues={{
-      'name': getSuggestedName(device),
-      'profileId': '',
-      'port': device?.port.path || '',
-      'baudrate': 'auto',
-      'serialNumber': device?.port.serialNumber,
-      'vendorId': device?.port.vendorId,
-      'productId': device?.port.productId,
+    <Form enableReinitialize initialValues={{
+      'name': device.name || getSuggestedName(device),
+      'profileId': device.profile?.id || device.profileId || '',
+      'port': device?.port || '',
+      'baudrate': device?.baudrate || 'auto',
+      'serialNumber': device?.serialNumber,
+      'vendorId': device?.vendorId,
+      'productId': device?.productId,
     }} validationSchema={Yup.object({
       name: Yup.string().required(),
       profileId: Yup.string().required(),
@@ -45,9 +53,9 @@ export default function AddDeviceForm({
         <Separator />
 
         <Group orientation="vertical" className="text-xs">
-          <DisplayGroup label="Serial number" value={values.serialNumber} />
-          <DisplayGroup label="Vendor ID" value={values.vendorId} />
-          <DisplayGroup label="Product ID" value={values.productId} />
+          <DisplayGroup label="Serial number" value={values.serialNumber || '-'} />
+          <DisplayGroup label="Vendor ID" value={values.vendorId || '-'} />
+          <DisplayGroup label="Product ID" value={values.productId || '-'} />
         </Group>
 
         <Separator />
@@ -59,7 +67,7 @@ export default function AddDeviceForm({
               className="!bg-transparent !border-dashed !ring-0"
               error={formProps.submitCount && errors.profileId}
               disabled
-              defaultValue={values.profileId}/>
+              value={values.profileId} />
           </Group>
           <Field name="profileId" component={DeviceProfilePicker} />
         </Group>

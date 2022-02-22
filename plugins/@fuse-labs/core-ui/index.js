@@ -21,6 +21,8 @@ import Loader from './components/shared/Loader/Loader.js'
 import List from './components/shared/List/List.js'
 import ScrollArea from './components/shared/ScrollArea/ScrollArea.js'
 
+import DropdownMenu from './components/shared/DropdownMenu/DropdownMenu.js'
+
 export {
   Button,
   Slider,
@@ -44,5 +46,7 @@ export {
   ToggleGroup,
 
   List,
-  ScrollArea
+  ScrollArea,
+
+  DropdownMenu,
 }

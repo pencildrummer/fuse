@@ -1,4 +1,4 @@
-import { addDevice } from "../../../../lib/core/devices.js"
+import { addDevice, updateDevice } from "../../../../lib/core/devices.js"
 import { SerialPort } from "serialport"
 import { addProfile, updateProfile, deleteProfile } from "../../../../lib/core/profiles.js"
 
@@ -28,7 +28,11 @@ export default (socket) => {
       profileId = profile.id
     }
     // Add device to the system
-    let device = addDevice(name, profileId, port, baudrate, {
+    let device = addDevice({
+      name,
+      profileId,
+      port,
+      baudrate,
       serialNumber,
       vendorId,
       productId
@@ -39,6 +43,19 @@ export default (socket) => {
     }
     // Return created device to callback function
     fn(device)
+  })
+
+  // Update
+
+  socket.on('core.devices.update', async (deviceId, data, fn) => {
+    // Add device to the system
+    let device = updateDevice(deviceId, data)
+    if (device) {
+      // Broadcast new device creation
+      socket.emit('core.devices.updated', device)
+    }
+    // Return updated device to callback function
+    fn?.(device)
   })
 
   /**

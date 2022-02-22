@@ -22,6 +22,20 @@ export default function AppProvider({
 		socket.on('core.devices.added', (device) => {
       setDevices(devices => [...devices, device])
 		})
+    // Add socket listener for updated device
+    socket.on('core.devices.updated', (device) => {
+      setDevices(devices => {
+        let index = devices.findIndex(d => d.id === device.id)
+        if (index < 0) {
+          console.error('Received updated device but not found in current ones', device)
+          return devices
+        } else {
+          let newDevices = [...devices]
+          newDevices[index] = device
+          return newDevices
+        }
+      })
+    })
 
     /**
      * Profiles

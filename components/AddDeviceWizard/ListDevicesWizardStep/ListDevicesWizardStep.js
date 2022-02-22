@@ -14,7 +14,9 @@ export default function ListDeviceWizardStep({
     // Convert port to device
     let device = port.device || { }
     // Attach port to device
-    device.port = port
+    device.port = port.path
+    device.vendorId = port.vendorId
+    device.productId = port.productId
     // Pass it up
     onSelectDevice?.(device)
   }

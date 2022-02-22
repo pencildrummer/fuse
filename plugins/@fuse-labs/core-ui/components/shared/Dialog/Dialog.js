@@ -10,11 +10,11 @@ function Dialog({
   ...props
 }) {
   return (
-    <DialogRoot>
+    <DialogRoot {...props}>
       <DialogTrigger>
         {children}
       </DialogTrigger>
-      <DialogContent {...props}>
+      <DialogContent className={props.className}>
         {content}
       </DialogContent>
     </DialogRoot>

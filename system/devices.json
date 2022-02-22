@@ -5,34 +5,14 @@
       "name": "CNC",
       "profileId": "vevor.3018",
       "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200,
-      "profile": {
-        "id": "vevor.3018",
-        "type": "cnc",
-        "brand": "Vevor",
-        "model": "3018",
-        "volume": {
-          "width": 300,
-          "height": 180
-        }
-      }
+      "baudrate": 115200
     },
     {
       "id": "149dd208-a604-44d3-99b7-7327102daed3",
       "name": "Arduino Uno R3",
       "profileId": "vevor.3018",
       "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200,
-      "profile": {
-        "id": "vevor.3018",
-        "type": "cnc",
-        "brand": "Vevor",
-        "model": "3018",
-        "volume": {
-          "width": 300,
-          "height": 180
-        }
-      }
+      "baudrate": 115200
     },
     {
       "id": "67582d90-91f3-47de-b12d-d594219c30d9",
@@ -42,17 +22,7 @@
       "baudrate": "auto",
       "serialNumber": "7593531363635161D1B1",
       "vendorId": "2341",
-      "productId": "0043",
-      "profile": {
-        "id": "vevor.3018",
-        "type": "cnc",
-        "brand": "Vevor",
-        "model": "3018",
-        "volume": {
-          "width": 300,
-          "height": 180
-        }
-      }
+      "productId": "0043"
     },
     {
       "id": "925ab30f-4add-4e13-8fc1-43ca848e1f97",
@@ -62,18 +32,7 @@
       "baudrate": 115200,
       "serialNumber": "7593531363635161D1B1",
       "vendorId": "2341",
-      "productId": "0043",
-      "profile": {
-        "id": "longer.lk4_pro",
-        "type": "fdm_printer",
-        "brand": "Longer",
-        "model": "LK4 Pro",
-        "volume": {
-          "width": 100,
-          "height": 100,
-          "depth": 100
-        }
-      }
+      "productId": "0043"
     },
     {
       "id": "f56b2567-1462-4512-8260-3a5582b43cbf",
@@ -83,51 +42,14 @@
       "baudrate": 115200,
       "serialNumber": "7593531363635161D1B1",
       "vendorId": "2341",
-      "productId": "0043",
-      "profile": {
-        "id": "creality.ender_3",
-        "type": "fdm_printer",
-        "brand": "Creality",
-        "model": "Ender 3",
-        "volume": {
-          "width": 200,
-          "depth": 200,
-          "height": 200,
-          "origin": "lower-left",
-          "formFactor": "rectangular"
-        },
-        "bed": {
-          "heated": true
-        },
-        "gCodeVersion": "marlin",
-        "xAxis": {
-          "maxSpeed": 6000
-        },
-        "yAxis": {
-          "maxSpeed": 6000
-        },
-        "zAxis": {
-          "maxSpeed": 3000
-        }
-      }
+      "productId": "0043"
     },
     {
       "id": "754f7076-bf4b-44cf-9db2-7fd1d514cc33",
-      "name": "NUOVO",
-      "profileId": "longer.lk4_pro",
+      "name": "Ender 3",
+      "profileId": "creality.ender_3",
       "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto",
-      "profile": {
-        "id": "longer.lk4_pro",
-        "type": "fdm_printer",
-        "brand": "Longer",
-        "model": "LK4 Pro",
-        "volume": {
-          "width": 100,
-          "height": 100,
-          "depth": 100
-        }
-      }
+      "baudrate": "auto"
     },
     {
       "id": "900c9b73-ac0d-4656-ba20-2cb3bbf61933",
@@ -136,18 +58,7 @@
       "port": "/dev/tty.usbserial-1420",
       "baudrate": 115200,
       "vendorId": "1a86",
-      "productId": "7523",
-      "profile": {
-        "id": "longer.lk4_pro",
-        "type": "fdm_printer",
-        "brand": "Longer",
-        "model": "LK4 Pro",
-        "volume": {
-          "width": 100,
-          "height": 100,
-          "depth": 100
-        }
-      }
+      "productId": "7523"
     }
   ]
 }

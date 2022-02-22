@@ -1,4 +1,4 @@
-import AddDeviceForm from "components/AddDeviceForm/AddDeviceForm";
+import DeviceForm from "components/DeviceForm/DeviceForm";
 import { useState } from "react";
 import ListDeviceWizardStep from "./ListDevicesWizardStep/ListDevicesWizardStep";
 
@@ -7,6 +7,6 @@ export default function AddDeviceWizard({
   props
 }) {
   const [selectedDevice, setSelectedDevice] = useState(device)
-  if (selectedDevice) return <AddDeviceForm device={selectedDevice} />
+  if (selectedDevice) return <DeviceForm device={selectedDevice} />
   return <ListDeviceWizardStep onSelectDevice={setSelectedDevice}/>
 }
