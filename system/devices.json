@@ -1,30 +1,6 @@
 {
   "data": [
     {
-      "id": "fb38885f-d4f3-42dd-88d9-5cb0f9e08e43",
-      "name": "CNC",
-      "profileId": "vevor.3018",
-      "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200
-    },
-    {
-      "id": "149dd208-a604-44d3-99b7-7327102daed3",
-      "name": "Arduino Uno R3",
-      "profileId": "vevor.3018",
-      "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200
-    },
-    {
-      "id": "67582d90-91f3-47de-b12d-d594219c30d9",
-      "name": "Arduino Uno R3",
-      "profileId": "vevor.3018",
-      "port": "/dev/tty.usbmodem14201",
-      "baudrate": "auto",
-      "serialNumber": "7593531363635161D1B1",
-      "vendorId": "2341",
-      "productId": "0043"
-    },
-    {
       "id": "925ab30f-4add-4e13-8fc1-43ca848e1f97",
       "name": "Arduino Uno R3",
       "profileId": "longer.lk4_pro",
@@ -33,23 +9,6 @@
       "serialNumber": "7593531363635161D1B1",
       "vendorId": "2341",
       "productId": "0043"
-    },
-    {
-      "id": "f56b2567-1462-4512-8260-3a5582b43cbf",
-      "name": "Test bugfix",
-      "profileId": "creality.ender_3",
-      "port": "/dev/tty.usbmodem14201",
-      "baudrate": 115200,
-      "serialNumber": "7593531363635161D1B1",
-      "vendorId": "2341",
-      "productId": "0043"
-    },
-    {
-      "id": "754f7076-bf4b-44cf-9db2-7fd1d514cc33",
-      "name": "Ender 3",
-      "profileId": "creality.ender_3",
-      "port": "/dev/tty.Bluetooth-Incoming-Port",
-      "baudrate": "auto"
     },
     {
       "id": "900c9b73-ac0d-4656-ba20-2cb3bbf61933",

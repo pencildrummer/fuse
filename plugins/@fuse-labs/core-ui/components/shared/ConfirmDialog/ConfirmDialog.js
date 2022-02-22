@@ -7,10 +7,12 @@ import Group from '../Group/Group'
 function ConfirmDialog({
   children,
   content,
+  open,
+  onOpenChange,
   ...props
 }) {
   return (
-    <ConfirmDialogRoot>
+    <ConfirmDialogRoot open={open} onOpenChange={onOpenChange}>
       <ConfirmDialogTrigger>
         {children}
       </ConfirmDialogTrigger>

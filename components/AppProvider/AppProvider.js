@@ -36,6 +36,10 @@ export default function AppProvider({
         }
       })
     })
+    // Add socket listener for removed device
+    socket.on('core.devices.removed', (device) => {
+      setDevices(devices => devices.filter(d => d.id !== device.id))
+    })
 
     /**
      * Profiles

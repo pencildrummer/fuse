@@ -22,6 +22,10 @@ export default function DeviceHomePage() {
   // TODO - This should a client helper or a class
   const device = devices.find(device => device.id == deviceID )
 
+  if (!device) {
+    router.replace('/workspace')
+    return null
+  }
   const DevicePageComponent = getDevicePageComponent(device.profile.type);
 
 	return (

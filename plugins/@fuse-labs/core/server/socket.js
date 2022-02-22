@@ -1,6 +1,7 @@
-import { addDevice, updateDevice } from "../../../../lib/core/devices.js"
+import { addDevice, removeDevice, updateDevice } from "../../../../lib/core/devices.js"
 import { SerialPort } from "serialport"
 import { addProfile, updateProfile, deleteProfile } from "../../../../lib/core/profiles.js"
+import signale from "signale"
 
 export default (socket) => {
   socket.on('core.serial.list', async (name, fn) => {
@@ -53,6 +54,19 @@ export default (socket) => {
     if (device) {
       // Broadcast new device creation
       socket.emit('core.devices.updated', device)
+    }
+    // Return updated device to callback function
+    fn?.(device)
+  })
+
+  // Remove
+
+  socket.on('core.devices.remove', async (deviceId, fn) => {
+    // Add device to the system
+    let device = removeDevice(deviceId)
+    if (device) {
+      // Broadcast new device creation
+      socket.emit('core.devices.removed', device)
     }
     // Return updated device to callback function
     fn?.(device)
