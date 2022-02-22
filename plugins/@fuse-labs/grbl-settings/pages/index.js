@@ -84,8 +84,7 @@ export default function GRBLSettingsPage() {
   useEffect(_ => {
     // Connect to device and request settings
     terminal.connect(connected => {
-      if (!connected)
-      console.log('Connected')
+      console.log('Connected', connected)
       // Command to receive GRBL settings
     })
 

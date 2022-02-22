@@ -1,37 +1,93 @@
-import { HomeIcon, ThickArrowDownIcon, ThickArrowLeftIcon, ThickArrowRightIcon, ThickArrowUpIcon } from '@radix-ui/react-icons'
+import { Cross2Icon, ExclamationTriangleIcon, HomeIcon, ThickArrowDownIcon, ThickArrowLeftIcon, ThickArrowRightIcon, ThickArrowUpIcon } from '@radix-ui/react-icons'
 import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
 import socket from 'lib/client/socket'
-import { Widget, ToggleGroup } from 'plugins/@fuse-labs/core-ui/index.js'
-import { useState } from 'react'
-import { Button } from '../../../core-ui'
+import { Widget, ToggleGroup, Group } from 'plugins/@fuse-labs/core-ui/index.js'
+import { useEffect, useState } from 'react'
+import { Button, Separator } from '../../../core-ui'
+
+/**
+ * All the commands should be moved into each single listener on socket to be safer?
+ */
 
 function MoveButton({
   ...props
 }) {
-  return <Button squared>
+  return <Button squared {...props}>
     {props.children}
   </Button>
 }
 
 export default function MoveWidget() {
 
-  const { device } = useDeviceContext()
+  const { device, terminal } = useDeviceContext()
 
+  const [disabled, setDisabled] = useState(true)
   const [distanceInc, setDistanceInc] = useState("1")
+
+  useEffect(_ => {
+    console.log('Terminal', terminal)
+  }, [terminal])
 
   // This will be handled in a core lib
   function handleConnect() {
-    socket.emit('@fuse-labs.marlin-move.openDevice', device, (result) => {
-      console.log('Result', result)
+    terminal.connect(connected => {
+      console.log('Connected', connected)
+      setDisabled(!connected)
     })
+    // socket.emit('@fuse-labs.marlin-move.openDevice', device, (result) => {
+    //   console.log('Result', result)
+    // })
   }
 
   // This is specific for the move plugin
   // Maybe extends GCodeCapableDevice prototype to add move methods?
   function handleMove(direction) {
-    socket.emit('@fuse-labs.marlin-move.move.x', 10, (res) => {
-      console.log('Move result', res)
-    })
+
+    // Validate distanceInc
+    if (isNaN(distanceInc)) {
+      return console.error('Distance is not a number', distanceInc)
+    }
+
+    // Force floating value to have dot instead of commas
+    let normalizeDistanceString = distanceInc.toString().replace(',', '.')
+
+    // Set relative positioning
+    terminal.sendMessage('G91')
+    // TODO - Should wait for command completion
+    // Send position command
+    let messageParts = [
+      'G0'
+    ]
+    switch (direction) {
+      case 'incX': messageParts.push(`X${distanceInc}`); break
+      case 'decX': messageParts.push(`X-${distanceInc}`); break
+      case 'incY': messageParts.push(`Y${distanceInc}`); break
+      case 'decY': messageParts.push(`Y-${distanceInc}`); break
+      case 'incZ': messageParts.push(`Z${distanceInc}`); break
+      case 'decZ': messageParts.push(`Z-${distanceInc}`); break
+      default:     return console.error('Unsupported direction:', direction)
+    }
+
+    let message = messageParts.join(' ')
+
+    terminal.sendMessage(message)
+    // socket.emit('@fuse-labs.marlin-move.move.x', 10, (res) => {
+    //   console.log('Move result', res)
+    // })
+  }
+
+  function handleHome(axis) {
+    let message = 'G28 R10'
+    switch(axis) {
+      case 'x': message += ' X'; break
+      case 'y': message += ' Y'; break
+      case 'z': message += ' Z'; break
+    }
+    terminal.sendMessage(message)
+  }
+
+  function handleEmergencyStop() {
+    terminal.sendMessage('M112')
   }
 
   return (
@@ -47,14 +103,14 @@ export default function MoveWidget() {
         <div className='grid grid-cols-3 grid-rows-3 gap-2'>
           <div />
           <div>
-            <MoveButton onClick={_ => handleMove('up')}>
+            <MoveButton onClick={_ => handleMove('decY')} disabled={disabled}>
               <ThickArrowUpIcon />
             </MoveButton>
           </div>
           <div />
 
           <div>
-            <MoveButton onClick={_ => handleMove('left')}>
+            <MoveButton onClick={_ => handleMove('decX')} disabled={disabled}>
               <ThickArrowLeftIcon />
             </MoveButton>
           </div>
@@ -72,14 +128,14 @@ export default function MoveWidget() {
             </div>
           </div>
           <div>
-            <MoveButton onClick={_ => handleMove('right')}>
+            <MoveButton onClick={_ => handleMove('incX')} disabled={disabled}>
               <ThickArrowRightIcon />
             </MoveButton>
           </div>
 
           <div />
           <div>
-            <MoveButton onClick={_ => handleMove('down')}>
+            <MoveButton onClick={_ => handleMove('incY')} disabled={disabled}>
               <ThickArrowDownIcon />
             </MoveButton>
           </div>
@@ -88,7 +144,7 @@ export default function MoveWidget() {
 
         <div className='grid grid-cols-1 grid-rows-3 gap-2'>
           <div>
-            <MoveButton>
+            <MoveButton disabled={disabled} onClick={_ => handleMove('incZ')}>
               <ThickArrowUpIcon />
             </MoveButton>
           </div>
@@ -100,7 +156,7 @@ export default function MoveWidget() {
             </div>
           </div>
           <div>
-            <MoveButton>
+            <MoveButton disabled={disabled} onClick={_ => handleMove('decZ')}>
               <ThickArrowDownIcon />
             </MoveButton>
           </div>
@@ -125,6 +181,34 @@ export default function MoveWidget() {
           </ToggleGroup.Item>
         </ToggleGroup>
       </div>
+
+      <Separator />
+
+      <Group>
+        <Button onClick={_ => handleHome('x')}disabled={disabled}>
+          <HomeIcon className='mr-1'/>X
+        </Button>
+        <Button onClick={_ => handleHome('y')}disabled={disabled}>
+          <HomeIcon className='mr-1'/>Y
+        </Button>
+        <Button onClick={_ => handleHome('z')} disabled={disabled}>
+          <HomeIcon className='mr-1'/>Z
+        </Button>
+      </Group>
+
+      <Button onClick={_ => handleHome()} disabled={disabled}>
+        <HomeIcon />
+      </Button>
+
+      <Separator />
+      <Button className="w-full" onClick={_ => terminal.sendMessage('M410')}>
+        <Cross2Icon className='mr-1' /> Quick stop
+      </Button>
+      
+      <Button className="w-full" onClick={_ => terminal.sendMessage('M112')}>
+        <ExclamationTriangleIcon className='mr-1'/> Emergency stop
+      </Button>
+
     </Widget>
   )
 }

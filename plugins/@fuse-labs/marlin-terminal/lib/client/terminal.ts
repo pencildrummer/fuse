@@ -35,11 +35,11 @@ export class Terminal {
     }
   }
 
-  connect(onConnect: () => void = null) {
+  connect(onConnect: (arg: boolean) => void = null) {
     this._socket.emit('@fuse-labs.terminal.connect', this.device.id, open => {
       console.log('Callback on connect, result:', open)
       this._isOpen = open
-      if (open) onConnect?.()
+      if (open) onConnect?.(open)
     })
   }
 
@@ -48,6 +48,7 @@ export class Terminal {
   }
 
   sendMessage(message: string) {
+    console.log('Sending message:', message)
     let data = {
       id: generateUniqueID(),
       message: this.formatMessage(message),

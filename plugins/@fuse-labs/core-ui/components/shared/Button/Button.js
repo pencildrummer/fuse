@@ -3,7 +3,7 @@ import React, { useMemo } from "react"
 import styles from './Button.module.scss'
 
 const Button = React.forwardRef(({
-  as = "a",
+  as = "button",
   squared,
   rounded,
   className,
@@ -34,7 +34,9 @@ const Button = React.forwardRef(({
         'rounded-full': rounded
       },
       'focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-600 focus-visible:ring-opacity-75',
-      'disabled:select-none disabled:touch-none',
+      {
+        'select-none touch-none disabled': props.disabled,
+      },
       'dark:disabled:opacity-40 dark:disabled:bg-gray-800',
       className
     )}

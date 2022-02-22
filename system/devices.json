@@ -12,7 +12,7 @@
     },
     {
       "id": "900c9b73-ac0d-4656-ba20-2cb3bbf61933",
-      "name": "QinHeng Electronics CH340 serial converter",
+      "name": "Longer LK4 Pro",
       "profileId": "longer.lk4_pro",
       "port": "/dev/tty.usbserial-1420",
       "baudrate": 115200,

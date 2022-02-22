@@ -36,7 +36,6 @@ export default function DevicePageTopBarMenu() {
       {
         label: 'Disconnect',
         icon: LinkBreak2Icon,
-        action: handleDisconnect
       },
       '-',
       {
