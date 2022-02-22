@@ -25,32 +25,44 @@ export default class DeviceTerminal {
           signale.error('Error opening serial connection on port path', port, '@', baudrate)
           callback?.(false)
         } else {
-          //console.log(this._serialPort.get())
           callback?.(true)
         }
       })
-      // this._serialPort.set({
-      //   brk: false,
-      //   cts: false,
-      //   dtr: false,
-      //   dsr: false,
-      //   rts: false,
-      // })
     } catch(error) {
       signale.error('Error creating serial port for device '+chalk.redBright(device.id), error)
     }
   }
 
+  /**
+   * Request serial port connection to close
+   */
   close() {
     signale.info('Requesting closing connection for device ', this.id)
     this._serialPort.close()
   }
 
+  /**
+   * Change current baud rate
+   * @param {number} baudRate 
+   */
   setBaudRate(baudRate) {
-    // TODO - Change baudRate
+    if (!this._serialPort) {
+      return signale.error('No serial port to update baud rate')
+    }
+    this._serialPort.update({
+      baudRate: baudRate
+    })
   }
 
+  /**
+   * Send message on device serial port
+   * @param {string | Buffer} message 
+   * @returns 
+   */
   send(message) {
+    if (!this.isOpen) {
+      return signale.error('Unable to send message. Port is not open.')
+    }
     signale.info('Sending message', message)
     this._serialPort.write(message)
   }
