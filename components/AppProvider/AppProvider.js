@@ -1,30 +1,44 @@
 import socket from 'lib/client/socket'
 import { pathCase } from 'lib/shared/strings'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { IntlProvider } from 'react-intl'
 import * as messages from '../../lang/index'
+import initPluginSocket from './utilities/initPluginSockets'
 
 export const AppContext = React.createContext()
 
 export default function AppProvider({
-  appData,
+  devices,
+  profiles,
+  plugins,
+  locale = 'en',
   ...props
 }) {
 
-  const locale = 'en'
+  const [providerDevices, setProviderDevices] = useState(devices || [])
+  const [providerProfiles, setProviderProfiles] = useState(profiles || {})
 
-  const [devices, setDevices] = useState(appData?.devices || [])
-  const [profiles, setProfiles] = useState(appData?.profiles || {})
-  const [plugins, setPlugins] = useState(appData?.plugins || [])
+  // Init socket for plugins if needed
+  const providerPlugins = useMemo(_ => {
+    return plugins?.map(plugin => {
+      let socket = initPluginSocket(plugin)
+      if (!socket)
+        return plugin
+      return {
+        ...plugin,
+        socket: socket
+      }
+    })
+  }, [plugins])
 
   useEffect(_ => {
 		// Add socket listener for newly created device
 		socket.on('core.devices.added', (device) => {
-      setDevices(devices => [...devices, device])
+      setProviderDevices(devices => [...devices, device])
 		})
     // Add socket listener for updated device
     socket.on('core.devices.updated', (device) => {
-      setDevices(devices => {
+      setProviderDevices(devices => {
         let index = devices.findIndex(d => d.id === device.id)
         if (index < 0) {
           console.error('Received updated device but not found in current ones', device)
@@ -38,7 +52,7 @@ export default function AppProvider({
     })
     // Add socket listener for removed device
     socket.on('core.devices.removed', (device) => {
-      setDevices(devices => devices.filter(d => d.id !== device.id))
+      setProviderDevices(devices => devices.filter(d => d.id !== device.id))
     })
 
     /**
@@ -47,7 +61,7 @@ export default function AppProvider({
     socket.on('core.profiles.added', (profile) => {
       // Add received new profile to in memory ones
       const brand = pathCase(profile.brand)
-      setProfiles(profiles => {
+      setProviderProfiles(profiles => {
         let newProfiles = {...profiles}
         newProfiles[brand] = newProfiles[brand] || []
         newProfiles[brand].push(profile)
@@ -57,7 +71,7 @@ export default function AppProvider({
 
     socket.on('core.profiles.updated', (profile) => {
       // Updated received profile to in memory ones
-      setProfiles(profiles => {
+      setProviderProfiles(profiles => {
         let brand = pathCase(profile.brand)
         let editIndex = profiles[brand].findIndex(p => p.id == profile.id)
         if (editIndex == -1) {
@@ -73,7 +87,7 @@ export default function AppProvider({
 
     socket.on('core.profiles.deleted', (id) => {
       // Remove deleted profiles form the in memory ones
-      setProfiles(profiles => {
+      setProviderProfiles(profiles => {
         let keyPath = id.split('.')
         let brand = pathCase(keyPath[0])
         let model = pathCase(keyPath[1])
@@ -90,10 +104,9 @@ export default function AppProvider({
 	}, [])
 
   return <AppContext.Provider value={{
-    ...appData,
-    devices,
-    profiles,
-    plugins,
+    devices: providerDevices,
+    profiles: providerProfiles,
+    plugins: providerPlugins,
   }}>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages[locale]}>
       {props.children}

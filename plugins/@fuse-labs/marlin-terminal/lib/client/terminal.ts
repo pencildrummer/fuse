@@ -1,7 +1,6 @@
 import socket from 'lib/client/socket';
 import { generateUniqueID } from 'lib/shared/uuid';
 import { Socket } from 'socket.io-client'
-import { Event } from '../types/events.ts';
 
 enum LineEnding {
   None = 0,
@@ -26,8 +25,10 @@ export class Terminal {
 
   constructor(device, { autoConnect = true } = {}) {
     this.device = device
+
+    console.log('Device', device)
     // Init socket to pass messages to backend
-    this._socket = socket
+    this._socket = device.sockets.fuseLabs.marlinTerminal
 
     // Automatically connect on creation
     if (autoConnect) {
@@ -36,7 +37,7 @@ export class Terminal {
   }
 
   connect(onConnect: (arg: boolean) => void = null) {
-    this._socket.emit('@fuse-labs.terminal.connect', this.device.id, open => {
+    this._socket.emit('open', this.device.id, open => {
       console.log('Callback on connect, result:', open)
       this._isOpen = open
       if (open) onConnect?.(open)
@@ -44,7 +45,7 @@ export class Terminal {
   }
 
   disconnect() {
-    this._socket.emit('@fuse-labs.terminal.disconnect', this.device.id)
+    this._socket.emit('close', this.device.id)
   }
 
   sendMessage(message: string) {
@@ -55,16 +56,16 @@ export class Terminal {
       from: 'user',
       deviceId: this.device.id
     }
-    this._socket.emit(Event.Message, data)
+    this._socket.emit('message', data)
     return data
   }
 
   onMessageReceived(listener: ([...args]: [any]) => void) {
-    this._socket.on(Event.Message, listener)
+    this._socket.on('message', listener)
   }
 
   offMessageReceived(listener: ([...args]: [any]) => void) {
-    this._socket.off(Event.Message, listener)
+    this._socket.off('message', listener)
   }
 
   // Internal

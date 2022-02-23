@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
   if (!appData)
     return <AppLoader />
 
-  return <AppProvider appData={appData}>
+  return <AppProvider {...appData}>
     <Component {...pageProps} />
   </AppProvider>
 }

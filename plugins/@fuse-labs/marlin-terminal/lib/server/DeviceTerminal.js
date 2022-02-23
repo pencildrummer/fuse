@@ -22,10 +22,10 @@ export default class DeviceTerminal {
         rtscts: false,
       }, (err) => {
         if (err) {
-          signale.error('Error opening serial connection on port path', port, '@', baudrate)
-          callback?.(false)
+          signale.error('Error opening serial connection on port path', device.port, '@', device.baudrate)
+          callback?.(err)
         } else {
-          callback?.(true)
+          callback?.()
         }
       })
     } catch(error) {

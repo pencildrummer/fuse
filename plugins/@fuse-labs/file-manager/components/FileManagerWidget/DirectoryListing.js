@@ -1,5 +1,4 @@
-import classNames from "classnames"
-import socket from "lib/client/socket"
+import usePlugin from "hooks/usePlugin"
 import { useEffect, useState } from "react"
 import { List } from "../../../core-ui"
 import { useFileManagerContext } from "../FileManagerProvider"
@@ -13,12 +12,14 @@ export default function DirectoryListing({
   ...props
 }) {
 
+  const plugin = usePlugin('@fuse-labs/file-manager')
+  
   const { file, setFile } = useFileManagerContext()
   const [items, setItems] = useState([])
 
   function readDir() {
     // Request socket to read directory
-    socket.emit('@fuse-labs.file-manager.readDir', { path }, data => {
+    plugin.socket.emit('dir:list', { path }, data => {
       setItems(data)
     })
   }
@@ -39,9 +40,9 @@ export default function DirectoryListing({
         readDir()
       }
     }
-    socket.on('@fuse-labs.file-manager.file:added', fileAddedListener)
+    plugin.socket.on('file:added', fileAddedListener)
     return _ => {
-      socket.off('@fuse-labs.file-manager.file:added', fileAddedListener)
+      plugin.socket.off('file:added', fileAddedListener)
     }
   }, [])
 

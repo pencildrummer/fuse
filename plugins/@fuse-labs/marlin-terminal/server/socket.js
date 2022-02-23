@@ -10,19 +10,28 @@ import { getDevice } from "../../../../lib/core/devices.js";
 export default (socket) => {
   // Register terminal listeners
   
-  socket.on('@fuse-labs.terminal.connect', (deviceId, fn) => {
+  socket.on('open', (deviceId, fn) => {
 
     let device = getDevice(deviceId)
 
     // Check for existing device terminal
     if (!device.terminal) {
       // Create DeviceTerminal
-      device.terminal = new DeviceTerminal(device)
+      device.terminal = new DeviceTerminal(device, (err) => {
+        if (err) {
+          signale.error('Error creating DeviceTerminal:', err)
+          socket.emit('message', {
+            id: 'server-'+generateUniqueID(),
+            from: 'server',
+            message: 'Error connecting to device - ' + err.message
+          })
+        }
+      })
       signale.info('Added terminal to device ', device.id)
     }
 
     if (device.terminal.isOpen) {
-      socket.emit('@fuse-labs.terminal.message', {
+      socket.emit('message', {
         id: 'server-'+generateUniqueID(),
         from: 'server',
         message: 'Already connected'
@@ -31,7 +40,7 @@ export default (socket) => {
     }
 
     // Send message from server notify connection start process
-    socket.emit('@fuse-labs.terminal.message', {
+    socket.emit('message', {
       id: 'server-'+generateUniqueID(),
       from: 'server',
       message: 'Connecting to device...'
@@ -41,9 +50,9 @@ export default (socket) => {
     device.terminal.serialPort.on('open', _ => {
       signale.success('Opened connection on', chalk.greenBright(device.terminal.serialPort.path))
       // Broadcast open connection result
-      socket.emit('@fuse-labs.terminal.connected', deviceId)
+      socket.emit('connected', deviceId)
       // Send human readable message
-      socket.emit('@fuse-labs.terminal.message', {
+      socket.emit('message', {
         id: 'device-'+generateUniqueID(),
         from: 'device',
         message: 'Connection opened'
@@ -64,7 +73,7 @@ export default (socket) => {
       //let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\n' }))
       parser.on('data', data => {
         signale.info('Received data from parser', data)
-        socket.emit('@fuse-labs.terminal.message', {
+        socket.emit('message', {
           id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
           from: 'device',
           message: data
@@ -93,7 +102,7 @@ export default (socket) => {
     device.terminal.serialPort.on('close', error => {
       if (error) {
         signale.error('Closed connection due to error', error)
-        socket.emit('@fuse-labs.terminal.message', {
+        socket.emit('message', {
           id: 'device-'+generateUniqueID(),
           from: 'device',
           message: 'Connection closed due to error: '+error.message
@@ -101,7 +110,7 @@ export default (socket) => {
       } else {
         signale.info('Closed connection for ', device.id)
         // Normal close request
-        socket.emit('@fuse-labs.terminal.message', {
+        socket.emit('message', {
           id: 'device-'+generateUniqueID(),
           from: 'device',
           message: 'Connection closed'
@@ -113,7 +122,7 @@ export default (socket) => {
 
     device.terminal.serialPort.on('error', error => {
       signale.error('Error received', error)
-      socket.emit('@fuse-labs.terminal.message', {
+      socket.emit('message', {
         id: 'device-'+generateUniqueID(),
         from: 'device',
         message: 'Error: '+error.message
@@ -122,10 +131,10 @@ export default (socket) => {
   })
 
   // Received terminal message from socket
-  socket.on('@fuse-labs.terminal.message', (args, fn) => {
+  socket.on('message', (args, fn) => {
 
     // Broadcast the same message, attaching received flag, to notify client 
-    socket.emit('@fuse-labs.terminal.message', {
+    socket.emit('message', {
       ...args,
       received: true
     })
@@ -147,7 +156,7 @@ export default (socket) => {
   /**
    * Disconnect from serial port
    */
-  socket.on('@fuse-labs.terminal.disconnect', (deviceId, fn) => {
+  socket.on('close', (deviceId, fn) => {
     let device = getDevice(deviceId)
     if (!device.terminal) {
       fn?.(false)

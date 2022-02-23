@@ -4,7 +4,7 @@ import { getDevice } from "../../../../lib/core/devices.js"
 export default (socket) => {
 
   signale.info('Registering GRBL move')
-  socket.on('@fuse-labs.grbl-move.move.x', (deviceId, xValue, fn) => {
+  socket.on('move:x', (deviceId, xValue, fn) => {
 
     signale.info('Move required for deviceId', deviceId, xValue)
     if (!deviceId) {

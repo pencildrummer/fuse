@@ -3,14 +3,15 @@ import File from "../../../../lib/shared/models/File.js"
 import Directory from "../../../../lib/shared/models/Directory.js"
 
 export default (socket) => {
-  socket.on('@fuse-labs.file-manager.readDir', ({ path: targetPath }, fn) => {
+
+  socket.on('dir:list', ({ path: targetPath }, fn) => {
     // TODO - Validate if path is inside project scope?
     let directory = new Directory(targetPath)
     directory.read()
     fn(directory.entries)
   })
 
-  socket.on('@fuse-labs.file-manager.file:add', ({ filename, data }, fn) => {
+  socket.on('file:add', ({ filename, data }, fn) => {
     // TODO - Check file exists already
     let filePath = path.join(process.cwd(), 'storage', filename)
 
@@ -21,6 +22,6 @@ export default (socket) => {
     // Notify callback
     fn?.(file)
     // Broadcast file creation
-    socket.emit('@fuse-labs.file-manager.file:added', file)
+    socket.emit('file:added', file)
   })
 }

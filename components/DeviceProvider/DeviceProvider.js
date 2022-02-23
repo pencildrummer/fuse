@@ -19,8 +19,8 @@ export default function DeviceProvider({
 
   const { plugins } = useAppContext()
 
-  // Merge active plugins on device
-  device.plugins = plugins.filter(p => p.fuse.devices?.includes(device.profile.type) && p.fuse.hasSocket)
+  // Load active plugins on device
+  device.plugins = plugins.filter(p => p.fuse.devices?.includes(device.profile.type))
 
   // Device socket namespace
   const deviceNamespace = `device:${device.id}`
@@ -35,23 +35,25 @@ export default function DeviceProvider({
   // Create socket for active plugins
   device.sockets = {}
   device.plugins?.forEach((plugin) => {
+    if (!plugin.fuse.hasSocket) return
     let keyPath = plugin.name.split('/').map(key => _.camelCase(key)).join('.')
     let pluginDeviceSocket = socket(deviceNamespace+'/'+plugin.name)
-    console.log('Created plugin socket:', deviceNamespace+'/'+plugin.name)
+    console.log('Created plugin socket:', pluginDeviceSocket)
     _.set(device.sockets, keyPath, pluginDeviceSocket)
   })
 
-  // useEffect(_ => {
-  //   // -- TODO - See top
-  //   if (!device)
-  //     return console.warn('Unable to init terminal, missing device')
-  //   // Init terminal for device
-  //   let terminal = new Terminal(device, { autoConnect: false })
-  //   // Save in state the initialized terminal
-  //   console.log(`Terminal for device "${device.id}" initialized`)
-  //   setTerminal(terminal)
-  //   // --
-  // }, [device])
+  // TODO - MAke someting to dinamically inject properties on device from plugins to be accessed from context
+  useEffect(_ => {
+    // -- TODO - See top
+    if (!device)
+      return console.warn('Unable to init terminal, missing device')
+    // Init terminal for device
+    let terminal = new Terminal(device, { autoConnect: false })
+    // Save in state the initialized terminal
+    console.log(`Terminal for device "${device.id}" initialized`)
+    setTerminal(terminal)
+    // --
+  }, [device])
 
   return <DeviceContext.Provider value={{
     device,
