@@ -74,7 +74,7 @@ export default function DeviceProfilesListManager({
 
   function handleConfirmDelete() {
     console.log('Should delete')
-    socket.emit('core.profiles.delete', deletingProfile.id, (profile) => {
+    socket.emit('profiles:delete', deletingProfile.id, (profile) => {
       console.log('Deleted profile', profile)
     })
   }

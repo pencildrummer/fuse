@@ -24,7 +24,7 @@ export default function DevicePageTopBarMenu() {
   }
 
   function handleDeleteConfirm() {
-    socket.emit('core.devices.remove', device.id, (device) => {
+    socket.emit('devices:remove', device.id, (device) => {
       console.log('Removed device')
       console.log(device)
     })

@@ -17,12 +17,12 @@ export default function DeviceForm({
 
   function handleSubmit(values, options) {
     if (!device.id) {
-      socket.emit('core.devices.add', values, (device) => {
+      socket.emit('devices:add', values, (device) => {
         console.log('Created device')
         console.info(device)
       })
     } else {
-      socket.emit('core.devices.update', device.id, values, (device) => {
+      socket.emit('devices:update', device.id, values, (device) => {
         console.log('Updated device')
         console.info(device)
       })

@@ -33,11 +33,11 @@ export default function AppProvider({
 
   useEffect(_ => {
 		// Add socket listener for newly created device
-		socket.on('core.devices.added', (device) => {
+		socket.on('devices:added', (device) => {
       setProviderDevices(devices => [...devices, device])
 		})
     // Add socket listener for updated device
-    socket.on('core.devices.updated', (device) => {
+    socket.on('devices:updated', (device) => {
       setProviderDevices(devices => {
         let index = devices.findIndex(d => d.id === device.id)
         if (index < 0) {
@@ -51,14 +51,14 @@ export default function AppProvider({
       })
     })
     // Add socket listener for removed device
-    socket.on('core.devices.removed', (device) => {
+    socket.on('devices:removed', (device) => {
       setProviderDevices(devices => devices.filter(d => d.id !== device.id))
     })
 
     /**
      * Profiles
      */
-    socket.on('core.profiles.added', (profile) => {
+    socket.on('profiles:added', (profile) => {
       // Add received new profile to in memory ones
       const brand = pathCase(profile.brand)
       setProviderProfiles(profiles => {
@@ -69,7 +69,7 @@ export default function AppProvider({
       })
     })
 
-    socket.on('core.profiles.updated', (profile) => {
+    socket.on('profiles:updated', (profile) => {
       // Updated received profile to in memory ones
       setProviderProfiles(profiles => {
         let brand = pathCase(profile.brand)
@@ -85,7 +85,7 @@ export default function AppProvider({
       })
     })
 
-    socket.on('core.profiles.deleted', (id) => {
+    socket.on('profiles:deleted', (id) => {
       // Remove deleted profiles form the in memory ones
       setProviderProfiles(profiles => {
         let keyPath = id.split('.')

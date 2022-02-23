@@ -64,11 +64,11 @@ export default function DeviceProfileForm({
   function handleSubmit(values) {
     // Check if we are editing or creating
     if (profile.id) {
-      socket.emit('core.profiles.update', profile.id, values, (profile) => {
+      socket.emit('profiles:update', profile.id, values, (profile) => {
         console.log('Updated profile', profile)
       })
     } else {
-      socket.emit('core.profiles.add', values, (profile) => {
+      socket.emit('profiles:add', values, (profile) => {
         console.log('Added profile', profile)
       })
     }
