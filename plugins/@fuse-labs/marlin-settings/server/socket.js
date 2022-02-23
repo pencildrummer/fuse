@@ -11,7 +11,7 @@ export default (socket) => {
   // TODO - Add listener on device.terminal for received data (improved with serial port parser to trigger handler on certain events?)
   // TODO - In the listener, emit on the socket namespaces the correct event
   
-  socket.on('@fuse-labs.marlin-settings.settings:read', (deviceId, fn) => {
+  socket.on('settings:read', (deviceId, fn) => {
     let device = getDevice(deviceId)
 
     if (!device.terminal) {

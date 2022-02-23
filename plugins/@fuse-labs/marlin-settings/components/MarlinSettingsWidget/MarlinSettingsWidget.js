@@ -7,7 +7,9 @@ export default function MarlinSettingsWidget() {
   const { device, socket } = useDeviceContext()
 
   useEffect(_ => {
-    console.log('Device Socket', socket)
+    device.sockets.fuseLabs.marlinSettings.emit('settings:read', device.id, (sent) => {
+      console.log('NEW SYSTEM - Sent request for Marlin settings', sent)
+    })
     socket?.emit('@fuse-labs.marlin-settings.settings:read', device.id, (sent) => {
       console.log('Sent request for Marlin settings', sent)
     })

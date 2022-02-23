@@ -18,7 +18,7 @@ export default function DeviceConnectionStatus({
   const [connectionStatus, setConnectionStatus] = useState(ConnectionStatus.Loading)
 
   useEffect(_ => {
-    socket.emit('core.devices.connection.check', device, (port) => {
+    socket.emit('core.devices.connection.check', device.id, (port) => {
       if (port) {
         if (
           port.serialNumber == device.serialNumber &&

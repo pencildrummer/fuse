@@ -1,4 +1,4 @@
-import { addDevice, removeDevice, updateDevice } from "../../../../lib/core/devices.js"
+import { addDevice, getDevice, removeDevice, updateDevice } from "../../../../lib/core/devices.js"
 import { SerialPort } from "serialport"
 import { addProfile, updateProfile, deleteProfile } from "../../../../lib/core/profiles.js"
 import signale from "signale"
@@ -77,7 +77,8 @@ export default (socket) => {
    */
 
   // Check if device is available by searching and comparing metadata of serial ports avaialble
-  socket.on('core.devices.connection.check', async (device, fn) => {
+  socket.on('core.devices.connection.check', async (deviceId, fn) => {
+    let device = getDevice(deviceId)
     let list = await SerialPort.list()
     let devicePort = list.find(port => port.path == device.port)
     return fn?.(devicePort)
