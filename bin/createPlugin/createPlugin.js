@@ -65,7 +65,19 @@ const questions = [
     name: 'hasSettings',
     message: 'Do you want a settings page?',
     initial: true
-  }
+  },
+  // {
+  //   type: 'multiselect',
+  //   name: 'devices',
+  //   message: 'Which device are supported by your plugin?',
+  //   choice: [
+  //     { title: 'FDM printers', value: 'fdm_printer' },
+  //     { title: 'MSLA printers', value: 'msla_printer' },
+  //     { title: 'CNC', value: 'cnc' },
+  //     { title: 'Laser', value: 'laser' },
+  //   ],
+  //   hint: '- Space to select. Return to submit'
+  // }
 ];
 
 program.name('fuse-create-plugin')
@@ -89,9 +101,16 @@ function validatePluginName(name) {
   }
 }
 
+/**
+ * Create plugin folder structure and boilerplate files
+ * @param {string} name 
+ * @param {*} version 
+ * @param {*} opts 
+ */
 function createPlugin(name, version, opts) {
 
-  const root = path.resolve(path.join('plugins', name));
+  // Compute plugin root path
+  const root = path.resolve(process.cwd(), path.join('plugins', name));
 
   // Check plugin name if can be named that way
   validatePluginName(name);
@@ -101,13 +120,13 @@ function createPlugin(name, version, opts) {
     console.error(`Directory for plugin named ${chalk.bold.redBright(name)} already exists.`);
     console.log();
     process.exit(1);
-  } else {
-    // Check dir exists or otherwise create it
-    fs.ensureDirSync(root);
   }
 
   console.pending(`Creating a new ${chalk.bold('FUSE')} plugin in ${chalk.magenta(root)}.`);
   console.log();
+
+  // Creating folder structure using default boilerplat
+  fs.copySync(path.join(__dirname, 'boilerplate'), root)
 
   // Prepare package content
   let packageContent = {
@@ -129,21 +148,32 @@ function createPlugin(name, version, opts) {
 
   fs.writeFileSync(
     path.join(root, 'package.json'),
-    JSON.stringify(packageContent, null, 2) + os.EOL
+    JSON.stringify(packageContent, null, 2) + os.EOL,
   )
 }
 
 (async () => {
-  const res = await prompts(questions);
-  console.log();
 
-  let pluginName = res.scopeName
-    ? path.join('@'+res.scopeName, res.pluginName) 
-    : res.pluginName
+  let isCancelled = false
+  const answers = await prompts(questions);
 
-  createPlugin(pluginName, '0.1', {
-    description: res.description,
-    title: res.title
+  const {
+    pluginName,
+    scopeName,
+    title,
+    description
+  } = answers
+
+  if (!pluginName || !title)
+    process.exit(1)
+
+  let pluginPathName = scopeName
+    ? path.join('@'+scopeName, pluginName) 
+    : pluginName
+
+  createPlugin(pluginPathName, '0.1', {
+    description: description,
+    title: title
   })
 
   console.success(`Plugin ${chalk.bold.greenBright(pluginName)} successfully created!`)
