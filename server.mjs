@@ -5,6 +5,7 @@ import next from 'next'
 import express from 'express'
 import { Server as SocketServer } from 'socket.io'
 import registerSocketPlugins from './lib/server/registerSocketPlugins.js'
+import signale from 'signale'
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
@@ -40,14 +41,8 @@ app.prepare().then(() => {
   })
 
   io.on('connection', async (socket) => {
-    // Register listener for disconnection from socket
-    socket.on('disconnect', _ => {
-      //
-    })
-
     // Register all socket binds
-    await registerSocketPlugins(socket)
-    
+    await registerSocketPlugins(socket)    
   })
   
   socketServer.listen(socketPort, () => {

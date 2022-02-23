@@ -11,6 +11,7 @@
     "@fuse-labs/marlin-extruder",
     "@fuse-labs/marlin-gcode-viewer",
     "@fuse-labs/marlin-move",
+    "@fuse-labs/marlin-settings",
     "@fuse-labs/marlin-temperature",
     "@fuse-labs/marlin-terminal"
   ]

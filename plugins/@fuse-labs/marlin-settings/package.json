@@ -1,0 +1,9 @@
+{
+  "name": "@fuse-labs/marlin-settings",
+  "version": "0.1",
+  "license": "MIT",
+  "fuse": {
+    "title": "Marlin settings",
+    "devices": [ "fdm_printer" ]
+  }
+}
