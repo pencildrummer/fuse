@@ -1,14 +1,14 @@
 import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
-import socket from 'lib/client/socket'
 import { Widget } from 'plugins/@fuse-labs/core-ui/index'
 import { useEffect } from 'react'
 
 export default function MarlinSettingsWidget() {
 
-  const { device } = useDeviceContext()
+  const { device, socket } = useDeviceContext()
 
   useEffect(_ => {
-    socket.emit('@fuse-labs.marlin-settings.settings:read', device.id, (sent) => {
+    console.log('Device Socket', socket)
+    socket?.emit('@fuse-labs.marlin-settings.settings:read', device.id, (sent) => {
       console.log('Sent request for Marlin settings', sent)
     })
   }, [])

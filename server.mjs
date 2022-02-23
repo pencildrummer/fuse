@@ -1,11 +1,7 @@
 import { createServer } from 'http'
 import { parse } from 'url'
 import next from 'next'
-
-import express from 'express'
-import { Server as SocketServer } from 'socket.io'
-import registerSocketPlugins from './lib/server/registerSocketPlugins.js'
-import signale from 'signale'
+import initSocket from './lib/server/initSocket.js'
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
@@ -27,26 +23,8 @@ app.prepare().then(() => {
     if (err) throw err
     console.log(`> Ready on http://${hostname}:${port}`)
   })
-
-  // Socket.io server
-  const expressApp = express()
-  const socketServer = createServer(expressApp)
   
-  const io = new SocketServer(socketServer, {
-    cors: {
-      origin: '*'
-      // origin: `http://${hostname}:${socketPort}`,
-      // methods: ['GET', 'POST']
-    }
-  })
-
-  io.on('connection', async (socket) => {
-    // Register all socket binds
-    await registerSocketPlugins(socket)    
-  })
-  
-  socketServer.listen(socketPort, () => {
-    console.log(`> Socket ready on http://${hostname}:${socketPort}`)
-  })
+  // Init Socket.io server
+  initSocket({ hostname, port: socketPort })
 
 })
