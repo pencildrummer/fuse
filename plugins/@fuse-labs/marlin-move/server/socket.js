@@ -6,14 +6,14 @@ let device;
 export default (socket) => {
 
   // TODO - Replace namespaces in name direclty in passed socket?
-  socket.on('@fuse-labs.marlin-move.openDevice', ({
+  socket.on('openDevice', ({
     portPath,
     baudRate
   }) => {
     device = new PrinterDevice(portPath, baudRate)
   })
 
-  socket.on('@fuse-labs.marlin-move.move.x', (xValue, fn) => {
+  socket.on('move:x', (xValue, fn) => {
     if (!device) {
       console.log('No device port is opened')
       fn?.(false)

@@ -45,21 +45,21 @@ export default function TemperatureWidget() {
   const [targetHeatbed, setTargetHeatbed] = useState('')
 
   function requestTargetNozzle() {
-    socket.emit('@fuse-labs.marlin-temperature.setTarget.nozzle', parseInt(targetNozzle))
+    socket.emit('nozzle:set', parseInt(targetNozzle))
   }
 
   function requestTargetHeatbed() {
-    socket.emit('@fuse-labs.marlin-temperature.setTarget.heatbed', parseInt(targetHeatbed))
+    socket.emit('heatbed:set', parseInt(targetHeatbed))
   }
 
   const [data, setData] = useState(DEFAULT_DATA)
 
   useEffect(_ => {
-    socket.on('@fuse-labs.marlin-temperature.getTemp.nozzle', (temperature) => {
+    socket.on('nozzle:get', (temperature) => {
       appendNozzleTemp(temperature)
     })
   
-    socket.on('@fuse-labs.marlin-temperature.getTemp.heatbed', (temperature) => {
+    socket.on('heatbed:get', (temperature) => {
       appendHeatbedTemp(temperature)
     })
   }, [])

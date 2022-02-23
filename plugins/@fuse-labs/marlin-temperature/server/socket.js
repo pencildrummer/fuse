@@ -9,14 +9,14 @@ module.exports = (socket) => {
 
   // Init socket listeners and emitters
   
-  socket.on('@fuse-labs.marlin-temperature.setTarget.nozzle', (temp, fn) => {
+  socket.on('nozzle:set', (temp, fn) => {
     signale.info('Requested nozzle temperature:', temp)
     // TODO - Set temperature target on device
     nozzleTarget = temp
     fn?.(true)
   })
 
-  socket.on('@fuse-labs.marlin-temperature.setTarget.heatbed', (temp, fn) => {
+  socket.on('heatbed:set', (temp, fn) => {
     signale.info('Requested heatbed temperature:', temp)
     // TODO - Set temperature target on device
     heatbedTarget = temp
@@ -30,11 +30,11 @@ module.exports = (socket) => {
 
   nozzleFaker = setInterval(_ => {
     nozzle = fakeTemp(nozzle, nozzleTarget ? nozzleTarget : 10, 1)
-    socket.emit('@fuse-labs.marlin-temperature.getTemp.nozzle', nozzle)
+    socket.emit('nozzle:get', nozzle)
   }, 1000)
   heatbedFaker = setInterval(_ => {
     heatbed = fakeTemp(heatbed, heatbedTarget ? heatbedTarget : 12, 1)
-    socket.emit('@fuse-labs.marlin-temperature.getTemp.heatbed', heatbed)
+    socket.emit('heatbed:get', heatbed)
   }, 1000)
 
   return _ => {

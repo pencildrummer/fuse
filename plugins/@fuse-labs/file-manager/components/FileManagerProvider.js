@@ -22,8 +22,8 @@ export default function FileManagerProvider(props) {
     let listener = (file) => {
       console.log('Added file', file)
     }
-    socket.on('@fuse-labs.file-manager.file:added', listener)
-    return _ => socket.off('@fuse-labs.file-manager.file:added', listener)
+    socket.on('file:added', listener)
+    return _ => socket.off('file:added', listener)
   }, [])
 
   return <FileManagerContext.Provider value={{

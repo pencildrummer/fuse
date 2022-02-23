@@ -38,7 +38,7 @@ export default function DeviceProvider({
     if (!plugin.fuse.hasSocket) return
     let keyPath = plugin.name.split('/').map(key => _.camelCase(key)).join('.')
     let pluginDeviceSocket = socket(deviceNamespace+'/'+plugin.name)
-    console.log('Created plugin socket:', pluginDeviceSocket)
+    
     _.set(device.sockets, keyPath, pluginDeviceSocket)
   })
 

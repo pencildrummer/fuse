@@ -91,7 +91,7 @@ export default (socket) => {
       // // Attach data listener on parser instead of port to get data already parsed
       // parser.on('data', data => {
       //   signale.info('Received data from parser', data)
-      //   socket.emit('@fuse-labs.terminal.message', {
+      //   socket.emit('message', {
       //     id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
       //     from: 'device',
       //     message: data

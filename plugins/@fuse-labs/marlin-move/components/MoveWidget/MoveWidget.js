@@ -34,7 +34,7 @@ export default function MoveWidget() {
       console.log('Connected', connected)
       setDisabled(!connected)
     })
-    // socket.emit('@fuse-labs.marlin-move.openDevice', device, (result) => {
+    // socket.emit('openDevice', device, (result) => {
     //   console.log('Result', result)
     // })
   }
@@ -71,7 +71,7 @@ export default function MoveWidget() {
     let message = messageParts.join(' ')
 
     terminal.sendMessage(message)
-    // socket.emit('@fuse-labs.marlin-move.move.x', 10, (res) => {
+    // socket.emit('move:x', 10, (res) => {
     //   console.log('Move result', res)
     // })
   }
