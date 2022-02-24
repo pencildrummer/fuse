@@ -3,23 +3,22 @@ import Group from "../../../core-ui/components/shared/Group/Group";
 import { InputRaw } from "../../../core-ui/components/shared/Input/Input";
 import Label from "../../../core-ui/components/shared/Label/Label";
 import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
-import { Terminal } from "../../lib/client/terminal.ts";
 import { Button } from "plugins/@fuse-labs/core-ui";
 
 export default function MarlinTerminalSettingsWidget({
   ...props
 }) {
 
-  const { device, terminal } = useDeviceContext()
+  const { device } = useDeviceContext()
 
   function handleConnectClick() {
     // TODO - Make a provider to use same terminal obj
-    terminal.connect()
+    device.terminal.connect()
   }
 
   function handleDisconnectClick() {
     // TODO - Make a provider to use same terminal obj
-    terminal.disconnect()
+    device.terminal.disconnect()
   }
 
   return <SettingsWidget>

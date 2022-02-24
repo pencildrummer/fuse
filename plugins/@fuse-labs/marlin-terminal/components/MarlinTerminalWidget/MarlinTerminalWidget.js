@@ -7,10 +7,10 @@ import TerminalWindow from "./TerminalWindow";
 
 export default function MarlinTerminalWidget() {
 
-  const { terminal } = useDeviceContext()
+  const { device } = useDeviceContext()
 
   return <Widget title="Terminal" version="0.1" className="h-96">
-    <TerminalProvider terminal={terminal}>
+    <TerminalProvider terminal={device.terminal}>
 
       <TerminalWindow/>
 

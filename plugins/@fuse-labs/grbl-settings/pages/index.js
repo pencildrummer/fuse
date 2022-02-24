@@ -54,7 +54,7 @@ function defaultSettings() {
 
 export default function GRBLSettingsPage() {
 
-  const { device, terminal } = useDeviceContext()
+  const { device } = useDeviceContext()
 
   const [settings, setSettings] = useState(defaultSettings())
   const initialValues = useMemo(_ => {
@@ -83,18 +83,18 @@ export default function GRBLSettingsPage() {
 
   useEffect(_ => {
     // Connect to device and request settings
-    terminal.connect(connected => {
+    device.terminal.connect(connected => {
       console.log('Connected', connected)
       // Command to receive GRBL settings
     })
 
     // Request settings
-    terminal.sendMessage('$$')
+    device.terminal.sendMessage('$$')
 
     // Configure terminal listener to parse data
-    terminal.onMessageReceived(handleReceivedMessage)
-    return _ => terminal.offMessageReceived(handleReceivedMessage)
-  }, [terminal])
+    device.terminal.onMessageReceived(handleReceivedMessage)
+    return _ => device.terminal.offMessageReceived(handleReceivedMessage)
+  }, [device.terminal])
 
   function handleSubmit(values, formik) {
     // Filter changed values
@@ -134,14 +134,14 @@ export default function GRBLSettingsPage() {
       let settingId = GRBLSetting[key]
       let value = convertSettingValue(settingId, changedValues[key])
       // Change Boolean to Number values
-      terminal.sendMessage(`$${settingId}=${value}`)
+      device.terminal.sendMessage(`$${settingId}=${value}`)
     })
   }
 
   return (
     <Widget title="GRBL settings">
-      <TerminalProvider terminal={terminal}>
-        {!terminal ? <Loader /> : (
+      <TerminalProvider terminal={device.terminal}>
+        {!device.terminal ? <Loader /> : (
           <Form initialValues={initialValues} enableReinitialize onSubmit={handleSubmit}>
             <div className='grid grid-cols-2 gap-3'>
               {Object.keys(settings).map(settingEnumKey => 

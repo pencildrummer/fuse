@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { string } from "yup"
 import { object } from "yup"
 import lodash from 'lodash'
+import { Terminal } from "plugins/@fuse-labs/marlin-terminal/lib/client/terminal"
 
 export default function useProviderDevices(fetchedDevices, providerPlugins) {
 
@@ -86,6 +87,15 @@ function initDevice(deviceData, providerPlugins) {
       lodash.set(device, 'sockets.'+keyPath, pluginDeviceSocket)
     }
   })
+
+  // TODO - Dynamic import of file in plugin directory to customise behaviour
+  
+  // DEV ONLY
+  if (device.plugins.find(p => p.name == '@fuse-labs/marlin-terminal')) {
+    // Init terminal for device
+    device.terminal = new Terminal(device, { autoConnect: false })
+    console.log(`Terminal for device "${device.id}" initialized`)
+  }
 
   return device
 }

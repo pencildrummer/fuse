@@ -33,6 +33,7 @@ export default function TerminalWindow({
    * Attach listener for incoming messages to be displayed
    */
   useEffect(_ => {
+    console.log('Terminal in window', terminal)
     if (!terminal) return
     // Configure listeners for socket terminal communication
     let listener = (data) => appendData(data)

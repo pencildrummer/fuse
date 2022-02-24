@@ -20,6 +20,7 @@ export default (socket) => {
     if (!device.terminal) {
       // Create DeviceTerminal
       device.terminal = new DeviceTerminal(device, (err) => {
+        signale.log('Connecting DeviceTerminal in server')
         if (err) {
           signale.error('Error creating DeviceTerminal:', err)
           socket.emit('message', {
@@ -29,112 +30,90 @@ export default (socket) => {
           })
         }
       })
-      signale.info('Added terminal to device ', device.id)
+
+      // Add DeviceTerminal listeners
+      device.terminal.on('open', _ => {
+        signale.success('Terminal connected to device', chalk.greenBright(device.name))
+        // Broadcast open connection result
+        socket.emit('connected', deviceId)
+        // Send human readable message
+        socketSendMessage('Connection opened', 'device')
+        // Call callback function
+        fn?.(true)
+  
+        
+        signale.info('Attaching listener for data')
+  
+        // This is for Marlin based
+        // Attach readyParser and then pipi readline parser to readyParser
+        let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
+        readyParser.on('ready', _ => signale.success('READY received!'))
+        let parser = readyParser.pipe(new ReadlineParser({ delimiter: '\n' }))
+        //let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\n' }))
+        parser.on('data', data => {
+          signale.info('Received data from parser', data)
+          socketSendMessage(data, 'device')
+          // socket.emit('message', {
+          //   id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
+          //   from: 'device',
+          //   message: data
+          // })
+        })
+  
+        // let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
+        // readyParser.on('ready', _ => signale.info('READY received!'))
+        // readyParser.on('data', data => signale.debug('Received data on parser', data))
+  
+        //
+        // This is for - ARDUINO - GRBL - MAke different conneciton based on device connecte
+        //
+        // let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
+        // // Attach data listener on parser instead of port to get data already parsed
+        // parser.on('data', data => {
+        //   signale.info('Received data from parser', data)
+        //   socket.emit('message', {
+        //     id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
+        //     from: 'device',
+        //     message: data
+        //   })
+        // })
+      })
+  
+      device.terminal.on('close', error => {
+        if (error) {
+          signale.error('Closed device terminal connection due to error', error)
+          socketSendMessage('Connection closed due to error: '+error.message, 'device')
+        } else {
+          signale.info('Closed device terminal connection for ', device.id)
+          // Normal close request
+          socketSendMessage('Connection closed', 'device')
+          // Remove device terminal
+          delete device.terminal
+        }
+      })
+  
+      device.terminal.on('error', error => {
+        signale.error('Error received', error)
+        socketSendMessage('Error: '+error.message, 'device')
+      })
+
+      signale.star('Added terminal to device ', chalk.bold(device.name), device.id)
     }
 
     if (device.terminal.isOpen) {
-      socket.emit('message', {
-        id: 'server-'+generateUniqueID(),
-        from: 'server',
-        message: 'Already connected'
-      })
+      socketSendMessage('Already connected', 'server')
       return fn?.(true)
+    } else {
+      // Send message from server notify connection start process
+      socketSendMessage('Connecting to device...', 'server')
+      device.terminal.open()
     }
-
-    // Send message from server notify connection start process
-    socket.emit('message', {
-      id: 'server-'+generateUniqueID(),
-      from: 'server',
-      message: 'Connecting to device...'
-    })
-
-    // TODO - Create on method for terminal
-    device.terminal.serialPort.on('open', _ => {
-      signale.success('Opened connection on', chalk.greenBright(device.terminal.serialPort.path))
-      // Broadcast open connection result
-      socket.emit('connected', deviceId)
-      // Send human readable message
-      socket.emit('message', {
-        id: 'device-'+generateUniqueID(),
-        from: 'device',
-        message: 'Connection opened'
-      })
-      // Call callback function
-      fn?.(true)
-
-      // Add reader listener
-      signale.info('Port is open?', device.terminal.isOpen)
-      
-      signale.info('Attaching listener for data')
-
-      // This is for Marlin based
-      // Attach readyParser and then pipi readline parser to readyParser
-      let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
-      readyParser.on('ready', _ => signale.success('READY received!'))
-      let parser = readyParser.pipe(new ReadlineParser({ delimiter: '\n' }))
-      //let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\n' }))
-      parser.on('data', data => {
-        signale.info('Received data from parser', data)
-        socket.emit('message', {
-          id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
-          from: 'device',
-          message: data
-        })
-      })
-
-      // let readyParser = device.terminal.serialPort.pipe(new ReadyParser({ delimiter: 'start' }))
-      // readyParser.on('ready', _ => signale.info('READY received!'))
-      // readyParser.on('data', data => signale.debug('Received data on parser', data))
-
-      //
-      // This is for - ARDUINO - GRBL - MAke different conneciton based on device connecte
-      //
-      // let parser = device.terminal.serialPort.pipe(new ReadlineParser({ delimiter: '\r\n'}))
-      // // Attach data listener on parser instead of port to get data already parsed
-      // parser.on('data', data => {
-      //   signale.info('Received data from parser', data)
-      //   socket.emit('message', {
-      //     id: 'device-data-'+Math.floor(Math.random()*100000).toString(),
-      //     from: 'device',
-      //     message: data
-      //   })
-      // })
-    })
-
-    device.terminal.serialPort.on('close', error => {
-      if (error) {
-        signale.error('Closed device terminal connection due to error', error)
-        socket.emit('message', {
-          id: 'device-'+generateUniqueID(),
-          from: 'device',
-          message: 'Connection closed due to error: '+error.message
-        })
-      } else {
-        signale.info('Closed device terminal connection for ', device.id)
-        // Normal close request
-        socket.emit('message', {
-          id: 'device-'+generateUniqueID(),
-          from: 'device',
-          message: 'Connection closed'
-        })
-        // Remove device terminal
-        delete device.terminal
-      }
-    })
-
-    device.terminal.serialPort.on('error', error => {
-      signale.error('Error received', error)
-      socket.emit('message', {
-        id: 'device-'+generateUniqueID(),
-        from: 'device',
-        message: 'Error: '+error.message
-      })
-    })
   })
 
   // Received terminal message from socket
   socket.on('message', (args, fn) => {
 
+    signale.star('Received message', args)
     // Broadcast the same message, attaching received flag, to notify client 
     socket.emit('message', {
       ...args,
@@ -145,31 +124,49 @@ export default (socket) => {
 
     let device = getDevice(deviceId)
 
-    if (!device.terminal) {
+    if (device.terminal) {
+      // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
+      device.terminal.send(message)
+      fn?.(true)
+    } else {
+      signale.error('No terminal initialized for device', chalk.bold(device.name), device.id)
       fn?.(false)
-      throw new Error(`No terminal serial port initialized for device '${deviceId}'`)
     }
     
-    // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
-    device.terminal.send(message)
-    fn?.(true)
+    
   })
 
   /**
-   * Request disconnect from serial port
+   * Request manual disconnect from serial port
    */
   socket.on('close', (deviceId, fn) => {
     let device = getDevice(deviceId)
     if (!device.terminal) {
+      signale.error('No serial port to close for device', chalk.bold(device.name), device.id)
       fn?.(false)
-      throw new Error(`No serial port to close for device '${deviceId}'`)
     }
 
     // Request close of connection
     device.terminal.close()
   })
 
+  /**
+   * Received disconnection event from client socket
+   */
   socket.on('disconnect', _ => {
     signale.warn('Should close terminal connection')
+    // We need to know which device, or get every device and close all terminals
+    //let device = getDevice(deviceId)
+    //device.terminal?.close()
   })
+
+  // Internal fn
+  function socketSendMessage(message, from) {
+    socket.emit('message', {
+      id: from.toLowerCase()+'-'+generateUniqueID(),
+      from: from.toLowerCase(),
+      message: message
+    })
+  }
+
 }

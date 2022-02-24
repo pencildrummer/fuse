@@ -19,18 +19,14 @@ function MoveButton({
 
 export default function MoveWidget() {
 
-  const { device, terminal } = useDeviceContext()
+  const { device } = useDeviceContext()
 
   const [disabled, setDisabled] = useState(true)
   const [distanceInc, setDistanceInc] = useState("1")
 
-  useEffect(_ => {
-    console.log('Terminal', terminal)
-  }, [terminal])
-
   // This will be handled in a core lib
   function handleConnect() {
-    terminal.connect(connected => {
+    device.terminal.connect(connected => {
       console.log('Connected', connected)
       setDisabled(!connected)
     })
@@ -52,7 +48,7 @@ export default function MoveWidget() {
     let normalizeDistanceString = distanceInc.toString().replace(',', '.')
 
     // Set relative positioning
-    terminal.sendMessage('G91')
+    device.terminal.sendMessage('G91')
     // TODO - Should wait for command completion
     // Send position command
     let messageParts = [
@@ -70,7 +66,7 @@ export default function MoveWidget() {
 
     let message = messageParts.join(' ')
 
-    terminal.sendMessage(message)
+    device.terminal.sendMessage(message)
     // socket.emit('move:x', 10, (res) => {
     //   console.log('Move result', res)
     // })
@@ -83,11 +79,11 @@ export default function MoveWidget() {
       case 'y': message += ' Y'; break
       case 'z': message += ' Z'; break
     }
-    terminal.sendMessage(message)
+    device.terminal.sendMessage(message)
   }
 
   function handleEmergencyStop() {
-    terminal.sendMessage('M112')
+    device.terminal.sendMessage('M112')
   }
 
   return (
@@ -201,11 +197,11 @@ export default function MoveWidget() {
       </Button>
 
       <Separator />
-      <Button className="w-full" onClick={_ => terminal.sendMessage('M410')}>
+      <Button className="w-full" onClick={_ => device.terminal.sendMessage('M410')}>
         <Cross2Icon className='mr-1' /> Quick stop
       </Button>
       
-      <Button className="w-full" onClick={_ => terminal.sendMessage('M112')}>
+      <Button className="w-full" onClick={_ => device.terminal.sendMessage('M112')}>
         <ExclamationTriangleIcon className='mr-1'/> Emergency stop
       </Button>
 

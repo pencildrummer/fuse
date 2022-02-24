@@ -1,27 +1,28 @@
-import socket from 'lib/client/socket';
 import { generateUniqueID } from 'lib/shared/uuid';
-import { Socket } from 'socket.io-client'
 
-enum LineEnding {
-  None = 0,
-  CarriageReturn = 1,
-  NewLine = 2,
-  CarriageReturnAndNewLine = 3
-}
+const LineEnding = Object.freeze({
+  None: 0,
+  CarriageReturn: 1,
+  NewLine: 2,
+  CarriageReturnAndNewLine: 3
+})
 
 export class Terminal {
   
-  _socket: Socket;
+  /**
+   * Socket
+   */
+  _socket;
 
-  private _isOpen: Boolean = false;
-  public get isOpen() : Boolean {
+  _isOpen = false;
+  get isOpen() {
     return this._isOpen
   }
   
   device
 
-  lineEnding: LineEnding = LineEnding.NewLine  
-  useCarriageReturn: Boolean = false
+  lineEnding = LineEnding.NewLine  
+  useCarriageReturn = false
 
   constructor(device, { autoConnect = true } = {}) {
     this.device = device
@@ -36,7 +37,7 @@ export class Terminal {
     }
   }
 
-  connect(onConnect: (arg: boolean) => void = null) {
+  connect(onConnect) {
     this._socket.emit('open', this.device.id, open => {
       console.log('Callback on connect, result:', open)
       this._isOpen = open
@@ -48,7 +49,7 @@ export class Terminal {
     this._socket.emit('close', this.device.id)
   }
 
-  sendMessage(message: string) {
+  sendMessage(message) {
     console.log('Sending message:', message)
     let data = {
       id: generateUniqueID(),
@@ -60,16 +61,16 @@ export class Terminal {
     return data
   }
 
-  onMessageReceived(listener: ([...args]: [any]) => void) {
+  onMessageReceived(listener) {
     this._socket.on('message', listener)
   }
 
-  offMessageReceived(listener: ([...args]: [any]) => void) {
+  offMessageReceived(listener) {
     this._socket.off('message', listener)
   }
 
   // Internal
-  formatMessage(message: string): string {
+  formatMessage(message) {
     switch (this.lineEnding) {
       case LineEnding.NewLine:                  
         return message.trim() + '\n'
