@@ -9,6 +9,8 @@ import { getDevice } from "../../../../lib/core/devices.js";
 
 export default (socket) => {
   // Register terminal listeners
+
+  signale.debug('SOCKET TEMRINAL', socket.nsp.name)
   
   socket.on('open', (deviceId, fn) => {
 
@@ -101,14 +103,14 @@ export default (socket) => {
 
     device.terminal.serialPort.on('close', error => {
       if (error) {
-        signale.error('Closed connection due to error', error)
+        signale.error('Closed device terminal connection due to error', error)
         socket.emit('message', {
           id: 'device-'+generateUniqueID(),
           from: 'device',
           message: 'Connection closed due to error: '+error.message
         })
       } else {
-        signale.info('Closed connection for ', device.id)
+        signale.info('Closed device terminal connection for ', device.id)
         // Normal close request
         socket.emit('message', {
           id: 'device-'+generateUniqueID(),
@@ -154,7 +156,7 @@ export default (socket) => {
   })
 
   /**
-   * Disconnect from serial port
+   * Request disconnect from serial port
    */
   socket.on('close', (deviceId, fn) => {
     let device = getDevice(deviceId)
@@ -165,5 +167,9 @@ export default (socket) => {
 
     // Request close of connection
     device.terminal.close()
+  })
+
+  socket.on('disconnect', _ => {
+    signale.warn('Should close terminal connection')
   })
 }

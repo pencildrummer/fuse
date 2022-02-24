@@ -1,21 +1,27 @@
 import dynamic from 'next/dynamic'
 import getDevicePageComponent from 'components/page-layouts/getDevicePageComponent.js'
 import { useRouter } from 'next/router'
-import { useAppContext } from 'components/AppProvider/AppProvider'
+import useDevice from 'hooks/useDevice'
+import useDevicePlugin from 'hooks/useDevicePlugin'
 
 export default function DevicePluginPage() {
-
-  const { devices, plugins } = useAppContext()
-
+  
   const router = useRouter()
   const { query } = router
   const { deviceID, devicePlugin } = query
-  const pluginUrl = devicePlugin.join('/')
 
-  // Get the requested plugin from URL,
-  // find first for configured 'pagesUrl' in plugin package.json otherwise fallback finding plugin name with same url requested
-  const plugin = plugins.find(plugin => plugin.fuse.url == pluginUrl || plugin.name === pluginUrl)
-  
+  // TODO - Error on missing device
+  const device = useDevice(deviceID)
+
+  const pluginUrl = devicePlugin.join('/')
+  const plugin = useDevicePlugin(deviceID, pluginUrl)
+
+  if (!plugin) {
+    return (
+      <span>Plugin for device not found</span>
+    )
+  }
+
   // Check plugin is active
   if (!plugin.fuse.isActive) {
     return (
@@ -23,10 +29,7 @@ export default function DevicePluginPage() {
     )
   }
 
-  // Get device
-  const device = devices.find(device => device.id == deviceID )
-  // TODO - Error on missing device
-
+  // TODO - Avoid?
   // Check plugin suitable for required device
   if (!plugin.fuse.devices.includes(device.profile.type)) {
     return (
