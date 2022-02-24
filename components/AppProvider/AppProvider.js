@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import React, { useContext } from 'react'
 import { IntlProvider } from 'react-intl'
 import * as messages from '../../lang/index'
@@ -24,6 +25,10 @@ export default function AppProvider({
     profiles,
     plugins,
   }}>
+
+    <Head>
+      <title>Fuse</title>
+    </Head>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages[locale]}>
       {props.children}
     </IntlProvider>
