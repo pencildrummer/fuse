@@ -2,46 +2,30 @@ import chalk from 'chalk'
 import MarlinDriver from '../../../marlin-core/server/MarlinDriver.js';
 import { SerialPort } from 'serialport'
 import signale from 'signale'
+import { EventEmitter } from 'events'
 
-export default class DeviceTerminal {
+export default class DeviceTerminal extends EventEmitter {
 
-  _serialPort;
-  get serialPort() { return this._serialPort }
-  get isOpen() { return this._serialPort?.isOpen || false }
+  // _serialPort;
+  // get serialPort() { return this._serialPort }
+  get isOpen() { return this._device.connection.isOpen || false }
 
-  // The event emitter
-  emitter;
+  // Device
+  _device;
 
-  // Device driver
-  driver;
-
-  constructor(device, callback) {
+  constructor(device) {
+    super()
     try {
-      this._serialPort = new SerialPort({
-        path: device.port,
-        baudRate: device.baudrate,
-        dataBits: 8,
-        parity: 'none',
-        stopBits: 1,
-        rtscts: false,
-        autoOpen: false
-      }, callback)
-      
-      // Init device driver for serial communication
-      this.driver = this.initDriver(device)
-
-      // Attach open and error serial port listener for debugging
-      this._serialPort.on('open', _ => {
-        signale.scope(this.constructor.name).note('Opened port ', device.port, '@', device.baudrate)
-      })
-
-      this._serialPort.on('error', err => {
-        signale.scope(this.constructor.name).error('Error on port path', device.port, '@', device.baudrate)
-        signale.scope(this.constructor.name).error(err)
-      })
-
+      if (!device.connection)
+        throw new Error('No connection on device')
+      if (!device.controller) 
+        throw new Error('No controller on device')
+      // Add reference to device
+      this._device = device
+      // Add listener to controller
+      this._device.controller.on('data', data => this.emit('data', data))
     } catch(error) {
-      signale.error('Error creating serial port for device '+chalk.redBright(device.id), error)
+      signale.error('Error creating terminal for device '+chalk.redBright(device.id), error)
     }
   }
 
@@ -49,7 +33,8 @@ export default class DeviceTerminal {
    * Request serial port connection to open
    */
   open(callback) {
-    this._serialPort.open(callback)
+    this._device.connection.open(callback)
+    //this._serialPort.open(callback)
   }
 
   /**
@@ -57,53 +42,41 @@ export default class DeviceTerminal {
    */
   close(callback) {
     signale.info('Requesting closing connection for device ')
-    this._serialPort.close(callback)
+    this._device.connection.close(callback)
+    //this._serialPort.close(callback)
   }
 
-  /**
-   * Change current baud rate
-   * @param {number} baudRate 
-   */
-  setBaudRate(baudRate, callback) {
-    if (!this._serialPort) {
-      return signale.error('No serial port to update baud rate')
-    }
-    this._serialPort.update({
-      baudRate: baudRate
-    }, callback)
-  }
+  // /**
+  //  * Add event listener to serial port connection
+  //  * @param {string} eventName 
+  //  * @param {*} listener 
+  //  */
+  // on(eventName, listener) {
+  //   switch (eventName) {
+  //     case 'data':
+  //     case 'ready':
+  //       this.driver.on(eventName, listener)
+  //       break
+  //     default:
+  //       this._serialPort.on(eventName, listener)
+  //       break
+  //   }
+  // }
 
-  /**
-   * Add event listener to serial port connection
-   * @param {string} eventName 
-   * @param {*} listener 
-   */
-  on(eventName, listener) {
-    switch (eventName) {
-      case 'data':
-      case 'ready':
-        this.driver.on(eventName, listener)
-        break
-      default:
-        this._serialPort.on(eventName, listener)
-        break
-    }
-  }
-
-  /**
-   * Remove event listener from serial port connection
-   * @param {string} eventName 
-   * @param {*} listener 
-   */
-  off(eventName, listener) {
-    switch (eventName) {
-      case 'data':
-      case 'ready':
-        this.driver.off(eventName, listener)
-      default:
-        this._serialPort.off(eventName, listener)
-    }
-  }
+  // /**
+  //  * Remove event listener from serial port connection
+  //  * @param {string} eventName 
+  //  * @param {*} listener 
+  //  */
+  // off(eventName, listener) {
+  //   switch (eventName) {
+  //     case 'data':
+  //     case 'ready':
+  //       this.driver.off(eventName, listener)
+  //     default:
+  //       this._serialPort.off(eventName, listener)
+  //   }
+  // }
 
   /**
    * Send message on device serial port
@@ -115,16 +88,19 @@ export default class DeviceTerminal {
       return signale.error('Unable to send message. Port is not open.')
     }
     signale.info('Sending message', message)
-    this._serialPort.write(message, encoding)
+    
+    this._device.controller.write(message)
+    //this._serialPort.write(message, encoding)
+
     // let shouldDrain = this._serialPort.write(message, encoding, wait ? undefined : callback)
     // if (shouldDrain || wait)
     //   this._serialPort.drain(callback)
   }
 
-  initDriver(device) {
-    // TODO - Get device driver
-    //let driverName = device.fuse.driver
-    //let driver = getDriver(driverName)
-    return new MarlinDriver(this._serialPort)
-  }
+  // initDriver(device) {
+  //   // TODO - Get device driver
+  //   //let driverName = device.fuse.driver
+  //   //let driver = getDriver(driverName)
+  //   return new MarlinDriver(this._serialPort)
+  // }
 }

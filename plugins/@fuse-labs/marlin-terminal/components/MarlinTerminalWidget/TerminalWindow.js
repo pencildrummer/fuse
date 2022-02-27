@@ -44,7 +44,6 @@ export default function TerminalWindow() {
   }, [terminal])
 
   function handleScroll(e) {
-    console.log(e)
     if (autoscroll) {
       setAutoscroll(false)
     }
