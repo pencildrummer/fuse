@@ -17,20 +17,19 @@ export default function DeviceForm({
 
   function handleSubmit(values, options) {
     if (!device.id) {
-      socket.emit('devices:add', values, (device) => {
+      socket.emit('devices:add', values, (deviceData) => {
         console.log('Created device')
-        console.info(device)
       })
     } else {
-      socket.emit('devices:update', device.id, values, (device) => {
+      socket.emit('devices:update', device.id, values, (deviceData) => {
         console.log('Updated device')
-        console.info(device)
       })
     }
   }
 
   return (
     <Form enableReinitialize initialValues={{
+      'id': device.id || '',
       'name': device.name || getSuggestedName(device),
       'profileId': device.profile?.id || device.profileId || '',
       'port': device?.port || '',
@@ -45,6 +44,9 @@ export default function DeviceForm({
       baudrate: Yup.mixed().required()
     })} onSubmit={handleSubmit}>{ ({ values, initialValues, errors, touched, ...formProps }) => (
       <Group orientation="vertical">
+
+        <Input type="hidden" name="id" />
+
         <Group orientation="vertical">
           <Label htmlFor="name">Name</Label>
           <Input type="text" name="name" className="w-full" autoComplete="off" />

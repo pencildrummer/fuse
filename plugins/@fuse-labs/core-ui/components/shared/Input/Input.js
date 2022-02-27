@@ -18,6 +18,12 @@ export function InputRaw({
   detailContent,
   ...props
 }) {
+  // Return barebone input if hidden type, no need for div or other wrappers
+  // Add hidden attribute, to allow Tailwindcss to work also
+  if (props.type == 'hidden') {
+    return <input {...props} hidden/>
+  }
+
   return (
     <div className={classNames(
       'flex flex-row items-center',

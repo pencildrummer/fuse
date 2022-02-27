@@ -17,9 +17,8 @@ export default function DevicePluginPage() {
   const plugin = useDevicePlugin(deviceID, pluginUrl)
 
   if (!plugin) {
-    return (
-      <span>Plugin for device not found</span>
-    )
+    router.replace('/workspace')
+    return null
   }
 
   // Check plugin is active

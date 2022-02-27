@@ -5,7 +5,7 @@ export default function BaudRateSelect({
 }) {
 
   const rates = [
-    { label: 'Auto', value: 'auto' },
+    //{ label: 'Auto', value: 'auto' },
     4800,
     9600,
     14400,

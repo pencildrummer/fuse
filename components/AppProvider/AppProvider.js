@@ -18,7 +18,7 @@ export default function AppProvider({
 
   const profiles = useProviderProfiles(fetchedProfiles)
   const plugins = useProviderPlugins(fetchedPlugins)
-  const devices = useProviderDevices(fetchedDevices, plugins)
+  const devices = useProviderDevices(fetchedDevices)
 
   return <AppContext.Provider value={{
     devices,

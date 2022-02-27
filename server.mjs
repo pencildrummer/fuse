@@ -5,6 +5,7 @@ import initSocket from './lib/server/initSocket.js'
 import signale from 'signale'
 
 process.on('uncaughtException', error => signale.error(error.stack))
+process.on('unhandledRejection', error => signale.error(error.stack))
 
 const dev = process.env.NODE_ENV !== 'production'
 const hostname = 'localhost'
