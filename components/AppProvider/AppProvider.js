@@ -28,6 +28,7 @@ export default function AppProvider({
 
     <Head>
       <title>Fuse</title>
+      <meta http-equiv="Content-Security-Policy" content="default-src 'none'"></meta>
     </Head>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages[locale]}>
       {props.children}
