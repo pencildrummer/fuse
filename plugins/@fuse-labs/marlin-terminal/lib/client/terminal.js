@@ -19,18 +19,22 @@ export class Terminal {
     return this._isOpen
   }
   
-  device
+  deviceId
 
   lineEnding = LineEnding.NewLine  
   useCarriageReturn = false
 
   constructor(device, { autoConnect = true } = {}) {
-    this.device = device
-
-    console.log('Device', device)
+    console.log('Creating terminal for device ID', device.id)
+    this.deviceId = device.id
     // Init socket to pass messages to backend
     this._socket = device.sockets.fuseLabs.marlinTerminal
 
+    // DEBUG
+    this.onMessageReceived(data => {
+      console.log('Received data', data)
+    })
+    
     // Automatically connect on creation
     if (autoConnect) {
       this.connect()
@@ -38,7 +42,7 @@ export class Terminal {
   }
 
   connect(onConnect) {
-    this._socket.emit('open', this.device.id, open => {
+    this._socket.emit('open', this.deviceId, open => {
       console.log('Callback on connect, result:', open)
       this._isOpen = open
       if (open) onConnect?.(open)
@@ -46,7 +50,7 @@ export class Terminal {
   }
 
   disconnect() {
-    this._socket.emit('close', this.device.id)
+    this._socket.emit('close', this.deviceId)
   }
 
   sendMessage(message) {
@@ -55,7 +59,7 @@ export class Terminal {
       id: generateUniqueID(),
       message: this.formatMessage(message),
       from: 'user',
-      deviceId: this.device.id
+      deviceId: this.deviceId
     }
     this._socket.emit('message', data)
     return data

@@ -6,8 +6,10 @@ import Separator from '../Separator/Separator'
 
 export default function ContextMenu({
   items,
+  modal,
   asSubmenu = false,
   onPointerDown,
+  onPointerDownOutside,
   ...props,
 }) {
 
@@ -18,11 +20,11 @@ export default function ContextMenu({
   }
 
   function handlePointerDownOutside(e) {
-    onPointerDown?.(e)
+    onPointerDownOutside?.(e)
   }
 
   return (
-    <ContextMenuPrimitive.Root>
+    <ContextMenuPrimitive.Root modal={modal}>
       <TriggerItem asChild={asSubmenu} onPointerDown={handlePointerDown}>
         {props.children}
       </TriggerItem>

@@ -4,11 +4,11 @@ import MarlinMiscWidget from "../../../plugins/@fuse-labs/marlin-extra/component
 import FeedRateWidget from "../../../plugins/@fuse-labs/marlin-move/components/FeedRateWidget/FeedRateWidget";
 import MoveWidget from "../../../plugins/@fuse-labs/marlin-move/components/MoveWidget/MoveWidget";
 import TemperatureWidget from "../../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
-import FileManagerWidget from "../../../plugins/@fuse-labs/file-manager/components/FileManagerWidget/FileManagerWidget";
 
 import getDevicePageComponent from "components/page-layouts/getDevicePageComponent";
 import { useRouter } from "next/router";
 import useDevice from "hooks/useDevice";
+import DeviceFileManagerWidget from "plugins/@fuse-labs/file-manager/components/DeviceFileManagerWidget/DeviceFileManagerWidget";
 
 export default function DeviceHomePage() {
 
@@ -41,7 +41,7 @@ export default function DeviceHomePage() {
         <ExtruderWidget />
         <MarlinMiscWidget />
 
-				<FileManagerWidget />
+				<DeviceFileManagerWidget />
 				
 				<div className="col-span-3">
 					<TemperatureWidget />

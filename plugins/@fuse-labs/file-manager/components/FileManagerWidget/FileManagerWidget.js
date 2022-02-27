@@ -24,8 +24,10 @@ export default function FileManagerWidget({
           </span>
         </div>
         <ScrollArea className="flex-1 overflow-hidden">
-          <FileManagerWidgetContextMenu>
+          <FileManagerWidgetContextMenu
+            onPrint={props.onContextMenuPrint}>
             <DirectoryListing
+              path="storage"
               selectedItem={selectedFile}
               onSelect={item => item.type == 'file' && setSelectedFile(item)}/>
           </FileManagerWidgetContextMenu>

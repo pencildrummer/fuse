@@ -1,18 +1,24 @@
 import { DownloadIcon, Share2Icon, TrashIcon } from "@radix-ui/react-icons";
 import ContextMenu from "plugins/@fuse-labs/core-ui/components/shared/ContextMenu/ContextMenu";
 
-export default function FileManagerWidgetContextMenu(props) {
+export default function FileManagerWidgetContextMenu({
+  onSave,
+  onDelete,
+  onPrint,
+  ...props
+}) {
   return (
-    <ContextMenu items={[
+    <ContextMenu modal={false} items={[
       {
         label: 'Save',
         icon: DownloadIcon,
-        action: _ => { console.log('Save file') }
+        action: onSave ? _ => { console.log('Save file') } : false
       },
       {
         label: 'Delete',
         icon: TrashIcon,
-        detail: '⌫'
+        detail: '⌫',
+        action: onDelete ? _ => onDelete() : false
       },
       {
         label: 'Share',
@@ -28,8 +34,11 @@ export default function FileManagerWidgetContextMenu(props) {
       },
       '-',
       {
-        label: 'Print'
+        label: 'Print',
+        action: onPrint ? _ => onPrint() : false
       }
-    ]}>{props.children}</ContextMenu>
+    ]}>
+      {props.children}
+    </ContextMenu>
   )
 }
