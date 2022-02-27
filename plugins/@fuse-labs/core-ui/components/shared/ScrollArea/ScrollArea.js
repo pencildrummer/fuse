@@ -3,16 +3,18 @@ import classNames from 'classnames'
 import React from 'react'
 
 const ScrollArea = React.forwardRef(({
+  type = 'scroll',
+  onScroll,
   children,
   ...props
 }, ref) => {
   return (
-    <ScrollAreaPrimitive.Root ref={ref} {...props} className={classNames(
+    <ScrollAreaPrimitive.Root ref={ref} type={type} {...props} className={classNames(
       'overflow-hidden',
       'flex',
       props.className
     )}>
-      <ScrollAreaPrimitive.Viewport className="flex-1">
+      <ScrollAreaPrimitive.Viewport className="flex-1" onScroll={onScroll}>
         {children}
       </ScrollAreaPrimitive.Viewport>
       <ScrollAreaPrimitive.Scrollbar orientation="vertical"

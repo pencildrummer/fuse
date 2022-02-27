@@ -27,7 +27,7 @@ export default function TerminalPrompt() {
         value={inputMessage}
         onChange={e => setInputMessage(e.target.value)}
         className={classNames(
-          'w-full',
+          'flex-1',
           'text-xs px-1.5 py-1',
           'rounded-md',
           'font-mono font-medium',

@@ -16,6 +16,8 @@ export default function TerminalProvider({
 
   const [data, setData] = useState([])
 
+  const [autoscroll, setAutoscroll] = useState(true)
+
   const appendData = newItem => {
     setData(data => {
       // Check if already in data array based on message id
@@ -37,6 +39,9 @@ export default function TerminalProvider({
 
     data,
     appendData,
+
+    autoscroll,
+    setAutoscroll,
   }}>
     {props.children}
   </TerminalContext.Provider>

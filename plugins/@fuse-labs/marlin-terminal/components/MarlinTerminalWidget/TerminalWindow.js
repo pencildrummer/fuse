@@ -1,13 +1,12 @@
-import { ScrollArea } from "plugins/@fuse-labs/core-ui";
+import { Group, Label, ScrollArea } from "plugins/@fuse-labs/core-ui";
+import { CheckboxRaw } from "plugins/@fuse-labs/core-ui/components/shared/Checkbox/Checkbox";
 import { useEffect, useRef } from "react";
 import TerminalLine from "./TerminalLine";
 import { useTerminalContext } from "./TerminalProvider";
 
-export default function TerminalWindow({
-  autoscroll
-}) {
+export default function TerminalWindow() {
 
-  const { terminal, data, appendData } = useTerminalContext()
+  const { terminal, data, appendData, autoscroll, setAutoscroll } = useTerminalContext()
 
   const scrollArea = useRef()
   const scrollAreaViewport = useRef()
@@ -25,7 +24,10 @@ export default function TerminalWindow({
   useEffect(_ => {
     // Scroll automatically to bottom of terminal window
     if (autoscroll) {
-      setTimeout(scrollToBottom, 50)
+      setTimeout(_ => {
+        scrollToBottom()
+        setAutoscroll(true)
+      }, 50)
     }
   }, [data])
 
@@ -33,7 +35,6 @@ export default function TerminalWindow({
    * Attach listener for incoming messages to be displayed
    */
   useEffect(_ => {
-    console.log('Terminal in window', terminal)
     if (!terminal) return
     // Configure listeners for socket terminal communication
     let listener = (data) => appendData(data)
@@ -42,13 +43,27 @@ export default function TerminalWindow({
     return _ => terminal.offMessageReceived(listener)
   }, [terminal])
 
+  function handleScroll(e) {
+    console.log(e)
+    if (autoscroll) {
+      setAutoscroll(false)
+    }
+  }
+
   return (
-    <div className="flex-1 overflow-hidden">
-      <ScrollArea ref={scrollArea} className="h-full px-1 rounded-md bg-gray-800 text-gray-200 font-semibold font-mono text-xs">
-        {data?.map((dataItem, i) =>
-          <TerminalLine key={`line-${dataItem.id}`} data={dataItem} />)
-        }
-      </ScrollArea>
+    <div className="flex-1 flex flex-col space-y-3 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea ref={scrollArea} className="h-full px-1 rounded-md bg-gray-800 text-gray-200 font-semibold font-mono text-xs"
+          onScroll={handleScroll}>
+          {data?.map((dataItem, i) =>
+            <TerminalLine key={`line-${dataItem.id}`} data={dataItem} />)
+          }
+        </ScrollArea>
+      </div>
+      <Group className="!justify-start text-xs font-normal">
+        <CheckboxRaw checked={autoscroll} onCheckedChange={setAutoscroll} />
+        <Label >Scroll automatically to bottom on new message</Label>
+      </Group>
     </div>
   )
 }
