@@ -1,12 +1,12 @@
 import path from 'path'
 import signale from 'signale'
 import chalk from 'chalk'
-import { getActivePlugins, PLUGINS_BASE_PATH } from '@fuse-labs/core'
+import { PluginManager, PLUGINS_BASE_PATH } from '@fuse-labs/core'
 
 export default async function registerSocketPlugins(io) {
 
   // Get list of plugins
-  const activePlugins = getActivePlugins()
+  const activePlugins = PluginManager.shared.activePlugins
 
   // Get plugins with socket register methods
   for (const plugin of activePlugins) {

@@ -4,11 +4,6 @@ import signale from 'signale'
 import chalk from 'chalk'
 import { PLUGINS_BASE_PATH, SYSTEM_BASE_PATH } from './constants.js'
 
-const SYSTEM_PLUGINS = [
-  '@fuse-labs/core',
-  '@fuse-labs/core-ui',
-]
-
 const ACTIVE_PLUGINS_PATH = path.resolve(path.join(SYSTEM_BASE_PATH, 'active_plugins.json'))
 
 // Internal var to track active plugin names
@@ -22,7 +17,7 @@ export function getPlugin(name) {
 }
 
 export function getActivePlugins() {
-  return plugins.filter(plugin => plugin.fuse.isActive)
+  return plugins.filter(plugin => plugin.active)
 }
 
 export function setPluginActive(name, activate) {
@@ -61,86 +56,13 @@ function getPlugins() {
   ].flat()
 
   return pluginNames.reduce( (res, pluginName) => {
-    // Get info for plugin (contains active status)
-    let info = readPluginInfo(pluginName)
-    if (info) {
-      res.push(info)
+    // Create Plugin instance for required pluginName
+    let plugin = new FusePlugin(pluginName)
+    if (plugin) {
+      res.push(plugin)
     }
     return res
   }, [])
-}
-
-function readPluginInfo(name) {
-  let packagePath = path.join(PLUGINS_BASE_PATH, name, 'package.json')
-  
-  try {
-    if (!fs.existsSync(packagePath)) {
-      signale.error('No package found for', name)
-      return null
-    }
-  } catch (e) {
-    signale.error('Error retrieving package for', name)
-    return null
-  }
-
-  let info
-
-  try {
-    info = fs.readFileSync(packagePath)
-    info = JSON.parse(info)
-  } catch (e) {
-    signale.error('Error reading package', e)
-    return null
-  }
-
-  // Add fuse key to safely add custom settings if not provided by package.json
-  info.fuse = { ...info.fuse }
-
-  // Check has setting page
-  if (fs.existsSync(path.join(PLUGINS_BASE_PATH, name, 'settings/index.js'))) {
-    info.fuse.settings = true
-  }
-
-  // Check plugin is system
-  info.fuse.system = SYSTEM_PLUGINS.includes(info.name)
-
-  // Check has pages
-  if (fs.existsSync(path.join(PLUGINS_BASE_PATH, name, 'pages/index.js'))) {
-    info.fuse.hasPages = true
-    // Check url is manually provided or generate one based on plugin name
-    info.fuse.url = info.fuse.pagesUrl || name
-  } else if (info.fuse.pagesUrl) {
-    signale.warn('Provided "pagesUrl" in ', chalk.magentaBright(info.name), ' but no "pages/index.js" has be found.')
-  }
-
-  // Check has tab structure
-  if (fs.existsSync(path.join(PLUGINS_BASE_PATH, name, 'tabs/index.js'))) {
-    info.fuse.hasTabs = true
-    // Check url is manually provided or generate one based on plugin name
-    info.fuse.tabsUrl = info.fuse.tabsUrl || name
-  } else if (info.fuse.tabsUrl) {
-    signale.warn('Provided "tabsUrl" in ', chalk.magentaBright(info.name), ' but no "tabs/index.js" has be found.')
-  }
-
-  // Check has socket
-
-  // Check exists socket.js file in server dir in plugin
-  let socketRegisterPath = path.join(PLUGINS_BASE_PATH, name, 'server', 'socket.js')
-
-  if (fs.existsSync(socketRegisterPath)) {
-    // Set flag value
-    info.fuse.hasSocket = true
-  }
-
-  // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, name, 'server', 'socket.js'))) {
-  //   // TODO - Check import available?
-  //   info.fuse.hasSocket = true
-  // }
-
-  // Check plugin is active
-  info.fuse.isActive = _activePluginsNames.includes(name)
-
-  return info
 }
 
 /**

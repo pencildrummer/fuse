@@ -1,4 +1,4 @@
-import { Button, Group, InputRaw, Label, Widget } from '../../index'
+import { Button, Group, InputRaw, Label, Widget } from '../../index.js'
 
 export default function DevicePluginsSettingsWidget() {
   return <Widget title="Plugins">

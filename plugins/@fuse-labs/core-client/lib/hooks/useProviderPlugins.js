@@ -1,15 +1,15 @@
 import { useState } from "react"
-import ClientPlugin from "../models/ClientPlugin/ClientPlugin"
+import ClientPluginManager from '../managers/ClientPluginManager/ClientPluginManager'
 
 export let providerPlugins
 
 export default function useProviderPlugins(data) {
 
-  if (!providerPlugins) {
-    providerPlugins = data?.map(data => new ClientPlugin(data)) || []
+  if (!ClientPluginManager.shared.initialized) {
+    ClientPluginManager.shared.init(data)
   }
 
-  const [plugins, setPlugins] = useState(providerPlugins)
+  const [plugins, setPlugins] = useState(ClientPluginManager.shared.plugins)
 
   return plugins
 }
