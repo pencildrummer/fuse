@@ -1,5 +1,5 @@
 import { DownloadIcon, Share2Icon, TrashIcon } from "@radix-ui/react-icons";
-import ContextMenu from "plugins/@fuse-labs/core-ui/components/shared/ContextMenu/ContextMenu";
+import ContextMenu from "@fuse-labs/core-ui/components/shared/ContextMenu/ContextMenu";
 
 export default function FileManagerWidgetContextMenu({
   onSave,

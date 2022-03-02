@@ -1,7 +1,7 @@
-import { Widget } from "plugins/@fuse-labs/core-ui";
-import DeviceConnectionWidget from "../../../../components/DeviceSettings/DeviceConnectionWidget/DeviceConnectionWidget";
+import { Widget } from "@fuse-labs/core-ui";
+import { DeviceConnectionWidget } from "@fuse-labs/core-ui";
 
-export default function () {
+export default function MarlinCorePage() {
   return (<>
     <DeviceConnectionWidget />
     <Widget>TODO: Add support to change connection settings</Widget>

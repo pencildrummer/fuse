@@ -1,7 +1,7 @@
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
-import { Button } from "plugins/@fuse-labs/core-ui";
-import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
+import { Button } from "@fuse-labs/core-ui";
+import { InputRaw } from "@fuse-labs/core-ui/components/shared/Input/Input";
 import { useState } from "react";
 import { useTerminalContext } from "./TerminalProvider";
 

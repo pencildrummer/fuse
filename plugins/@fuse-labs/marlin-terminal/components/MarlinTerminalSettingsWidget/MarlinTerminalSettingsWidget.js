@@ -1,9 +1,5 @@
-import SettingsWidget from "../../../core-ui/components/SettingsWidget/SettingsWidget";
-import Group from "../../../core-ui/components/shared/Group/Group";
-import { InputRaw } from "../../../core-ui/components/shared/Input/Input";
-import Label from "../../../core-ui/components/shared/Label/Label";
-import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
-import { Button } from "plugins/@fuse-labs/core-ui";
+import { useDeviceContext } from "@fuse-labs/core-client";
+import { Group, Label, InputRaw, Button, SettingsWidget } from "@fuse-labs/core-ui";
 
 export default function MarlinTerminalSettingsWidget({
   ...props

@@ -1,6 +1,6 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import classNames from "classnames"
-import { List } from "plugins/@fuse-labs/core-ui"
+import { List } from "@fuse-labs/core-ui"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 
 function isPrimitive(val) {
@@ -60,7 +60,7 @@ function GroupCompactListItem({
   const showGroupSelection = useMemo(_ => {
     let groupKey = props["data-group-key"]
     return !open && selectedItemKey?.startsWith(groupKey)
-  }, [open, props["data-group-key"], selectedItemKey])
+  }, [open, props, selectedItemKey])
 
   return <>
     <List.Item {...props} className={classNames(
@@ -127,6 +127,7 @@ function CompactListRoot({
       if (value)
         handleSelect(selectedItemKey, value, selectedItemInternalKey)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
 
   const contents = (items) => {

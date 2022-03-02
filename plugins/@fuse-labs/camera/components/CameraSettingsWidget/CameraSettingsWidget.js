@@ -1,4 +1,4 @@
-import SettingsWidget from "../../../core-ui/components/SettingsWidget/SettingsWidget";
+import SettingsWidget from "@fuse-labs/core-ui/components/misc/SettingsWidget/SettingsWidget";
 import Group from "../../../core-ui/components/shared/Group/Group";
 import Input, { InputRaw } from "../../../core-ui/components/shared/Input/Input";
 import Label from "../../../core-ui/components/shared/Label/Label";

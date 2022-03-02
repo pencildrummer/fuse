@@ -19,4 +19,5 @@ const Separator = React.forwardRef(({
     )} />
   </SeparatorPrimitive.Root>
 })
+Separator.displayName = "Separator"
 export default Separator

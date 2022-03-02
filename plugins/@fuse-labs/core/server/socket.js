@@ -1,9 +1,7 @@
-import { addDevice, getDevice, removeDevice, updateDevice } from "../../../../lib/core/devices.js"
+import { addDevice, getDevice, removeDevice, updateDevice, addProfile, updateProfile, deleteProfile } from "../index.js"
 import { SerialPort } from "serialport"
-import { addProfile, updateProfile, deleteProfile } from "../../../../lib/core/profiles.js"
-import signale from "signale"
 
-export default (socket) => {
+export default function setup(socket) {
     
   /**
    * Serial ports

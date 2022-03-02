@@ -1,7 +1,7 @@
-import { Group, Input, Label, Switch } from "plugins/@fuse-labs/core-ui"
+import { Group, Input, Label, Switch } from "@fuse-labs/core-ui"
 import { useIntl } from "react-intl"
-import GRBLSettingId from '../shared/GRBLSettingId.ts'
-import GRBLSettingKey from '../shared/GRBLSettingKey.ts'
+import GRBLSettingId from "../shared/GRBLSettingId"
+import GRBLSettingKey from "../shared/GRBLSettingKey"
 import { getSettingFieldType } from "../shared/getSettingFieldType"
 import getSettingFieldUnit from "../shared/getSettingFieldUnit"
 

@@ -1,6 +1,6 @@
 import { CardStackIcon, DotsVerticalIcon, FilePlusIcon } from "@radix-ui/react-icons";
-import socket from "lib/client/socket";
-import { Button, Group } from "plugins/@fuse-labs/core-ui";
+import { coreSocket } from "@fuse-labs/core-client";
+import { Button, Group } from "@fuse-labs/core-ui";
 import { useRef } from "react";
 import { useFileManagerContext } from "../FileManagerProvider";
 
@@ -19,7 +19,7 @@ export default function FileManagerTabTopBar() {
     let filesArray = [ ...e.target.files ]
     filesArray.forEach((file, i) => {
       // Request file add
-      socket.emit('file:add', { filename: file.name, data: file }, (file) => {
+      coreSocket.emit('file:add', { filename: file.name, data: file }, (file) => {
         // Remove file from pending list
         setPendingFiles(files => files.splice(i, 1))
       })

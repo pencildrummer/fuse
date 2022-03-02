@@ -1,5 +1,5 @@
-import SettingPage from "../../../../components/page-layouts/SettingPage";
-import { Widget } from "../../core-ui";
+import SettingPage from "@fuse-labs/core-ui/components/pages/SettingPage";
+import { Widget } from "@fuse-labs/core-ui/index"
 
 export default function SettingsPage() {
   return <SettingPage>

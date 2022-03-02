@@ -1,9 +1,17 @@
 {
   "name": "@fuse-labs/marlin-core",
+  "version": "1.0.0",
   "description": "Core plugin for FUSE for Marlin-based devices",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
   "fuse": {
     "title": "[Marlin] Core",
     "type": "driver",

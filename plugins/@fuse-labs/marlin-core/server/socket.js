@@ -1,11 +1,10 @@
 import signale from 'signale'
 import fs from 'fs-extra'
 import parser from 'gcode-parser'
-import { getDevice } from '../../../../lib/core/devices.js'
-import getDeviceIdFromSocket from '../../../../lib/server/getDeviceIdFromSocket.js'
+import { getDevice, getDeviceIdFromSocket } from '@fuse-labs/core'
 import chalk from 'chalk'
 
-export default (socket) => {
+export default function setup(socket) {
 
   socket.on('print:file', (file, fn) => {
     if (!file) {

@@ -1,9 +1,13 @@
 {
   "name": "@fuse-labs/core-ui",
+  "version": "1.0.0",
   "description": "CoreUI plugin for FUSE",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
+  "browser": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
   "fuse": {
     "title": "Core UI"
   }

@@ -1,4 +1,4 @@
-import { generateUniqueID } from 'lib/shared/uuid';
+import { generateUniqueID } from '@fuse-labs/core';
 
 const LineEnding = Object.freeze({
   None: 0,

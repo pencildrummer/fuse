@@ -3,8 +3,8 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   mode: 'jit',
   content: [
-    './pages/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
+    './src/client/**/*.{js,ts,jsx,tsx}',
+    './src/pages/**/*.{js,ts,jsx,tsx}',
     './plugins/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
@@ -25,6 +25,5 @@ module.exports = {
   },
   plugins: [
     require("tailwindcss-radix")(),
-    //require('daisyui'),
   ],
 }

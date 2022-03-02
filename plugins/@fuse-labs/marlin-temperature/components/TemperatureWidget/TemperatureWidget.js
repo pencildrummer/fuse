@@ -1,4 +1,3 @@
-import { Button, Group, Input, Label, Widget } from "../../../core-ui";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,9 +10,9 @@ import {
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
-import socket from "lib/client/socket";
+import { coreSocket } from "@fuse-labs/core-client";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { InputRaw } from "plugins/@fuse-labs/core-ui/components/shared/Input/Input";
+import { Button, Group, Label, Widget, InputRaw } from "@fuse-labs/core-ui";
 
 ChartJS.register(
   CategoryScale,
@@ -45,21 +44,21 @@ export default function TemperatureWidget() {
   const [targetHeatbed, setTargetHeatbed] = useState('')
 
   function requestTargetNozzle() {
-    socket.emit('nozzle:set', parseInt(targetNozzle))
+    coreSocket.emit('nozzle:set', parseInt(targetNozzle))
   }
 
   function requestTargetHeatbed() {
-    socket.emit('heatbed:set', parseInt(targetHeatbed))
+    coreSocket.emit('heatbed:set', parseInt(targetHeatbed))
   }
 
   const [data, setData] = useState(DEFAULT_DATA)
 
   useEffect(_ => {
-    socket.on('nozzle:get', (temperature) => {
+    coreSocket.on('nozzle:get', (temperature) => {
       appendNozzleTemp(temperature)
     })
   
-    socket.on('heatbed:get', (temperature) => {
+    coreSocket.on('heatbed:get', (temperature) => {
       appendHeatbedTemp(temperature)
     })
   }, [])

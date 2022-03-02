@@ -1,9 +1,7 @@
 import { Cross2Icon, ExclamationTriangleIcon, HomeIcon, ThickArrowDownIcon, ThickArrowLeftIcon, ThickArrowRightIcon, ThickArrowUpIcon } from '@radix-ui/react-icons'
-import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
-import socket from 'lib/client/socket'
-import { Widget, ToggleGroup, Group } from 'plugins/@fuse-labs/core-ui/index.js'
-import { useEffect, useState } from 'react'
-import { Button, Separator } from '../../../core-ui'
+import { useDeviceContext } from '@fuse-labs/core-client'
+import { Widget, ToggleGroup, Group, Button, Separator } from '@fuse-labs/core-ui'
+import { useState } from 'react'
 
 /**
  * All the commands should be moved into each single listener on socket to be safer?

@@ -1,14 +1,10 @@
-// TODO - Find a way to import event.ts for nodejs
-
-import { generateUniqueID } from "../../../../lib/shared/uuid.js"
-import { ReadlineParser, ReadyParser } from "serialport"
-import DeviceTerminal from '../lib/server/DeviceTerminal.js'
 import signale from "signale"
 import chalk from "chalk";
-import { getDevice } from "../../../../lib/core/devices.js";
-import getDeviceIdFromSocket from "../../../../lib/server/getDeviceIdFromSocket.js";
+import { getDeviceIdFromSocket } from "@fuse-labs/core";
+import { v4 as uuidv4 } from 'uuid'
+import DeviceTerminal from "../lib/server/DeviceTerminal.js";
 
-export default (socket) => {
+export default function setup(socket) {
   // Register terminal listeners
 
   let deviceId = getDeviceIdFromSocket(socket)
@@ -84,7 +80,7 @@ export default (socket) => {
   // Internal fn
   function socketSendMessage(message, from) {
     socket.emit('message', {
-      id: from.toLowerCase()+'-'+generateUniqueID(),
+      id: from.toLowerCase()+'-'+uuidv4(),
       from: from.toLowerCase(),
       message: message
     })
@@ -106,7 +102,7 @@ export default (socket) => {
         if (err) {
           signale.error('Error creating DeviceTerminal:', err)
           socket.emit('message', {
-            id: 'server-'+generateUniqueID(),
+            id: 'server-'+uuidv4(),
             from: 'server',
             message: 'Error connecting to device - ' + err.message
           })

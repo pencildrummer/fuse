@@ -1,7 +1,7 @@
 import signale from "signale"
-import { getDevice } from "../../../../lib/core/devices.js"
+import { getDevice } from "../../../../src/server/lib/devices.js"
 
-export default (socket) => {
+export default function setup(socket) {
 
   signale.info('Registering GRBL move')
   socket.on('move:x', (deviceId, xValue, fn) => {

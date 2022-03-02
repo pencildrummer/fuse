@@ -1,8 +1,8 @@
 import path from "path"
-import File from "../../../../lib/shared/models/File.js"
-import Directory from "../../../../lib/shared/models/Directory.js"
+import File from "../../../../src/server/lib/shared/_models/File.js"
+import Directory from "../../../../src/server/lib/shared/_models/Directory.js"
 
-export default (socket) => {
+export default function setup(socket) {
 
   socket.on('dir:list', ({ path: targetPath }, fn) => {
     // TODO - Validate if path is inside project scope?

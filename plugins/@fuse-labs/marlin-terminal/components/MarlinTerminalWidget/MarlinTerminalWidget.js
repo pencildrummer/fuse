@@ -1,6 +1,6 @@
-import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
+import { useDeviceContext } from "@fuse-labs/core-client";
 import React, { useEffect } from "react";
-import { Widget } from "../../../core-ui";
+import { Widget } from "@fuse-labs/core-ui";
 import TerminalPrompt from "./TerminalPrompt";
 import TerminalProvider from "./TerminalProvider";
 import TerminalWindow from "./TerminalWindow";

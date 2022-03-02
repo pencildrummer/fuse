@@ -1,5 +1,5 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
-import { Button, Group, Progress } from "plugins/@fuse-labs/core-ui"
+import { Button, Group, Progress } from "@fuse-labs/core-ui"
 import { useFileManagerContext } from "../FileManagerProvider"
 
 export default function PendingFilesList() {

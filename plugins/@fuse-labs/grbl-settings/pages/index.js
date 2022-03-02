@@ -1,10 +1,10 @@
-import { useDeviceContext } from 'components/DeviceProvider/DeviceProvider'
-import { Form, Group, Label, Loader, Widget, Input, Button } from 'plugins/@fuse-labs/core-ui'
-import TerminalProvider from 'plugins/@fuse-labs/marlin-terminal/components/MarlinTerminalWidget/TerminalProvider'
 import { useEffect, useMemo, useState } from 'react'
-import SettingField from '../lib/client/SettingField'
+import { useDeviceContext } from '@fuse-labs/core-client'
+import { Widget, Button, Loader, Form } from '@fuse-labs/core-ui'
+import TerminalProvider from 'plugins/@fuse-labs/marlin-terminal/components/MarlinTerminalWidget/TerminalProvider'
 
-import GRBLSetting from '../lib/shared/GRBLSettingId.ts'
+import SettingField from '../lib/client/SettingField'
+import GRBLSettingId from '../lib/shared/GRBLSettingId'
 import { getSettingFieldType } from '../lib/shared/getSettingFieldType'
 
 function parseSettingMessage(message) {
@@ -40,7 +40,7 @@ function convertSettingValue(settingId, value) {
 
 function defaultSettings() {
   let defaults = {}
-  for (let setting in GRBLSetting) {
+  for (let setting in GRBLSettingId) {
     if (isNaN(Number(setting))) {
       defaults[setting] = {
         ...defaults[setting],

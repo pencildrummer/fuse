@@ -1,5 +1,5 @@
-import { Group, Label, ScrollArea } from "plugins/@fuse-labs/core-ui";
-import { CheckboxRaw } from "plugins/@fuse-labs/core-ui/components/shared/Checkbox/Checkbox";
+import { Group, Label, ScrollArea } from "@fuse-labs/core-ui";
+import { CheckboxRaw } from "@fuse-labs/core-ui/components/shared/Checkbox/Checkbox";
 import { useEffect, useRef } from "react";
 import TerminalLine from "./TerminalLine";
 import { useTerminalContext } from "./TerminalProvider";
@@ -29,7 +29,7 @@ export default function TerminalWindow() {
         setAutoscroll(true)
       }, 50)
     }
-  }, [data])
+  }, [autoscroll, data, setAutoscroll])
 
   /**
    * Attach listener for incoming messages to be displayed
@@ -41,7 +41,7 @@ export default function TerminalWindow() {
     terminal.onMessageReceived(listener)
     // Return cleanup to remove listener on unmount
     return _ => terminal.offMessageReceived(listener)
-  }, [terminal])
+  }, [appendData, terminal])
 
   function handleScroll(e) {
     if (autoscroll) {

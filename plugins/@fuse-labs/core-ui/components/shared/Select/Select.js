@@ -50,6 +50,7 @@ export function SelectRaw({
   useEffect(_ => {
     if (selectedOption) return
     setSelectedOption(getOptionForValue(defaultValue))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValue])
 
   // Internal helper
@@ -60,6 +61,7 @@ export function SelectRaw({
   useEffect(_ => {
     let size = triggerContainerEl.current.getBoundingClientRect()
     setContentWidth(size.width)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerContainerEl.current])
 
   useEffect(_ => {
@@ -67,6 +69,7 @@ export function SelectRaw({
       onChange?.(selectedOption?.value)
     else
       onChange?.(selectedOption)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption])
 
   let selectedOptionDisplayText = useMemo(_ => {

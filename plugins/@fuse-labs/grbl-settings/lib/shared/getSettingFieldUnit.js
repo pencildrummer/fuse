@@ -1,4 +1,4 @@
-import GRBLSettingId from "./GRBLSettingId.ts";
+import GRBLSettingId from './GRBLSettingId'
 
 export default function getSettingFieldUnit(settingId) {
   switch(parseInt(settingId)) {

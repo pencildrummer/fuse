@@ -12,7 +12,7 @@ const createWindow = _ => {
 
 app.whenReady().then(_ => {
   console.log('Starting server')
-  return import('./server.mjs')
+  return import('./src/server/index.js')
 }).then(_ => {
 
   console.log('Configuring electron app window')

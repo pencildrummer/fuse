@@ -1,9 +1,9 @@
-import PrinterDevice from "../../../../lib/shared/models/PrinterDevice.js";
+import PrinterDevice from "../../../../src/server/lib/shared/_models/PrinterDevice.js";
 
 // TEST - Move in some shared lib
 let device;
 
-export default (socket) => {
+export default function setup(socket) {
 
   // TODO - Replace namespaces in name direclty in passed socket?
   socket.on('openDevice', ({

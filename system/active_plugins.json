@@ -1,18 +1,7 @@
 {
   "data": [
-    "@fuse-labs/camera",
     "@fuse-labs/core",
     "@fuse-labs/core-ui",
-    "@fuse-labs/file-manager",
-    "@fuse-labs/grbl-move",
-    "@fuse-labs/grbl-settings",
-    "@fuse-labs/marlin-core",
-    "@fuse-labs/marlin-extra",
-    "@fuse-labs/marlin-extruder",
-    "@fuse-labs/marlin-gcode-viewer",
-    "@fuse-labs/marlin-move",
-    "@fuse-labs/marlin-settings",
-    "@fuse-labs/marlin-temperature",
-    "@fuse-labs/marlin-terminal"
+    "@fuse-labs/marlin-core"
   ]
 }

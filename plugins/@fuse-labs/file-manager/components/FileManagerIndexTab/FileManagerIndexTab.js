@@ -1,4 +1,4 @@
-import { ScrollArea, Widget } from "plugins/@fuse-labs/core-ui";
+import { ScrollArea, Widget } from "@fuse-labs/core-ui";
 import { useFileManagerContext } from "../FileManagerProvider";
 import DirectoryListing from "../FileManagerWidget/DirectoryListing";
 import FileManagerWidgetContextMenu from "../FileManagerWidget/FileManagerWidgetContextMenu";

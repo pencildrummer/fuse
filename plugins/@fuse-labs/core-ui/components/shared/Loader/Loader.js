@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import LoaderIcon from "../../icons/LoaderIcon"
+import LoaderIcon from "../../icons/LoaderIcon/LoaderIcon"
 
 export default function Loader({
   size = 'normal',

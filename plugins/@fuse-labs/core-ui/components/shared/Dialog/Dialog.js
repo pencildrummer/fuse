@@ -1,7 +1,7 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { Cross1Icon, Cross2Icon } from '@radix-ui/react-icons'
 import classNames from 'classnames'
-import Widget from '../../Widget/Widget'
+import Widget from '../Widget/Widget'
 import Button from '../Button/Button'
 
 function Dialog({

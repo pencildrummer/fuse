@@ -1,4 +1,4 @@
-import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
+import { useDeviceContext } from "@fuse-labs/core-client";
 import FileManagerWidget from "../FileManagerWidget/FileManagerWidget";
 
 export default function DeviceFileManagerWidget() {

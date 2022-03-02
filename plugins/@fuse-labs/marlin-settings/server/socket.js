@@ -2,10 +2,10 @@
  * Add export to configure socket listeners
  */
 
-import { getDevice } from "../../../../lib/core/devices.js"
+import { getDevice } from "../../../../src/server/lib/devices.js"
 import signale from "signale"
 
-export default (socket) => {
+export default function setup(socket) {
 
   // TODO - Add listener method on DeviceTerminal
   // TODO - Add listener on device.terminal for received data (improved with serial port parser to trigger handler on certain events?)

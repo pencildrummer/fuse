@@ -1,5 +1,5 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { SwitchRaw } from "plugins/@fuse-labs/core-ui/components/shared/Switch/Switch";
+import { SwitchRaw } from "@fuse-labs/core-ui/components/shared/Switch/Switch";
 import { Button, Widget, Switch } from "../../../core-ui";
 
 export default function MarlinMiscWidget() {

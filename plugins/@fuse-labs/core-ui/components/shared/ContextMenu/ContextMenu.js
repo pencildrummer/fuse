@@ -10,7 +10,7 @@ export default function ContextMenu({
   asSubmenu = false,
   onPointerDown,
   onPointerDownOutside,
-  ...props,
+  ...props
 }) {
 
   let TriggerItem = asSubmenu ? ContextMenuPrimitive.TriggerItem : ContextMenuPrimitive.Trigger

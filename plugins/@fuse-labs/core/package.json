@@ -1,9 +1,15 @@
 {
   "name": "@fuse-labs/core",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
-  "fuse": {
-    "title": "Core"
-  }
+  "version": "1.0.0",
+  "description": "Core plugin for FUSE",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC"
 }

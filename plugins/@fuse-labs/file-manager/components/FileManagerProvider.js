@@ -1,4 +1,4 @@
-import socket from "lib/client/socket"
+import { coreSocket } from "@fuse-labs/core-client"
 import React, { useContext, useEffect, useState } from "react"
 
 const FileManagerContext = React.createContext()
@@ -22,8 +22,8 @@ export default function FileManagerProvider(props) {
     let listener = (file) => {
       console.log('Added file', file)
     }
-    socket.on('file:added', listener)
-    return _ => socket.off('file:added', listener)
+    coreSocket.on('file:added', listener)
+    return _ => coreSocket.off('file:added', listener)
   }, [])
 
   return <FileManagerContext.Provider value={{

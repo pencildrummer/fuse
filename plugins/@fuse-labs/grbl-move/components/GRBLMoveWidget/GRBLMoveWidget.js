@@ -1,6 +1,6 @@
-import { useDeviceContext } from "components/DeviceProvider/DeviceProvider";
-import socket from "lib/client/socket";
-import { Button, Widget } from "plugins/@fuse-labs/core-ui";
+import { useDeviceContext } from "@fuse-labs/core-ui/components/common/DeviceProvider/DeviceProvider";
+import { socket } from "plugins/@fuse-labs/core-client/lib/socket";
+import { Button, Widget } from "@fuse-labs/core-ui/index";
 
 export default function GRBLMoveWidget() {
   const { device } = useDeviceContext()

@@ -1,6 +1,6 @@
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog'
 import classNames from 'classnames'
-import Widget from '../../Widget/Widget'
+import Widget from '../Widget/Widget'
 import Button from '../Button/Button'
 import Group from '../Group/Group'
 

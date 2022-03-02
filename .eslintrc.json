@@ -1,0 +1,16 @@
+{
+  "extends": ["next"],
+  "ignorePatterns": ["docs/**/*"]
+  // "settings": {
+  //   "import/resolver": {
+  //     "alias": {
+  //       "map": [
+  //         ["@/client/*", "src/client/*"],
+  //         ["@/utils/*", "src/utils/*"],
+  //         ["@/plugins/*", "plugins/*"],
+  //         ["@/lang/*", "lang/*"]
+  //       ]
+  //     }
+  //   }
+  // }
+}

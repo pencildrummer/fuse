@@ -39,4 +39,5 @@ const MenuItem = React.forwardRef(({
     {children}
   </div>
 })
+MenuItem.displayName = "MenuItem"
 export default MenuItem

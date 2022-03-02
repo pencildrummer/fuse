@@ -1,6 +1,6 @@
-import usePlugin from "hooks/usePlugin"
 import { useEffect, useState } from "react"
-import { List } from "../../../core-ui"
+import { usePlugin } from '@fuse-labs/core-client'
+import { List } from "@fuse-labs/core-ui"
 import { useFileManagerContext } from "../FileManagerProvider"
 import DirectoryItem from "./DirectoryItem"
 import FileItem from "./FileItem"
@@ -44,6 +44,7 @@ export default function DirectoryListing({
     return _ => {
       plugin.socket.off('file:added', fileAddedListener)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <List className="text-gray-400 text-xs" divide={false} size="compact">

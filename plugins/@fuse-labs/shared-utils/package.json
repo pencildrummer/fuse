@@ -1,0 +1,12 @@
+{
+  "name": "@fuse-labs/shared-utils",
+  "version": "1.0.0",
+  "description": "Shared utilities (core and client) for FUSE",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC"
+}

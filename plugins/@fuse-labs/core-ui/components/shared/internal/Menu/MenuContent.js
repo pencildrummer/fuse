@@ -19,4 +19,5 @@ const MenuContent = React.forwardRef(({
     </div>
   )
 })
+MenuContent.displayName = "MenuContent"
 export default MenuContent
