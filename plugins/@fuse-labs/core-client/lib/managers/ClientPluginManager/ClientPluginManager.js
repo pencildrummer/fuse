@@ -24,8 +24,8 @@ class ClientPluginManager {
   }
 
   init(fetchedPluginsData) {
-    console.log('INT MANAGER CLIENT WITH DATA', fetchedPluginsData)
     this._plugins = fetchedPluginsData?.map(data => new ClientPlugin(data)) || []
+    console.log('INIT MANAGER Plugins', this._plugins)
     this._initialized = true
   }
 

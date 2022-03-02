@@ -2,6 +2,8 @@ import dynamic from 'next/dynamic'
 import getDevicePageComponent from '@fuse-labs/core-ui/components/pages/getDevicePageComponent.js'
 import { useRouter } from 'next/router'
 import { useDevice, useDevicePlugin } from '@fuse-labs/core-client'
+import { BlockingView, Group } from '@fuse-labs/core-ui'
+import { ExclamationTriangleIcon, LightningBoltIcon } from '@radix-ui/react-icons'
 
 export default function DevicePluginPage() {
   
@@ -21,17 +23,31 @@ export default function DevicePluginPage() {
   }
 
   // Check plugin is active
-  if (!plugin.fuse.isActive) {
+  if (!plugin.active) {
     return (
-      <span>Plugin not active</span>
+      <BlockingView>
+        <Group orientation='vertical' className="items-center">
+          <LightningBoltIcon className='w-20 h-20 text-gray-700'/>
+          <span className="font-bold text-gray-500">
+            Plugin not active
+          </span>
+        </Group>
+      </BlockingView>
     )
   }
 
   // TODO - Avoid?
   // Check plugin suitable for required device
-  if (!plugin.fuse.devices.includes(device.profile.type)) {
+  if (!plugin.deviceTypes.includes(device.profile.type)) {
     return (
-      <span>Plugin do not support device type {device.profile.type}</span>
+      <BlockingView>
+        <Group orientation='vertical' className="items-center">
+          <ExclamationTriangleIcon className='w-20 h-20 text-gray-700'/>
+          <span className="font-bold text-gray-500">
+            Plugin do not support device type {device.profile.type}
+          </span>
+        </Group>
+      </BlockingView>
     )
   }
 

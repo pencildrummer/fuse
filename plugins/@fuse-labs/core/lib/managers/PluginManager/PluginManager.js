@@ -3,15 +3,20 @@ import signale from 'signale';
 import fs from 'fs-extra'
 import { SYSTEM_BASE_PATH, PLUGINS_BASE_PATH } from '../../constants.js';
 import Plugin from '../../models/plugins/Plugin/Plugin.js';
+import chalk from 'chalk';
 
 const ACTIVE_PLUGINS_PATH = path.resolve(path.join(SYSTEM_BASE_PATH, 'active_plugins.json'))
 
-const SYSTEM_PLUGIN_NAMES = Object.freeze([
+const __SYSTEM_PLUGIN_NAMES__ = Object.freeze([
   '@fuse-labs/core',
   '@fuse-labs/core-ui',
 ])
 
 class PluginManager {
+
+  get SYSTEM_PLUGIN_NAMES() {
+    return __SYSTEM_PLUGIN_NAMES__
+  }
 
   _plugins = [];
   get plugins() { return this._plugins }
@@ -29,6 +34,9 @@ class PluginManager {
 
   constructor() {
     signale.pending('Initializing PluginManager')
+
+    // Load active plugin names
+    this.getActivePluginsNames()
 
     // Init plugin manager
     // Get available installed plugins based on package presence
@@ -60,22 +68,23 @@ class PluginManager {
    * @returns List of active plugin names
    */
   getActivePluginsNames() {
+    signale.start('Retrieving names list of active plugin')
     // Get list of active plugins
-    let content = fs.readFileSync(activepl)
+    let content = fs.readFileSync(ACTIVE_PLUGINS_PATH)
     
     // Set on singleton instance
     this._activePluginsNames = [
-      ...SYSTEM_PLUGIN_NAMES,
+      ...__SYSTEM_PLUGIN_NAMES__,
       ...(JSON.parse(content)?.data || []),
     ]
   }
 
-  activate(plugin) {
-    this.setPluginActive(plugin.name, true)
+  activate(pluginName) {
+    this.setPluginActive(pluginName, true)
   }
 
-  deactivate(plugin) {
-    this.setPluginActive(plugin.name, false)
+  deactivate(pluginName) {
+    this.setPluginActive(pluginName, false)
   }
 
   /**
@@ -83,32 +92,35 @@ class PluginManager {
    */
 
   setPluginActive(name, active) {
-
-    // TODO - Check plugin is not a system one
-  
     // Check plugin is in installed plugins
-    let plugin = getPlugin(name)
+    let plugin = this.getPlugin(name)
     if (!plugin) {
       throw new Error('Trying to change active state for a plugin not installed', name)
     }
-  
-    // Set plugin as not active
-    plugin.fuse.isActive = active
-    // Update system activet list file, later will be moved onto Plugin class
-    updateActivePluginsNames()
-  
-    signale.success(`Changed plugin ${chalk.magenta(plugin.name)} active state to ${active ? chalk.greenBright('active') : chalk.redBright('not active')}`)
-  }
 
-  updateActivePluginsNames() {
-    // Remove system plugins, they are always active do not need to store
+    // Check plugin is not a system one
+    if (plugin.system) {
+      throw new Error('Trying to deactivate system plugin', plugin.name)
+    }
+
+    // Update system activet list file, later will be moved onto Plugin class
+
+    if (active) {
+      this._activePluginsNames.push(name)
+    } else {
+      this._activePluginsNames = this._activePluginsNames.filter(activePluginName => activePluginName != name)
+    }
+
+    // Remove system plugin names before storing list on file system
+    const storedActivePluginNames = this._activePluginsNames
+      .filter(name => !__SYSTEM_PLUGIN_NAMES__.includes(name))
+
     // And update in memory list
-    this._activePluginsNames = plugins.filter(plugin => !SYSTEM_PLUGIN_NAMES.includes(plugin))
-      .map(plugin => plugin.fuse.isActive ? plugin.name : null).filter(Boolean)
-    
-    return fs.writeFileSync(ACTIVE_PLUGINS_PATH, JSON.stringify({
-      "data": this._activePluginsNames
+    fs.writeFileSync(ACTIVE_PLUGINS_PATH, JSON.stringify({
+      "data": storedActivePluginNames
     }, null, 2))
+
+    signale.success(`Changed plugin ${chalk.magenta(plugin.name)} active state to ${active ? chalk.greenBright('active') : chalk.redBright('not active')}`)
   }
 
 }

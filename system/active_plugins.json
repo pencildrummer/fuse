@@ -1,7 +1,5 @@
 {
   "data": [
-    "@fuse-labs/core",
-    "@fuse-labs/core-ui",
-    "@fuse-labs/marlin-core"
+    "@fuse-labs/file-manager"
   ]
 }

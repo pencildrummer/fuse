@@ -1,5 +1,6 @@
-import { addDevice, getDevice, removeDevice, updateDevice, addProfile, updateProfile, deleteProfile } from "../index.js"
+import { addDevice, getDevice, removeDevice, updateDevice, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
 import { SerialPort } from "serialport"
+import signale from "signale"
 
 export default function setup(socket) {
     
@@ -13,9 +14,26 @@ export default function setup(socket) {
     }).catch(e => fn(e))
   })
 
+  /**
+   * Plugins
+   */
+
+  socket.on('plugins:activate', async (pluginName, fn) => {
+    PluginManager.shared.activate(pluginName)
+    socket.emit('plugins:activated', pluginName)
+    fn?.(true)
+  })
+
+  socket.on('plugins:deactivate', async (pluginName, fn) => {
+    PluginManager.shared.deactivate(pluginName)
+    socket.emit('plugins:deactivated', pluginName)
+    fn?.(true)
+  })
+
+
   /*
-  ** Devices
-  */
+   * Devices
+   */
 
   socket.on('devices:add', async ({
     name, 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { IntlProvider } from 'react-intl'
 import useProviderPlugins from '../../hooks/useProviderPlugins.js'
 import useProviderDevices from '../../hooks/useProviderDevices.js'
@@ -15,13 +15,17 @@ export default function AppProvider({
 }) {
 
   const profiles = useProviderProfiles(fetchedProfiles)
+  
   const plugins = useProviderPlugins(fetchedPlugins)
+  const activePlugins = useMemo(_ => plugins?.filter(p => p.active), [plugins])
+
   const devices = useProviderDevices(fetchedDevices)
 
   return <AppContext.Provider value={{
     devices,
     profiles,
     plugins,
+    activePlugins,
   }}>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
       {props.children}

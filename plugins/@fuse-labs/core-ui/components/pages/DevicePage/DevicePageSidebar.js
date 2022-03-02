@@ -7,7 +7,7 @@ import Tooltip from '../../shared/Tooltip/Tooltip';
 
 export default function DevicePageSidebar() {
 
-  const { plugins } = useAppContext()
+  const { activePlugins } = useAppContext()
   const { device } = useDeviceContext()
 
   return (
@@ -17,15 +17,15 @@ export default function DevicePageSidebar() {
           <SidebarMenuItem icon={icons.DashboardIcon} href={`/workspace/devices/${device.id}/`} />
         </Tooltip>
 
-        {plugins?.map(plugin => {
+        {activePlugins?.map(plugin => {
             // Check if plugin support this type of device
-            if (!plugin.fuse.devices?.includes(device.profile.type)) return
+            if (!plugin.deviceTypes?.includes(device.profile.type)) return
             // Check if plugin has additional pages to allow for a link
-            if (!plugin.fuse.hasPages) return
-            let icon = icons[plugin.fuse.icon] || icons.QuestionMarkIcon
-            let href = `/workspace/devices/${device.id}/`+plugin.fuse.url
+            if (!plugin.hasPages) return
+            let icon = icons[plugin._fuse.icon] || icons.QuestionMarkIcon
+            let href = `/workspace/devices/${device.id}/`+plugin.url
             return <Tooltip key={plugin.name}
-              content={plugin.fuse.tooltip || plugin.fuse.title || plugin.name}
+              content={plugin._fuse.tooltip || plugin.title || plugin.name}
               side="right" sideOffset={10}>
               <SidebarMenuItem icon={icon} href={href} />
             </Tooltip>

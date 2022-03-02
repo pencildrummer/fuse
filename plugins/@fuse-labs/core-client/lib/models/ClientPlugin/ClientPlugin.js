@@ -7,10 +7,11 @@ const CONSTRUCTOR_SCHEMA = object({
   version: string().required(),
   _settings: boolean().required(),
   _hasPages: boolean().required(),
-  _url: string(),
   _hasTabs: boolean().required(),
-  _tabsUrl: string(),
   _hasSocket: boolean().required(),
+  _fuse: object().required(),
+  _active: boolean().required(),
+  _system: boolean().required(),
 })
 
 const SCHEMA = object({
@@ -24,30 +25,41 @@ export default class ClientPlugin {
   name;
   version;
 
+  _fuse;
+
   _settings = false;
   get settings() { return this._settings }
 
   _hasPages = false;
   get hasPages() { return this._hasPages }
 
-  _url = undefined
-  get url() { return this._url }
+  get url() {
+    // Check url is manually provided or generate one based on plugin name
+    return this._fuse.pagesUrl || this.name
+  }
 
   _hasTabs = false;
   get hasTabs() { return this._hasTabs }
 
-  _tabsUrl = undefined;
-  get tabsUrl() { return this._tabsUrl }
+  get tabsUrl() {
+    // Check url is manually provided or generate one based on plugin name
+    return this._fuse.tabsUrl || this.name
+  }
 
   _hasSocket = undefined;
   get hasSocket() { return this._hasSocket }
 
+  _active = false;
   get active() {
-    ClientPluginManager.shared.activePluginsNames.includes(this.name)
+    return this._active
+    return ClientPluginManager.shared.activePluginsNames.includes(this.name)
   }
 
-  get system() {
-    return PluginManager.shared.SYSTEM_PLUGIN_NAMES.includes(this.name)
+  _system
+  get system() { return this._system }
+
+  get deviceTypes() {
+    return this._fuse.devices
   }
 
   constructor(data) {

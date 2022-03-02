@@ -11,7 +11,7 @@ export default async function registerSocketPlugins(io) {
   // Get plugins with socket register methods
   for (const plugin of activePlugins) {
 
-    if (plugin.fuse.hasSocket) {
+    if (plugin.hasSocket) {
       // Get register function from socket.js
       const socketRegisterPath = path.join(process.cwd(), PLUGINS_BASE_PATH, plugin.name, 'server', 'socket.js')
 
@@ -30,7 +30,7 @@ export default async function registerSocketPlugins(io) {
           // Removed @ scope character because doesn't seem to work on client socket namespace creation
           let nsPluginName = plugin.name.replace('@', 'scope:')
           let namespace = `/${nsPluginName}`
-          if (plugin.fuse.devices) {
+          if (plugin.deviceTypes?.length) {
             namespace = new RegExp(`/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/${nsPluginName}`, 'i')
           }
 

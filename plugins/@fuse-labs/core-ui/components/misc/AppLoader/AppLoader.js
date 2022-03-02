@@ -1,9 +1,9 @@
+import BlockingView from '../BlockingView/BlockingView.js'
 import Loader from '../../shared/Loader/Loader.js'
-import Link from 'next/link';
 
 export default function AppLoader() {
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <BlockingView>
       <div className="flex flex-col space-y-2">
 
         <div className="flex flex-row space-x-3 text-gray-300 items-center">
@@ -13,6 +13,6 @@ export default function AppLoader() {
           </span>
         </div>
       </div>
-    </div>
+    </BlockingView>
   )
 }

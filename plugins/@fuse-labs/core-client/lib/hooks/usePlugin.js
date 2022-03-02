@@ -6,5 +6,5 @@ export default function usePlugin(nameOrURL) {
   const { plugins } = useAppContext()
   // Get the requested plugin from URL,
   // find first for configured 'pagesUrl' in plugin package.json otherwise fallback finding plugin name with same url requested
-  return useMemo(_ => plugins.find(plugin => plugin.fuse.url == nameOrURL || plugin.name === nameOrURL), [nameOrURL, plugins])
+  return useMemo(_ => plugins.find(plugin => plugin.url == nameOrURL || plugin.name === nameOrURL), [nameOrURL, plugins])
 }

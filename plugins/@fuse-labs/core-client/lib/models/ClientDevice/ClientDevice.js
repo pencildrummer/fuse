@@ -3,7 +3,7 @@ import lodash from 'lodash'
 import { ClientDeviceType } from '..'
 //import { Terminal } from '@/plugins/@fuse-labs/marlin-terminal/lib/client/terminal'
 import { object, string, number } from 'yup'
-import { providerPlugins } from '../../hooks/useProviderPlugins.js'
+import ClientPluginManager from '../../managers/ClientPluginManager/ClientPluginManager'
 
 const SCHEMA = object({
   id: string().required(),
@@ -52,11 +52,11 @@ export default class ClientDevice {
 
     // Load and set active plugins on device
     // TODO - Create an activation method on device or plugin classes
-    this.plugins = providerPlugins?.filter(plugin => plugin.fuse.devices?.includes(device.profile.type))
+    this.plugins = ClientPluginManager.shared.plugins?.filter(plugin => plugin.deviceTypes?.includes(device.profile.type))
 
     //Create socket for active plugins
     this.plugins?.forEach((plugin) => {
-      if (!plugin.fuse.hasSocket) return
+      if (!plugin.hasSocket) return
       let keyPath = plugin.name.split('/').map(key => lodash.camelCase(key)).join('.')
       if (!lodash.get(this, 'sockets.'+keyPath)) {
         let pluginDeviceSocket = socket(`device:${this.id}/${plugin.name}`)

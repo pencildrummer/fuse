@@ -1,3 +1,4 @@
+import BlockingView from './BlockingView/BlockingView'
 import AddDeviceWizard from "./AddDeviceWizard/AddDeviceWizard";
 import AppLoader from "./AppLoader/AppLoader";
 import DeviceCard from "./DeviceCard/DeviceCard";
@@ -16,6 +17,7 @@ import DeviceProfilesWidget from './DeviceSettings/DeviceProfilesWidget/DevicePr
 import DeviceConnectionWidget from './DeviceSettings/DeviceConnectionWidget/DeviceConnectionWidget.js'
 
 export {
+  BlockingView,
   AddDeviceWizard,
   AppLoader,
   DeviceCard,

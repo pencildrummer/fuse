@@ -1,6 +1,6 @@
 import { GearIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { fetcherPOST } from "@fuse-labs/core-client"
+import { coreSocket, fetcherPOST } from "@fuse-labs/core-client"
 import { Button, SwitchRaw, Badge } from "@fuse-labs/core-ui"
 
 export default function PluginListItem({
@@ -9,9 +9,19 @@ export default function PluginListItem({
 }) {
 
   function setPluginActive(name, activate) {
-    fetcherPOST('/api/plugins/activate', { name: name, activate: activate })
-      .then(res => console.log('RES'))
-      .catch(e => console.error(e))
+    if (activate) {
+      coreSocket.emit('plugins:activate', name, res => {
+        console.log('Activated:', res)
+      })
+    } else {
+      coreSocket.emit('plugins:deactivate', name, res => {
+        console.log('Deactivated:', res)
+      })
+    }
+    
+    // fetcherPOST('/api/plugins/activate', { name: name, activate: activate })
+    //   .then(res => console.log('RES'))
+    //   .catch(e => console.error(e))
   }
 
   return (
@@ -32,7 +42,7 @@ export default function PluginListItem({
             )}
           </div>
 
-          {plugin.fuse?.system && <Badge size="sm" className="bg-blue-600">SYSTEM</Badge>}
+          {plugin.system && <Badge size="sm" className="bg-blue-600">SYSTEM</Badge>}
           {plugin.fuse?.type == 'driver' && <Badge size="sm" className="bg-amber-600 text-amber-50">DRIVER</Badge>}
         </div>
         <div className="flex flex-row items-center space-x-3">
@@ -42,7 +52,7 @@ export default function PluginListItem({
         </div>
       </div>
 
-      {plugin.fuse?.settings && <div className="w-20 flex items-center justify-center">
+      {plugin.settings && <div className="w-20 flex items-center justify-center">
         <Link href={`/settings/plugins/${plugin.name.replace('/', '*')}`} passHref>
           <Button rounded squared size="sm">
             <GearIcon />
@@ -51,8 +61,8 @@ export default function PluginListItem({
       </div>}
 
       <div className="flex items-center">
-        <SwitchRaw defaultChecked={plugin.fuse.isActive}
-          disabled={plugin.fuse?.system} 
+        <SwitchRaw defaultChecked={plugin.active}
+          disabled={plugin.system} 
           onCheckedChange={v => setPluginActive(plugin.name, v)} />
       </div>
     </li>

@@ -20,13 +20,13 @@ export default function Navbar() {
 						<span className='ml-2'>Workspace</span>
 					</TabItem>
 					{plugins?.map(plugin => {
-						if (!plugin.fuse.hasTabs) return
+						if (!plugin.hasTabs) return
 
-						let Icon = icons[plugin.fuse.icon]
+						let Icon = icons[plugin._fuse.icon]
 						return (
-							<TabItem href={`/${plugin.fuse.url || plugin.name}`} key={`tab-${plugin.name}`}>
+							<TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
 								{Icon && <Icon className="mr-2"/>}
-								<span>{plugin.fuse.title}</span>
+								<span>{plugin.title}</span>
 							</TabItem>
 						)
 					})}
