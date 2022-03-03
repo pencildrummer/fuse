@@ -1,6 +1,6 @@
 import { GearIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import { coreSocket, fetcherPOST } from "@fuse-labs/core-client"
+import { coreSocket } from "@fuse-labs/core-client"
 import { Button, SwitchRaw, Badge } from "@fuse-labs/core-ui"
 
 export default function PluginListItem({
@@ -18,10 +18,6 @@ export default function PluginListItem({
         console.log('Deactivated:', res)
       })
     }
-    
-    // fetcherPOST('/api/plugins/activate', { name: name, activate: activate })
-    //   .then(res => console.log('RES'))
-    //   .catch(e => console.error(e))
   }
 
   return (
