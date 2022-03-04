@@ -1,6 +1,4 @@
 import chalk from 'chalk'
-import MarlinDriver from '../../../marlin-core/server/MarlinDriver.js';
-import { SerialPort } from 'serialport'
 import signale from 'signale'
 import { EventEmitter } from 'events'
 

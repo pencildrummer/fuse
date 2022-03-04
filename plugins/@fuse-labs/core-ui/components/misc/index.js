@@ -11,6 +11,7 @@ import Navbar from "./Navbar/Navbar";
 import PluginsList from "./PluginsList/PluginsList";
 import SerialPortListWidget from "./SerialPortListWidget/SerialPortListWidget";
 import SettingsWidget from "./SettingsWidget/SettingsWidget";
+import InactivePluginView from './InactivePluginView/InactivePluginView'
 
 // TODO - Improved folder structure
 import DeviceProfilesWidget from './DeviceSettings/DeviceProfilesWidget/DeviceProfilesWidget.js'
@@ -30,6 +31,7 @@ export {
   PluginsList,
   SerialPortListWidget,
   SettingsWidget,
+  InactivePluginView,
 
   DeviceProfilesWidget,
   DeviceConnectionWidget,

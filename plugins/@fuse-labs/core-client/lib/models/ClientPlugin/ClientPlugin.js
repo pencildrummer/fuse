@@ -62,6 +62,10 @@ export default class ClientPlugin {
     return this._fuse.devices
   }
 
+  get displayTitle() {
+    return this._fuse.title || this.name
+  }
+
   constructor(data) {
     let pluginData = CONSTRUCTOR_SCHEMA.validateSync(data)
     Object.assign(this, pluginData)

@@ -1,11 +1,37 @@
-import { getPlugin } from "@fuse-labs/core";
 import dynamic from "next/dynamic";
-import { MainLayout } from "@fuse-labs/core-ui";
+import { BlockingView, Group, InactivePluginView, MainLayout } from "@fuse-labs/core-ui";
+import { ClientPluginManager } from "@fuse-labs/core-client";
+import { useRouter } from "next/router";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export default function DynamicPage({
-  plugin,
   ...props
 }) {
+
+  const router = useRouter()
+  const { query } = router
+  const { tab } = query
+
+  const pluginName = tab.join('/')
+
+  const plugin = ClientPluginManager.shared.getPlugin(pluginName)
+
+  if (!plugin) {
+    return (
+      <BlockingView>
+         <Group orientation='vertical' className="items-center">
+          <ExclamationTriangleIcon className='w-20 h-20 text-gray-700'/>
+          <span className="font-bold text-gray-500">
+            Plugin not found
+          </span>
+        </Group>
+      </BlockingView>
+    )
+  }
+
+  if (!plugin.active) {
+    return <InactivePluginView />
+  }
 
   // TODO - Create dynamic retrieval manager or something more abstract than pure path in here
   const TabPluginComponent = dynamic(_ => import(`plugins/${plugin.name}/tabs/index.js`))
@@ -15,22 +41,22 @@ export default function DynamicPage({
   </MainLayout>
 }
 
-export async function getServerSideProps(ctx) {
-  const { query } = ctx
-  const { tab } = query
+// export async function getServerSideProps(ctx) {
+//   const { query } = ctx
+//   const { tab } = query
 
-  let pluginName = tab.join('/')
-  let plugin = getPlugin(pluginName)
+//   let pluginName = tab.join('/')
+//   let plugin = PluginManager.shared.getPlugin(pluginName)
 
-  if (!plugin) {
-    return {
-      notFound: true
-    }
-  }
+//   if (!plugin) {
+//     return {
+//       notFound: true
+//     }
+//   }
 
-  return {
-    props: {
-      plugin: plugin
-    }
-  }
-}
+//   return {
+//     props: {
+//       plugin: plugin
+//     }
+//   }
+// }

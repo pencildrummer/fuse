@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDeviceContext } from '@fuse-labs/core-client'
 import { Widget, Button, Loader, Form } from '@fuse-labs/core-ui'
-import TerminalProvider from 'plugins/@fuse-labs/marlin-terminal/components/MarlinTerminalWidget/TerminalProvider'
+import TerminalProvider from 'plugins/@fuse-labs/terminal/components/MarlinTerminalWidget/TerminalProvider'
 
 import SettingField from '../lib/client/SettingField'
 import GRBLSettingId from '../lib/shared/GRBLSettingId'

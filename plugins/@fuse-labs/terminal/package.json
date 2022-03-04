@@ -1,11 +1,11 @@
 {
-  "name": "@fuse-labs/marlin-terminal",
-  "description": "Serial communication plugin for FUSE for Marlin-based devices",
+  "name": "@fuse-labs/terminal",
+  "description": "Plugin to send terminal request from client ot backend",
   "version": "1.0",
   "author": "FUSE Labs",
   "license": "MIT",
   "fuse": {
-    "title": "[Marlin] Terminal",
+    "title": "Terminal",
     "pagesUrl": "terminal",
     "icon": "ReaderIcon",
     "tooltip": "Terminal",

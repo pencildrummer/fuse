@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic'
 import getDevicePageComponent from '@fuse-labs/core-ui/components/pages/getDevicePageComponent.js'
 import { useRouter } from 'next/router'
 import { useDevice, useDevicePlugin } from '@fuse-labs/core-client'
-import { BlockingView, Group } from '@fuse-labs/core-ui'
-import { ExclamationTriangleIcon, LightningBoltIcon } from '@radix-ui/react-icons'
+import { BlockingView, Group, InactivePluginView } from '@fuse-labs/core-ui'
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 
 export default function DevicePluginPage() {
   
@@ -24,16 +24,7 @@ export default function DevicePluginPage() {
 
   // Check plugin is active
   if (!plugin.active) {
-    return (
-      <BlockingView>
-        <Group orientation='vertical' className="items-center">
-          <LightningBoltIcon className='w-20 h-20 text-gray-700'/>
-          <span className="font-bold text-gray-500">
-            Plugin not active
-          </span>
-        </Group>
-      </BlockingView>
-    )
+    return <InactivePluginView />
   }
 
   // TODO - Avoid?

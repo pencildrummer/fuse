@@ -1,7 +1,5 @@
 import { socket } from '../../socket'
 import lodash from 'lodash'
-import { ClientDeviceType } from '..'
-//import { Terminal } from '@/plugins/@fuse-labs/marlin-terminal/lib/client/terminal'
 import { object, string, number } from 'yup'
 import ClientPluginManager from '../../managers/ClientPluginManager/ClientPluginManager'
 
