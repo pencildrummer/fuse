@@ -3,6 +3,9 @@ import { coreSocket } from '../../socket.js'
 
 class ClientDeviceManager extends EventTarget {
 
+  _initialized = false
+  get initialized() { return this._initialized}
+
   _devices = []
   get devices() { return this._devices }
 
@@ -21,6 +24,9 @@ class ClientDeviceManager extends EventTarget {
     coreSocket.on('devices:updated', this._handleDeviceUpdated)
     // Add socket listener for removed device on server
     coreSocket.on('devices:removed', this._handleDeviceRemoved)
+
+    console.log('INITED MANAGER Devices', this._devices)
+    this._initialized = true
   }
 
   getDevice(deviceId) {

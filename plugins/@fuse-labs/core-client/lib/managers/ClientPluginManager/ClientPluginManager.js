@@ -36,7 +36,7 @@ class ClientPluginManager {
       }
     }) || []
 
-    // TODO - Now when all the plugin has been mapped, we can call the provision method on it
+    // Now when all the plugin has been mapped, we can call the provision method on it
     console.log('INIT MANAGER Plugins', this._plugins)
     this._initialized = true
   }
