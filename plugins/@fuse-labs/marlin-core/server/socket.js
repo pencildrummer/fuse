@@ -6,26 +6,24 @@ import chalk from 'chalk'
 
 export default function setup(socket) {
 
-  socket.on('print:file', (file, fn) => {
-    if (!file) {
-      signale.error('Missing file parameters to start print')
+  socket.on('print:file', (path, fn) => {
+    if (!path) {
+      signale.error('Missing file path to start print')
       return fn?.(false)
     }
 
     // TODO - Use FileManager plugin class?
     // Get file
-    if (!fs.existsSync(file.path)) {
-      signale.error('Missing file at path: ', file.path)
+    if (!fs.existsSync(path)) {
+      signale.error('Missing file at path: ', path)
       return fn?.(false)
     }
-
-    // Parse GCODE
-    signale.pending('Parsing file', file.path)
-    let lines = parser.parseFileSync(file.path)
-
-    signale.log('Parsed', lines.length)
     
-    // Start print job on DeviceTerminal or some other class
+    // Parse GCODE
+    signale.pending('Parsing file', path)
+    let lines = parser.parseFileSync(path)
+    
+    // Get device
 
     let deviceId = getDeviceIdFromSocket(socket)
     if (!deviceId) {
@@ -33,37 +31,21 @@ export default function setup(socket) {
       return fn?.(false)
     }
 
-    signale.star('Device ID', deviceId)
     let device = getDevice(deviceId)
     if (!device) {
       signale.error('No device found for id', chalk.redBright(deviceId))
       return fn?.(false)
     }
 
-    if (!device.terminal.isOpen) {
-      device.terminal.open(err => {
-        if (err) {
-          signale.error('Unable to open serial port', err)
-          return fn?.(false)
-        } else {
-          startPrinting(device, lines)
-        }
-      })
-    } else {
-      startPrinting(lines)
-      fn?.(true)
+    if (!device.controller) {
+      signale.error('No controller registered on device', chalk.bold(device.name))
+      return fn?.(false)
     }
-  })
-}
 
-function startPrinting(device, lines) {
-  let ready = true
-  let linePosition = 0
-  while (ready && linePosition < lines.length) {
-    let line = lines[linePosition]
-    signale.debug('LINE', line)
-    device.terminal.send(line)
-    // TODO - Wait for readiness
-    linePosition++
-  } 
+    // Start print job on device MarlinController
+
+    device.controller.printGCode(lines) // Should be async
+
+    return fn?.(true)
+  })
 }

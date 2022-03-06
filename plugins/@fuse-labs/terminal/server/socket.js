@@ -1,6 +1,6 @@
 import signale from "signale"
 import chalk from "chalk";
-import { getDeviceIdFromSocket } from "@fuse-labs/core";
+import { getDeviceIdFromSocket, getDevice } from "@fuse-labs/core";
 import { v4 as uuidv4 } from 'uuid'
 import DeviceTerminal from "../lib/server/DeviceTerminal.js";
 

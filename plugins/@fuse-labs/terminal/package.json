@@ -4,6 +4,7 @@
   "version": "1.0",
   "author": "FUSE Labs",
   "license": "MIT",
+  "type": "module",
   "fuse": {
     "title": "Terminal",
     "pagesUrl": "terminal",

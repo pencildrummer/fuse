@@ -1,4 +1,4 @@
-import { coreSocket } from "@fuse-labs/core-client"
+import { coreSocket, usePlugin } from "@fuse-labs/core-client"
 import React, { useContext, useEffect, useState } from "react"
 
 const FileManagerContext = React.createContext()
@@ -16,8 +16,11 @@ export default function FileManagerProvider(props) {
 
   const [file, setFile] = useState()
 
-  const [pendingFiles, setPendingFiles] = useState([])
+  // The path of the item when context menu is opened
+  const [focusItemPath, setFocusItemPath] = useState()
 
+  const [pendingFiles, setPendingFiles] = useState([])
+  
   useEffect(_ => {
     let listener = (file) => {
       console.log('Added file', file)
@@ -29,6 +32,9 @@ export default function FileManagerProvider(props) {
   return <FileManagerContext.Provider value={{
     file,
     setFile,
+
+    focusItemPath,
+    setFocusItemPath,
 
     pendingFiles,
     setPendingFiles,

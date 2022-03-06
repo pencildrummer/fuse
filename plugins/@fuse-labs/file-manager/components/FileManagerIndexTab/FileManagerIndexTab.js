@@ -1,4 +1,5 @@
 import { ScrollArea, Widget } from "@fuse-labs/core-ui";
+import { useCallback } from "react";
 import { useFileManagerContext } from "../FileManagerProvider";
 import DirectoryListing from "../FileManagerWidget/DirectoryListing";
 import FileManagerWidgetContextMenu from "../FileManagerWidget/FileManagerWidgetContextMenu";
@@ -6,7 +7,7 @@ import PendingFilesList from "../FileManagerWidget/PendingFilesList";
 import FileViewer from "../FileViewer/FileViewer";
 import FileManagerTabTopBar from "./FileManagerTabTopBar";
 
-export default function FileManagerIndexTab() {
+export default function FileManagerIndexTab() {
 
   const { file, setFile } = useFileManagerContext()
 

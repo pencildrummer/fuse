@@ -1,5 +1,5 @@
 import * as ContextMenuPrimitive from '@radix-ui/react-context-menu'
-import React from 'react'
+import React, { useState } from 'react'
 import MenuContent from '../internal/Menu/MenuContent'
 import MenuItem from '../internal/Menu/MenuItem'
 import Separator from '../Separator/Separator'
@@ -15,7 +15,10 @@ export default function ContextMenu({
 
   let TriggerItem = asSubmenu ? ContextMenuPrimitive.TriggerItem : ContextMenuPrimitive.Trigger
 
+  const [open, setOpen] = useState(false)
+
   function handlePointerDown(e) {
+    //if (!open) return
     onPointerDown?.(e)
   }
 
@@ -24,7 +27,7 @@ export default function ContextMenu({
   }
 
   return (
-    <ContextMenuPrimitive.Root modal={modal}>
+    <ContextMenuPrimitive.Root modal={modal} onOpenChange={setOpen}>
       <TriggerItem asChild={asSubmenu} onPointerDown={handlePointerDown}>
         {props.children}
       </TriggerItem>

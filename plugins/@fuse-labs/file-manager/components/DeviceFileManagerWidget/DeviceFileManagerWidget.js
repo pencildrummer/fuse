@@ -5,18 +5,24 @@ export default function DeviceFileManagerWidget() {
 
   const { device } = useDeviceContext()
 
-  function handlePrint(file) {
-    console.log('PRINTING')
-    // DEMO
-    let testFile = {
-      path: 'storage/LLK4PRO_20mm_hollow_cube.gcode'
+  function handleFileAction(action, args) {
+    if (action == 'print') {
+      handlePrint(args.path)
+      return true
+    } else {
+      return false
     }
-    device.sockets.fuseLabs.marlinCore.emit('print:file', testFile, (res) => {
+  }
+
+  function handlePrint(path) {
+    console.log('PRINTING', path)
+
+    device.sockets.fuseLabs.marlinCore.emit('print:file', path, (res) => {
       console.log('Result', res)
     })
   }
 
   return (
-    <FileManagerWidget onContextMenuPrint={handlePrint}/>
+    <FileManagerWidget onFileAction={handleFileAction}/>
   )
 }

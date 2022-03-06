@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { AppProvider, fetcher } from '@fuse-labs/core-client'
 import { AppLoader } from '@fuse-labs/core-ui'
 import * as messages from './../../lang/index.js'
-import Link from 'next/link'
+import Head from 'next/head'
+import pkg from '../../package.json'
 
 function MyApp({ Component, pageProps }) {
 
@@ -22,6 +23,9 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+    <Head>
+      <title>Fuse • v.{pkg.version} </title>
+    </Head>
     {appData ? (
       <AppProvider {...appData} locale={locale} messages={messages[locale]}>
         <Component {...pageProps} />

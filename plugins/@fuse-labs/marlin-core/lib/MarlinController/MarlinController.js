@@ -28,7 +28,28 @@ export default class MarlinController extends Controller {
    * @param {*} data 
    */
   write(data) {
-    this._device.connection.write(data)
+    if (!this._device.connection.isOpen) {
+      signale.error('Unable to write data, connection not open')
+    } else {
+      this._device.connection.write(data)
+    }
+  }
+
+  /**
+   * 
+   * @param {*} data 
+   */
+  printGCode(lines) {
+    // TEST
+    let ready = true
+    let linePosition = 0
+    while (ready && linePosition < lines.length) {
+      let line = lines[linePosition]
+      signale.debug('PRINTING GCODE LINE:', line)
+      this.write(line)
+      // TODO - Wait for readiness
+      linePosition++
+    } 
   }
 
   /**

@@ -52,10 +52,12 @@ export default function DirectoryListing({
       return item.isDir
         ? <DirectoryItem 
           key={`list-item-${i}`}
+          data-path={item.path}
           dirname={path}
           item={item} />
         : <FileItem 
           key={`list-item-${i}`}
+          data-path={item.path}
           item={item}
           onSelect={setFile}
           selected={item.path == file?.path}/>

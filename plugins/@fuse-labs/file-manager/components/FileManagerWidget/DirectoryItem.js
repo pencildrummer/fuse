@@ -1,7 +1,8 @@
 import { CardStackIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { List } from "../../../core-ui";
+import { useFileManagerContext } from "../FileManagerProvider";
 import DirectoryListing from "./DirectoryListing";
 
 export default function DirectoryItem({
@@ -14,15 +15,18 @@ export default function DirectoryItem({
 
   function handleClick() { setIsOpen(o => !o) }
 
-  const path = dirname+'/'+item.name
+  const { focusItemPath } = useFileManagerContext()
+
+  const isFocused = useMemo(_ => item.path == focusItemPath, [focusItemPath, item])
 
   return (
     <>
-      <List.Item className={classNames(
+      <List.Item {...props} className={classNames(
           'px-0.5 font-bold rounded-md',
           'hover:bg-white hover:bg-opacity-5 transition-colors duration-150 cursor-pointer',
           {
-            'opacity-50': item.name[0] == '.'
+            'opacity-50': item.name[0] == '.',
+            'ring-2 ring-inset ring-blue-600': isFocused,
           }
         )}
         onClick={handleClick}>
@@ -33,7 +37,7 @@ export default function DirectoryItem({
 
       {isOpen && (
         <div className="pl-4">
-          <DirectoryListing path={path} />
+          <DirectoryListing path={item.path} />
         </div>
       )}
     </>
