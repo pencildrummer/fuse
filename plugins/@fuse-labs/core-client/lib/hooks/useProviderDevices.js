@@ -1,44 +1,35 @@
 import { useEffect, useState } from "react"
-import { coreSocket } from '../socket.js'
-import ClientDevice from '../models/ClientDevice/ClientDevice.js'
+import ClientDeviceManager from '../managers/ClientDeviceManager/ClientDeviceManager.js'
 
-export default function useProviderDevices(fetchedDevices) {
+export default function useProviderDevices(data) {
 
-  const [devices, setDevices] = useState(_ => initDevices(fetchedDevices))
+  if (!ClientDeviceManager.shared.initialized) {
+    ClientDeviceManager.shared.init(data)
+  }
+
+  const [devices, setDevices] = useState(ClientDeviceManager.shared.devices)
 
   useEffect(_ => {
-		// Add socket listener for newly created device
-		coreSocket.on('devices:added', addDevice)
-    // Add socket listener for updated device
-    coreSocket.on('devices:updated', updateDevice)
-    // Add socket listener for removed device
-    coreSocket.on('devices:removed', removeDevice)
-	}, [])
+    const updateState = _ => setDevices(ClientDeviceManager.shared.devices)
+    ClientDeviceManager.shared.addEventListener('updatedDevices', updateState)
+    return _ => {
+      ClientDeviceManager.shared.removeEventListener('updatedDevices', updateState)
+    }
+  }, [])
 
-  function initDevices(fetchedDevices) {
-    return fetchedDevices?.map(deviceData => new ClientDevice(deviceData)) || []
-  }
-
-  function addDevice(deviceData) {
-    let device = new ClientDevice(deviceData)
-    setDevices(devices => [...devices, device])
-  }
-
-  function updateDevice(deviceData) {
-    setDevices(devices => {
-      let device = devices.find(d => d.id === deviceData.id)
-      if (device) {
-        device.update(deviceData)
-      } else {
-        console.log('Received request to update local device but no device has been found with id', deviceData.id)
-      }
-      return [...devices]
-    })
-  }
-
-  function removeDevice(deviceData) {
-    setDevices(devices => devices.filter(device => device.id !== deviceData.id))
-  }
+  // useEffect(_ => {
+	// 	// Add socket listener for newly created device
+	// 	coreSocket.on('devices:added', addDevice)
+  //   // Add socket listener for updated device
+  //   coreSocket.on('devices:updated', updateDevice)
+  //   // Add socket listener for removed device
+  //   coreSocket.on('devices:removed', removeDevice)
+  //   return _ => {
+  //     coreSocket.off('devices:added', addDevice)
+  //     coreSocket.off('devices:updated', updateDevice)
+  //     coreSocket.off('devices:removed', removeDevice)
+  //   }
+	// }, [])
 
   return devices
 }

@@ -1,9 +1,16 @@
 {
   "name": "@fuse-labs/terminal",
+  "version": "1.0.0",
   "description": "Plugin to send terminal request from client ot backend",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
   "type": "module",
   "fuse": {
     "title": "Terminal",

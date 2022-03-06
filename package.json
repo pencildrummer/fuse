@@ -21,6 +21,7 @@
     "@fuse-labs/core-client": "file:plugins/@fuse-labs/core-client",
     "@fuse-labs/core-ui": "file:plugins/@fuse-labs/core-ui",
     "@fuse-labs/shared-utils": "file:plugins/@fuse-labs/shared-utils",
+    "@fuse-labs/terminal": "file:plugins/@fuse-labs/terminal",
     "@heroicons/react": "^1.0.5",
     "@radix-ui/react-alert-dialog": "^0.1.5",
     "@radix-ui/react-aspect-ratio": "^0.1.3",

@@ -17,6 +17,7 @@ export default function AppProvider({
   const profiles = useProviderProfiles(fetchedProfiles)
   
   const plugins = useProviderPlugins(fetchedPlugins)
+  // TODO - Improve, use ClientPluginManager method instead
   const activePlugins = useMemo(_ => plugins?.filter(p => p.active), [plugins])
 
   const devices = useProviderDevices(fetchedDevices)

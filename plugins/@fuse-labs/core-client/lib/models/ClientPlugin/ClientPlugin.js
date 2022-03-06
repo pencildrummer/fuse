@@ -52,7 +52,6 @@ export default class ClientPlugin {
   _active = false;
   get active() {
     return this._active
-    return ClientPluginManager.shared.activePluginsNames.includes(this.name)
   }
 
   _system
@@ -67,12 +66,18 @@ export default class ClientPlugin {
   }
 
   constructor(data) {
+    // Set validated data on instance
     let pluginData = CONSTRUCTOR_SCHEMA.validateSync(data)
     Object.assign(this, pluginData)
 
     // Init plugin socket if needed
     if (this.hasSocket) {
       this.socket = socket(this.name)
+    }
+
+    // Provision plugin if provision() exists
+    if (typeof this.provision === 'function') {
+      this.provision()
     }
   }
   

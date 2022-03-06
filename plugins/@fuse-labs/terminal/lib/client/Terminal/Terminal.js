@@ -1,4 +1,4 @@
-import { generateUniqueID } from '@fuse-labs/core';
+import { generateUniqueID } from '@fuse-labs/shared-utils';
 
 const LineEnding = Object.freeze({
   None: 0,
@@ -7,7 +7,7 @@ const LineEnding = Object.freeze({
   CarriageReturnAndNewLine: 3
 })
 
-export class Terminal {
+export default class Terminal {
   
   /**
    * Socket
@@ -28,7 +28,7 @@ export class Terminal {
     console.log('Creating terminal for device ID', device.id)
     this.deviceId = device.id
     // Init socket to pass messages to backend
-    this._socket = device.sockets.fuseLabs.marlinTerminal
+    this._socket = device.sockets.fuseLabs.terminal
 
     // DEBUG
     this.onMessageReceived(data => {

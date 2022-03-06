@@ -24,9 +24,30 @@ class ClientPluginManager {
   }
 
   init(fetchedPluginsData) {
-    this._plugins = fetchedPluginsData?.map(data => new ClientPlugin(data)) || []
+    // Map fetched data to generic client plugin
+    // While mapping should match if a plugin with a certain pattern to be decided i matched
+    // And so register the plugin not as a generic ClientPlugin but as a registered one
+    this._plugins = fetchedPluginsData?.map(data => {
+      let PluginClass = ClientPluginManager._registeredPlugins[data.name]
+      if (PluginClass) {
+        return new PluginClass(data)
+      } else {
+        return new ClientPlugin(data)
+      }
+    }) || []
+
+    // TODO - Now when all the plugin has been mapped, we can call the provision method on it
     console.log('INIT MANAGER Plugins', this._plugins)
     this._initialized = true
+  }
+
+  static _registeredPlugins = {}
+  /**
+   * Use this method to register client plugins, call it before initializing the plugin manager
+   * @param {} pluginInstance 
+   */
+  static registerPlugin(pluginName, pluginClass) {
+    ClientPluginManager._registeredPlugins[pluginName] = pluginClass
   }
 
 }
@@ -42,4 +63,7 @@ class Singleton {
     return Singleton.sharedInstance
   }
 }
+// Copy static method to register plugin because we are exporting Singleton instance of ClientDeviceManager
+// Maybe found a cleaner way later on
+Singleton.registerPlugin = ClientPluginManager.registerPlugin
 export default Singleton
