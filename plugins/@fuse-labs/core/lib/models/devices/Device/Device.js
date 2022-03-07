@@ -6,7 +6,7 @@ import { DEVICES_BASE_PATH } from "../../../constants.js"
 import { v4 as uuid } from 'uuid'
 import signale from "signale"
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js"
-import { Controller } from "../../index.js"
+import { Controller, NetworkConnection } from "../../index.js"
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),
@@ -118,8 +118,16 @@ export default class Device {
     this.profile = getProfile(this.profileId)
     // Set connection
 
-    // TEST - Manually set as SerialConnection, should be dynamic based on configuration
-    this.connection = new SerialConnection(this.port, this.baudrate)
+    switch(this.profile.connection) {
+      case 'serial':
+        this.connection = new SerialConnection(this.port, this.baudrate)
+        break
+      case 'network':
+        this.connection = new NetworkConnection()
+        break
+      default:
+        throw new Error('No connection specified on device profile')
+    }
     
     // Set controller
     let ControllerClass = Controller.getControllerClass(this.profile.firmware)

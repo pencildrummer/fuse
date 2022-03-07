@@ -4,6 +4,7 @@
   "brand": "Creality",
   "model": "Ender 3",
   "firmware": "marlin",
+  "connection": "serial",
   "volume": {
     "width": 200,
     "depth": 200,

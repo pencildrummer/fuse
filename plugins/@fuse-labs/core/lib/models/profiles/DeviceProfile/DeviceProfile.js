@@ -9,7 +9,8 @@ export const DEVICE_PROFILE_SCHEMA = object({
   brand: string().required(),
   model: string().required(),
 
-  firmware: string().required()
+  firmware: string().required(),
+  connection: string().required() // Add validation for available types of connection
 })
 
 export default class DeviceProfile {
