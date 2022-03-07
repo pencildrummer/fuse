@@ -1,4 +1,4 @@
-import { DeviceManager, profiles, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
+import { DeviceManager, PluginManager, ProfileManager } from "../index.js"
 import { SerialPort } from "serialport"
 
 export default function setup(socket) {
@@ -10,7 +10,7 @@ export default function setup(socket) {
     let data = {
       devices: DeviceManager.shared.devices,
       plugins: PluginManager.shared.plugins,
-      profiles: profiles
+      profiles: ProfileManager.shared.profiles
     }
     fn?.(data)
   })
@@ -120,7 +120,7 @@ export default function setup(socket) {
    * Profiles
    */
   socket.on('profiles:add', async(profileData, fn) => {
-    let profile = addProfile(profileData)
+    let profile = ProfileManager.shared.addProfile(profileData)
     if (profile) {
       socket.emit('profiles:added', profile)
     }
@@ -128,7 +128,7 @@ export default function setup(socket) {
   })
 
   socket.on('profiles:update', async(id, profileData, fn) => {
-    let profile = updateProfile(id, profileData)
+    let profile = ProfileManager.shared.updateProfile(id, profileData)
     if (profile) {
       socket.emit('profiles:updated', profile)
     }
@@ -136,7 +136,7 @@ export default function setup(socket) {
   })
 
   socket.on('profiles:delete', async(id, fn) => {
-    if (deleteProfile(id)) {
+    if (ProfileManager.shared.deleteProfile(id)) {
       socket.emit('profiles:deleted', id)
       fn(true)
     }

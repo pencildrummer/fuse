@@ -1,12 +1,12 @@
 import fs from "fs-extra"
 import { string, object, number } from "yup"
-import { getProfile } from "../../../profiles.js"
 import path from 'path'
 import { DEVICES_BASE_PATH } from "../../../constants.js"
 import { v4 as uuid } from 'uuid'
 import signale from "signale"
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js"
 import { Controller, NetworkConnection } from "../../index.js"
+import { ProfileManager } from "../../../index.js"
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),
@@ -115,7 +115,7 @@ export default class Device {
    */
   configureDevice() {
     // Expand profile with id
-    this.profile = getProfile(this.profileId)
+    this.profile = ProfileManager.shared.getProfile(this.profileId)
     // Set connection
 
     switch(this.profile.connection) {

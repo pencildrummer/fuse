@@ -40,13 +40,6 @@ export default class DeviceProfile {
     // Validate data and set on instance
     let profileData = DEVICE_PROFILE_SCHEMA.validateSync(data, { stripUnknown: true })
     Object.assign(this, profileData)
-
-    // const { type, brand, model, ...rest} = params
-
-    // this.id = [pathCase(brand), pathCase(model)].join('.')
-    // this.type = type
-    // this.brand = brand
-    // this.model = model
   }
 
   // 
