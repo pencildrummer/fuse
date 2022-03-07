@@ -7,6 +7,8 @@ import SettingPage from "./SettingPage/SettingPage";
 
 import getDevicePageComponent from "./getDevicePageComponent";
 
+import { useDeviceStatusListContext } from "./DevicePage/DeviceStatusListProvider";
+
 export {
   Page,
   PageTopBar,
@@ -16,4 +18,6 @@ export {
   SettingPage,
 
   getDevicePageComponent,
+
+  useDeviceStatusListContext,
 }

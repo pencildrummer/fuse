@@ -1,15 +1,23 @@
 import { useDeviceContext } from "@fuse-labs/core-client";
 import { Group, Label, InputRaw, Button, SettingsWidget } from "@fuse-labs/core-ui";
+import { useDeviceStatusListContext } from "@fuse-labs/core-ui";
 
 export default function MarlinTerminalSettingsWidget({
   ...props
 }) {
 
   const { device } = useDeviceContext()
+  const { addStatus, removeStatus } = useDeviceStatusListContext()
 
   function handleConnectClick() {
     // TODO - Make a provider to use same terminal obj
     device.terminal.connect()
+
+    // TEST
+    let status = addStatus('Prova messaggio di testo dello stato device', {
+      type: 'warning'
+    })
+    setTimeout(_ => removeStatus(status.id), 1500)
   }
 
   function handleDisconnectClick() {

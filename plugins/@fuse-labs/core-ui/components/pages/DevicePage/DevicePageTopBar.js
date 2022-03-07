@@ -3,6 +3,7 @@ import DevicePicker from "./DevicePicker";
 import { useDeviceContext, useAppContext } from "@fuse-labs/core-client"
 import { Separator, DeviceConnectionStatus } from "../..";
 import DevicePageTopBarMenu from "./DevicePageTopBarMenu";
+import DeviceStatusList from './DeviceStatusList';
 
 export default function DevicePageTopBar() {
 
@@ -13,8 +14,8 @@ export default function DevicePageTopBar() {
     <PageTopBar>
       <DevicePicker devices={devices} />
       <div className="w-px h-full bg-gray-600" />
-      <div className="!mr-auto text-xxs font-bold text-gray-400">
-        Status or useful info on real time situation of the device
+      <div className="flex-1 text-xxs font-bold text-gray-400">
+        <DeviceStatusList />
       </div>
       <Separator orientation="vertical" />
       <div>
