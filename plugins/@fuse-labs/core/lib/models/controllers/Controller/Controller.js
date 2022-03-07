@@ -1,5 +1,4 @@
 import { EventEmitter } from 'events'
-import signale from 'signale';
 
 /**
  * Abstract class that handle device communication and operations such as requesting info through connection (serial, wi-fi, eth...)
@@ -18,14 +17,12 @@ export default class Controller extends EventEmitter {
   }
 
   static _registeredContollers = {}
+  
   static registerControllerClass(deviceFirmware, ControllerClass) {
     this._registeredContollers[deviceFirmware] = ControllerClass
-    signale.debug('Controllers', this._registeredContollers)
   }
   
   static getControllerClass(deviceFirmware) {
-    signale.debug('Getting from controllers', this._registeredContollers)
     return this._registeredContollers[deviceFirmware]
   }
-
 }

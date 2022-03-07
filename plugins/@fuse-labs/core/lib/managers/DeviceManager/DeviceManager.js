@@ -9,7 +9,18 @@ class DeviceManager {
   _devices = []
   get devices() { return this._devices }
 
+  _initialized = false
+
   constructor() {
+    this.init()
+  }
+
+  init() {
+    if (this._initialized) 
+      throw new Error('Trying to re-initialize DeviceManager')
+
+    signale.pending('Initializing DeviceManager')
+
     // Ensure directory exists, if dir has been removed it will be created
     fs.ensureDirSync(DEVICES_BASE_PATH)
     let entries = fs.readdirSync(DEVICES_BASE_PATH, { withFileTypes: true})
@@ -28,6 +39,10 @@ class DeviceManager {
       }
       return entries
     }, [])
+
+    this._initialized = true
+
+    signale.success('DeviceManager is now ready')
   }
 
   getDevice(deviceId) {
@@ -82,6 +97,7 @@ class Singleton {
 
   static get shared() {
     if (!Singleton.sharedInstance) {
+      signale.note('New shared instance of DeviceManager')
       Singleton.sharedInstance = new DeviceManager();
     }
     return Singleton.sharedInstance;

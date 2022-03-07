@@ -6,7 +6,7 @@ import { DEVICES_BASE_PATH } from "../../../constants.js"
 import { v4 as uuid } from 'uuid'
 import signale from "signale"
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js"
-import { Controller } from "@fuse-labs/core"
+import { Controller } from "../../index.js"
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),

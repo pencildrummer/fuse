@@ -1,7 +1,7 @@
 import 'tailwindcss/tailwind.css'
 import '@fuse-labs/core-ui/styles/global.css'
 import { useEffect, useState } from 'react'
-import { AppProvider, ClientPlugin, ClientPluginManager, fetcher } from '@fuse-labs/core-client'
+import { AppProvider, ClientPluginManager, coreSocket } from '@fuse-labs/core-client'
 import { AppLoader } from '@fuse-labs/core-ui'
 import { TerminalClientPlugin } from '@fuse-labs/terminal'
 import * as messages from './../../lang/index.js'
@@ -18,10 +18,14 @@ function MyApp({ Component, pageProps }) {
   const [appData, setAppData] = useState()
 
   useEffect(_ => {
-    fetcher('/api/init').then(res => {
-      setAppData(res)
-    }).catch(e => {
-      console.error(e)
+    coreSocket.connect()
+    coreSocket.on('connect_error', err => console.error('Error connecting to coreSocket', err))
+    coreSocket.emit('app:data', (data) => {
+      if (data) {
+        setAppData(data)
+      } else {
+        console.error('Error retrieving app data')
+      }
     })
   }, [])
 

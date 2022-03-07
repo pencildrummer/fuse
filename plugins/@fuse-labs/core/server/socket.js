@@ -1,9 +1,20 @@
-import { DeviceManager, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
+import { DeviceManager, profiles, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
 import { SerialPort } from "serialport"
-import signale from "signale"
 
 export default function setup(socket) {
-    
+  
+  /**
+   * Core data
+   */
+  socket.on('app:data', fn => {
+    let data = {
+      devices: DeviceManager.shared.devices,
+      plugins: PluginManager.shared.plugins,
+      profiles: profiles
+    }
+    fn?.(data)
+  })
+
   /**
    * Serial ports
    */

@@ -32,12 +32,18 @@ class PluginManager {
     return this._plugins.find(plugin => plugin.name == name)
   }
 
+  _initialized = false
+
   constructor() {
-    this.init()
+    //
   }
 
   async init() {
+    if (this._initialized) 
+      throw new Error('Trying to re-initialize PluginManager')
+
     signale.pending('Initializing PluginManager')
+
     // Load active plugin names
     this.getActivePluginsNames()
 
@@ -78,6 +84,10 @@ class PluginManager {
       }
       return plugins
     }, Promise.resolve([]))
+
+    this._initialized = true
+    
+    signale.success('PluginManager is now ready')
   }
 
   /**
@@ -86,7 +96,6 @@ class PluginManager {
    * @returns List of active plugin names
    */
   getActivePluginsNames() {
-    signale.start('Retrieving names list of active plugin')
     // Get list of active plugins
     let content = fs.readFileSync(ACTIVE_PLUGINS_PATH)
     
@@ -152,7 +161,7 @@ class Singleton {
 
   static get shared() {
     if (!Singleton.sharedInstance) {
-      signale.star('New shared instance')
+      signale.note('New shared instance of PluginManager')
       Singleton.sharedInstance = new PluginManager();
     }
     return Singleton.sharedInstance;
