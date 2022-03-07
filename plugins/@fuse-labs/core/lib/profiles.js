@@ -5,6 +5,7 @@ import chalk from 'chalk'
 import { PROFILES_BASE_PATH, SYSTEM_BASE_PATH } from "./constants.js"
 import { titleCase } from '@fuse-labs/shared-utils'
 import PrinterDeviceProfile from './models/profiles/DeviceProfile/PrinterDeviceProfile.js'
+import CNCDeviceProfile from './models/profiles/CNCDeviceProfile/CNCDeviceProfile.js'
 
 export const profiles = getProfiles()
 
@@ -18,6 +19,9 @@ export function addProfile(profileData) {
   switch (profileData.type) {
     case 'fdm_printer':
       profile = new PrinterDeviceProfile(profileData)
+      break
+    case 'cnc':
+      profile = new CNCDeviceProfile(profileData)
       break
     default:
       throw new Error('Unsupported profile type', profileData.type)
@@ -39,6 +43,9 @@ export function updateProfile(id, profileData) {
   switch (profileData.type) {
     case 'fdm_printer':
       profile = new PrinterDeviceProfile(profileData)
+      break
+    case 'cnc':
+      profile = new CNCDeviceProfile(profileData)
       break
     default:
       throw new Error('Unsupported profile type', profileData.type)
@@ -100,7 +107,17 @@ function readProfile(profileId) {
   profileData.model = profileData.model || titleCase(fileProfilePath.split(path.sep).pop())
 
   // TODO - Validate profile structure
-  let profile = new PrinterDeviceProfile(profileData)
+  let profile
+  switch (profileData.type) {
+    case 'fdm_printer':
+      profile = new PrinterDeviceProfile(profileData)
+      break
+    case 'cnc':
+      profile = new CNCDeviceProfile(profileData)
+      break
+    default:
+      throw new Error('Unsupported profile type', profileData.type)
+  }
   return profile
 }
 

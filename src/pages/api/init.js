@@ -1,9 +1,9 @@
-import { devices, PluginManager, profiles } from "@fuse-labs/core"
+import { DeviceManager, PluginManager, profiles } from "@fuse-labs/core"
 
 export default async function init(req, res) {
 
   let data = {
-    devices: devices,
+    devices: DeviceManager.shared.devices,
     plugins: PluginManager.shared.plugins,
     profiles: profiles
   }

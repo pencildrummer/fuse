@@ -1,12 +1,41 @@
 {
+  "id": "longer.lk4_pro",
+  "type": "fdm_printer",
   "brand": "Longer",
   "model": "LK4 Pro",
-  "type": "fdm_printer",
+  "firmware": "marlin",
   "volume": {
-    "width": 100,
-    "height": 100,
-    "depth": 100
+    "width": 100000,
+    "height": 600,
+    "depth": 200,
+    "formFactor": "rectangular",
+    "origin": "lower-left"
   },
-  "heatbed": true,
-  "max_speed": 100
+  "bed": {
+    "heated": true
+  },
+  "gCodeVersion": "marlin",
+  "xAxis": {
+    "name": "x",
+    "maxSpeed": 6000
+  },
+  "yAxis": {
+    "name": "y",
+    "maxSpeed": 6000
+  },
+  "zAxis": {
+    "name": "z",
+    "maxSpeed": 3000
+  },
+  "extruders": [
+    {
+      "nozzleSize": "0.4",
+      "minNozzleSize": "0.4",
+      "maxNozzleSize": "0.4",
+      "axis": {
+        "name": "z",
+        "maxSpeed": 3000
+      }
+    }
+  ]
 }

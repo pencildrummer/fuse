@@ -6,7 +6,7 @@ import { DEVICES_BASE_PATH } from "../../../constants.js"
 import { v4 as uuid } from 'uuid'
 import signale from "signale"
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js"
-//import MarlinController from "../../../../../plugins/@fuse-labs/marlin-core/server/MarlinController/MarlinController.js"
+import { Controller } from "@fuse-labs/core"
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),
@@ -120,9 +120,14 @@ export default class Device {
 
     // TEST - Manually set as SerialConnection, should be dynamic based on configuration
     this.connection = new SerialConnection(this.port, this.baudrate)
+    
     // Set controller
-    signale.warn('Create register method to allow for controller and connection class to be registered')
-    //this.controller = new MarlinController(this)
+    let ControllerClass = Controller.getControllerClass(this.profile.firmware)
+    if (!ControllerClass) {
+      throw new Error(`No controller class found for device firmware '${this.profile.firmware}'`)
+    } else {
+      this.controller = new ControllerClass(this)
+    }
   }
 
   /**

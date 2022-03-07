@@ -1,5 +1,5 @@
 import signale from "signale"
-import Controller from '../../../../../src/server/lib/models/Controller/Controller.js'
+import { Controller } from '@fuse-labs/core'
 import MarlinReadyParser from './MarlinReadyParser.js'
 import MarlinLineParser from "./MarlinLineParser.js"
 

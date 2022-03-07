@@ -12,7 +12,7 @@ export default class TerminalClientPlugin extends ClientPlugin {
   provision() {
     console.log('Called provision')
     const devices = ClientDeviceManager.shared.devices
-    console.log('Device to provision:', devices)
+
     // Add terminal to devices ( Terminal is just a class helper to send messages through device connection )
     devices.forEach(device => {
       // Check terminal already exists
@@ -24,7 +24,7 @@ export default class TerminalClientPlugin extends ClientPlugin {
       }
     })
 
-    // Cleanup method when deactivating plugin
+    // NOT YET IMPLEMENTED - Cleanup method when deactivating plugin
     return _ => {
       devices.forEach(device => {
         if (typeof device.terminal == Terminal) {

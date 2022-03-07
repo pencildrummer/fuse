@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Core plugin for FUSE for Marlin-based devices",
   "main": "index.js",
+  "exports": {
+    "./client": "./client/index.js",
+    "./server": "./server/index.js"
+  },
   "type": "module",
   "directories": {
     "lib": "lib"
@@ -15,7 +19,9 @@
   "fuse": {
     "title": "[Marlin] Core",
     "type": "driver",
-    "devices": [ "fdm_printer" ],
+    "devices": [
+      "fdm_printer"
+    ],
     "pagesUrl": "marlin/config",
     "icon": "MixerHorizontalIcon",
     "tooltip": "Configuration"

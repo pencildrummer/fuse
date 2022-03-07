@@ -4,6 +4,10 @@ import next from 'next'
 import signale from 'signale'
 import initSocket from './lib/initSocket.js'
 
+// Bootstrap
+import './_bootstrap.js'
+
+// Error logger
 process.on('uncaughtException', error => signale.error(error.stack))
 process.on('unhandledRejection', error => signale.error(error.stack))
 

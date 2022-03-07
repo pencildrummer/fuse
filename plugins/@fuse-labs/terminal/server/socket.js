@@ -1,6 +1,6 @@
 import signale from "signale"
 import chalk from "chalk";
-import { getDeviceIdFromSocket, getDevice } from "@fuse-labs/core";
+import { DeviceManager, getDeviceIdFromSocket } from "@fuse-labs/core";
 import { v4 as uuidv4 } from 'uuid'
 import DeviceTerminal from "../lib/server/DeviceTerminal.js";
 
@@ -15,7 +15,13 @@ export default function setup(socket) {
   initDeviceTerminal(deviceId)
   
   socket.on('open', (deviceId, fn) => {
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
+
+    if (!device.terminal) {
+      signale.error('No terminal initialized for device', chalk.bold(device.name), device.id)
+      return fn?.(false)
+    }
+
     if (device.terminal.isOpen) {
       socketSendMessage('Already connected', 'server')
       return fn?.(true)
@@ -38,7 +44,7 @@ export default function setup(socket) {
 
     const { message, deviceId } = args
 
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
 
     if (device.terminal) {
       // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
@@ -56,7 +62,7 @@ export default function setup(socket) {
    * Request manual disconnect from serial port
    */
   socket.on('close', (deviceId, fn) => {
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
 
     if (!device.terminal) {
       signale.error('No serial port to close for device', chalk.bold(device.name), device.id)
@@ -88,7 +94,7 @@ export default function setup(socket) {
 
   // Initialize terminal on Device objects
   function initDeviceTerminal(deviceId) {
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
 
     if (!device) {
       return signale.error('No device found with ID', chalk.redBright(deviceId))

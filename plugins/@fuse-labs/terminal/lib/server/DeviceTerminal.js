@@ -6,7 +6,7 @@ export default class DeviceTerminal extends EventEmitter {
 
   // _serialPort;
   // get serialPort() { return this._serialPort }
-  get isOpen() { return this._device.connection.isOpen || false }
+  get isOpen() { return this._device.connection?.isOpen || false }
 
   // Device
   _device;

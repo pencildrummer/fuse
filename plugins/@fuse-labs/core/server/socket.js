@@ -1,4 +1,4 @@
-import { addDevice, getDevice, removeDevice, updateDevice, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
+import { DeviceManager, addProfile, updateProfile, deleteProfile, PluginManager } from "../index.js"
 import { SerialPort } from "serialport"
 import signale from "signale"
 
@@ -50,7 +50,7 @@ export default function setup(socket) {
       profileId = profile.id
     }
     // Add device to the system
-    let device = addDevice({
+    DeviceManager.shared.addDevice({
       name,
       profileId,
       port,
@@ -71,7 +71,7 @@ export default function setup(socket) {
 
   socket.on('devices:update', async (deviceId, data, fn) => {
     // Add device to the system
-    let device = updateDevice(deviceId, data)
+    let device = DeviceManager.shared.updateDevice(deviceId, data)
     if (device) {
       // Broadcast new device creation
       socket.emit('devices:updated', device)
@@ -84,7 +84,7 @@ export default function setup(socket) {
 
   socket.on('devices:remove', async (deviceId, fn) => {
     // Add device to the system
-    let device = removeDevice(deviceId)
+    let device = DeviceManager.shared.removeDevice(deviceId)
     if (device) {
       // Broadcast new device creation
       socket.emit('devices:removed', device)
@@ -99,7 +99,7 @@ export default function setup(socket) {
 
   // Check if device is available by searching and comparing metadata of serial ports avaialble
   socket.on('devices:connection:check', async (deviceId, fn) => {
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
     let list = await SerialPort.list()
     let devicePort = list.find(port => port.path == device.port)
     return fn?.(devicePort)

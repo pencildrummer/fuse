@@ -1,7 +1,7 @@
 import signale from 'signale'
 import fs from 'fs-extra'
 import parser from 'gcode-parser'
-import { getDevice, getDeviceIdFromSocket } from '@fuse-labs/core'
+import { DeviceManager, getDeviceIdFromSocket } from '@fuse-labs/core'
 import chalk from 'chalk'
 
 export default function setup(socket) {
@@ -31,7 +31,7 @@ export default function setup(socket) {
       return fn?.(false)
     }
 
-    let device = getDevice(deviceId)
+    let device = DeviceManager.shared.getDevice(deviceId)
     if (!device) {
       signale.error('No device found for id', chalk.redBright(deviceId))
       return fn?.(false)

@@ -1,4 +1,4 @@
-import { Group, Label, Select, Separator, Input, Button, Form } from "../../../core-ui/";
+import { Group, Label, Select, Separator, Input, Button, Form } from "../../..";
 
 export default function PrinterProfileForm({
   ...props
