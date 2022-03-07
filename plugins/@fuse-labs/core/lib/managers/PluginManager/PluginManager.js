@@ -33,8 +33,11 @@ class PluginManager {
   }
 
   constructor() {
-    signale.pending('Initializing PluginManager')
+    this.init()
+  }
 
+  async init() {
+    signale.pending('Initializing PluginManager')
     // Load active plugin names
     this.getActivePluginsNames()
 
@@ -52,14 +55,29 @@ class PluginManager {
     ].flat()
 
     // Init Plugin(s) based on names and add it to the plugin manager store
-    this._plugins = pluginNames.reduce( (plugins, pluginName) => {
+    this._plugins = await pluginNames.reduce( async (prev, pluginName) => {
+      // Wait for previous plugin load process
+      const plugins = await prev
+
+      const pluginModule = await import(`${pluginName}/server`)
+        .then(res => {
+          return res
+        }).catch(err => {
+          signale.warn(`No '${pluginName}/server' module found, using generic Plugin class to initialize "${chalk.bold(pluginName)}"`)
+          return null
+        })
+
+      let PluginClass = Plugin
+      if (pluginModule?.default)
+        PluginClass = pluginModule.default
+
       // Create Plugin instance for required pluginName
-      let plugin = new Plugin(pluginName)
+      let plugin = new PluginClass(pluginName)
       if (plugin) {
         plugins.push(plugin)
       }
       return plugins
-    }, [])
+    }, Promise.resolve([]))
   }
 
   /**

@@ -113,6 +113,11 @@ export default class Plugin {
       // Set flag value
       this._hasSocket = true
     }
+
+    // Call provision if any
+    if (typeof this.provision == 'function') {
+      this.provision()
+    }
   }
 
   toJSON() {
