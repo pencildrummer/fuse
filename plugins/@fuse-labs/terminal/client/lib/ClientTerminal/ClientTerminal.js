@@ -43,8 +43,7 @@ export default class ClientTerminal {
 
     // Add data listener to be internally loggeed
     this.onMessageReceived(data => {
-      console.log('Received data, adding to log', data)
-
+      //console.log('Received data, adding to log', data)
       this._log.push(data)
       if (this._log.length > 30)
         this._log.shift()

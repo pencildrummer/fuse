@@ -89,7 +89,7 @@ export default class SerialConnection extends Connection {
     })
 
     this._serialPort.on('data', rawData => {
-      signale.scope(this.constructor.name).info('Received data on SerialConnection:', rawData)
+      //signale.scope(this.constructor.name).info('Received data on SerialConnection:', rawData)
       this.emit('data', rawData)
     })
   }

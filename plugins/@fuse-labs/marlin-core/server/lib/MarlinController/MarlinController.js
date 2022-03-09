@@ -20,6 +20,9 @@ export default class MarlinController extends Controller {
 
   _isReady = false
 
+  // TODO - Create queue?
+  _job = null;
+
   // TODO - Check if should we use serialport parser, or leave this as a Fuse internal parser thing or even for MarlinController
   _parsers = [
     new OkParser(),
@@ -39,6 +42,14 @@ export default class MarlinController extends Controller {
     // Add Marlin parser on connection
     let lineParser = readyParser.pipe(new MarlinLineParser())
     lineParser.on('data', data => this.handleParsedData(data))
+
+    // On close connection
+    let closeHandler = _ => {
+      // Clear pending job
+      this._cleanupJob()
+      this._device.connection.off('close', closeHandler)
+    }
+    this._device.connection.on('close', closeHandler)
   }
 
   /**
@@ -77,9 +88,18 @@ export default class MarlinController extends Controller {
     // TODO - Validate result
     signale.complete('Parsing completed - tot lines:', lines.length)
 
-    // Create new job
-    let job = new MarlinGCodeJob(this, lines)
-    job.start()
+    if (this._job && this._job.running) {
+      signale.warn('A job is already running, retry later')
+    } else {
+      // Create new job
+      let job = new MarlinGCodeJob(this, lines)
+
+      this._job = job
+      this._job.start()
+      this._job.on('finish', _ => {
+        this._job = null
+      })
+    }
   }
 
   /**
@@ -103,7 +123,6 @@ export default class MarlinController extends Controller {
         let parsedData = parser.parse(data, this)
       }
     })
-
   }
 
 }
