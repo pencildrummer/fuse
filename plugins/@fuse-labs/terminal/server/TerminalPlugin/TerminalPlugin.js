@@ -41,7 +41,6 @@ export default class TerminalPlugin extends Plugin {
     // Received terminal message from socket
     socket.on('message', (args, fn) => {
 
-      signale.star('Received message', args)
       // Broadcast the same message, attaching received flag, to notify client 
       signale.note('Resending as received to socket', socket.id)
       socket.nsp.emit('message', {

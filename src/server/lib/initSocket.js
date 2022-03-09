@@ -1,28 +1,28 @@
-import express from "express"
-import { createServer } from 'http'
-import { Server as SocketServer } from 'socket.io'
+// import express from "express"
+// import { createServer } from 'http'
+// import { Server as SocketServer } from 'socket.io'
 import signale from 'signale'
 import chalk from "chalk"
-import { DeviceManager, getDeviceIdFromNamespace } from '@fuse-labs/core/server'
 import initPluginsSocket from "./initPluginsSocket.js"
 import useDeviceMiddleware from "./socketDeviceMiddleware.js"
+import { socketServer as io } from '@fuse-labs/core/server'
 
 export default async function initSocket({ hostname, port }) {
 
-  // Socket.io server
-  const expressApp = express()
-  const socketServer = createServer(expressApp)
+  // // Socket.io server
+  // const expressApp = express()
+  // const socketServer = createServer(expressApp)
 
-  // Main socket server (/ namespace)
-  const io = new SocketServer(socketServer, {
-    cors: {
-      origin: [
-        'http://localhost:3000',
-        'https://admin.socket.io'
-      ],
-      credentials: true,
-    }
-  })
+  // // Main socket server (/ namespace)
+  // const io = new SocketServer(socketServer, {
+  //   cors: {
+  //     origin: [
+  //       'http://localhost:3000',
+  //       'https://admin.socket.io'
+  //     ],
+  //     credentials: true,
+  //   }
+  // })
 
   io.on('connection', async (socket) => {
     signale.success('Connected to main localhost socket')
@@ -30,7 +30,7 @@ export default async function initSocket({ hostname, port }) {
   
   signale.note('Registering device namespace on connection handler')
 
-  // Create devices namespace (eg: /device-42424242-4242-4242-4242-424242424242)
+  // Create dynamic devices namespace (eg: /device-42424242-4242-4242-4242-424242424242)
   let devicePath = /^\/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/i
   // Create namespace for device IDs
   io.of(devicePath)
@@ -59,7 +59,7 @@ export default async function initSocket({ hostname, port }) {
   // Register socket for active plugins
   await initPluginsSocket(io)
 
-  socketServer.listen(port, () => {
+  io.httpServer.listen(port, () => {
     console.ready(`> Socket ready on http://${hostname}:${port}`)
   })
 }

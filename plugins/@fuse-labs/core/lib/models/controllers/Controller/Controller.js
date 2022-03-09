@@ -14,7 +14,7 @@ export default class Controller extends EventEmitter {
   constructor(device) {
     super()
     this._device = device
-    // Add listener to connectio to pass it through
+    // Add listener to connection to pass it through
     // TODO - Validate? Connection must exists
     this._device.connection.on('error', err => this.emit('error', err))
     

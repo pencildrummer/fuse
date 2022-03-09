@@ -108,19 +108,18 @@ export default class MarlinController extends Controller {
 
   handleParsedData(data) {
     signale.scope('Controller:'+this.constructor.name).info('Received data:', data)
+    // Notify data received
     this.emit('data', data)
 
-    // // If data is 'ok' or starts with Ok the latest command has finished performing
-    // switch (data) {
-    //   case 'ok':
-    //     this.emit('data:ok', data)
-    //     break
-    // }
-
-    // Check parsers
+    // Check and perform parsers
     this._parsers.forEach(parser => {
       if (parser.match(data)) {
         let parsedData = parser.parse(data, this)
+        console.star(`Emitting ${'data:'+parser.eventName} with data:`, parsedData)
+        // Controller emit a data:* event with the parsed data
+        this.emit('data:'+parser.eventName, parsedData)
+        // TODO - Check if there is a better place
+        this._device._socketNamespace.emit('data:'+parser.eventName, parsedData)
       }
     })
   }

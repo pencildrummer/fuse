@@ -10,7 +10,7 @@ import {
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
-import { coreSocket } from "@fuse-labs/core-client";
+import { coreSocket, useDeviceContext } from "@fuse-labs/core-client";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { Button, Group, Label, Widget, InputRaw } from "@fuse-labs/core-ui";
 
@@ -40,8 +40,18 @@ const DEFAULT_DATA = {
 
 export default function TemperatureWidget() {
   
+  const { device } = useDeviceContext()
+
   const [targetNozzle, setTargetNozzle] = useState('')
   const [targetHeatbed, setTargetHeatbed] = useState('')
+
+  useEffect(_ => {
+    let handleTemperatureData = data => {
+      console.log('RECEIVED TEMPERATURE', data)
+    }
+    device.socket.on('data:temperature', handleTemperatureData)
+    return _ => device.socket.off('data:temperature', handleTemperatureData)
+  }, [device])
 
   function requestTargetNozzle() {
     coreSocket.emit('nozzle:set', parseInt(targetNozzle))

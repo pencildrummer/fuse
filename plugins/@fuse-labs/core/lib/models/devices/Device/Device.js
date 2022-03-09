@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid'
 import signale from "signale"
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js"
 import { Controller, NetworkConnection } from "../../index.js"
-import { ProfileManager } from "../../../index.js"
+import { ProfileManager, socketServer } from "../../../index.js"
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),
@@ -136,11 +136,14 @@ export default class Device {
     } else {
       this.controller = new ControllerClass(this)
     }
+
+    // Set socket namespace
+    // Add listener to this on data:* events to be broadcasted on device namespace socket
+    this._socketNamespace = socketServer.of('/device:'+this.id)
   }
 
   /**
    * Manually convert Device instance in storable JSON.
-   * We do not imeplment toJSON because it used when serializing device to be returned to the fronted in api/init call
    * @returns JSON data to be stored in file.
    */
   toJSON() {

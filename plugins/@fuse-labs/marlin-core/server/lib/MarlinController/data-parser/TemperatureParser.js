@@ -1,4 +1,6 @@
-export default class TemperatureParser {
+import { DataParser } from "@fuse-labs/core/server"
+
+export default class TemperatureParser extends DataParser {
   
   match(data) {
     return data.startsWith('ok T') || data.startsWith(' T')

@@ -1,11 +1,13 @@
-export default class OkParser {
+import { DataParser } from "@fuse-labs/core/server"
+
+export default class OkParser extends DataParser {
 
   match(data) {
     return data.startsWith('ok')
   }
 
-  parse(data, controller) {
-    controller.emit('data:ok', data)
+  parse(data) {
+    return data
   }
 
 }
