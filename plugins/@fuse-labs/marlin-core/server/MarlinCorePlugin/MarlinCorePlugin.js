@@ -10,7 +10,8 @@ export default class MarlinCorePlugin extends Plugin {
     Controller.registerControllerClass("marlin", MarlinController)
   }
 
-  initDeviceSocket(socket, deviceId) {
+  initDeviceSocket(socket) {
+
     socket.on('print:file', (path, fn) => {
       if (!path) {
         signale.error('Missing file path to start print')
@@ -24,13 +25,8 @@ export default class MarlinCorePlugin extends Plugin {
         return fn?.(false)
       }
 
-      // TODO - Use middleware Get device
-      let device = DeviceManager.shared.getDevice(deviceId)
-      if (!device) {
-        signale.error('No device found for id', chalk.redBright(deviceId))
-        return fn?.(false)
-      }
-
+      let device = socket.device
+      
       if (!device.controller) {
         signale.error('No controller registered on device', chalk.bold(device.name))
         return fn?.(false)

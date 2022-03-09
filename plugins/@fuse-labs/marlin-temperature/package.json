@@ -4,6 +4,12 @@
   "version": "1.0",
   "author": "FUSE Labs",
   "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "exports": {
+    "./client": "./client/index.js",
+    "./server": "./server/index.js"
+  },
   "fuse": {
     "title": "[Marlin] Temperature monitor",
     "pagesUrl": "temperature",

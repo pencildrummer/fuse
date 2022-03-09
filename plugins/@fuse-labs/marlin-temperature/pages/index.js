@@ -1,4 +1,4 @@
-import TemperatureWidget from "../components/TemperatureWidget/TemperatureWidget"
+import TemperatureWidget from "../client/components/TemperatureWidget/TemperatureWidget"
 
 export default function PrinterTemperaturePage() {
   return (

@@ -10,17 +10,18 @@ export default class TerminalPlugin extends Plugin {
   //   //
   // }
 
-  initDeviceSocket(socket, deviceId) {
+  initDeviceSocket(socket) {
 
     // Terminal should be intiialized and refrence the socket opened and the dispose the socket when closed
     // Or use the deviceSocket and namespace there
     // Doing this, the first time the socket is opened, the temrinal is created, but once the socket is closed
     // the terminal hold the reference to the old closed that was closed
-    this._initDeviceTerminal(deviceId, socket.nsp)
+    this._initDeviceTerminal(socket)
     
+    // TODO - Device Id here should not be needed, we can get is from the namespace
     socket.on('open', (deviceId, fn) => {
-      // TODO - Device Id here should not be needed, we can get is from the namespace
-      let device = DeviceManager.shared.getDevice(deviceId)
+      
+      let device = socket.device
 
       if (!device.terminal) {
         signale.error('No terminal initialized for device', chalk.bold(device.name), device.id)
@@ -52,7 +53,7 @@ export default class TerminalPlugin extends Plugin {
 
       const { message, deviceId } = args
 
-      let device = DeviceManager.shared.getDevice(deviceId)
+      let device = socket.device
 
       if (device.terminal) {
         // Send message to serial port, as recevied, CR or NL must be added in Terminal when sending
@@ -71,7 +72,7 @@ export default class TerminalPlugin extends Plugin {
      */
     socket.on('close', (deviceId, fn) => {
       // TODO - Device Id here should not be needed, we can get is from the namespace
-      let device = DeviceManager.shared.getDevice(deviceId)
+      let device = socket.device
 
       if (!device.terminal) {
         signale.error('No serial port to close for device', chalk.bold(device.name), device.id)
@@ -98,14 +99,15 @@ export default class TerminalPlugin extends Plugin {
   }
 
   // Initialize terminal on Device objects
-  _initDeviceTerminal(deviceId, deviceNamespace) {
-    let device = DeviceManager.shared.getDevice(deviceId)
+  _initDeviceTerminal(deviceSocket) {
+    let device = deviceSocket.device
+    let deviceNamespace = deviceSocket.nsp
 
     if (!device) {
-      return signale.error('No device found with ID', chalk.redBright(deviceId))
+      return signale.error('Unexpected. No device found on socket')
     }
 
-      // Check for existing device terminal
+    // Check for existing device terminal
     if (device.terminal)
       return console.info('Device already has a DeviceTerminal attached')
     
@@ -127,7 +129,7 @@ export default class TerminalPlugin extends Plugin {
     device.terminal.on('open', _ => {
       signale.success('Terminal connected to device', chalk.greenBright(device.name))
       // Broadcast open connection result
-      deviceNamespace.emit('connected', deviceId)
+      deviceNamespace.emit('connected', device.id)
       // Send human readable message
       this._sendNamespaceMessage('Connection opened', 'device', deviceNamespace)
       // Call callback function

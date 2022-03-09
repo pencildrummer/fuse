@@ -3,11 +3,11 @@ import ExtruderWidget from "../../../../plugins/@fuse-labs/marlin-extruder/compo
 import MarlinMiscWidget from "../../../../plugins/@fuse-labs/marlin-extra/components/MarlinMiscWidget/MarlinMiscWidget";
 import FeedRateWidget from "../../../../plugins/@fuse-labs/marlin-move/components/FeedRateWidget/FeedRateWidget";
 import MoveWidget from "../../../../plugins/@fuse-labs/marlin-move/components/MoveWidget/MoveWidget";
-import TemperatureWidget from "../../../../plugins/@fuse-labs/marlin-temperature/components/TemperatureWidget/TemperatureWidget";
+import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
 
-import getDevicePageComponent from "@fuse-labs/core-ui/components/pages/getDevicePageComponent";
+import { getDevicePageComponent } from "@fuse-labs/core-ui";
 import { useRouter } from "next/router";
-import useDevice from "plugins/@fuse-labs/core-client/lib/hooks/useDevice";
+import { useDevice } from "@fuse-labs/core-client";
 import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
 export default function DeviceHomePage() {

@@ -1,6 +1,7 @@
 import signale from 'signale'
 import chalk from 'chalk'
 import { PluginManager, getDeviceIdFromSocket } from '@fuse-labs/core/server'
+import useDeviceMiddleware from './socketDeviceMiddleware.js'
 
 export default async function initPluginsSocket(io) {
 
@@ -35,22 +36,23 @@ export default async function initPluginsSocket(io) {
     }
 
     // Register device scoped plugin socket if supports device types eg: localhost/device:DEVICE_ID/@fuse-labs/terminal
-    //if (typeof plugin.initDeviceSocket === 'function' && plugin.deviceTypes.length) {
     if (plugin.hasDeviceSocket) {
       let path = new RegExp(`/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/${nsPluginName}`, 'i')
       // Create server namespace
-      io.of(path).on("connection", socket => {
+      io.of(path)
+        .use(useDeviceMiddleware)
+        .on("connection", socket => {
 
         // TODO - Move into device middleare to attach also to socket data already the info
-        let deviceId = getDeviceIdFromSocket(socket)
-        if (!deviceId) {
-          return signale.error('No device ID found on socket initialization:', socket.nsp.name)
-        }
+        // let deviceId = getDeviceIdFromSocket(socket)
+        // if (!deviceId) {
+        //   return signale.error('No device ID found on socket initialization:', socket.nsp.name)
+        // }
 
         signale.start('Connected to device plugin namespace:', chalk.bold(socket.nsp.name))
 
         // Actually register socket listeners for plugin
-        plugin.initDeviceSocket(socket, deviceId)
+        plugin.initDeviceSocket(socket)
         signale.note('Registered listeners for device plugin socket for plugin', chalk.bold(plugin.name))
         
         // Add debug disconnect listener

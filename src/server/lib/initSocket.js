@@ -5,6 +5,7 @@ import signale from 'signale'
 import chalk from "chalk"
 import { DeviceManager, getDeviceIdFromNamespace } from '@fuse-labs/core/server'
 import initPluginsSocket from "./initPluginsSocket.js"
+import useDeviceMiddleware from "./socketDeviceMiddleware.js"
 
 export default async function initSocket({ hostname, port }) {
 
@@ -33,20 +34,25 @@ export default async function initSocket({ hostname, port }) {
   let devicePath = /^\/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/i
   // Create namespace for device IDs
   io.of(devicePath)
+    .use(useDeviceMiddleware)
     .on("connection", async (deviceSocket) => {
       signale.start('Connected device socket:', chalk.blueBright(deviceSocket.nsp.name))
 
+      deviceSocket.on('disconnect', (reason) => {
+        signale.complete('Disconnected from namespace', deviceSocket.nsp.name, 'Cause', reason)
+      })
+      
       // TODO - Move this into a middleware? That can also be used in device plugin sockets
       // Check device exists
-      let deviceId = getDeviceIdFromNamespace(deviceSocket.nsp.name)
-      let device = DeviceManager.shared.getDevice(deviceId)
-      if (device) {
-        deviceSocket.on('disconnect', (reason) => {
-          signale.complete('Disconnected from namespace', deviceSocket.nsp.name, 'Cause', reason)
-        })
-      } else {
-        signale.warn('Requested connection on socket for no existing device with id', chalk.yellowBright(deviceId))
-      }
+      // let deviceId = getDeviceIdFromNamespace(deviceSocket.nsp.name)
+      // let device = DeviceManager.shared.getDevice(deviceId)
+      // if (device) {
+      //   deviceSocket.on('disconnect', (reason) => {
+      //     signale.complete('Disconnected from namespace', deviceSocket.nsp.name, 'Cause', reason)
+      //   })
+      // } else {
+      //   signale.warn('Requested connection on socket for no existing device with id', chalk.yellowBright(deviceId))
+      // }
       
     })
 

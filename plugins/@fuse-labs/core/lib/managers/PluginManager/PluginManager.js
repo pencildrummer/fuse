@@ -67,9 +67,19 @@ class PluginManager {
 
       const pluginModule = await import(`${pluginName}/server`)
         .then(res => {
+          if (!res.default) {
+            throw new Error('Found module but no default export is found. Should export the plugin class.')
+          }
+          if (typeof res.default !== 'function') {
+            throw new Error(`Default export of ${pluginName}/server is not a class`)
+          }
+          if (!(res.default.prototype instanceof Plugin)) {
+            throw new Error(`Plugin class "${chalk.red(res.default.name)}" must extend "${chalk.bold(Plugin.name)}" from ${chalk.underline('@fuse-labs/core/server')}`)
+          }
+          signale.success(`${chalk.green(pluginName+'/server')}: module found, using "${chalk.green.bold(res.default.name)}" to initialize plugin`)
           return res
         }).catch(err => {
-          signale.warn(`No '${pluginName}/server' module found, using generic Plugin class to initialize "${chalk.bold(pluginName)}"`)
+          signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic Plugin class to initialize "${chalk.bold(pluginName)}"`)
           return null
         })
 
