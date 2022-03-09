@@ -24,26 +24,30 @@ export default class DeviceTerminal extends EventEmitter {
       this._device.controller.on('data', data => {
         this.emit('data', data)
       })
+      this._device.controller.on('error', err => {
+        this.emit('error', err)
+      })
     } catch(error) {
       signale.error('Error creating terminal for device '+chalk.redBright(device.id), error)
     }
   }
 
   /**
-   * Request serial port connection to open
+   * Request serial port connection to open (through device controller)
    */
   open(callback) {
-    this._device.connection.open(callback)
+    this._device.controller.openConnection(callback)
+    //this._device.connection.open(callback)
     //this._serialPort.open(callback)
   }
 
   /**
-   * Request serial port connection to close
+   * Request serial port connection to close (through device controller)
    */
   close(callback) {
     signale.info('Requesting closing connection for device ')
-    this._device.connection.close(callback)
-    //this._serialPort.close(callback)
+    this._device.controller.closeConnection(callback)
+    //this._device.connection.close(callback)
   }
 
   // /**
@@ -85,7 +89,7 @@ export default class DeviceTerminal extends EventEmitter {
    */
   send(message, encoding, callback, wait = false) {
     if (!this.isOpen) {
-      return signale.error('Unable to send message. Port is not open.')
+      return this.emit('error', new Error('Unable to send message. Port is not open.'))
     }
     signale.info('Sending message', message)
     

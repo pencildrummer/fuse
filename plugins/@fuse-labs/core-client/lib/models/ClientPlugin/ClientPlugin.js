@@ -9,6 +9,7 @@ const CONSTRUCTOR_SCHEMA = object({
   _hasPages: boolean().required(),
   _hasTabs: boolean().required(),
   _hasSocket: boolean().required(),
+  _hasDeviceSocket: boolean().required(),
   _fuse: object().required(),
   _active: boolean().required(),
   _system: boolean().required(),
@@ -48,6 +49,9 @@ export default class ClientPlugin {
 
   _hasSocket = undefined;
   get hasSocket() { return this._hasSocket }
+
+  _hasDeviceSocket = undefined;
+  get hasDeviceSocket() { return this._hasDeviceSocket }
 
   _active = false;
   get active() {

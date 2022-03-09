@@ -29,7 +29,9 @@ export default class MarlinController extends Controller {
    */
   write(data) {
     if (!this._device.connection.isOpen) {
-      signale.error('Unable to write data, connection not open')
+      let error = new Error('Unable to write data, connection not open')
+      this.emit('error', error)
+      signale.error(error)
     } else {
       this._device.connection.write(data)
     }

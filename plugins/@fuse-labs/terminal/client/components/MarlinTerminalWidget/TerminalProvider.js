@@ -14,7 +14,7 @@ export default function TerminalProvider({
   ...props
 }) {
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState(terminal.log)
 
   const [autoscroll, setAutoscroll] = useState(true)
 

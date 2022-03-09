@@ -40,8 +40,14 @@ export default class Plugin {
     return this._fuse.tabsUrl || this.name
   }
 
-  _hasSocket = false;
-  get hasSocket() { return this._hasSocket }
+  //_hasSocket = false;
+  get hasSocket() {
+    return typeof this.initSocket === 'function'
+  }
+
+  get hasDeviceSocket() {
+    return typeof this.initDeviceSocket === 'function' && this.deviceTypes.length > 0
+  }
 
   get active() {
     return PluginManager.shared.activePluginsNames.includes(this.name)
@@ -108,11 +114,11 @@ export default class Plugin {
 
     // Check has socket
 
-    // Check exists socket.js file in server dir in plugin
-    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'server', 'socket.js'))) {
-      // Set flag value
-      this._hasSocket = true
-    }
+    // // Check exists socket.js file in server dir in plugin
+    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'server', 'socket.js'))) {
+    //   // Set flag value
+    //   this._hasSocket = true
+    // }
 
     // Call provision if any
     if (typeof this.provision == 'function') {
@@ -124,7 +130,9 @@ export default class Plugin {
     return {
       ...this,
       _active: this.active,
-      _system: this.system
+      _system: this.system,
+      _hasSocket: this.hasSocket,
+      _hasDeviceSocket: this.hasDeviceSocket,
     }
   }
   

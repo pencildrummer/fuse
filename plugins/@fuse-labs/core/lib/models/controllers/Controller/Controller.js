@@ -14,7 +14,29 @@ export default class Controller extends EventEmitter {
   constructor(device) {
     super()
     this._device = device
+    // Add listener to connectio to pass it through
+    // TODO - Validate? Connection must exists
+    this._device.connection.on('error', err => this.emit('error', err))
+    
+    this._device.connection.on('open', _ => this.emit('open_connection'))
+    this._device.connection.on('close', _ => this.emit('close_connection'))
   }
+
+  /**
+   * Request opening of the connection to the device
+   */
+  openConnection(callback) {
+    this._device.connection.open(callback)
+  }
+
+  /**
+   * Request closing of the connection to the device
+   */
+  closeConnection(callback) {
+    this._device.connection.close(callback)
+  }
+
+  /** STATIC */
 
   static _registeredContollers = {}
   

@@ -12,14 +12,14 @@ export default class Connection extends EventEmitter {
   /**
    * Open connection to device
    */
-  open() {
+  open(callback) {
     throw new Error('open() not implemented on ', this.constructor.name)
   }
 
   /**
    * Close connection to device
    */
-  close() {
+  close(callback) {
     throw new Error('close() not implemented on ', this.constructor.name)
   }
 

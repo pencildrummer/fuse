@@ -54,7 +54,10 @@ export default class ClientDevice {
 
     //Create socket for active plugins
     this.plugins?.forEach((plugin) => {
-      if (!plugin.hasSocket) return
+      
+      if (!plugin.hasDeviceSocket)
+        return
+      
       let keyPath = plugin.name.split('/').map(key => lodash.camelCase(key)).join('.')
       if (!lodash.get(this, 'sockets.'+keyPath)) {
         let pluginDeviceSocket = socket(`device:${this.id}/${plugin.name}`)

@@ -24,15 +24,30 @@ export default class ClientTerminal {
   lineEnding = LineEnding.NewLine  
   useCarriageReturn = false
 
+  /**
+   * Contains latest received data. Limited to 30 latest messages.
+   */
+  _log = []
+  get log() { return this._log }
+
   constructor(device, { autoConnect = true } = {}) {
     console.log('Creating terminal for device ID', device.id)
     this.deviceId = device.id
     // Init socket to pass messages to backend
     this._socket = device.sockets.fuseLabs.terminal
 
-    // DEBUG
+    if (!this._socket) {
+      console.log(device)
+      throw new Error('Missing terminal socket for device')
+    }
+
+    // Add data listener to be internally loggeed
     this.onMessageReceived(data => {
-      console.log('Received data', data)
+      console.log('Received data, adding to log', data)
+
+      this._log.push(data)
+      if (this._log.length > 30)
+        this._log.shift()
     })
     
     // Automatically connect on creation
@@ -57,7 +72,7 @@ export default class ClientTerminal {
     console.log('Sending message:', message)
     let data = {
       id: generateUniqueID(),
-      message: this.formatMessage(message),
+      message: this._formatMessage(message),
       from: 'user',
       deviceId: this.deviceId
     }
@@ -73,8 +88,17 @@ export default class ClientTerminal {
     this._socket.off('message', listener)
   }
 
-  // Internal
-  formatMessage(message) {
+  /**
+   * Log
+   */
+
+  clearLog() {
+    this._log = []
+  }
+
+  /** PRIVATE */
+
+  _formatMessage(message) {
     switch (this.lineEnding) {
       case LineEnding.NewLine:                  
         return message.trim() + '\n'

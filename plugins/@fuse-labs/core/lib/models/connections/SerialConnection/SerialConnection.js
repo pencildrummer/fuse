@@ -34,12 +34,13 @@ export default class SerialConnection extends Connection {
     }, callback)
   }
 
-  open() {
-    this._serialPort.open()
+  open(callback) {
+    this._serialPort.open(callback)
   }
 
-  close() {
-    this._serialPort.close()
+  close(callback) {
+    if (this._serialPort.isOpen)
+      this._serialPort.close(callback)
   }
 
   write(data) {

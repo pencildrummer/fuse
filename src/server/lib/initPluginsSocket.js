@@ -14,7 +14,7 @@ export default async function initPluginsSocket(io) {
     let nsPluginName = plugin.name.replace('@', 'scope:')
 
     // Register non-scoped plugin socket eg: localhost/@fuse-labs/terminal
-    if (typeof plugin.initSocket === 'function') {
+    if (plugin.hasSocket) {
       let path = `/${nsPluginName}`
       // Create server namespace
       io.of(path).on("connection", socket => {
@@ -35,7 +35,8 @@ export default async function initPluginsSocket(io) {
     }
 
     // Register device scoped plugin socket if supports device types eg: localhost/device:DEVICE_ID/@fuse-labs/terminal
-    if (typeof plugin.initDeviceSocket === 'function' && plugin.deviceTypes.length) {
+    //if (typeof plugin.initDeviceSocket === 'function' && plugin.deviceTypes.length) {
+    if (plugin.hasDeviceSocket) {
       let path = new RegExp(`/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/${nsPluginName}`, 'i')
       // Create server namespace
       io.of(path).on("connection", socket => {
