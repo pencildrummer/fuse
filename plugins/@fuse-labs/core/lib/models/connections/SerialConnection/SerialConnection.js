@@ -47,8 +47,8 @@ export default class SerialConnection extends Connection {
       this._serialPort.close(callback)
   }
 
-  write(data) {
-    this._serialPort.write(data)
+  write(data, opts) {
+    let hasDrained = this._serialPort.write(data, opts)
   }
 
   addParser(parser) {

@@ -28,7 +28,7 @@ export default class Connection extends EventEmitter {
   /**
    * Write data to device
    */
-  write(data) {
+  write(data, opts) {
     throw new Error('write() not implemented on ', this.constructor.name)
   }
 
