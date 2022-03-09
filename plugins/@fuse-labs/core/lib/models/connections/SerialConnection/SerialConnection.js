@@ -21,6 +21,11 @@ export default class SerialConnection extends Connection {
     }
   }
 
+  get isOpen() { 
+    console.log('CHECKING GETTER')
+    return this._serialPort.isOpen
+  }
+
   /**
    * Change current baud rate
    * @param {number} baudRate 
@@ -70,7 +75,6 @@ export default class SerialConnection extends Connection {
     // Attach open and error serial port listener for debugging
     this._serialPort.on('open', args => {
       signale.scope(this.constructor.name).note('Opened port ', port, '@', this.baudRate)
-      this.isOpen = true
       this.emit('open', args)
     })
 

@@ -7,7 +7,9 @@ import { EventEmitter } from 'events'
 export default class Connection extends EventEmitter {
 
   /** Return if current connection is open */
-  isOpen = false
+  get isOpen() {
+    throw new Error('isOpen getter not implemented on ', this.constructor.name)
+  }
 
   /**
    * Open connection to device

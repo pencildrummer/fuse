@@ -18,8 +18,8 @@ export default class Controller extends EventEmitter {
     // TODO - Validate? Connection must exists
     this._device.connection.on('error', err => this.emit('error', err))
     
-    this._device.connection.on('open', _ => this.emit('open_connection'))
-    this._device.connection.on('close', _ => this.emit('close_connection'))
+    this._device.connection.on('open', _ => this.emit('open'))
+    this._device.connection.on('close', _ => this.emit('close'))
   }
 
   /**

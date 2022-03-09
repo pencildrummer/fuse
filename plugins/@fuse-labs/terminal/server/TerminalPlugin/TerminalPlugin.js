@@ -196,7 +196,6 @@ export default class TerminalPlugin extends Plugin {
   }
 
   _sendNamespaceMessage(message, from, nsp) {
-    console.log('Sending to namespace', nsp, message)
     nsp.emit('message', {
       id: from.toLowerCase()+'-'+uuidv4(),
       from: from.toLowerCase(),
