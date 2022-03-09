@@ -1,4 +1,4 @@
-import ImageViewer from "../file-viewers/image/ImageViewer"
+import ImageViewer from "../file-viewers/ImageViewer/ImageViewer"
 
 function getFileViewer(file) {
   // TODO - Dynamically import correct registered file previewer (maybe generate js file with all registered file viewer on plugin install?)

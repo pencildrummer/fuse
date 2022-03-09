@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { Button, Separator } from "../../../core-ui";
+import { Button, Separator } from "@fuse-labs/core-ui";
 
 export default function FileBanner({
   file,

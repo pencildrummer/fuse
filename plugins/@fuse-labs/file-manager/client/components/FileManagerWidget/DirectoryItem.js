@@ -1,8 +1,8 @@
 import { CardStackIcon, ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import { useMemo, useState } from "react";
-import { List } from "../../../core-ui";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { List } from "@fuse-labs/core-ui";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 import DirectoryListing from "./DirectoryListing";
 
 export default function DirectoryItem({

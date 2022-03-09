@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { usePlugin } from '@fuse-labs/core-client'
 import { List } from "@fuse-labs/core-ui"
-import { useFileManagerContext } from "../FileManagerProvider"
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider"
 import DirectoryItem from "./DirectoryItem"
 import FileItem from "./FileItem"
 

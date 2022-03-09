@@ -1,4 +1,3 @@
-import PrinterDevice from "../../../../src/server/lib/shared/_models/PrinterDevice.js";
 
 // TEST - Move in some shared lib
 let device;
@@ -10,7 +9,8 @@ export default function setup(socket) {
     portPath,
     baudRate
   }) => {
-    device = new PrinterDevice(portPath, baudRate)
+    // TODO - PrinterDevice does not exists
+    //device = new PrinterDevice(portPath, baudRate)
   })
 
   socket.on('move:x', (xValue, fn) => {

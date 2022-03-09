@@ -1,7 +1,7 @@
 import { TrashIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
-import { Button, Widget, Separator, Group } from "../../../core-ui";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { Button, Widget, Separator, Group } from "@fuse-labs/core-ui";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 import FileInfo from "./FileInfo";
 import FilePreview from "./FilePreview";
 

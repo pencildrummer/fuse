@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { DownloadIcon, Share2Icon, TrashIcon } from "@radix-ui/react-icons";
 import ContextMenu from "@fuse-labs/core-ui/components/shared/ContextMenu/ContextMenu";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 
 export default function FileManagerWidgetContextMenu({
   onAction,

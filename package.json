@@ -20,6 +20,7 @@
     "@fuse-labs/core": "file:plugins/@fuse-labs/core",
     "@fuse-labs/core-client": "file:plugins/@fuse-labs/core-client",
     "@fuse-labs/core-ui": "file:plugins/@fuse-labs/core-ui",
+    "@fuse-labs/file-manager": "file:plugins/@fuse-labs/file-manager",
     "@fuse-labs/marlin-core": "file:plugins/@fuse-labs/marlin-core",
     "@fuse-labs/shared-utils": "file:plugins/@fuse-labs/shared-utils",
     "@fuse-labs/terminal": "file:plugins/@fuse-labs/terminal",

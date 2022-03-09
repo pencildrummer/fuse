@@ -1,9 +1,7 @@
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { useMemo, useState } from "react";
-import { Button, Widget } from "../../../core-ui";
-import ContextMenu from "../../../core-ui/components/shared/ContextMenu/ContextMenu";
-import ScrollArea from "../../../core-ui/components/shared/ScrollArea/ScrollArea";
-import FileManagerProvider from "../FileManagerProvider";
+import { Widget, ScrollArea } from "@fuse-labs/core-ui";
+import FileManagerProvider from "../FileManagerProvider/FileManagerProvider";
 import DirectoryListing from "./DirectoryListing";
 import FileBanner from "./FileBanner";
 import FileManagerWidgetContextMenu from "./FileManagerWidgetContextMenu";

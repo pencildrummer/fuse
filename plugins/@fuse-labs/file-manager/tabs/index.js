@@ -1,5 +1,5 @@
-import FileManagerProvider from "../components/FileManagerProvider";
-import FileManagerIndexTab from "../components/FileManagerIndexTab/FileManagerIndexTab";
+import FileManagerProvider from '../client/components/FileManagerProvider/FileManagerProvider'
+import FileManagerIndexTab from "../client/components/FileManagerIndexTab/FileManagerIndexTab";
 
 export default function IndexPage() {
 

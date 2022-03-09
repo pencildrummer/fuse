@@ -1,8 +1,8 @@
 import { FileIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import { useMemo } from "react";
-import { List } from "../../../core-ui";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { List } from "@fuse-labs/core-ui";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 
 export default function FileItem({
   item,

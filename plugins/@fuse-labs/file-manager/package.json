@@ -3,6 +3,12 @@
   "description": "Core file manager for FUSE",
   "version": "0.1",
   "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    "./server": "./server/index.js",
+    "./client": "./client/index.js"
+  },
   "fuse": {
     "title": "File manager"
   }

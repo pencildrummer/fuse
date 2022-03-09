@@ -1,4 +1,4 @@
-import { Group, Label } from "../../../core-ui";
+import { Group, Label } from "@fuse-labs/core-ui";
 import filesize from 'filesize'
 import { useIntl } from 'react-intl'
 

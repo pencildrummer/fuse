@@ -21,8 +21,7 @@ export default class SerialConnection extends Connection {
     }
   }
 
-  get isOpen() { 
-    console.log('CHECKING GETTER')
+  get isOpen() {
     return this._serialPort.isOpen
   }
 

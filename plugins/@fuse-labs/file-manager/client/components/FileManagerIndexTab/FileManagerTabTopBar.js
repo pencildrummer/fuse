@@ -2,7 +2,7 @@ import { CardStackIcon, DotsVerticalIcon, FilePlusIcon } from "@radix-ui/react-i
 import { coreSocket } from "@fuse-labs/core-client";
 import { Button, Group } from "@fuse-labs/core-ui";
 import { useRef } from "react";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 
 export default function FileManagerTabTopBar() {
 

@@ -8,7 +8,7 @@ import TemperatureWidget from "../../../../plugins/@fuse-labs/marlin-temperature
 import getDevicePageComponent from "@fuse-labs/core-ui/components/pages/getDevicePageComponent";
 import { useRouter } from "next/router";
 import useDevice from "plugins/@fuse-labs/core-client/lib/hooks/useDevice";
-import DeviceFileManagerWidget from "plugins/@fuse-labs/file-manager/components/DeviceFileManagerWidget/DeviceFileManagerWidget";
+import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
 export default function DeviceHomePage() {
 

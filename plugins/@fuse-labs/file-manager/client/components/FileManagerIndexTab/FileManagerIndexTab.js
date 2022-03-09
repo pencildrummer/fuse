@@ -1,6 +1,6 @@
 import { ScrollArea, Widget } from "@fuse-labs/core-ui";
 import { useCallback } from "react";
-import { useFileManagerContext } from "../FileManagerProvider";
+import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 import DirectoryListing from "../FileManagerWidget/DirectoryListing";
 import FileManagerWidgetContextMenu from "../FileManagerWidget/FileManagerWidgetContextMenu";
 import PendingFilesList from "../FileManagerWidget/PendingFilesList";
