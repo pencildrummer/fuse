@@ -1,8 +1,8 @@
 import signale from "signale"
 import chalk from "chalk";
-import { DeviceManager, getDeviceIdFromSocket } from "@fuse-labs/core";
+import { DeviceManager, getDeviceIdFromSocket } from '@fuse-labs/core/server'
 import { v4 as uuidv4 } from 'uuid'
-import DeviceTerminal from "../lib/server/DeviceTerminal.js";
+import DeviceTerminal from "./DeviceTerminal/DeviceTerminal.js";
 
 export default function setup(socket) {
   // Register terminal listeners
@@ -12,7 +12,11 @@ export default function setup(socket) {
     return signale.error('No device ID found on socket initialization:', socket.nsp.name)
   }
 
-  initDeviceTerminal(deviceId)
+  // Terminal should be intiialized and refrence the socket opened and the dispose the socket when closed
+  // Or use the deviceSocket and namespace there
+  // Doing this, the first time the socket is opened, the temrinal is created, but once the socket is closed
+  // the terminal hold the reference to the old closed that was closed
+  initDeviceTerminal(deviceId, socket)
   
   socket.on('open', (deviceId, fn) => {
     let device = DeviceManager.shared.getDevice(deviceId)
@@ -23,11 +27,11 @@ export default function setup(socket) {
     }
 
     if (device.terminal.isOpen) {
-      socketSendMessage('Already connected', 'server')
+      socketSendMessage('Already connected', 'server', socket)
       return fn?.(true)
     } else {
       // Send message from server notify connection start process
-      socketSendMessage('Connecting to device...', 'server')
+      socketSendMessage('Connecting to device...', 'server', socket)
       device.terminal.open()
     }
   })
@@ -37,6 +41,7 @@ export default function setup(socket) {
 
     signale.star('Received message', args)
     // Broadcast the same message, attaching received flag, to notify client 
+    signale.note('Resending as received to socket', socket.id)
     socket.emit('message', {
       ...args,
       received: true
@@ -84,8 +89,9 @@ export default function setup(socket) {
   })
 
   // Internal fn
-  function socketSendMessage(message, from) {
-    socket.emit('message', {
+  function socketSendMessage(message, from, messageSocket) {
+    console.log('Sending to socket', messageSocket.id, message)
+    messageSocket.emit('message', {
       id: from.toLowerCase()+'-'+uuidv4(),
       from: from.toLowerCase(),
       message: message
@@ -93,7 +99,7 @@ export default function setup(socket) {
   }
 
   // Initialize terminal on Device objects
-  function initDeviceTerminal(deviceId) {
+  function initDeviceTerminal(deviceId, terminalSocket) {
     let device = DeviceManager.shared.getDevice(deviceId)
 
     if (!device) {
@@ -107,7 +113,7 @@ export default function setup(socket) {
         signale.log('Connecting DeviceTerminal in server')
         if (err) {
           signale.error('Error creating DeviceTerminal:', err)
-          socket.emit('message', {
+          terminalSocket.emit('message', {
             id: 'server-'+uuidv4(),
             from: 'server',
             message: 'Error connecting to device - ' + err.message
@@ -119,9 +125,9 @@ export default function setup(socket) {
       device.terminal.on('open', _ => {
         signale.success('Terminal connected to device', chalk.greenBright(device.name))
         // Broadcast open connection result
-        socket.emit('connected', deviceId)
+        terminalSocket.emit('connected', deviceId)
         // Send human readable message
-        socketSendMessage('Connection opened', 'device')
+        socketSendMessage('Connection opened', 'device', terminalSocket)
         // Call callback function
         //fn?.(true)
 
@@ -165,9 +171,9 @@ export default function setup(socket) {
       device.terminal.on('close', error => {
         if (error) {
           signale.error('Closed device terminal connection due to error', error)
-          socketSendMessage('Connection closed due to error: '+error.message, 'device')
+          socketSendMessage('Connection closed due to error: '+error.message, 'device', terminalSocket)
         } else {
-          signale.info('Closed device terminal connection for ', device.id)
+          signale.info('Closed device terminal connection for ', device.id, terminalSocket)
           // Normal close request
           socketSendMessage('Connection closed', 'device')
         }
@@ -175,12 +181,12 @@ export default function setup(socket) {
 
       device.terminal.on('data', data => {
         signale.info('Received data from parser', data)
-        socketSendMessage(data, 'device')
+        socketSendMessage(data, 'device', terminalSocket)
       })
       
       device.terminal.on('error', error => {
         signale.error('Error received', error)
-        socketSendMessage('Error: '+error.message, 'device')
+        socketSendMessage('Error: '+error.message, 'device', terminalSocket)
       })
 
       signale.star('Added terminal to device ', chalk.bold(device.name), device.id)

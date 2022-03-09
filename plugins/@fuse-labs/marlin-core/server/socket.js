@@ -1,7 +1,7 @@
 import signale from 'signale'
 import fs from 'fs-extra'
 import parser from 'gcode-parser'
-import { DeviceManager, getDeviceIdFromSocket } from '@fuse-labs/core'
+import { DeviceManager, getDeviceIdFromSocket } from '@fuse-labs/core/server'
 import chalk from 'chalk'
 
 export default function setup(socket) {

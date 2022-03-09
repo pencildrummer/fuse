@@ -12,6 +12,10 @@
   "author": "Fabio Borella",
   "license": "ISC",
   "type": "module",
+  "exports": {
+    "./client": "./client/index.js",
+    "./server": "./server/index.js"
+  },
   "fuse": {
     "title": "Terminal",
     "pagesUrl": "terminal",

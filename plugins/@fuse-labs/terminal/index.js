@@ -1,5 +1,7 @@
-import { TerminalClientPlugin } from './client/index'
+import client from './client/index.js'
+import server from './server/index.js'
 
 export {
-  TerminalClientPlugin
+  client,
+  server
 }

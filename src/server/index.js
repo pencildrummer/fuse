@@ -14,8 +14,6 @@ const socketPort = 8888
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
 
-
-
 app.prepare().then(() => {
 
   createServer((req, res) => {
@@ -25,7 +23,7 @@ app.prepare().then(() => {
     handle(req, res, parsedUrl)
   }).listen(port, (err) => {
     if (err) throw err
-    console.log(`> Ready on http://${hostname}:${port}`)
+    console.ready(`> Ready on http://${hostname}:${port}`)
   })
 
   // Init Socket.io server

@@ -21,7 +21,9 @@ export default class DeviceTerminal extends EventEmitter {
       // Add reference to device
       this._device = device
       // Add listener to controller
-      this._device.controller.on('data', data => this.emit('data', data))
+      this._device.controller.on('data', data => {
+        this.emit('data', data)
+      })
     } catch(error) {
       signale.error('Error creating terminal for device '+chalk.redBright(device.id), error)
     }

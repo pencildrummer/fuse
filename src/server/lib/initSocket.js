@@ -3,8 +3,8 @@ import { createServer } from 'http'
 import { Server as SocketServer } from 'socket.io'
 import signale from 'signale'
 import chalk from "chalk"
-import { DeviceManager, getDeviceIdFromNamespace } from '@fuse-labs/core'
-import registerSocketPlugins from "./registerSocketPlugins.js"
+import { DeviceManager, getDeviceIdFromNamespace } from '@fuse-labs/core/server'
+import initPluginsSocket from "./initPluginsSocket.js"
 
 export default async function initSocket({ hostname, port }) {
 
@@ -23,18 +23,20 @@ export default async function initSocket({ hostname, port }) {
     }
   })
 
-  // io.on('connection', async (socket) => {
-    
-  // })
+  io.on('connection', async (socket) => {
+    signale.success('Connected to main localhost socket')
+  })
   
   signale.note('Registering device namespace on connection handler')
 
   // Create devices namespace (eg: /device-42424242-4242-4242-4242-424242424242)
-  let deviceRegex = /^\/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/i
-  // Create name space for device IDs
-  io.of(deviceRegex)
+  let devicePath = /^\/device:[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/i
+  // Create namespace for device IDs
+  io.of(devicePath)
     .on("connection", async (deviceSocket) => {
-      signale.start('Connected to socket for device:', chalk.blueBright(deviceSocket.nsp.name))
+      signale.start('Connected device socket:', chalk.blueBright(deviceSocket.nsp.name))
+
+      // TODO - Move this into a middleware? That can also be used in device plugin sockets
       // Check device exists
       let deviceId = getDeviceIdFromNamespace(deviceSocket.nsp.name)
       let device = DeviceManager.shared.getDevice(deviceId)
@@ -49,9 +51,9 @@ export default async function initSocket({ hostname, port }) {
     })
 
   // Register socket for active plugins
-  await registerSocketPlugins(io)
+  await initPluginsSocket(io)
 
   socketServer.listen(port, () => {
-    console.log(`> Socket ready on http://${hostname}:${port}`)
+    console.ready(`> Socket ready on http://${hostname}:${port}`)
   })
 }

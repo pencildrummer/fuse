@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Core plugin for FUSE",
   "main": "index.js",
+  "exports": {
+    "./server": "./server/index.js"
+  },
   "type": "module",
   "directories": {
     "lib": "lib"

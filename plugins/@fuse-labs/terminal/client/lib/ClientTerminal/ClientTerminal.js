@@ -7,7 +7,7 @@ const LineEnding = Object.freeze({
   CarriageReturnAndNewLine: 3
 })
 
-export default class Terminal {
+export default class ClientTerminal {
   
   /**
    * Socket

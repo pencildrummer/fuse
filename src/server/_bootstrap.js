@@ -1,9 +1,11 @@
-import { PluginManager } from '@fuse-labs/core'
-import signale from 'signale'
+import { logger, PluginManager } from '@fuse-labs/core/server'
+
+// Override default console to use Fuse logger
+console = logger
 
 // Error logger
-process.on('uncaughtException', error => signale.error(error.stack))
-process.on('unhandledRejection', error => signale.error(error.stack))
+process.on('uncaughtException', error => console.error(error.stack))
+process.on('unhandledRejection', error => console.error(error.stack))
 
 // Initialize PluginManagers
 await PluginManager.shared.init()

@@ -1,5 +1,5 @@
 import { ClientPlugin, ClientDeviceManager } from '@fuse-labs/core-client'
-import Terminal from '../../lib/client/Terminal/Terminal'
+import ClientTerminal from '../lib/ClientTerminal/ClientTerminal'
 
 export default class TerminalClientPlugin extends ClientPlugin {
 
@@ -19,7 +19,7 @@ export default class TerminalClientPlugin extends ClientPlugin {
       if (device.terminal) {
         console.warn('Trying setting terminal on device but device.terminal already exists')
       } else {
-        device.terminal = new Terminal(device)
+        device.terminal = new ClientTerminal(device)
         console.log('Added terminal plugin to device', device.name)
       }
     })
@@ -27,7 +27,7 @@ export default class TerminalClientPlugin extends ClientPlugin {
     // NOT YET IMPLEMENTED - Cleanup method when deactivating plugin
     return _ => {
       devices.forEach(device => {
-        if (typeof device.terminal == Terminal) {
+        if (typeof device.terminal == ClientTerminal) {
           delete device.terminal
         }
       })

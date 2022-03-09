@@ -1,5 +1,4 @@
-import MarlinTerminalWidget from '../components/MarlinTerminalWidget/MarlinTerminalWidget.js';
-import MarlinTerminalSettingsWidget from '../components/MarlinTerminalSettingsWidget/MarlinTerminalSettingsWidget.js';
+import { MarlinTerminalWidget, MarlinTerminalSettingsWidget } from '../client/index.js';
 
 export default function TerminalPage() {
   return (<>
