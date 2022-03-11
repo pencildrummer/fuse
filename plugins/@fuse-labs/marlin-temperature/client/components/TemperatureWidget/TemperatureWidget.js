@@ -10,9 +10,10 @@ import {
 import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
-import { coreSocket, useDeviceContext } from "@fuse-labs/core-client";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { useDeviceContext } from "@fuse-labs/core-client";
+import { ArrowRightIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Button, Group, Label, Widget, InputRaw } from "@fuse-labs/core-ui";
+import merge from 'lodash/merge'
 
 ChartJS.register(
   CategoryScale,
@@ -26,15 +27,29 @@ ChartJS.register(
 const DEFAULT_DATA = {
   datasets: [
     {
-      label: 'Heatbed',
+      key: 'bed',
+      label: 'Bed',
       borderColor: '#0891b2',
       data: []
     },
     {
-      label: 'Nozzle',
+      key: 'hotend',
+      label: 'Hotend',
       borderColor: '#db2777',
       data: []
-    }
+    },
+    {
+      key: 'chamber',
+      label: 'Chamber',
+      borderColor: '#0000ff',
+      data: []
+    },
+    {
+      key: 'ambient',
+      label: 'Ambient',
+      borderColor: '#65a30d',
+      data: []
+    },
   ]
 }
 
@@ -42,57 +57,53 @@ export default function TemperatureWidget() {
   
   const { device } = useDeviceContext()
 
-  const [targetNozzle, setTargetNozzle] = useState('')
-  const [targetHeatbed, setTargetHeatbed] = useState('')
+  const [data, setData] = useState(DEFAULT_DATA)
+
+  const [temperature, setTemperature] = useState({})
+  const [userTargetTemperature, setUserTargetTemperature] = useState({})
 
   useEffect(_ => {
-    let handleTemperatureData = data => {
-      console.log('RECEIVED TEMPERATURE', data)
+    let handleTemperatureData = temperature => {
+      console.log('RECEIVED TEMPERATURE', temperature)
+      // Updated latest temperature state
+      setTemperature(prevTemperature => merge({...prevTemperature}, temperature))
+      // Updated graph data
+      setData(prevData => {
+        let data = {...prevData}
+        Object.keys(temperature).forEach(key => {
+          // Get dataset with key if any
+          let dataset = data.datasets.find(d => d.key == key)
+          if (dataset) {
+            // Add new current temperature to data
+            if (temperature[key].current) {
+              dataset.data.push({
+                x: (new Date()).getTime(),
+                y: temperature[key].current
+              })
+            }
+          } else {
+            console.log('No dataset found for key:', key)
+          }
+        })
+        return data
+      })
     }
     device.socket.on('data:temperature', handleTemperatureData)
     return _ => device.socket.off('data:temperature', handleTemperatureData)
   }, [device])
 
-  function requestTargetNozzle() {
-    coreSocket.emit('nozzle:set', parseInt(targetNozzle))
+  function requestTargetHotend() {
+    if (userTargetTemperature.hotend)
+      device.socket.emit('nozzle:set', parseInt(userTargetTemperature.hotend))
   }
 
-  function requestTargetHeatbed() {
-    coreSocket.emit('heatbed:set', parseInt(targetHeatbed))
+  function requestTargetBed() {
+    if (userTargetTemperature.bed)
+      device.socket.emit('heatbed:set', parseInt(userTargetTemperature.bed))
   }
 
-  const [data, setData] = useState(DEFAULT_DATA)
-
-  useEffect(_ => {
-    coreSocket.on('nozzle:get', (temperature) => {
-      appendNozzleTemp(temperature)
-    })
-  
-    coreSocket.on('heatbed:get', (temperature) => {
-      appendHeatbedTemp(temperature)
-    })
-  }, [])
-  
-  function appendNozzleTemp(temperature) {
-    setData(prevData => {
-      let data = {...prevData}
-      data.datasets[1].data.push({
-        x: (new Date()).getTime(),
-        y: temperature,
-      })
-      return data
-    })
-  }
-  
-  function appendHeatbedTemp(temperature) {
-    setData(prevData => {
-      let data = {...prevData}
-      data.datasets[0].data.push({
-        x: (new Date()).getTime(),
-        y: temperature,
-      })
-      return data
-    })
+  function setKeyTargetTemperature(key, value) {
+    setUserTargetTemperature(t => ({...t, [key]: value}))
   }
 
   let minDate = (_ => {
@@ -140,23 +151,73 @@ export default function TemperatureWidget() {
         }
       }
     }}
+      datasetIdKey="key"
       data={data} />
 
-    <Group>
-      <Label>Nozzle target</Label>
-      <InputRaw value={targetNozzle} onChange={e => setTargetNozzle(e.target.value)} />
-      <Button onClick={requestTargetNozzle} squared>
-        <CheckIcon />
-      </Button>
-    </Group>
+    <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-6'>
+      
+      <TemperatureField valueKey="hotend" label="Hotend"
+        value={userTargetTemperature.hotend}
+        onChange={value => setKeyTargetTemperature('hotend', value)}
+        onSend={requestTargetHotend}
+        currentValue={temperature?.hotend?.current}
+        currentTargetValue={temperature?.hotend?.target} />
+    
+      <TemperatureField valueKey="bed" label="Bed"
+        value={userTargetTemperature.bed}
+        onChange={value => setKeyTargetTemperature('bed', value)}
+        onSend={requestTargetBed}
+        currentValue={temperature?.bed?.current}
+        currentTargetValue={temperature?.bed?.target} />
+        
+      <TemperatureField valueKey="ambient" label="Ambient"
+        currentValue={temperature?.ambient?.current}
+        editable={false} />
 
-    <Group>
-      <Label>Heatbed target</Label>
-      <InputRaw value={targetHeatbed} onChange={e => setTargetHeatbed(e.target.value)} />
-      <Button onClick={requestTargetHeatbed} squared>
-        <CheckIcon />
-      </Button>
-    </Group>
+      <TemperatureField valueKey="chamber" label="Chamber"
+        currentValue={temperature?.chamber?.current}
+        editable={false} />
+    </div>
 
   </Widget>
+}
+
+
+function TemperatureField({
+  valueKey,
+  label,
+  value,
+  currentTargetValue,
+  onChange,
+  onSend,
+  editable = true,
+  ...props
+}) {
+  
+  function handleChange(e) {
+    onChange?.(e.target.value)
+  }
+
+  return (
+    <Group className="justify-start">
+      <Label className="flex-1 truncate flex items-center space-x-2"
+        htmlFor={`temperature-${valueKey}`}>
+        <span>{label || valueKey}</span>
+      </Label>
+      {editable &&
+      (<>
+      <InputRaw name={`temperature-${valueKey}`}
+        value={value}
+        onChange={handleChange} 
+        className="w-[60px] text-right"
+        detailContent="°C" />
+      <Button onClick={onSend} squared>
+        <ArrowRightIcon />
+      </Button>
+      </>)}
+      <InputRaw disabled value={currentTargetValue}
+        className="w-[60px] text-right"
+        detailContent="°C"/>
+    </Group>
+  )
 }

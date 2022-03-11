@@ -9,14 +9,24 @@ export default class MarlinTemperaturePlugin extends Plugin {
 
   initDeviceSocket(socket) {
 
-    // DEMO
-    let nozzle = 10
-    let heatbed = 12
-    let nozzleFaker, heatbedFaker;
-      // Init temperature reading daemon here?
-
     let nozzleTarget = null;
     let heatbedTarget = null;
+
+    setInterval(_ => {
+      console.log('Sending demo temperature', socket.device.namespace.name)
+      socket.device.namespace.emit('data:temperature', {
+        bed: {
+          current: 20,
+          target: 60
+        },
+        chamber: {
+          current: 10
+        },
+        ambient: {
+          current: 18
+        }
+      })
+    }, 1500)
 
     // Init socket listeners and emitters
     

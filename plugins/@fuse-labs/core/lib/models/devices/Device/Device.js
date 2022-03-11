@@ -36,6 +36,12 @@ export default class Device {
 
   connection
 
+  _namespace
+  /**
+   * The Socket.io namespace corresponding to this device
+   */
+  get namespace() { return this._namespace }
+
   get path() {
     return path.resolve(path.join(DEVICES_BASE_PATH, this.id+'.json'))
   }
@@ -139,7 +145,7 @@ export default class Device {
 
     // Set socket namespace
     // Add listener to this on data:* events to be broadcasted on device namespace socket
-    this._socketNamespace = socketServer.of('/device:'+this.id)
+    this._namespace = socketServer.of('/device:'+this.id)
   }
 
   /**

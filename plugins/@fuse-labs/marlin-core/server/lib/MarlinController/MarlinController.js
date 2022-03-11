@@ -119,7 +119,7 @@ export default class MarlinController extends Controller {
         // Controller emit a data:* event with the parsed data
         this.emit('data:'+parser.eventName, parsedData)
         // TODO - Check if there is a better place
-        this._device._socketNamespace.emit('data:'+parser.eventName, parsedData)
+        this._device.namespace.emit('data:'+parser.eventName, parsedData)
       }
     })
   }

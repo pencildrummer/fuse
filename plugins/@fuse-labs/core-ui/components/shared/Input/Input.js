@@ -45,7 +45,9 @@ export function InputRaw({
         'bg-gray-900 text-gray-300',
         'disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800',
         'transition-colors duration-150',
-      )} />
+      )} style={{
+        textAlign: 'inherit'
+      }}/>
       {detailContent && <Label htmlFor={props.id} className="flex-none select-none cursor-default text-xs bg-white/10 border-l border-gray-600 self-stretch flex items-center px-1">
         {detailContent}
       </Label>}

@@ -14,15 +14,13 @@ export default class TemperatureParser extends DataParser {
       .map(p => p.trim().split(':'))
 
     let item = {
-      temperatures: {
-        extruders: {},
-        bed: {},
-        bedPower: {},
-        hotend: {},
-        chamber: {},
-        pindaV2: {},
-        ambient: {}
-      }
+      extruders: {},
+      bed: {},
+      bedPower: {},
+      hotend: {},
+      chamber: {},
+      pindaV2: {},
+      ambient: {}
     }
     
     // Parse temperature
@@ -35,32 +33,32 @@ export default class TemperatureParser extends DataParser {
       if (key.slice(0, 1) === 'T') {
         // Parse temperature
         let extruderId = parseInt(key.length > 1 ? key.slice(1) : 0)
-        item.temperatures.extruders[extruderId] = this._getCurrentAndTarget(value)
+        item.extruders[extruderId] = this._getCurrentAndTarget(value)
       } else {
         switch (key) {
           // Bed temperature
           case 'B':
-            item.temperatures.bed = this._getCurrentAndTarget(value)
+            item.bed = this._getCurrentAndTarget(value)
             break
           // Bed power
           case 'B@':
-            item.temperatures.bedPower = this._getCurrentAndTarget(value)
+            item.bedPower = this._getCurrentAndTarget(value)
             break
           // Chamber temperature
           case 'C':
-            item.temperatures.chamber = this._getCurrentAndTarget(value)
+            item.chamber = this._getCurrentAndTarget(value)
             break
           // Hotend
           case '@':
-            item.temperatures.hotend = this._getCurrentAndTarget(value)
+            item.hotend = this._getCurrentAndTarget(value)
             break
           // PINDAV2
           case 'P':
-            item.temperatures.pindaV2 = this._getCurrentAndTarget(value)
+            item.pindaV2 = this._getCurrentAndTarget(value)
             break
           // Ambient
           case 'A':
-            item.temperatures.ambient = this._getCurrentAndTarget(value)
+            item.ambient = this._getCurrentAndTarget(value)
             break
           case 'T':
             // Ignore, we parse it before
