@@ -7,6 +7,20 @@
 			"problemMatcher": [],
 			"label": "npm: lint",
 			"detail": "next lint"
+		},
+		{
+			"type": "npm",
+			"script": "dev-app",
+			"problemMatcher": [],
+			"label": "npm: dev-app",
+			"detail": "node src/server/app.js"
+		},
+		{
+			"type": "npm",
+			"script": "dev-socket",
+			"problemMatcher": [],
+			"label": "npm: dev-socket",
+			"detail": "node src/server/socket.js"
 		}
 	]
 }

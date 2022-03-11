@@ -10,10 +10,12 @@
   "private": true,
   "scripts": {
     "lint": "next lint --no-cache",
-    "dev": "node src/server/index.js",
-    "debug": "DEBUG=serialport* node --trace-warnings src/server/index.js",
+    "dev": "node src/index.mjs",
+    "dev-socket": "node src/server/socket.js",
+    "dev-app": "node src/server/app.js",
+    "debug": "DEBUG=serialport* node --trace-warnings src/index.mjs",
     "build": "next build",
-    "start": "NODE_ENV=production node src/server/index.js",
+    "start": "NODE_ENV=production node src/index.mjs",
     "electron-start": "electron ."
   },
   "dependencies": {
