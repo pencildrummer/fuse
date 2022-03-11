@@ -1,5 +1,5 @@
-import MarlinGCodeViewerWidget from '../components/MarlinGCodeViewerWidget/MarlinGCodeViewerWidget.js'
-import MarlinGCodeViewerSettingsWidget from '../components/MarlinGCodeViewerSettingsWidget/MarlinGCodeViewerSettingsWidget.js'
+import MarlinGCodeViewerWidget from '../client/components/MarlinGCodeViewerWidget/MarlinGCodeViewerWidget.js'
+import MarlinGCodeViewerSettingsWidget from '../client/components/MarlinGCodeViewerSettingsWidget/MarlinGCodeViewerSettingsWidget.js'
 
 export default function GCodeViewerPage() {
   return (<>

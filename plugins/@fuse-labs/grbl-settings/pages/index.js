@@ -3,7 +3,7 @@ import { useDeviceContext } from '@fuse-labs/core-client'
 import { Widget, Button, Loader, Form } from '@fuse-labs/core-ui'
 import { TerminalProvider } from '@fuse-labs/terminal/client'
 
-import SettingField from '../lib/client/SettingField'
+import { SettingField } from '../client'
 import GRBLSettingId from '../lib/shared/GRBLSettingId'
 import { getSettingFieldType } from '../lib/shared/getSettingFieldType'
 

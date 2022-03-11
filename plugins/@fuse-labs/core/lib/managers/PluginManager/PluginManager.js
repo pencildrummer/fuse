@@ -10,6 +10,7 @@ const ACTIVE_PLUGINS_PATH = path.resolve(path.join(SYSTEM_BASE_PATH, 'active_plu
 const __SYSTEM_PLUGIN_NAMES__ = Object.freeze([
   '@fuse-labs/core',
   '@fuse-labs/core-ui',
+  '@fuse-labs/core-client',
 ])
 
 class PluginManager {
@@ -79,7 +80,7 @@ class PluginManager {
           signale.success(`${chalk.green(pluginName+'/server')}: module found, using "${chalk.green.bold(res.default.name)}" to initialize plugin`)
           return res
         }).catch(err => {
-          signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic Plugin class to initialize "${chalk.bold(pluginName)}"`)
+          signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
           return null
         })
 

@@ -13,7 +13,7 @@ import DisplayGroup from './DisplayGroup/DisplayGroup.js'
 import DisplayLabel from './DisplayLabel/DisplayLabel.js'
 import DisplayValue from './DisplayValue/DisplayValue.js'
 import Separator from './Separator/Separator.js'
-import Select from './Select/Select.js'
+import Select, { SelectRaw } from './Select/Select.js'
 import Input, { InputRaw } from './Input/Input.js'
 import Progress from './Progress/Progress.js'
 import Loader from './Loader/Loader.js'
@@ -44,6 +44,7 @@ export {
   DisplayValue,
   Separator,
   Select,
+  SelectRaw,
   Input,
   InputRaw,
   Progress,

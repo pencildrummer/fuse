@@ -1,14 +1,15 @@
-import CameraWidget from "../../../../plugins/@fuse-labs/camera/components/CameraWidget/CameraWidget";
-import ExtruderWidget from "../../../../plugins/@fuse-labs/marlin-extruder/components/ExtruderWidget/ExtruderWidget";
-import MarlinMiscWidget from "../../../../plugins/@fuse-labs/marlin-extra/components/MarlinMiscWidget/MarlinMiscWidget";
-import FeedRateWidget from "../../../../plugins/@fuse-labs/marlin-move/components/FeedRateWidget/FeedRateWidget";
-import MoveWidget from "../../../../plugins/@fuse-labs/marlin-move/components/MoveWidget/MoveWidget";
+import { CameraWidget } from '@fuse-labs/camera/client'
+import { ExtruderWidget } from '@fuse-labs/marlin-extruder/client'
+import { MarlinMiscWidget } from '@fuse-labs/marlin-extra/client'
+import { FeedRateWidget } from "@fuse-labs/marlin-move/client";
+import { MoveWidget } from "@fuse-labs/marlin-move/client";
 import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
+import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
 import { getDevicePageComponent } from "@fuse-labs/core-ui";
 import { useRouter } from "next/router";
 import { useDevice } from "@fuse-labs/core-client";
-import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
+
 
 export default function DeviceHomePage() {
 

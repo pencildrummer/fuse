@@ -40,13 +40,16 @@ export default class Plugin {
     return this._fuse.tabsUrl || this.name
   }
 
-  //_hasSocket = false;
   get hasSocket() {
+    // If the plugin instance is not being subclassed, do not check initSocket because is an empty implementation
+    if (this.constructor === Plugin) return false
     return typeof this.initSocket === 'function'
   }
 
   get hasDeviceSocket() {
-    return typeof this.initDeviceSocket === 'function' && this.deviceTypes.length > 0
+    // If the plugin instance is not being subclassed, do not check initDeviceSocket because is an empty implementation
+    if (this.constructor === Plugin) return false
+    return typeof this.initDeviceSocket === 'function' && this.deviceTypes?.length > 0
   }
 
   get active() {
@@ -112,14 +115,6 @@ export default class Plugin {
       this._hasTabs = true
     }
 
-    // Check has socket
-
-    // // Check exists socket.js file in server dir in plugin
-    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'server', 'socket.js'))) {
-    //   // Set flag value
-    //   this._hasSocket = true
-    // }
-
     // Call provision if any
     if (typeof this.provision == 'function') {
       this.provision()
@@ -134,6 +129,27 @@ export default class Plugin {
       _hasSocket: this.hasSocket,
       _hasDeviceSocket: this.hasDeviceSocket,
     }
+  }
+
+  /**
+   * Called after plugin initialization
+   */
+  provision() {
+    // To be subclassed
+  }
+
+  /**
+   * Socket initialization
+   */
+
+  initSocket(socket) {
+    // To be implemented by subsclass
+    console.warn('initSocket did nothing on', this.constructor.name)
+  }
+
+  initDeviceSocket(socket) {
+    // To be implemented by subsclass
+    console.warn('initDeviceSocket did nothing on', this.constructor.name)
   }
   
 }

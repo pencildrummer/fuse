@@ -1,9 +1,18 @@
 {
   "name": "@fuse-labs/marlin-move",
+  "version": "1.0.0",
   "description": "Movement and position plugin for FUSE for Marlin-based devices",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "exports": {
+    "./server": "./server/index.js",
+    "./client": "./client/index.js"
+  },
   "fuse": {
     "title": "[Marlin] Movement and position",
     "icon": "MoveIcon",

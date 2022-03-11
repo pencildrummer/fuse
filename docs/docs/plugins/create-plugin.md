@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Create a plugin
 
+For ref: https://docs.npmjs.com/creating-a-package-json-file#running-a-cli-questionnaire
+
 ## Automatically
 
 :::note

@@ -1,9 +1,17 @@
 {
   "name": "@fuse-labs/marlin-extruder",
+  "version": "1.0.0",
   "description": "Extruder plugin for FUSE for Marlin-based devices",
-  "version": "1.0",
-  "author": "FUSE Labs",
-  "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "exports": {
+    "./client": "./client/index.js"
+  },
   "fuse": {
     "title": "[Marlin] Extruder",
     "devices": [ "fdm_printer" ]

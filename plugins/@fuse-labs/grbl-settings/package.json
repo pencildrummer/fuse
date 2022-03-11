@@ -1,11 +1,23 @@
 {
   "name": "@fuse-labs/grbl-settings",
-  "version": "0.1",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Plugin to view and edit GRBL device settings",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
   "fuse": {
     "title": "GRBL Settings",
     "icon": "MixerHorizontalIcon",
     "devices": [ "cnc" ]
   },
-  "description": "Plugin to view and edit GRBL device settings"
+  "exports": {
+    "./client": "./client/index.js"
+  }
 }

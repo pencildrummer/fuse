@@ -1,7 +1,18 @@
 {
   "name": "@fuse-labs/marlin-settings",
-  "version": "0.1",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Plugin for FUSE to manage Marlin-based devices settings",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "exports": {
+    "./client": "./client/index.js",
+    "./server": "./server/index.js"
+  },
   "fuse": {
     "title": "Marlin settings",
     "devices": [ "fdm_printer" ]
