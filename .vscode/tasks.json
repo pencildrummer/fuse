@@ -21,6 +21,14 @@
 			"problemMatcher": [],
 			"label": "npm: dev-socket",
 			"detail": "node src/server/socket.js"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "docs/",
+			"problemMatcher": [],
+			"label": "npm: start - docs",
+			"detail": "docusaurus start --port=3001"
 		}
 	]
 }
