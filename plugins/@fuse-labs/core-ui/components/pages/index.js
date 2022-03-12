@@ -9,6 +9,8 @@ import getDevicePageComponent from "./getDevicePageComponent";
 
 import { useDeviceStatusListContext } from "./DevicePage/DeviceStatusListProvider";
 
+export * from './hooks'
+
 export {
   Page,
   PageTopBar,

@@ -5,6 +5,7 @@ import { AppProvider, ClientPluginManager, coreSocket } from '@fuse-labs/core-cl
 import { AppLoader } from '@fuse-labs/core-ui'
 import TerminalClientPlugin from '@fuse-labs/terminal/client'
 import MarlinCoreClientPlugin from '@fuse-labs/marlin-core/client'
+import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
 import * as messages from './../../lang/index.js'
 import Head from 'next/head'
 import pkg from '../../package.json'
@@ -12,6 +13,7 @@ import pkg from '../../package.json'
 // TODO - Move into a _plugin.js file or something like the manager on the server side
 ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
+ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
 
 function MyApp({ Component, pageProps }) {
 

@@ -7,20 +7,14 @@ import DeviceStatusList from './DeviceStatusList';
 import { useMemo } from "react";
 import get from 'lodash/get'
 import { generateUniqueID } from "plugins/@fuse-labs/shared-utils";
+import { useDeviceComponents } from "../hooks";
 
 export default function DevicePageTopBar() {
 
   const { devices } = useAppContext()
   const { device } = useDeviceContext()
 
-  const pluginComponents = useMemo(_ => {
-    return device.plugins?.map(plugin => {
-      if (typeof plugin.deviceComponents === 'function') {
-        let components = plugin.deviceComponents(device)
-        return get(components, 'page.topBar', false)
-      }
-    }).filter(Boolean)
-  }, [device])
+  const pluginComponents = useDeviceComponents(device, 'page.topBar')
 
   return (
     <PageTopBar>

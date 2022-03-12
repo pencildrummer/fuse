@@ -111,7 +111,7 @@ export default function TemperatureWidget() {
     return date.getTime()
   })()
 
-  return <Widget title="Temperature" version="0.1">
+  return <Widget title="Temperature" version="0.1" className="col-span-3">
     <Line options={{
       responsive: true,
       //animation: false,

@@ -6,9 +6,10 @@ import { MoveWidget } from "@fuse-labs/marlin-move/client";
 import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
 import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
-import { getDevicePageComponent } from "@fuse-labs/core-ui";
+import { getDevicePageComponent, useDeviceComponents, Widget } from "@fuse-labs/core-ui";
 import { useRouter } from "next/router";
 import { useDevice } from "@fuse-labs/core-client";
+import { generateUniqueID } from 'plugins/@fuse-labs/shared-utils';
 
 
 export default function DeviceHomePage() {
@@ -19,6 +20,7 @@ export default function DeviceHomePage() {
 
   // Retrieve device with requested ID from the app context
   const device = useDevice(deviceID)
+  const widgets = useDeviceComponents(device, 'page.home')
 
   if (!device) {
     router.replace('/workspace')
@@ -29,7 +31,8 @@ export default function DeviceHomePage() {
 	return (
     // TODO - Return correct page based on device type
 		<DevicePageComponent device={device}>
-			<div className="grid gap-2 grid-cols-3">
+      <HomeWidgetsLayout widgets={widgets} />
+			{/* <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
 
 				<div className="col-span-3">
 					<CameraWidget />
@@ -47,7 +50,19 @@ export default function DeviceHomePage() {
 				<div className="col-span-3">
 					<TemperatureWidget />
 				</div>
-      </div>
+      </div> */}
 		</DevicePageComponent>
 	)
+}
+
+function HomeWidgetsLayout({
+  widgets
+}) {
+  return (
+    <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      {widgets?.map(WidgetComponent => (
+        <WidgetComponent key={`widget-${generateUniqueID()}`}/>
+      ))}
+    </div>
+  )
 }
