@@ -9,9 +9,13 @@ export default class MarlinJobQueue extends EventEmitter {
   /** All the jobs */
   #jobs = []
 
+  /** If the queue should pause before sending the next job after a the previous one is finished */
+  waitBetweenJobs = false
+
   /** Current running job */
   /** @type {MarlinGCodeJob} */
   #currentJob
+  get currentJob() { return this.#currentJob }
 
   /** Maximum allowed number of jobs in the queue */
   maxJobs = 1
@@ -26,6 +30,8 @@ export default class MarlinJobQueue extends EventEmitter {
     super()
     // Add listeners
     this.on('job:finish', _ => {
+      // If wait between jobs, then do not automatically start next job
+      if (this.waitBetweenJobs) return
       // Start next job
       this.#next()
     })
@@ -74,15 +80,26 @@ export default class MarlinJobQueue extends EventEmitter {
     if (job) {
       this.#currentJob = job
       
-      this.#currentJob.on('finish', _ => {
-        let finishedJob = this.#currentJob
+      let jobNextHandler = _ => {
+        let eventJob = this.currentJob
+        process.nextTick(_ => this.emit('job:progress', eventJob))
+      }
+
+      let jobFinishHandler = _ => {
+        this.#currentJob.off('next', jobNextHandler)
+        this.#currentJob.off('finish', jobFinishHandler)
+        let eventJob = this.currentJob
+        process.nextTick(_ => this.emit('job:finish', eventJob))
         this.#currentJob = null
-        this.emit('job:finish', finishedJob)
-      })
+      }
+
+      this.#currentJob.on('next', jobNextHandler)
+      this.#currentJob.on('finish', jobFinishHandler)
       
       // Start job
       this.#currentJob.start()
-      this.emit('job:start', this.#currentJob)
+      let eventJob = this.currentJob
+      process.nextTick(_ => this.emit('job:start', eventJob))
 
       // Return started job
       return job

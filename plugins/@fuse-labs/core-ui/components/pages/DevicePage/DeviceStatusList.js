@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useDeviceStatusListContext } from "./DeviceStatusListProvider";
-import { CrossCircledIcon, ExclamationTriangleIcon, InfoCircledIcon } from '@radix-ui/react-icons'
+import { CheckCircledIcon, CrossCircledIcon, ExclamationTriangleIcon, InfoCircledIcon } from '@radix-ui/react-icons'
 import classNames from "classnames";
 
 export default function DeviceStatusList() {
@@ -27,6 +27,7 @@ function DeviceStatusItem({
     switch(status.type) {
       case 'error':   return CrossCircledIcon
       case 'warning': return ExclamationTriangleIcon
+      case 'success': return CheckCircledIcon
       default:        return InfoCircledIcon
     }
   }, [status])
@@ -38,13 +39,15 @@ function DeviceStatusItem({
         {
           'text-red-300': status.type == 'error',
           'text-orange-400': status.type == 'warning',
-          'text-gray-300': status.type == 'normal'
+          'text-green-400': status.type == 'success',
+          'text-blue-400': status.type == 'normal'
         }
       )}/>
       <span className={classNames(
         {
           'text-red-400': status.type == 'error',
           'text-orange-200': status.type == 'warning',
+          'text-green-200': status.type == 'success',
           'text-gray-300': status.type == 'normal'
         }
       )}>

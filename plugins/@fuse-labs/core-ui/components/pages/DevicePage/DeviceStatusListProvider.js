@@ -18,6 +18,7 @@ export default function DeviceStatusListProvider(props) {
       id: Date.now(),
       message: message,
       date: Date.now(),
+      type: 'normal',
       ...opts
     }
     setStatusList(prev => {

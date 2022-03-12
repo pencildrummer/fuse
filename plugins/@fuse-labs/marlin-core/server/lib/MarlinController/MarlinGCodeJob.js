@@ -18,11 +18,19 @@ export default class MarlinGCodeJob extends EventEmitter {
 
   #controller
   #lines
+  #linesCount
 
   #cursor = -1
 
   #running = false;
   get running() { return this.#running }
+
+  get progress() {
+    return {
+      current: this.#cursor,
+      total: this.#linesCount
+    }
+  }
 
   constructor(name, controller, lines) {
     super()
@@ -32,6 +40,7 @@ export default class MarlinGCodeJob extends EventEmitter {
 
     this.#controller = controller
     this.#lines = lines
+    this.#linesCount = lines.length
 
     // Configure internal listener
     this.on('next', this.#handleNext.bind(this))
@@ -49,19 +58,22 @@ export default class MarlinGCodeJob extends EventEmitter {
     
     // Add listener on controller
     let okHandler = _ => {
+      if (!this.#running) return
       // 'ok' has been received from latest command (can we have a ref to the command sent?)
-      this.emit('next')
+      process.nextTick(_ => this.emit('next'))
     }
     this.#controller.on('data:ok', okHandler)
     this.on('finish', _ => {
       this.#controller.off('data:ok', okHandler)
     })
 
-    // Send start event
-    this.emit('start')
+    process.nextTick(_ => {
+      // Send start event
+      this.emit('start')
 
-    // Send next event to process next command (first one on start)
-    this.emit('next')
+      // Send next event to process next command (first one on start)
+      this.emit('next')
+    })
   }
 
   finish() {
@@ -69,8 +81,8 @@ export default class MarlinGCodeJob extends EventEmitter {
     // Set running flag as false
     this.#running = false
 
-    // Send finish event
-    this.emit('finish')
+    // Send finish event (in the next tick to allow running flag to be set)
+    process.nextTick(_ => this.emit('finish'))
   }
 
   /**
@@ -91,7 +103,7 @@ export default class MarlinGCodeJob extends EventEmitter {
       // Check if comment
       if (command.trim().startsWith(';')) {
         // Send next event to process next command
-        this.emit('next')
+        process.nextTick(_ => this.emit('next'))
       } else {
         // Send command
         this.#controller.sendCommand(command)
@@ -108,7 +120,7 @@ export default class MarlinGCodeJob extends EventEmitter {
       id: this.id,
       name: this.name,
       startedAt: this.startedAt,
-      progress: this.#cursor/this.#lines*100
+      progress: this.progress
     }
   }
 

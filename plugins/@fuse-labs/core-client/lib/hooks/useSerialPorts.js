@@ -7,7 +7,6 @@ export default function useSerialPorts() {
   useEffect(_ => {
     // Make socket request to list serial ports
     coreSocket.emit('serial:list', data => {
-      console.log('Called', data)
       setPorts(data)
     })
   }, [])

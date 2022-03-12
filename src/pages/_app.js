@@ -9,11 +9,13 @@ import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
 import * as messages from './../../lang/index.js'
 import Head from 'next/head'
 import pkg from '../../package.json'
+import FileManagerClientPlugin from '@fuse-labs/file-manager/client'
 
 // TODO - Move into a _plugin.js file or something like the manager on the server side
 ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
+ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
 
 function MyApp({ Component, pageProps }) {
 

@@ -8,7 +8,6 @@ export default function useDeviceComponents(device, keyPath) {
     return device?.plugins?.map(plugin => {
       if (typeof plugin.deviceComponents === 'function') {
         let components = plugin.deviceComponents(device)
-        console.log(components)
         return get(components, keyPath, false)
       }
     }).filter(Boolean)

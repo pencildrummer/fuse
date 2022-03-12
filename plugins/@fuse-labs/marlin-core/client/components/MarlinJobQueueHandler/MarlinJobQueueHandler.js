@@ -1,4 +1,4 @@
-import { Button, Popover, Progress, EmptyView } from '@fuse-labs/core-ui'
+import { Button, Popover, Progress, EmptyView, useDeviceStatusListContext } from '@fuse-labs/core-ui'
 import { LayersIcon, PauseIcon, StopIcon } from '@radix-ui/react-icons'
 import { useDeviceContext } from 'plugins/@fuse-labs/core-client'
 import { useEffect, useState } from 'react'
@@ -6,17 +6,42 @@ import { useEffect, useState } from 'react'
 export default function MarlinJobQueueHandler() {
 
   const { device } = useDeviceContext()
+  const { addStatus, removeStatus } = useDeviceStatusListContext()
   const [jobs, setJobs] = useState([])
 
   useEffect(_ => {
     const handleJobAdded = job => {
-      console.log('Added', job)
       setJobs(jobs => [...jobs, job])
     }
+
+    const handleJobProgress = job => {
+      setJobs(jobs => {
+        let newJobs = [...jobs]
+        let jobIndex = newJobs.findIndex(j => j.id === job.id)
+        if (jobIndex > -1) {
+          newJobs.splice(jobIndex, 1, job)
+        } else {
+          console.warn('Received progress update for a job not in the queue')
+        }
+        return newJobs
+      })
+    }
+
+    const handleJobFinish = job => {
+      setJobs(jobs => jobs.filter(j => j.id !== job.id))
+      let status = addStatus(`Finished job ${job.name}`, { type: 'success'})
+      setTimeout(_ => removeStatus(status.id), 1500)
+    }
+
     device.socket.on('job:added', handleJobAdded)
+    device.socket.on('job:progress', handleJobProgress)
+    device.socket.on('job:finish', handleJobFinish)
     return _ => {
       device.socket.off('job:added', handleJobAdded)
+      device.socket.off('job:progress', handleJobProgress)
+      device.socket.off('job:finish', handleJobFinish)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [device])
 
   return (
@@ -81,7 +106,7 @@ function JobListItem({
           </Button>
         </div>
       </div>
-      <Progress value={10} max={100} />
+      <Progress value={job.progress?.current || 0} max={job.progress?.total || 100} />
     </li>
   )
 }

@@ -10,6 +10,7 @@
     "./client": "./client/index.js"
   },
   "fuse": {
-    "title": "File manager"
+    "title": "File manager",
+    "devices": "*"
   }
 }

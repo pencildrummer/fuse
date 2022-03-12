@@ -1,6 +1,6 @@
 import { object, string, boolean } from 'yup'
 import { socket } from '../../socket'
-import ClientPluginManager from '../../managers/ClientPluginManager/ClientPluginManager'
+import ClientDeviceType from '../ClientDeviceType/ClientDeviceType'
 
 const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
@@ -62,6 +62,7 @@ export default class ClientPlugin {
   get system() { return this._system }
 
   get deviceTypes() {
+    if (this._fuse.devices == '*') return Object.values(ClientDeviceType)
     return this._fuse.devices
   }
 

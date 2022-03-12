@@ -3,12 +3,16 @@ import classNames from 'classnames'
 import { useMemo } from 'react'
 
 export default function Progress(props) {
+
+  const value = Math.max(0, props.value)
+  const max = Math.max(0, props.max)
+
   const progress = useMemo(_ => {
-    return props.value/props.max*100
-  }, [props.value, props.max])
+    return value/max*100
+  }, [value, max])
 
   return (
-    <ProgressPrimitive.Root {...props} className={classNames(
+    <ProgressPrimitive.Root {...props} value={value} max={max} className={classNames(
       'relative',
       'h-[2px]',
       'w-full',

@@ -10,7 +10,6 @@ export default class TerminalClientPlugin extends ClientPlugin {
   }
 
   provision() {
-    console.log('Called provision')
     const devices = ClientDeviceManager.shared.devices
 
     // Add terminal to devices ( Terminal is just a class helper to send messages through device connection )

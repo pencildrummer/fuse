@@ -119,7 +119,6 @@ export default class MarlinController extends Controller {
     this._parsers.forEach(parser => {
       if (parser.match(data)) {
         let parsedData = parser.parse(data, this)
-        console.star(`Emitting ${'data:'+parser.eventName} with data:`, parsedData)
         // Controller emit a data:* event with the parsed data
         this.emit('data:'+parser.eventName, parsedData)
         // TODO - Check if there is a better place
@@ -134,6 +133,9 @@ export default class MarlinController extends Controller {
     this.#queue.on('finish', _ => console.complete('Queue finished'))
     this.#queue.on('job:start', job => {
       this.device.namespace.emit('job:start', job)
+    })
+    this.#queue.on('job:progress', job => {
+      this.device.namespace.emit('job:progress', job)
     })
     this.#queue.on('job:finish', job => {
       this.device.namespace.emit('job:finish', job)
