@@ -1,6 +1,5 @@
-import { DotsHorizontalIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { List, Button, Group, Label } from "@fuse-labs/core-ui";
-import Popover from "@fuse-labs/core-ui/components/shared/Popover/Popover";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { List, Button, Group, Label, Popover } from "@fuse-labs/core-ui";
 import { useMemo } from "react";
 
 export default function SerialPortListItem({

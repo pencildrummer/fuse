@@ -12,15 +12,22 @@
 			"type": "npm",
 			"script": "dev-app",
 			"problemMatcher": [],
-			"label": "npm: dev-app",
+			"label": "App dev",
 			"detail": "node src/server/app.js"
+		},
+		{
+			"type": "npm",
+			"script": "dev-socket-watch",
+			"problemMatcher": [],
+			"label": "Socket dev [WATCH]",
+			"detail": "nodemon src/server/socket.js"
 		},
 		{
 			"type": "npm",
 			"script": "dev-socket",
 			"problemMatcher": [],
-			"label": "npm: dev-socket",
-			"detail": "nodemon src/server/socket.js"
+			"label": "Socket dev",
+			"detail": "node src/server/socket.js"
 		},
 		{
 			"type": "npm",

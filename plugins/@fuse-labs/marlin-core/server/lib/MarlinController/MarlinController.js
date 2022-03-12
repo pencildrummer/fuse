@@ -7,6 +7,7 @@ import parser from 'gcode-parser'
 import MarlinGCodeJob from "./MarlinGCodeJob.js"
 import TemperatureParser from "./data-parser/TemperatureParser.js"
 import OkParser from "./data-parser/OkParser.js"
+import MarlinJobQueue from "./MarlinJobQueue.js"
 
 // Keep here in case we need it later
 // const LineEnding = Object.freeze({
@@ -23,6 +24,9 @@ export default class MarlinController extends Controller {
   // TODO - Create queue?
   _job = null;
 
+  /** @type {MarlinJobQueue} */
+  #queue
+
   // TODO - Check if should we use serialport parser, or leave this as a Fuse internal parser thing or even for MarlinController
   _parsers = [
     new OkParser(),
@@ -31,8 +35,12 @@ export default class MarlinController extends Controller {
 
   constructor(device) {
     super(device)
+
+    // Create job queue
+    this.#initQueue()
+
     // Attach readyParser and then pipe readline parser to readyParser
-    let readyParser = this._device.connection.addParser(new MarlinReadyParser())
+    let readyParser = this.device.connection.addParser(new MarlinReadyParser())
     readyParser.on('ready', _ => {
       this._isReady = true
       signale.scope('Controller:'+this.constructor.name).success('Marlin device is ready')
@@ -47,9 +55,9 @@ export default class MarlinController extends Controller {
     let closeHandler = _ => {
       // Clear pending job
       this._cleanupJob()
-      this._device.connection.off('close', closeHandler)
+      this.device.connection.off('close', closeHandler)
     }
-    this._device.connection.on('close', closeHandler)
+    this.device.connection.on('close', closeHandler)
   }
 
   /**
@@ -58,14 +66,14 @@ export default class MarlinController extends Controller {
    * @param {*} data 
    */
   write(data) {
-    if (!this._device.connection.isOpen) {
+    if (!this.device.connection.isOpen) {
       let error = new Error('Unable to write data, connection not open')
       this.emit('error', error)
       signale.error(error)
     } else {
       console.info('Writing data on device connection', data)
       this.emit('write', data)
-      this._device.connection.write(data)//, { encoding: 'latin1' }
+      this.device.connection.write(data)//, { encoding: 'latin1' }
     }
   }
 
@@ -88,18 +96,14 @@ export default class MarlinController extends Controller {
     // TODO - Validate result
     signale.complete('Parsing completed - tot lines:', lines.length)
 
-    if (this._job && this._job.running) {
-      signale.warn('A job is already running, retry later')
-    } else {
-      // Create new job
-      let job = new MarlinGCodeJob(this, lines)
+    // Create new job
+    let job = new MarlinGCodeJob(path.basename(filePath), this, lines)
+    
+    // Push job onto the queue
+    this.#queue.addJob(job)
 
-      this._job = job
-      this._job.start()
-      this._job.on('finish', _ => {
-        this._job = null
-      })
-    }
+    // Start queue if not running?
+    this.#queue.start()
   }
 
   /**
@@ -119,8 +123,26 @@ export default class MarlinController extends Controller {
         // Controller emit a data:* event with the parsed data
         this.emit('data:'+parser.eventName, parsedData)
         // TODO - Check if there is a better place
-        this._device.namespace.emit('data:'+parser.eventName, parsedData)
+        this.device.namespace.emit('data:'+parser.eventName, parsedData)
       }
+    })
+  }
+
+  #initQueue() {
+    this.#queue = new MarlinJobQueue()
+    this.#queue.on('start', _ => console.start('Queue started'))
+    this.#queue.on('finish', _ => console.complete('Queue finished'))
+    this.#queue.on('job:start', job => {
+      this.device.namespace.emit('job:start', job)
+    })
+    this.#queue.on('job:finish', job => {
+      this.device.namespace.emit('job:finish', job)
+    })
+    this.#queue.on('job:added', job => {
+      this.device.namespace.emit('job:added', job)
+    })
+    this.#queue.on('job:removed', job => {
+      this.device.namespace.emit('job:removed', job)
     })
   }
 

@@ -1,41 +1,60 @@
+import { generateUniqueID } from '@fuse-labs/shared-utils'
+import { randomUUID } from 'crypto'
 import { EventEmitter } from 'events'
 
+/**
+ * MarlingGCodeJob
+ */
 export default class MarlinGCodeJob extends EventEmitter {
 
-  _controller
-  _lines
+  #id
+  get id() { return this.#id }
 
-  _cursor = -1
+  #name
+  get name() { return this.#name }
 
-  _running = false;
-  get running() { return this._running }
+  #startedAt
+  get startedAt() { return this.#startedAt }
 
-  constructor(controller, lines) {
+  #controller
+  #lines
+
+  #cursor = -1
+
+  #running = false;
+  get running() { return this.#running }
+
+  constructor(name, controller, lines) {
     super()
     
-    this._controller = controller
-    this._lines = lines
+    this.#id = generateUniqueID()
+    this.#name = name
+
+    this.#controller = controller
+    this.#lines = lines
 
     // Configure internal listener
-    this.on('next', this._handleNext.bind(this))
+    this.on('next', this.#handleNext.bind(this))
   }
 
   start() {
-    if (this._running) return
+    if (this.#running) return
     
     console.start('Started job')
 
     // Set running flag
-    this._running = true
+    this.#running = true
+    // Set start date
+    this.#startedAt = new Date()
     
     // Add listener on controller
     let okHandler = _ => {
       // 'ok' has been received from latest command (can we have a ref to the command sent?)
       this.emit('next')
     }
-    this._controller.on('data:ok', okHandler)
+    this.#controller.on('data:ok', okHandler)
     this.on('finish', _ => {
-      this._controller.off('data:ok', okHandler)
+      this.#controller.off('data:ok', okHandler)
     })
 
     // Send start event
@@ -48,7 +67,7 @@ export default class MarlinGCodeJob extends EventEmitter {
   finish() {
     console.complete('Finished job')
     // Set running flag as false
-    this._running = false
+    this.#running = false
 
     // Send finish event
     this.emit('finish')
@@ -58,11 +77,11 @@ export default class MarlinGCodeJob extends EventEmitter {
    * Private
    */
   
-  _handleNext() {
-    this._cursor++
-    if (this._lines.length > 0) {
+  #handleNext() {
+    this.#cursor++
+    if (this.#lines.length > 0) {
       // Get line to perform command
-      let line = this._lines.shift()
+      let line = this.#lines.shift()
 
       // Analyze line and decide how to handle parameters
       // Get command string
@@ -75,11 +94,21 @@ export default class MarlinGCodeJob extends EventEmitter {
         this.emit('next')
       } else {
         // Send command
-        this._controller.sendCommand(command)
+        this.#controller.sendCommand(command)
       }
     } else {
       // No more commands, finish job
       this.finish()
+    }
+  }
+
+  /** toJSON */
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      startedAt: this.startedAt,
+      progress: this.#cursor/this.#lines*100
     }
   }
 

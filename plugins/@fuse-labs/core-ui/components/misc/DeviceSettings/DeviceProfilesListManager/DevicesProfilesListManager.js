@@ -1,5 +1,5 @@
 import { Cross2Icon, MagnifyingGlassIcon, Pencil2Icon, PlusIcon, TrashIcon } from "@radix-ui/react-icons"
-import { Button, ConfirmDialog, Dialog, Group, ScrollArea, Separator, CompactList, InputRaw, Tooltip } from "@fuse-labs/core-ui"
+import { Button, ConfirmDialog, Dialog, Group, ScrollArea, Separator, CompactList, InputRaw, Tooltip, EmptyView } from "@fuse-labs/core-ui"
 import { useEffect, useMemo, useState } from "react"
 import DeviceProfilePickerTypeFilter from "../DeviceProfilePicker/DeviceProfilePickerTypeFilter"
 import classNames from "classnames"
@@ -121,11 +121,7 @@ export default function DeviceProfilesListManager({
             {...props} />  
         </div>
       ) : (
-        <div className="absolute inset-0 top-10 flex items-center justify-center">
-          <span className="text-sm font-bold text-gray-600">
-            No profiles
-          </span>
-        </div>
+        <EmptyView className="absolute inset-0 top-10" text="No profiles"/>
       )}
     </ScrollArea>
 

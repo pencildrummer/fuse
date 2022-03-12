@@ -3,13 +3,15 @@ import '@fuse-labs/core-ui/styles/global.css'
 import { useEffect, useState } from 'react'
 import { AppProvider, ClientPluginManager, coreSocket } from '@fuse-labs/core-client'
 import { AppLoader } from '@fuse-labs/core-ui'
-import { TerminalClientPlugin } from '@fuse-labs/terminal/client'
+import TerminalClientPlugin from '@fuse-labs/terminal/client'
+import MarlinCoreClientPlugin from '@fuse-labs/marlin-core/client'
 import * as messages from './../../lang/index.js'
 import Head from 'next/head'
 import pkg from '../../package.json'
 
-// TODO - Move into a _plugin.js file or something
+// TODO - Move into a _plugin.js file or something like the manager on the server side
 ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
+ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
 
 function MyApp({ Component, pageProps }) {
 

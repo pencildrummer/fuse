@@ -4,11 +4,23 @@ import { useDeviceContext, useAppContext } from "@fuse-labs/core-client"
 import { Separator, DeviceConnectionStatus } from "../..";
 import DevicePageTopBarMenu from "./DevicePageTopBarMenu";
 import DeviceStatusList from './DeviceStatusList';
+import { useMemo } from "react";
+import get from 'lodash/get'
+import { generateUniqueID } from "plugins/@fuse-labs/shared-utils";
 
 export default function DevicePageTopBar() {
 
   const { devices } = useAppContext()
   const { device } = useDeviceContext()
+
+  const pluginComponents = useMemo(_ => {
+    return device.plugins?.map(plugin => {
+      if (typeof plugin.deviceComponents === 'function') {
+        let components = plugin.deviceComponents(device)
+        return get(components, 'page.topBar', false)
+      }
+    }).filter(Boolean)
+  }, [device])
 
   return (
     <PageTopBar>
@@ -17,6 +29,12 @@ export default function DevicePageTopBar() {
       <div className="flex-1 text-xxs font-bold text-gray-400">
         <DeviceStatusList />
       </div>
+
+      {pluginComponents?.length > 0 && <Separator orientation="vertical" />}
+      {pluginComponents?.map(PluginComponent => (
+        <PluginComponent key={`device-plg-comp-${generateUniqueID()}`}/>
+      ))}
+
       <Separator orientation="vertical" />
       <div>
         <DeviceConnectionStatus device={device} />

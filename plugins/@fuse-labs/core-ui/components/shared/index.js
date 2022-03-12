@@ -24,6 +24,7 @@ import List from './List/List.js'
 import CompactList from './List/CompactList/CompactList.js'
 import ScrollArea from './ScrollArea/ScrollArea.js'
 
+import Popover from './Popover/Popover.js'
 import DropdownMenu from './DropdownMenu/DropdownMenu.js'
 
 import Badge from './Badge/Badge.js'
@@ -59,6 +60,7 @@ export {
   CompactList,
   ScrollArea,
 
+  Popover,
   DropdownMenu,
 
   Badge,

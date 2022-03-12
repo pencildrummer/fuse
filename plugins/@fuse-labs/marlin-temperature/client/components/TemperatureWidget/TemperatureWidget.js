@@ -64,7 +64,6 @@ export default function TemperatureWidget() {
 
   useEffect(_ => {
     let handleTemperatureData = temperature => {
-      console.log('RECEIVED TEMPERATURE', temperature)
       // Updated latest temperature state
       setTemperature(prevTemperature => merge({...prevTemperature}, temperature))
       // Updated graph data

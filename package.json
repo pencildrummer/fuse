@@ -11,7 +11,8 @@
   "scripts": {
     "lint": "next lint --no-cache",
     "dev": "node src/index.mjs",
-    "dev-socket": "nodemon src/server/socket.js",
+    "dev-socket": "node src/server/socket.js",
+    "dev-socket-watch": "nodemon src/server/socket.js",
     "dev-app": "node src/server/app.js",
     "debug": "DEBUG=serialport* node --trace-warnings src/index.mjs",
     "build": "next build",

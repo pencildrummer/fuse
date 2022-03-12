@@ -41,7 +41,7 @@ const DropdownMenu = ({
 
 function DropdownMenuContent(props) {
   return (
-    <DropdownMenuPrimitive.Content {...props} asChild>
+    <DropdownMenuPrimitive.Content sideOffset={3} {...props} asChild>
       <MenuContent>
         {props.children}
       </MenuContent>

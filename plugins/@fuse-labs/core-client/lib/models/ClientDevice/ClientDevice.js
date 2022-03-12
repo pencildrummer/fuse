@@ -2,6 +2,7 @@ import { socket } from '../../socket'
 import lodash from 'lodash'
 import { object, string, number } from 'yup'
 import ClientPluginManager from '../../managers/ClientPluginManager/ClientPluginManager'
+import ClientPlugin from '../ClientPlugin/ClientPlugin'
 
 const SCHEMA = object({
   id: string().required(),
@@ -29,6 +30,9 @@ export default class ClientDevice {
   vendorId
   productId
 
+  /** @type {Array<ClientPlugin>} */
+  plugins
+  
   get immutableKeys() {
     return [
       'id',

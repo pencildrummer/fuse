@@ -5,7 +5,6 @@ export default function DeviceProvider({
   device,
   ...props
 }) {
-
   return <DeviceContext.Provider value={{
     device,
   }}>

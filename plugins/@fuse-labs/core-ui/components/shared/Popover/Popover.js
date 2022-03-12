@@ -10,7 +10,9 @@ function PopoverContent({
   ...props
 }) {
   return (
-    <PopoverPrimitive.Content {...props}
+    <PopoverPrimitive.Content 
+      sideOffset={3}
+      {...props}
       className={classNames(
       'rounded-lg text-gray-300 bg-gray-700',
       'shadow-md',

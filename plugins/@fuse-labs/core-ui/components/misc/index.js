@@ -13,6 +13,7 @@ import SerialPortListWidget from "./SerialPortListWidget/SerialPortListWidget";
 import SettingsWidget from "./SettingsWidget/SettingsWidget";
 import InactivePluginView from './InactivePluginView/InactivePluginView'
 import PrinterProfileForm from './PrinterProfileForm/PrinterProfileForm'
+import EmptyView from './EmptyView/EmptyView'
 
 // TODO - Improved folder structure
 import DeviceProfilesWidget from './DeviceSettings/DeviceProfilesWidget/DeviceProfilesWidget.js'
@@ -34,7 +35,8 @@ export {
   SettingsWidget,
   InactivePluginView,
   PrinterProfileForm,
-
+  EmptyView,
+  
   DeviceProfilesWidget,
   DeviceConnectionWidget,
 }
