@@ -101,7 +101,7 @@ export default class Plugin {
     Object.assign(this, pluginData)
 
     // Check has setting page
-    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'settings/index.js'))) {
+    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'settings.js'))) {
       this._settings = true
     }
 

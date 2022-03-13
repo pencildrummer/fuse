@@ -40,23 +40,3 @@ export default function DynamicPage({
     <TabPluginComponent />
   </MainLayout>
 }
-
-// export async function getServerSideProps(ctx) {
-//   const { query } = ctx
-//   const { tab } = query
-
-//   let pluginName = tab.join('/')
-//   let plugin = PluginManager.shared.getPlugin(pluginName)
-
-//   if (!plugin) {
-//     return {
-//       notFound: true
-//     }
-//   }
-
-//   return {
-//     props: {
-//       plugin: plugin
-//     }
-//   }
-// }

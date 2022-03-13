@@ -16,6 +16,7 @@
     "dev-app": "node src/server/app.js",
     "debug": "DEBUG=serialport* node --trace-warnings src/index.mjs",
     "build": "next build",
+    "export": "next build && next export -o electron/app",
     "start": "NODE_ENV=production node src/index.mjs"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client'
 
-const SOCKET_HOST = 'localhost:8888'
+const SOCKET_HOST = 'http://localhost:8888'
 
 /**
  * Create new socket to connect to underlysing server sorckets.

@@ -15,7 +15,21 @@ const createWindow = () => {
   });
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadURL('http://localhost:3000')
+
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
+};
+
+const createSettingsWindow = () => {
+  // Create the browser window.
+  const mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
+
+  // and load the index.html of the app.
+  mainWindow.loadFile(path.join(__dirname, 'settings.html'));
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -32,8 +46,9 @@ app.whenReady().then(_ => {
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Fuse server', type: 'normal' },
+    { label: 'Open Fuse', type: 'normal', click: createWindow },
     { type: 'separator' },
-    { label: 'Settings...', type: 'normal', click: createWindow },
+    { label: 'Settings...', type: 'normal', click: createSettingsWindow },
     { type: 'separator' },
     { label: 'Quit', type: 'normal', role: 'quit' }
   ])

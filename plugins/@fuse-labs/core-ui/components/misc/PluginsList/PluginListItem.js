@@ -49,7 +49,7 @@ export default function PluginListItem({
       </div>
 
       {plugin.settings && <div className="w-20 flex items-center justify-center">
-        <Link href={`/settings/plugins/${plugin.name.replace('/', '*')}`} passHref>
+        <Link href={`/settings/plugins/${plugin.name}`} passHref>
           <Button rounded squared size="sm">
             <GearIcon />
           </Button>

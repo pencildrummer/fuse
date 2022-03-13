@@ -1,4 +1,7 @@
 const { BrowserWindow, app } = require('electron')
+const path = require('path')
+const express = require('express')
+const serveApp = express()
 
 const createWindow = _ => {
   const window = new BrowserWindow({
@@ -14,22 +17,23 @@ const createWindow = _ => {
     }
   })
   window.webContents.openDevTools()
-  window.loadURL('http://localhost:3000')
+
+  //let loadPath = path.join(app.getAppPath(), '..', 'out', 'workspace.html')
+  let loadPath = path.join(app.getAppPath(), 'app', 'workspace.html')
+  //window.loadFile(loadPath)
+  //window.loadURL(`file://${loadPath}`)
+  window.loadURL('http://localhost:5000/workspace.html')
 }
 
+serveApp.use(express.static(path.join(__dirname, 'app')))
+serveApp.listen(5000)
+
 app.whenReady().then(_ => {
+
   createWindow()
 
   console.log('Configuring electron app window')
   
-  // session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-  //   callback({
-  //     responseHeaders: {
-  //       ...details.responseHeaders,
-  //       'Content-Security-Policy': ['default-src \'none\'']
-  //     }
-  //   })
-  // })
   app.on('activate', _ => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })

@@ -13,7 +13,9 @@ const io = new SocketServer(socketServer, {
   cors: {
     origin: [
       'http://localhost:3000',
-      'https://admin.socket.io'
+      'https://admin.socket.io',
+      'http://localhost:5000',
+      'null'
     ],
     credentials: true,
   }
