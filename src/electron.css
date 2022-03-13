@@ -1,9 +1,15 @@
 body {
   -webkit-app-region: drag;
+  @apply select-none;
 }
 
+/* Helper class */
 .electron-drag {
-  -webkit-user-select: none;
-  user-select: none;
+  @apply select-none;
   -webkit-app-region: drag;
+}
+
+/* Allow interactive items to be clickable */
+button {
+  -webkit-app-region: no-drag;
 }
