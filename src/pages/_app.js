@@ -11,6 +11,9 @@ import Head from 'next/head'
 import pkg from '../../package.json'
 import FileManagerClientPlugin from '@fuse-labs/file-manager/client'
 
+// Import Electron specific styles
+import '../electron.css'
+
 // TODO - Move into a _plugin.js file or something like the manager on the server side
 ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)

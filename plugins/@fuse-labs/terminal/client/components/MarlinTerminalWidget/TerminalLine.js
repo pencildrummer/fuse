@@ -38,14 +38,13 @@ export default function TerminalLine({
           'text-purple-500': from == 'user',
           'text-cyan-400': from == 'server',
           'text-amber-400': from == 'device',
+          'text-pink-500': from == 'controller',
         }
       )}>
-        {from == 'user' &&   'user  '}
-        {from == 'server' && 'server'}
-        {from == 'device' && 'device'}
-        <span> </span>
+        {from.padEnd(10, ' ')}
+        &nbsp;
         {from == 'user' && !received ? <TerminalSpinner /> : '>'}
-        <span> </span>
+        &nbsp;
       </span>
       <span>{message}</span>
     </div>

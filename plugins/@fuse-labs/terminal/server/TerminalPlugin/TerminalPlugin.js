@@ -184,7 +184,7 @@ export default class TerminalPlugin extends Plugin {
 
     // TEST
     device.terminal.on('write', data => {
-      this._sendNamespaceMessage(data, 'auto', deviceNamespace)
+      this._sendNamespaceMessage(data, 'controller', deviceNamespace)
     })
     
     device.terminal.on('data', data => {

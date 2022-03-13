@@ -9,9 +9,14 @@ export default function Navbar() {
 
 	return (
 		<Toolbar.Root className="relative flex flex-row items-center h-11 dark:bg-gray-900 dark:text-gray-200">
-			<div className="flex-none w-20 flex items-center justify-center">
-				<span className="font-bold">Fuse</span>
+
+			<div className='w-[74px]'>
+				{/* MacOS traffic light space */}
 			</div>
+
+			{/* <div className="flex-none w-20 flex items-center justify-center">
+				<span className="font-bold">Fuse</span>
+			</div> */}
 
 			<div className='h-full flex-1 flex flex-row px-3 items-end'>
 				<ul className="flex-1 flex flex-row items-end">

@@ -1,5 +1,6 @@
 import { Button, Popover, Progress, EmptyView, useDeviceStatusListContext } from '@fuse-labs/core-ui'
 import { LayersIcon, PauseIcon, StopIcon } from '@radix-ui/react-icons'
+import isElectron from 'is-electron'
 import { useDeviceContext } from 'plugins/@fuse-labs/core-client'
 import { useEffect, useState } from 'react'
 
@@ -29,8 +30,16 @@ export default function MarlinJobQueueHandler() {
 
     const handleJobFinish = job => {
       setJobs(jobs => jobs.filter(j => j.id !== job.id))
+
       let status = addStatus(`Finished job ${job.name}`, { type: 'success'})
       setTimeout(_ => removeStatus(status.id), 1500)
+
+      if (isElectron()) {
+        let notification = new Notification(device.name, {
+          body: `${job.name} has been completed`
+        })
+        notification.onclick = _ => console.log('Clicked notification')
+      }
     }
 
     device.socket.on('job:added', handleJobAdded)

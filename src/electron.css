@@ -1,0 +1,9 @@
+body {
+  -webkit-app-region: drag;
+}
+
+.electron-drag {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-app-region: drag;
+}

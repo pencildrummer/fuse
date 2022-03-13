@@ -90,8 +90,11 @@ export default class MarlinGCodeJob extends EventEmitter {
    */
   
   #handleNext() {
-    this.#cursor++
-    if (this.#lines.length > 0) {
+    if (this.#running && this.#lines.length > 0) {
+
+      // Incremente cursor
+      this.#cursor++
+
       // Get line to perform command
       let line = this.#lines.shift()
 

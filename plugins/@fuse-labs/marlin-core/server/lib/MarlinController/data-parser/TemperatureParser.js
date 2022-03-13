@@ -14,13 +14,13 @@ export default class TemperatureParser extends DataParser {
       .map(p => p.trim().split(':'))
 
     let item = {
-      extruders: {},
-      bed: {},
-      bedPower: {},
-      hotend: {},
-      chamber: {},
-      pindaV2: {},
-      ambient: {}
+      //extruders: {},
+      // bed: {},
+      // bedPower: {},
+      // hotend: {},
+      // chamber: {},
+      // pindaV2: {},
+      // ambient: {}
     }
     
     // Parse temperature
@@ -32,25 +32,25 @@ export default class TemperatureParser extends DataParser {
 
       if (key.slice(0, 1) === 'T') {
         // Parse temperature
-        let extruderId = parseInt(key.length > 1 ? key.slice(1) : 0)
-        item.extruders[extruderId] = this._getCurrentAndTarget(value)
+        let extruderIndex = parseInt(key.length > 1 ? key.slice(1) : 0)
+        item[`extruder-${extruderIndex}`] = this._getCurrentAndTarget(value)
       } else {
         switch (key) {
           // Bed temperature
           case 'B':
             item.bed = this._getCurrentAndTarget(value)
             break
-          // Bed power
+          // Bed power (greater than 0 if powered)
           case 'B@':
-            item.bedPower = this._getCurrentAndTarget(value)
+            item.bedPower = Boolean(value)
             break
           // Chamber temperature
           case 'C':
             item.chamber = this._getCurrentAndTarget(value)
             break
-          // Hotend
+          // Hotend power (greater than 0 if powered)
           case '@':
-            item.hotend = this._getCurrentAndTarget(value)
+            item.hotend = Boolean(value)
             break
           // PINDAV2
           case 'P':

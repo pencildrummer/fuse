@@ -12,21 +12,21 @@
 			"type": "npm",
 			"script": "dev-app",
 			"problemMatcher": [],
-			"label": "App dev",
+			"label": "App - DEV",
 			"detail": "node src/server/app.js"
 		},
 		{
 			"type": "npm",
 			"script": "dev-socket-watch",
 			"problemMatcher": [],
-			"label": "Socket dev [WATCH]",
+			"label": "Socket - DEV [WATCH]",
 			"detail": "nodemon src/server/socket.js"
 		},
 		{
 			"type": "npm",
 			"script": "dev-socket",
 			"problemMatcher": [],
-			"label": "Socket dev",
+			"label": "Socket - DEV",
 			"detail": "node src/server/socket.js"
 		},
 		{
@@ -36,6 +36,14 @@
 			"problemMatcher": [],
 			"label": "npm: start - docs",
 			"detail": "docusaurus start --port=3001"
+		},
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "electron/",
+			"problemMatcher": [],
+			"label": "Electron - DEV",
+			"detail": "electron ."
 		}
 	]
 }

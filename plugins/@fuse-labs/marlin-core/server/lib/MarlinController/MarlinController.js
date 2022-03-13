@@ -54,7 +54,7 @@ export default class MarlinController extends Controller {
     // On close connection
     let closeHandler = _ => {
       // Clear pending job
-      this._cleanupJob()
+      this.#queue.clear()
       this.device.connection.off('close', closeHandler)
     }
     this.device.connection.on('close', closeHandler)
@@ -71,7 +71,6 @@ export default class MarlinController extends Controller {
       this.emit('error', error)
       signale.error(error)
     } else {
-      console.info('Writing data on device connection', data)
       this.emit('write', data)
       this.device.connection.write(data)//, { encoding: 'latin1' }
     }

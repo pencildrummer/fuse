@@ -32,10 +32,17 @@ const DEFAULT_DATA = {
       borderColor: '#0891b2',
       data: []
     },
+    // TODO - Make dynamic extruder dataset based on device configuration
     {
-      key: 'hotend',
-      label: 'Hotend',
-      borderColor: '#db2777',
+      key: 'extruder-0',
+      label: 'Extruder 0',
+      borderColor: '#ec4899',
+      data: []
+    },
+    {
+      key: 'extruder-1',
+      label: 'Extruder 0',
+      borderColor: '#be185d',
       data: []
     },
     {
@@ -155,12 +162,12 @@ export default function TemperatureWidget() {
 
     <div className='grid sm:grid-cols-2 md:grid-cols-3 gap-6'>
       
-      <TemperatureField valueKey="hotend" label="Hotend"
+      <TemperatureField valueKey="extruder-0" label="Extruder 0"
         value={userTargetTemperature.hotend}
-        onChange={value => setKeyTargetTemperature('hotend', value)}
+        onChange={value => setKeyTargetTemperature('extruder-0', value)}
         onSend={requestTargetHotend}
-        currentValue={temperature?.hotend?.current}
-        currentTargetValue={temperature?.hotend?.target} />
+        currentValue={temperature?.['extruder-0']?.current}
+        currentTargetValue={temperature?.['extruder-0']?.target} />
     
       <TemperatureField valueKey="bed" label="Bed"
         value={userTargetTemperature.bed}

@@ -43,7 +43,7 @@ export default class MarlinJobQueue extends EventEmitter {
   }
 
   removeJob(job) {
-    this._jobs = this.#jobs.filter(j => j.id !== job.id)
+    this.#jobs = this.#jobs.filter(j => j.id !== job.id)
     this.emit('job:removed', job)
   }
 
@@ -70,6 +70,15 @@ export default class MarlinJobQueue extends EventEmitter {
   resume() {
     // TODO
     //this.#isPaused = false
+  }
+
+  /**
+   * Remove all jobs. If any job is running, stops immediately.
+   */
+  clear() {
+    this.#currentJob?.finish()
+    this.#jobs.forEach(job => this.removeJob(job))
+    this.#finish()
   }
 
   /** Private */
