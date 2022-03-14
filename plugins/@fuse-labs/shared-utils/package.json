@@ -1,12 +1,25 @@
 {
   "name": "@fuse-labs/shared-utils",
-  "version": "1.0.0",
   "description": "Shared utilities (core and client) for FUSE",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "private": true,
+  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/shared-utils.umd.js",
+  "module": "./dist/shared-utils.es.mjs",
+  "exports": {
+    ".": {
+      "require": "./dist/shared-utils.umd.js",
+      "import": "./dist/shared-utils.es.mjs"
+    }
   },
-  "author": "Fabio Borella",
-  "license": "ISC"
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^2.8.0"
+  }
 }

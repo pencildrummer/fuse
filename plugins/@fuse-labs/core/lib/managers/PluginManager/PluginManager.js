@@ -50,6 +50,7 @@ class PluginManager {
 
     // Init plugin manager
     // Get available installed plugins based on package presence
+    console.warn(`Scanning directory for plugin: '${PLUGINS_BASE_PATH}'. Find better way because once packaged we cannot do it anymore. Maybe save plugin ref in user directory?`)
     let dirs = fs.readdirSync(PLUGINS_BASE_PATH)
     let scopes = dirs.filter(dir => dir.startsWith("@"))
     let scopedPlugins = scopes.flatMap( scope => 
@@ -65,8 +66,10 @@ class PluginManager {
     this._plugins = await pluginNames.reduce( async (prev, pluginName) => {
       // Wait for previous plugin load process
       const plugins = await prev
-
-      const pluginModule = await import(`${pluginName}/server`)
+      console.log('Path', path.resolve(PLUGINS_BASE_PATH, pluginName))
+      let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'server')
+      //const pluginModule = await import(`${pluginName}/server`)
+      const pluginModule = await import(`${pluginPath}`)
         .then(res => {
           if (!res.default) {
             throw new Error('Found module but no default export is found. Should export the plugin class.')
@@ -83,8 +86,10 @@ class PluginManager {
           switch (err.code) {
             case 'ERR_MODULE_NOT_FOUND':
               signale.error(err)
+              signale.warn('NEEDS FIX - Importing from PluginManager inside @fuse-labs/core needs dependency installed in @fuse-labs/core not only root package')
             // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
             default:
+              signale.error(err)
               signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
           }
           return null

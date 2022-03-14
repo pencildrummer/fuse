@@ -1,0 +1,10 @@
+{
+  "id": "aff9969b-be2f-4817-be00-76227f24e3ce",
+  "name": "Longer LK4 PRo",
+  "profileId": "longer.lk4_pro",
+  "port": "/dev/tty.usbserial-1420",
+  "baudrate": 115200,
+  "serialNumber": null,
+  "vendorId": "1a86",
+  "productId": "7523"
+}

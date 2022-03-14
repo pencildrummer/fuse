@@ -1,13 +1,57 @@
 {
   "name": "@fuse-labs/core-ui",
-  "version": "1.0.0",
   "description": "CoreUI plugin for FUSE",
-  "browser": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "private": true,
+  "version": "0.0.0",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/core-ui.umd.js",
+  "module": "./dist/core-ui.es.js",
+  "exports": {
+    ".": {
+      "require": "./dist/core-ui.umd.js",
+      "import": "./dist/core-ui.es.js"
+    }
   },
-  "author": "Fabio Borella",
-  "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/shared-utils": "file:../shared-utils",
+    "@radix-ui/react-alert-dialog": "^0.1.7",
+    "@radix-ui/react-aspect-ratio": "^0.1.4",
+    "@radix-ui/react-checkbox": "^0.1.5",
+    "@radix-ui/react-context-menu": "^0.1.6",
+    "@radix-ui/react-dialog": "^0.1.7",
+    "@radix-ui/react-dropdown-menu": "^0.1.6",
+    "@radix-ui/react-icons": "^1.1.0",
+    "@radix-ui/react-label": "^0.1.5",
+    "@radix-ui/react-popover": "^0.1.6",
+    "@radix-ui/react-progress": "^0.1.4",
+    "@radix-ui/react-scroll-area": "^0.1.4",
+    "@radix-ui/react-separator": "^0.1.4",
+    "@radix-ui/react-slider": "^0.1.4",
+    "@radix-ui/react-switch": "^0.1.5",
+    "@radix-ui/react-toggle-group": "^0.1.5",
+    "@radix-ui/react-toolbar": "^0.1.5",
+    "@radix-ui/react-tooltip": "^0.1.7",
+    "classnames": "^2.3.1",
+    "formik": "^2.2.9",
+    "next": "^12.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "sass": "^1.49.9",
+    "vite-plugin-svgr": "^1.0.1",
+    "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
+  },
   "fuse": {
     "title": "Core UI"
   }

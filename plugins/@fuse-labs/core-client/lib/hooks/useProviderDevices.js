@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import ClientDeviceManager from '../managers/ClientDeviceManager/ClientDeviceManager.js'
+import ClientDeviceManager from '../managers/ClientDeviceManager/ClientDeviceManager.jsx'
 
 export default function useProviderDevices(data) {
 

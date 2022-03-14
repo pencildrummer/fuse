@@ -7,12 +7,19 @@
     "./server": "./server/index.js"
   },
   "type": "module",
-  "directories": {
-    "lib": "lib"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Fabio Borella",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@fuse-labs/shared-utils": "file:../shared-utils",
+    "express": "^4.17.3",
+    "fs-extra": "^10.0.1",
+    "serialport": "^10.4.0",
+    "signale": "^1.4.0",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2",
+    "yup": "^0.32.11"
+  }
 }

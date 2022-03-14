@@ -2,19 +2,50 @@
   "name": "@fuse-labs/marlin-temperature",
   "description": "Temperature monitor plugin for FUSE for Marlin-based devices",
   "version": "1.0",
-  "author": "FUSE Labs",
+  "author": "Fabio Borella",
   "license": "MIT",
-  "main": "index.js",
-  "type": "module",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
   "exports": {
-    "./client": "./client/index.js",
-    "./server": "./server/index.js"
+    "./server": "./lib/server/index.js",
+    "./client": {
+      "require": "./dist-client/marlin-temperature.umd.js",
+      "import": "./dist-client/marlin-temperature.es.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@radix-ui/react-icons": "^1.1.0",
+    "chart.js": "^3.7.1",
+    "chartjs-adapter-date-fns": "^2.0.0",
+    "date-fns": "^2.28.0",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-chartjs-2": "^4.0.1",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
   },
   "fuse": {
     "title": "[Marlin] Temperature monitor",
     "pagesUrl": "temperature",
     "icon": "BarChartIcon",
     "tooltip": "Temperature",
-    "devices": [ "fdm_printer" ]
+    "devices": [
+      "fdm_printer"
+    ]
   }
 }

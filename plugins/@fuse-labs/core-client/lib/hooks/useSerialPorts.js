@@ -1,4 +1,4 @@
-import { coreSocket } from "@fuse-labs/core-client"
+import { coreSocket } from "../socket"
 import { useEffect, useState } from "react"
 
 export default function useSerialPorts() {

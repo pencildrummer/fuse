@@ -2,14 +2,17 @@
   "name": "electron-server",
   "productName": "electron-server",
   "version": "1.0.0",
-  "description": "My Electron application description",
-  "main": "src/index.js",
+  "description": "Fuse - server",
+  "private": true,
+  "main": "src/main.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "dev": "node src/server.mjs",
+    "dev-watch": "nodemon src/server.mjs"
   },
   "keywords": [],
   "author": {
@@ -45,7 +48,14 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "@fuse-labs/core": "file:../plugins/@fuse-labs/core",
+    "@fuse-labs/file-manager": "file:../plugins/@fuse-labs/file-manager",
+    "@fuse-labs/marlin-core": "file:../plugins/@fuse-labs/marlin-core",
+    "@fuse-labs/marlin-temperature": "file:../plugins/@fuse-labs/marlin-temperature",
+    "@fuse-labs/shared-utils": "file:../plugins/@fuse-labs/shared-utils",
+    "@fuse-labs/terminal": "file:../plugins/@fuse-labs/terminal",
+    "electron-squirrel-startup": "^1.0.0",
+    "signale": "^1.4.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",

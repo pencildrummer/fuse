@@ -1,13 +1,43 @@
 {
   "name": "@fuse-labs/file-manager",
   "description": "Core file manager for FUSE",
+  "private": true,
   "version": "0.1",
   "license": "MIT",
   "type": "module",
-  "main": "index.js",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
   "exports": {
-    "./server": "./server/index.js",
-    "./client": "./client/index.js"
+    "./server": "./lib/server/index.js",
+    "./client": {
+      "require": "./dist-client/file-manager.umd.js",
+      "import": "./dist-client/file-manager.es.js"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fuse-labs/core": "file:../core",
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@fuse-labs/shared-utils": "file:../shared-utils",
+    "@radix-ui/react-icons": "^1.1.0",
+    "classnames": "^2.3.1",
+    "filesize": "^8.0.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-intl": "^5.24.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
   },
   "fuse": {
     "title": "File manager",

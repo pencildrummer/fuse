@@ -2,22 +2,52 @@
   "name": "@fuse-labs/terminal",
   "version": "1.0.0",
   "description": "Plugin to send terminal request from client ot backend",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Fabio Borella",
   "license": "ISC",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
   "type": "module",
   "exports": {
-    "./client": "./client/index.js",
-    "./server": "./server/index.js"
+    "./server": "./lib/server/index.js",
+    "./client": {
+      "require": "./dist-client/terminal.umd.js",
+      "import": "./dist-client/terminal.es.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fuse-labs/core": "file:../core",
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@fuse-labs/shared-utils": "file:../shared-utils",
+    "@radix-ui/react-icons": "^1.1.0",
+    "classnames": "^2.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "signale": "^1.4.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
   },
   "fuse": {
     "title": "Terminal",
     "pagesUrl": "terminal",
     "icon": "ReaderIcon",
     "tooltip": "Terminal",
-    "devices": [ "fdm_printer", "cnc" ]
+    "devices": [
+      "fdm_printer",
+      "cnc"
+    ]
   }
 }
