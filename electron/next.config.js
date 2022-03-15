@@ -21,4 +21,17 @@ module.exports = {
       },
     ]
   },
+
+  webpack: (config, options) => {
+    // To avoid warning missing bufferutil anf utf-8
+    // See: https://github.com/netlify/netlify-lambda/issues/179
+    if (options.isServer) {
+      config.externals = [
+        ...config.externals,
+        'utf-8-validate',
+        'bufferutil'
+      ]
+    }
+    return config
+  },
 }

@@ -1,4 +1,4 @@
-import { Plugin, PluginManager, ProfileManager, DeviceManager } from "../../lib/index.js"
+import { Plugin, PluginManager, ProfileManager, DeviceManager } from "../index.js"
 import { SerialPort } from "serialport"
 
 export default class CorePlugin extends Plugin {

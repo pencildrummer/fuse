@@ -8,3 +8,6 @@ export {
   socketServer,
   useDeviceMiddleware
 }
+
+import CorePlugin from "./CorePlugin/CorePlugin.js";
+export default CorePlugin

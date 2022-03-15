@@ -2,9 +2,14 @@
   "name": "@fuse-labs/core",
   "version": "1.0.0",
   "description": "Core plugin for FUSE",
-  "main": "index.js",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
   "exports": {
-    "./server": "./server/index.js"
+    "./server": "./lib/server/index.js"
   },
   "type": "module",
   "scripts": {

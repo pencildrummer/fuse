@@ -66,8 +66,9 @@ class PluginManager {
     this._plugins = await pluginNames.reduce( async (prev, pluginName) => {
       // Wait for previous plugin load process
       const plugins = await prev
-      console.log('Path', path.resolve(PLUGINS_BASE_PATH, pluginName))
-      let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'server')
+
+      // TODO - Find a better way to load plugin or check if it is a bug that prevent loading from "exports" defined keys in package.json of plugins installed
+      let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'lib', 'server', 'index.js')
       //const pluginModule = await import(`${pluginName}/server`)
       const pluginModule = await import(`${pluginPath}`)
         .then(res => {
@@ -86,10 +87,8 @@ class PluginManager {
           switch (err.code) {
             case 'ERR_MODULE_NOT_FOUND':
               signale.error(err)
-              signale.warn('NEEDS FIX - Importing from PluginManager inside @fuse-labs/core needs dependency installed in @fuse-labs/core not only root package')
             // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
             default:
-              signale.error(err)
               signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
           }
           return null
