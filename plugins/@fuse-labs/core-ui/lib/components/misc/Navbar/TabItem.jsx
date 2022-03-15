@@ -10,7 +10,7 @@ export default function TabItem({
 }) {
 
   const router = useRouter()
-  const active = useMemo(_ => router.asPath.startsWith(href), [href, router.asPath])
+  const active = useMemo(_ => router?.asPath.startsWith(href), [href, router])
 
   return (
     <li className={classNames(

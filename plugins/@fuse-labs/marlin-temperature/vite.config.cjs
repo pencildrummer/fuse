@@ -10,15 +10,16 @@ export default defineConfig({
     outDir: 'dist-client',
     lib: {
       entry: path.resolve(__dirname, 'lib/client/index.js'),
-      name: '@fuse-labs/marlin-core',
-      fileName: (format) => `marlin-core.${format}.js`
+      name: '@fuse-labs/marlin-temperature',
+      fileName: (format) => `marlin-temperature.${format}.js`
     },
     rollupOptions: {
-      external: Object.keys(dependencies),
+      external: ['react', 'react-dom', ...Object.keys(dependencies)],
       output: {
         exports: 'named',
         globals: {
-          react: 'React'
+          react: 'React',
+          'react-dom': 'ReactDOM'
         }
       }
     }

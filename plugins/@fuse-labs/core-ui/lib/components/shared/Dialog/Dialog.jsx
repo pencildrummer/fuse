@@ -11,7 +11,7 @@ function Dialog({
 }) {
   return (
     <DialogRoot {...props}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {children}
       </DialogTrigger>
       <DialogContent className={props.className}>

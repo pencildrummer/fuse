@@ -17,6 +17,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "watch": "vite build --watch",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -42,11 +43,13 @@
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "next": "^12.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "sass": "^1.49.9",
     "vite-plugin-svgr": "^1.0.1",
     "yup": "^0.32.11"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",

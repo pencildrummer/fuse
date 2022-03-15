@@ -86,9 +86,9 @@ class PluginManager {
         }).catch(err => {
           switch (err.code) {
             case 'ERR_MODULE_NOT_FOUND':
-              signale.error(err)
             // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
             default:
+              signale.error(err)
               signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
           }
           return null

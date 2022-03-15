@@ -1,4 +1,3 @@
-import signale from "signale"
 import path from 'path'
 import { Controller } from '@fuse-labs/core/server'
 import MarlinReadyParser from './MarlinReadyParser.js'
@@ -43,7 +42,7 @@ export default class MarlinController extends Controller {
     let readyParser = this.device.connection.addParser(new MarlinReadyParser())
     readyParser.on('ready', _ => {
       this._isReady = true
-      signale.scope('Controller:'+this.constructor.name).success('Marlin device is ready')
+      console.scope('Controller:'+this.constructor.name).success('Marlin device is ready')
       this.emit('ready')
     })
 
@@ -69,7 +68,7 @@ export default class MarlinController extends Controller {
     if (!this.device.connection.isOpen) {
       let error = new Error('Unable to write data, connection not open')
       this.emit('error', error)
-      signale.error(error)
+      console.error(error)
     } else {
       this.emit('write', data)
       this.device.connection.write(data)//, { encoding: 'latin1' }
@@ -90,10 +89,10 @@ export default class MarlinController extends Controller {
 
   sendGCodeFile(filePath) {
     // Parse GCODE
-    signale.pending('Parsing file', filePath)
+    console.pending('Parsing file', filePath)
     let lines = parser.parseFileSync(filePath)
     // TODO - Validate result
-    signale.complete('Parsing completed - tot lines:', lines.length)
+    console.complete('Parsing completed - tot lines:', lines.length)
 
     // Create new job
     let job = new MarlinGCodeJob(path.basename(filePath), this, lines)
@@ -110,7 +109,7 @@ export default class MarlinController extends Controller {
    */
 
   handleParsedData(data) {
-    signale.scope('Controller:'+this.constructor.name).info('Received data:', data)
+    console.scope('Controller:'+this.constructor.name).info('Received data:', data)
     // Notify data received
     this.emit('data', data)
 

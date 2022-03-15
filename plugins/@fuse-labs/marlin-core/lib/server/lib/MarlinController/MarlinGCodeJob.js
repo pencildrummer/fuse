@@ -1,5 +1,4 @@
 import { generateUniqueID } from '@fuse-labs/shared-utils'
-import { randomUUID } from 'crypto'
 import { EventEmitter } from 'events'
 
 /**

@@ -14,11 +14,12 @@ export default defineConfig({
       fileName: (format) => `file-manager.${format}.js`
     },
     rollupOptions: {
-      external: Object.keys(dependencies),
+      external: ['react', 'react-dom', ...Object.keys(dependencies)],
       output: {
         exports: 'named',
         globals: {
           react: 'React',
+          'react-dom': 'ReactDOM',
         }
       }
     }

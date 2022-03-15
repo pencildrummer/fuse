@@ -29,6 +29,7 @@
     "@fuse-labs/marlin-core": "file:../plugins/@fuse-labs/marlin-core",
     "@fuse-labs/marlin-temperature": "file:../plugins/@fuse-labs/marlin-temperature",
     "@fuse-labs/terminal": "file:../plugins/@fuse-labs/terminal",
+    "@radix-ui/react-icons": "^1.1.0",
     "classnames": "^2.3.1",
     "commander": "^9.0.0",
     "date-fns": "^2.28.0",

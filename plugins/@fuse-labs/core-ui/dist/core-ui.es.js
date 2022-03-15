@@ -53,6 +53,7 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { pathCase, titleCase, getSuggestedName, getProductInfo, generateUniqueID } from "@fuse-labs/shared-utils";
 import * as Yup from "yup";
 import { coreSocket, useAppContext, useSerialPorts, DeviceProvider, ClientDeviceType, useDeviceContext } from "@fuse-labs/core-client";
+import Link from "next/link";
 import * as Toolbar from "@radix-ui/react-toolbar";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 var jsxRuntime = { exports: {} };
@@ -341,6 +342,7 @@ function Dialog(_m) {
   ]);
   return /* @__PURE__ */ jsxs(DialogRoot, __spreadProps(__spreadValues({}, props), {
     children: [/* @__PURE__ */ jsx(DialogTrigger, {
+      asChild: true,
       children
     }), /* @__PURE__ */ jsx(DialogContent, {
       className: props.className,
@@ -2288,8 +2290,519 @@ function AppLoader() {
     })
   });
 }
-var link$1 = {};
+function GCodeViewer(_Ca) {
+  var _Da = _Ca, {
+    className
+  } = _Da, props = __objRest(_Da, [
+    "className"
+  ]);
+  const canvas = useRef();
+  useEffect((_) => {
+    let size = canvas.current.parentElement.getBoundingClientRect();
+    canvas.current.width = size.width;
+    canvas.current.height = size.height;
+    let canvasRect = canvas.current.getBoundingClientRect();
+    let centerX = canvasRect.width / 2;
+    let centerY = canvasRect.height / 2;
+    let radius = 30;
+    let angle = 0;
+    const k = 100;
+    let draw = (_2) => {
+      if (radius < 1) {
+        clearInterval(timer);
+        return;
+      }
+      let ctx = canvas.current.getContext("2d");
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#164e63";
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, angle, angle + Math.PI / k);
+      ctx.closePath();
+      ctx.stroke();
+      radius -= Math.PI / k;
+      angle += Math.PI / k;
+    };
+    let timer = setInterval(draw, 100);
+    return (_2) => clearInterval(timer);
+  }, []);
+  return /* @__PURE__ */ jsx("div", __spreadProps(__spreadValues({
+    className: classNames("relative", "bg-gray-500", className)
+  }, props), {
+    children: /* @__PURE__ */ jsx("canvas", {
+      ref: canvas,
+      className: "absolute inset-0"
+    })
+  }));
+}
+function DeviceCard({
+  device
+}) {
+  var _a, _b;
+  const percentage = 0;
+  return /* @__PURE__ */ jsx(Link, {
+    href: `/workspace/devices/${device.id}`,
+    passHref: true,
+    children: /* @__PURE__ */ jsx(Widget, {
+      className: classNames("h-80 cursor-pointer"),
+      children: /* @__PURE__ */ jsx(DeviceProvider, {
+        device,
+        children: /* @__PURE__ */ jsx("div", {
+          className: "card-body",
+          children: /* @__PURE__ */ jsxs("div", {
+            className: "flex-1 flex flex-col space-y-2",
+            children: [/* @__PURE__ */ jsxs("div", {
+              className: "flex flex-col items-stretch font-medium text-sm border-b border-gray-600 pb-0.5",
+              children: [/* @__PURE__ */ jsxs("div", {
+                className: "flex flex-row",
+                children: [/* @__PURE__ */ jsx("div", {
+                  className: "flex-1",
+                  children: device.name
+                }), /* @__PURE__ */ jsx("button", {
+                  children: /* @__PURE__ */ jsx(StarIcon, {})
+                })]
+              }), /* @__PURE__ */ jsxs("div", {
+                className: "flex flex-row space-x-1 items-center text-[10px] font-mono font-normal dark:text-gray-500",
+                children: [/* @__PURE__ */ jsx("div", {
+                  children: /* @__PURE__ */ jsx(DeviceTypeIcon, {
+                    device
+                  })
+                }), /* @__PURE__ */ jsxs("div", {
+                  className: "flex-1",
+                  children: [(_a = device.profile) == null ? void 0 : _a.brand, " ", (_b = device.profile) == null ? void 0 : _b.model]
+                }), /* @__PURE__ */ jsx("div", {
+                  children: /* @__PURE__ */ jsx(DeviceConnectionStatus, {
+                    device
+                  })
+                })]
+              })]
+            }), /* @__PURE__ */ jsxs("div", {
+              className: "text-[11px] font-medium text-gray-500",
+              children: [/* @__PURE__ */ jsxs("div", {
+                className: "flex flex-row items-center justify-between",
+                children: [/* @__PURE__ */ jsx("div", {
+                  children: "Nome_file.m3f"
+                }), /* @__PURE__ */ jsxs("div", {
+                  children: [percentage, " %"]
+                })]
+              }), /* @__PURE__ */ jsx(Progress, {
+                value: 20,
+                max: 100
+              })]
+            }), device.camera && /* @__PURE__ */ jsx("div", {
+              className: "relative w-full h-[160px] rounded-md overflow-hidden",
+              children: /* @__PURE__ */ jsx("div", {
+                className: "absolute inset-x-0 bottom-0 flex flex-row",
+                children: device.camera.live ? /* @__PURE__ */ jsxs("div", {
+                  className: "m-1 p-1 bg-gray-900 bg-opacity-75 text-red-700 flex flex-row items-center space-x-1 rounded-sm",
+                  children: [/* @__PURE__ */ jsx("div", {
+                    className: "w-1 h-1 rounded-full bg-current"
+                  }), /* @__PURE__ */ jsx("span", {
+                    className: "text-[10px] font-medium",
+                    children: "LIVE"
+                  })]
+                }) : /* @__PURE__ */ jsxs("div", {
+                  className: "m-1 p-1 bg-gray-900 bg-opacity-75 text-gray-400 rounded-sm text-[10px] flex flex-row items-center space-x-1",
+                  children: [/* @__PURE__ */ jsx(CameraIcon, {}), /* @__PURE__ */ jsx("span", {
+                    className: "font-mono",
+                    children: "15:32:12"
+                  })]
+                })
+              })
+            }), device.type == "cnc" && /* @__PURE__ */ jsx(GCodeViewer, {
+              className: "w-full h-[160px] rounded-md overflow-hidden"
+            })]
+          })
+        })
+      })
+    })
+  });
+}
+const ConnectionStatus = Object.freeze({
+  Loading: 0,
+  PortNotFound: 1,
+  DifferentDevice: 2,
+  Connected: 10
+});
+function DeviceConnectionStatus({
+  device
+}) {
+  const [connectionStatus, setConnectionStatus] = useState(ConnectionStatus.Loading);
+  useEffect((_) => {
+    coreSocket.emit("devices:connection:check", device.id, (port) => {
+      if (port) {
+        if (port.serialNumber == device.serialNumber && port.vendorId == device.vendorId && port.productId == device.productId) {
+          setConnectionStatus(ConnectionStatus.Connected);
+        } else {
+          setConnectionStatus(ConnectionStatus.DifferentDevice);
+        }
+      } else {
+        setConnectionStatus(ConnectionStatus.PortNotFound);
+      }
+    });
+  }, [device]);
+  const tooltipContent = useMemo$1((_) => {
+    switch (connectionStatus) {
+      case ConnectionStatus.Loading:
+        return /* @__PURE__ */ jsx("span", {
+          children: "Checking connection..."
+        });
+      case ConnectionStatus.PortNotFound:
+        return /* @__PURE__ */ jsxs("span", {
+          className: "text-red-300",
+          children: ["Port ", device.port, " not found"]
+        });
+      case ConnectionStatus.DifferentDevice:
+        return /* @__PURE__ */ jsxs("span", {
+          className: "text-yellow-600",
+          children: ["A different device is connected to port ", device.port]
+        });
+      case ConnectionStatus.Connected:
+        return /* @__PURE__ */ jsxs("span", {
+          className: "text-lime-500",
+          children: ["Device connected on ", device.port]
+        });
+    }
+  }, [connectionStatus, device.port]);
+  return /* @__PURE__ */ jsx(Tooltip, {
+    content: tooltipContent,
+    size: "sm",
+    className: "font-normal",
+    side: "left",
+    sideOffset: 18,
+    alignOffset: 0,
+    children: /* @__PURE__ */ jsxs("div", {
+      children: [connectionStatus == ConnectionStatus.Loading && /* @__PURE__ */ jsx(Loader, {}), connectionStatus == ConnectionStatus.PortNotFound && /* @__PURE__ */ jsx(LinkBreak1Icon, {
+        className: "text-red-600"
+      }), connectionStatus == ConnectionStatus.DifferentDevice && /* @__PURE__ */ jsx(LinkNone1Icon, {
+        className: "text-yellow-600"
+      }), connectionStatus == ConnectionStatus.Connected && /* @__PURE__ */ jsx(Link1Icon, {
+        className: "text-lime-600"
+      })]
+    })
+  });
+}
+function DevicePluginsSettingsWidget() {
+  return /* @__PURE__ */ jsx(Widget, {
+    title: "Plugins",
+    children: /* @__PURE__ */ jsxs("div", {
+      className: "grid grid-cols-2 gap-3",
+      children: [/* @__PURE__ */ jsxs(Group, {
+        className: "justify-between",
+        children: [/* @__PURE__ */ jsx(Label, {
+          children: "Plugin install directory"
+        }), /* @__PURE__ */ jsx(InputRaw, {
+          value: "/plugins",
+          disabled: true
+        })]
+      }), /* @__PURE__ */ jsx(Group, {
+        children: /* @__PURE__ */ jsx(Button, {
+          size: "sm",
+          children: "Install plugin"
+        })
+      })]
+    })
+  });
+}
+function DevicesGrid() {
+  const {
+    devices
+  } = useAppContext();
+  return /* @__PURE__ */ jsx("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-2",
+    children: devices == null ? void 0 : devices.map((device) => /* @__PURE__ */ jsx(DeviceCard, {
+      device
+    }, device.id))
+  });
+}
+const ReactComponent$3 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  width: 15,
+  height: 15,
+  viewBox: "0 0 15 15"
+}, props), /* @__PURE__ */ React.createElement("path", {
+  d: "M-158.762,87.6l1.484,4.019h2.125l1.391-4.019Z",
+  transform: "translate(163.762 -86.099)",
+  fill: "currentColor"
+}), /* @__PURE__ */ React.createElement("path", {
+  d: "M-159.48,87.1h6.42l-1.737,5.019h-2.829Zm5.016,1h-3.58l1.115,3.019h1.42Z",
+  transform: "translate(163.762 -86.099)",
+  fill: "currentColor"
+}), /* @__PURE__ */ React.createElement("path", {
+  d: "M12.5.5H-.5v-1h13Z",
+  transform: "translate(1.5 13.5)",
+  fill: "currentColor"
+}), /* @__PURE__ */ React.createElement("path", {
+  d: "M.5,2.5h-1v-3h1Z",
+  transform: "translate(7.5 7.5)",
+  fill: "currentColor"
+}), /* @__PURE__ */ React.createElement("path", {
+  d: "M8.5.5h-9v-1h9Z",
+  transform: "translate(3.5 11.5)",
+  fill: "currentColor"
+}));
+function FDMPrinterIcon(props) {
+  return /* @__PURE__ */ jsx(ReactComponent$3, __spreadValues({
+    viewBox: "0 0 15 15"
+  }, props));
+}
+const ReactComponent$2 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  width: 15,
+  height: 15,
+  viewBox: "0 0 15 15",
+  fill: "currentColor"
+}, props), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_1",
+  "data-name": "Linea 1",
+  d: "M12.5.5H-.5v-1h13Z",
+  transform: "translate(1.5 3.5)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_1",
+  "data-name": "Rettangolo 1",
+  width: 7,
+  height: 2,
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_1_-_Contorno",
+  "data-name": "Rettangolo 1 - Contorno",
+  d: "M0,0H7V2H0Z",
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Tracciato_3",
+  "data-name": "Tracciato 3",
+  d: "M-140.564,98.413l-1-1h-1v1h12v-1h-1l-1,1Z",
+  transform: "translate(144.064 -84.913)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Tracciato_3_-_Contorno",
+  "data-name": "Tracciato 3 - Contorno",
+  d: "M-130.064,98.913h-13v-2h1.707l1,1h7.589l1-1h1.7Z",
+  transform: "translate(144.064 -84.913)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_4",
+  "data-name": "Linea 4",
+  d: "M10,.5H0v-1H10Z",
+  transform: "translate(2.5 5.5)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_5",
+  "data-name": "Linea 5",
+  d: "M.5,5.5h-1v-6h1Z",
+  transform: "translate(2.5 5.5)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_6",
+  "data-name": "Linea 6",
+  d: "M.5,5.5h-1v-6h1Z",
+  transform: "translate(12.5 5.5)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_2",
+  "data-name": "Rettangolo 2",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(10 10)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_3",
+  "data-name": "Rettangolo 3",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(8 10)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_4",
+  "data-name": "Rettangolo 4",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(6 10)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_5",
+  "data-name": "Rettangolo 5",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(4 10)"
+}));
+function MSLAPrinterIcon(props) {
+  return /* @__PURE__ */ jsx(ReactComponent$2, __spreadValues({}, props));
+}
+const ReactComponent$1 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  width: 15,
+  height: 15,
+  viewBox: "0 0 15 15",
+  fill: "currentColor"
+}, props), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_1",
+  "data-name": "Rettangolo 1",
+  width: 7,
+  height: 7,
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_1_-_Contorno",
+  "data-name": "Rettangolo 1 - Contorno",
+  d: "M1,1V6H6V1H1M0,0H7V7H0Z",
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_6",
+  "data-name": "Rettangolo 6",
+  width: 5,
+  height: 2,
+  transform: "translate(1 12)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_6_-_Contorno",
+  "data-name": "Rettangolo 6 - Contorno",
+  d: "M0,0H5V2H0Z",
+  transform: "translate(1 12)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_7",
+  "data-name": "Rettangolo 7",
+  width: 5,
+  height: 2,
+  transform: "translate(9 12)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_7_-_Contorno",
+  "data-name": "Rettangolo 7 - Contorno",
+  d: "M0,0H5V2H0Z",
+  transform: "translate(9 12)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_7",
+  "data-name": "Linea 7",
+  d: "M.5,4.5h-1v-5h1Z",
+  transform: "translate(7.5 9.5)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_8",
+  "data-name": "Rettangolo 8",
+  width: 3,
+  height: 2,
+  transform: "translate(6 8)",
+  fill: "#fff"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_8_-_Contorno",
+  "data-name": "Rettangolo 8 - Contorno",
+  d: "M0,0H3V2H0Z",
+  transform: "translate(6 8)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_9",
+  "data-name": "Rettangolo 9",
+  width: 1,
+  height: 1,
+  transform: "translate(4 10)",
+  fill: "#fff"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_9_-_Contorno",
+  "data-name": "Rettangolo 9 - Contorno",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(4 10)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_10",
+  "data-name": "Rettangolo 10",
+  width: 1,
+  height: 1,
+  transform: "translate(2 9)",
+  fill: "#fff"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_10_-_Contorno",
+  "data-name": "Rettangolo 10 - Contorno",
+  d: "M0,0H1V1H0Z",
+  transform: "translate(2 9)"
+}));
+function CNCIcon(props) {
+  return /* @__PURE__ */ jsx(ReactComponent$1, __spreadValues({}, props));
+}
+const ReactComponent = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
+  xmlns: "http://www.w3.org/2000/svg",
+  xmlnsXlink: "http://www.w3.org/1999/xlink",
+  width: 15,
+  height: 15,
+  viewBox: "0 0 15 15",
+  fill: "currentColor"
+}, props), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_1",
+  "data-name": "Rettangolo 1",
+  width: 7,
+  height: 3,
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_1_-_Contorno",
+  "data-name": "Rettangolo 1 - Contorno",
+  d: "M1,1V2H6V1H1M0,0H7V3H0Z",
+  transform: "translate(4 1)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_6",
+  "data-name": "Rettangolo 6",
+  width: 13,
+  height: 1,
+  transform: "translate(1 13)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_6_-_Contorno",
+  "data-name": "Rettangolo 6 - Contorno",
+  d: "M0,0H13V1H0Z",
+  transform: "translate(1 13)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_7",
+  "data-name": "Linea 7",
+  d: "M.5,4.5h-1v-5h1Z",
+  transform: "translate(7.5 5.5)"
+}), /* @__PURE__ */ React.createElement("rect", {
+  id: "Rettangolo_8",
+  "data-name": "Rettangolo 8",
+  width: 3,
+  height: 2,
+  transform: "translate(6 3)",
+  fill: "#fff"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Rettangolo_8_-_Contorno",
+  "data-name": "Rettangolo 8 - Contorno",
+  d: "M0,0H3V2H0Z",
+  transform: "translate(6 3)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_8",
+  "data-name": "Linea 8",
+  d: "M1.646,2.354l-2-2L.354-.354l2,2Z",
+  transform: "translate(3.5 9.5)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Tracciato_5",
+  "data-name": "Tracciato 5",
+  d: "M1.5,0A1.5,1.5,0,0,1,3,1.5H0A1.5,1.5,0,0,1,1.5,0Z",
+  transform: "translate(6 11)",
+  fill: "#fff"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Tracciato_5_-_Contorno",
+  "data-name": "Tracciato 5 - Contorno",
+  d: "M1.5,0A1.5,1.5,0,0,1,3,1.5H0A1.5,1.5,0,0,1,1.5,0Z",
+  transform: "translate(6 11)"
+}), /* @__PURE__ */ React.createElement("path", {
+  id: "Linea_9",
+  "data-name": "Linea 9",
+  d: "M.354,2.354l-.707-.707,2-2,.707.707Z",
+  transform: "translate(9.5 9.5)"
+}));
+function LaserIcon(props) {
+  return /* @__PURE__ */ jsx(ReactComponent, __spreadValues({}, props));
+}
+function DeviceTypeIcon(_Ea) {
+  var _Fa = _Ea, {
+    device
+  } = _Fa, props = __objRest(_Fa, [
+    "device"
+  ]);
+  const IconComponent = useMemo$1((_) => {
+    switch (device.profile.type) {
+      case ClientDeviceType.FDMPrinter:
+        return FDMPrinterIcon;
+      case ClientDeviceType.MSLAPrinter:
+        return MSLAPrinterIcon;
+      case ClientDeviceType.CNC:
+        return CNCIcon;
+      case ClientDeviceType.Laser:
+        return LaserIcon;
+      default:
+        return QuestionMarkCircledIcon;
+    }
+  }, [device == null ? void 0 : device.profile.type]);
+  return /* @__PURE__ */ jsx(IconComponent, __spreadValues({}, props));
+}
+var styles = {
+  "corner-bl": "_corner-bl_1r540_1",
+  "corner-br": "_corner-br_1r540_2",
+  "tab-item": "_tab-item_1r540_43"
+};
 var router$2 = {};
+var router$1 = {};
 var normalizeTrailingSlash = {};
 Object.defineProperty(normalizeTrailingSlash, "__esModule", {
   value: true
@@ -2348,9 +2861,9 @@ routeLoader.isAssetError = isAssetError;
 routeLoader.getClientBuildManifest = getClientBuildManifest;
 routeLoader.getMiddlewareManifest = getMiddlewareManifest;
 routeLoader.createRouteLoader = createRouteLoader;
-_interopRequireDefault$5(getAssetPathFromRoute$1);
-var _requestIdleCallback$1 = requestIdleCallback$1;
-function _interopRequireDefault$5(obj) {
+_interopRequireDefault$4(getAssetPathFromRoute$1);
+var _requestIdleCallback = requestIdleCallback$1;
+function _interopRequireDefault$4(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
@@ -2377,16 +2890,16 @@ function withFuture(key, map, generator) {
     throw err;
   }) : prom;
 }
-function hasPrefetch(link2) {
+function hasPrefetch(link) {
   try {
-    link2 = document.createElement("link");
-    return !!window.MSInputMethodContext && !!document.documentMode || link2.relList.supports("prefetch");
+    link = document.createElement("link");
+    return !!window.MSInputMethodContext && !!document.documentMode || link.relList.supports("prefetch");
   } catch (e) {
     return false;
   }
 }
 const canPrefetch = hasPrefetch();
-function prefetchViaDom(href, as, link2) {
+function prefetchViaDom(href, as, link) {
   return new Promise((res, rej) => {
     const selector = `
       link[rel="prefetch"][href^="${href}"],
@@ -2395,15 +2908,15 @@ function prefetchViaDom(href, as, link2) {
     if (document.querySelector(selector)) {
       return res();
     }
-    link2 = document.createElement("link");
+    link = document.createElement("link");
     if (as)
-      link2.as = as;
-    link2.rel = `prefetch`;
-    link2.crossOrigin = {}.__NEXT_CROSS_ORIGIN;
-    link2.onload = res;
-    link2.onerror = rej;
-    link2.href = href;
-    document.head.appendChild(link2);
+      link.as = as;
+    link.rel = `prefetch`;
+    link.crossOrigin = {}.__NEXT_CROSS_ORIGIN;
+    link.onload = res;
+    link.onerror = rej;
+    link.href = href;
+    document.head.appendChild(link);
   });
 }
 const ASSET_LOAD_ERROR = Symbol("ASSET_LOAD_ERROR");
@@ -2431,7 +2944,7 @@ function resolvePromiseWithTimeout(p2, ms, err) {
       resolve(r);
     }).catch(reject);
     {
-      _requestIdleCallback$1.requestIdleCallback(() => setTimeout(() => {
+      _requestIdleCallback.requestIdleCallback(() => setTimeout(() => {
         if (!cancelled) {
           reject(err);
         }
@@ -2540,7 +3053,7 @@ function createRouteLoader(assetPrefix) {
         }
       });
     },
-    loadRoute(route, prefetch2) {
+    loadRoute(route, prefetch) {
       return withFuture(route, routes, () => {
         return resolvePromiseWithTimeout(getFilesForRoute(assetPrefix, route).then(({ scripts, css }) => {
           return Promise.all([
@@ -2558,7 +3071,7 @@ function createRouteLoader(assetPrefix) {
           }, entrypoint);
           return "error" in entrypoint ? entrypoint : res;
         }).catch((err) => {
-          if (prefetch2) {
+          if (prefetch) {
             throw err;
           }
           return {
@@ -2576,7 +3089,7 @@ function createRouteLoader(assetPrefix) {
           return Promise.resolve();
       }
       return getFilesForRoute(assetPrefix, route).then((output) => Promise.all(canPrefetch ? output.scripts.map((script) => prefetchViaDom(script, "script")) : [])).then(() => {
-        _requestIdleCallback$1.requestIdleCallback(() => this.loadRoute(route, true).catch(() => {
+        _requestIdleCallback.requestIdleCallback(() => this.loadRoute(route, true).catch(() => {
         }));
       }).catch(() => {
       });
@@ -2885,7 +3398,7 @@ utils.normalizeRepeatedSlashes = normalizeRepeatedSlashes;
 utils.loadGetInitialProps = loadGetInitialProps;
 utils.formatWithValidation = formatWithValidation;
 utils.HtmlContext = utils.ST = utils.SP = utils.urlObjectKeys = void 0;
-var _react$4 = React__default;
+var _react$2 = React__default;
 var _formatUrl = formatUrl$1;
 function execOnce(fn) {
   let used = false;
@@ -2963,7 +3476,7 @@ utils.ST = ST;
 class DecodeError extends Error {
 }
 utils.DecodeError = DecodeError;
-const HtmlContext = _react$4.createContext(null);
+const HtmlContext = _react$2.createContext(null);
 utils.HtmlContext = HtmlContext;
 Object.defineProperty(routeMatcher, "__esModule", {
   value: true
@@ -3656,7 +4169,7 @@ const customRouteMatcherOptions = __spreadProps(__spreadValues({}, matcherOption
   strict: true
 });
 pathMatch.customRouteMatcherOptions = customRouteMatcherOptions;
-var _default$1 = (customRoute = false) => {
+var _default = (customRoute = false) => {
   return (path, regexModifier) => {
     const keys = [];
     let matcherRegex = pathToRegexp.pathToRegexp(path, keys, customRoute ? customRouteMatcherOptions : matcherOptions);
@@ -3681,7 +4194,7 @@ var _default$1 = (customRoute = false) => {
     };
   };
 };
-pathMatch.default = _default$1;
+pathMatch.default = _default;
 var prepareDestination$1 = {};
 var escapeRegexp = {};
 Object.defineProperty(escapeRegexp, "__esModule", {
@@ -3869,13 +4382,13 @@ Object.defineProperty(resolveRewrites$1, "__esModule", {
   value: true
 });
 resolveRewrites$1.default = resolveRewrites;
-var _pathMatch = _interopRequireDefault$4(pathMatch);
+var _pathMatch = _interopRequireDefault$3(pathMatch);
 var _prepareDestination = prepareDestination$1;
 var _normalizeTrailingSlash$1 = normalizeTrailingSlash;
 var _normalizeLocalePath$1 = normalizeLocalePath$1;
 var _parseRelativeUrl$1 = parseRelativeUrl$1;
-var _router$2 = router$2;
-function _interopRequireDefault$4(obj) {
+var _router$1 = router$1;
+function _interopRequireDefault$3(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
@@ -3885,7 +4398,7 @@ function resolveRewrites(asPath, pages, rewrites, query, resolveHref2, locales) 
   let matchedPage = false;
   let externalDest = false;
   let parsedAs = _parseRelativeUrl$1.parseRelativeUrl(asPath);
-  let fsPathname = _normalizeTrailingSlash$1.removePathTrailingSlash(_normalizeLocalePath$1.normalizeLocalePath(_router$2.delBasePath(parsedAs.pathname), locales).pathname);
+  let fsPathname = _normalizeTrailingSlash$1.removePathTrailingSlash(_normalizeLocalePath$1.normalizeLocalePath(_router$1.delBasePath(parsedAs.pathname), locales).pathname);
   let resolvedHref;
   const handleRewrite = (rewrite) => {
     const matcher = customRouteMatcher(rewrite.source);
@@ -3921,7 +4434,7 @@ function resolveRewrites(asPath, pages, rewrites, query, resolveHref2, locales) 
       parsedAs = destRes.parsedDestination;
       asPath = destRes.newUrl;
       Object.assign(query, destRes.parsedDestination.query);
-      fsPathname = _normalizeTrailingSlash$1.removePathTrailingSlash(_normalizeLocalePath$1.normalizeLocalePath(_router$2.delBasePath(asPath), locales).pathname);
+      fsPathname = _normalizeTrailingSlash$1.removePathTrailingSlash(_normalizeLocalePath$1.normalizeLocalePath(_router$1.delBasePath(asPath), locales).pathname);
       if (pages.includes(fsPathname)) {
         matchedPage = true;
         resolvedHref = fsPathname;
@@ -3992,34 +4505,34 @@ function detectDomainLocale$1(domainItems, hostname, detectedLocale) {
   }
   return domainItem;
 }
-Object.defineProperty(router$2, "__esModule", {
+Object.defineProperty(router$1, "__esModule", {
   value: true
 });
-router$2.getDomainLocale = getDomainLocale;
-router$2.addLocale = addLocale;
-router$2.delLocale = delLocale;
-router$2.hasBasePath = hasBasePath;
-router$2.addBasePath = addBasePath;
-router$2.delBasePath = delBasePath;
-router$2.isLocalURL = isLocalURL;
-router$2.interpolateAs = interpolateAs;
-router$2.resolveHref = resolveHref;
-router$2.default = void 0;
+router$1.getDomainLocale = getDomainLocale;
+router$1.addLocale = addLocale;
+router$1.delLocale = delLocale;
+router$1.hasBasePath = hasBasePath;
+router$1.addBasePath = addBasePath;
+router$1.delBasePath = delBasePath;
+router$1.isLocalURL = isLocalURL;
+router$1.interpolateAs = interpolateAs;
+router$1.resolveHref = resolveHref;
+router$1.default = void 0;
 var _normalizeTrailingSlash = normalizeTrailingSlash;
 var _routeLoader = routeLoader;
 var _isError = _interopRequireWildcard(isError$1);
 var _denormalizePagePath = denormalizePagePath$1;
 var _normalizeLocalePath = normalizeLocalePath$1;
-var _mitt = _interopRequireDefault$3(mitt$1);
+var _mitt = _interopRequireDefault$2(mitt$1);
 var _utils = utils;
 var _isDynamic = isDynamic;
 var _parseRelativeUrl = parseRelativeUrl$1;
 var _querystring = querystring$1;
-var _resolveRewrites = _interopRequireDefault$3(resolveRewrites$1);
+var _resolveRewrites = _interopRequireDefault$2(resolveRewrites$1);
 var _routeMatcher = routeMatcher;
 var _routeRegex = routeRegex;
 var _getMiddlewareRegex = getMiddlewareRegex$1;
-function _interopRequireDefault$3(obj) {
+function _interopRequireDefault$2(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
@@ -5087,37 +5600,36 @@ class Router {
   }
 }
 Router.events = _mitt.default();
-router$2.default = Router;
-var router$1 = {};
+router$1.default = Router;
 var routerContext = {};
 Object.defineProperty(routerContext, "__esModule", {
   value: true
 });
 routerContext.RouterContext = void 0;
-var _react$3 = _interopRequireDefault$2(React__default);
-function _interopRequireDefault$2(obj) {
+var _react$1 = _interopRequireDefault$1(React__default);
+function _interopRequireDefault$1(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
-const RouterContext = _react$3.default.createContext(null);
+const RouterContext = _react$1.default.createContext(null);
 routerContext.RouterContext = RouterContext;
 var withRouter$1 = {};
 Object.defineProperty(withRouter$1, "__esModule", {
   value: true
 });
 withRouter$1.default = withRouter;
-var _react$2 = _interopRequireDefault$1(React__default);
-var _router$1 = router$1;
-function _interopRequireDefault$1(obj) {
+var _react = _interopRequireDefault(React__default);
+var _router = router$2;
+function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     default: obj
   };
 }
 function withRouter(ComposedComponent) {
   function WithRouterWrapper(props) {
-    return /* @__PURE__ */ _react$2.default.createElement(ComposedComponent, Object.assign({
-      router: _router$1.useRouter()
+    return /* @__PURE__ */ _react.default.createElement(ComposedComponent, Object.assign({
+      router: _router.useRouter()
     }, props));
   }
   WithRouterWrapper.getInitialProps = ComposedComponent.getInitialProps;
@@ -5145,7 +5657,7 @@ function withRouter(ComposedComponent) {
   exports.makePublicRouterInstance = makePublicRouterInstance;
   exports.default = void 0;
   var _react2 = _interopRequireDefault2(React__default);
-  var _router2 = _interopRequireDefault2(router$2);
+  var _router2 = _interopRequireDefault2(router$1);
   var _routerContext = routerContext;
   var _isError2 = _interopRequireDefault2(isError$1);
   var _withRouter = _interopRequireDefault2(withRouter$1);
@@ -5269,752 +5781,8 @@ ${err.stack}` : err + "");
     });
     return instance;
   }
-})(router$1);
-var useIntersection$1 = {};
-Object.defineProperty(useIntersection$1, "__esModule", {
-  value: true
-});
-useIntersection$1.useIntersection = useIntersection;
-var _react$1 = React__default;
-var _requestIdleCallback = requestIdleCallback$1;
-const hasIntersectionObserver = typeof IntersectionObserver !== "undefined";
-function useIntersection({ rootRef, rootMargin, disabled }) {
-  const isDisabled = disabled || !hasIntersectionObserver;
-  const unobserve = _react$1.useRef();
-  const [visible, setVisible] = _react$1.useState(false);
-  const [root2, setRoot] = _react$1.useState(rootRef ? rootRef.current : null);
-  const setRef = _react$1.useCallback((el) => {
-    if (unobserve.current) {
-      unobserve.current();
-      unobserve.current = void 0;
-    }
-    if (isDisabled || visible)
-      return;
-    if (el && el.tagName) {
-      unobserve.current = observe(el, (isVisible) => isVisible && setVisible(isVisible), {
-        root: root2,
-        rootMargin
-      });
-    }
-  }, [
-    isDisabled,
-    root2,
-    rootMargin,
-    visible
-  ]);
-  _react$1.useEffect(() => {
-    if (!hasIntersectionObserver) {
-      if (!visible) {
-        const idleCallback = _requestIdleCallback.requestIdleCallback(() => setVisible(true));
-        return () => _requestIdleCallback.cancelIdleCallback(idleCallback);
-      }
-    }
-  }, [
-    visible
-  ]);
-  _react$1.useEffect(() => {
-    if (rootRef)
-      setRoot(rootRef.current);
-  }, [
-    rootRef
-  ]);
-  return [
-    setRef,
-    visible
-  ];
-}
-function observe(element, callback, options) {
-  const { id, observer, elements } = createObserver(options);
-  elements.set(element, callback);
-  observer.observe(element);
-  return function unobserve() {
-    elements.delete(element);
-    observer.unobserve(element);
-    if (elements.size === 0) {
-      observer.disconnect();
-      observers.delete(id);
-      let index = idList.findIndex((obj) => obj.root === id.root && obj.margin === id.margin);
-      if (index > -1) {
-        idList.splice(index, 1);
-      }
-    }
-  };
-}
-const observers = /* @__PURE__ */ new Map();
-const idList = [];
-function createObserver(options) {
-  const id = {
-    root: options.root || null,
-    margin: options.rootMargin || ""
-  };
-  let existing = idList.find((obj) => obj.root === id.root && obj.margin === id.margin);
-  let instance;
-  if (existing) {
-    instance = observers.get(existing);
-  } else {
-    instance = observers.get(id);
-    idList.push(id);
-  }
-  if (instance) {
-    return instance;
-  }
-  const elements = /* @__PURE__ */ new Map();
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const callback = elements.get(entry.target);
-      const isVisible = entry.isIntersecting || entry.intersectionRatio > 0;
-      if (callback && isVisible) {
-        callback(isVisible);
-      }
-    });
-  }, options);
-  observers.set(id, instance = {
-    id,
-    observer,
-    elements
-  });
-  return instance;
-}
-Object.defineProperty(link$1, "__esModule", {
-  value: true
-});
-link$1.default = void 0;
-var _react = _interopRequireDefault(React__default);
-var _router = router$2;
-var _router1 = router$1;
-var _useIntersection = useIntersection$1;
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    default: obj
-  };
-}
-const prefetched = {};
-function prefetch(router2, href, as, options) {
-  if (typeof window === "undefined" || !router2)
-    return;
-  if (!_router.isLocalURL(href))
-    return;
-  router2.prefetch(href, as, options).catch((err) => {
-  });
-  const curLocale = options && typeof options.locale !== "undefined" ? options.locale : router2 && router2.locale;
-  prefetched[href + "%" + as + (curLocale ? "%" + curLocale : "")] = true;
-}
-function isModifiedEvent(event) {
-  const { target } = event.currentTarget;
-  return target && target !== "_self" || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.nativeEvent && event.nativeEvent.which === 2;
-}
-function linkClicked(e, router2, href, as, replace, shallow, scroll, locale) {
-  const { nodeName } = e.currentTarget;
-  const isAnchorNodeName = nodeName.toUpperCase() === "A";
-  if (isAnchorNodeName && (isModifiedEvent(e) || !_router.isLocalURL(href))) {
-    return;
-  }
-  e.preventDefault();
-  router2[replace ? "replace" : "push"](href, as, {
-    shallow,
-    locale,
-    scroll
-  });
-}
-function Link(props) {
-  const p2 = props.prefetch !== false;
-  const router2 = _router1.useRouter();
-  const { href, as } = _react.default.useMemo(() => {
-    const [resolvedHref, resolvedAs] = _router.resolveHref(router2, props.href, true);
-    return {
-      href: resolvedHref,
-      as: props.as ? _router.resolveHref(router2, props.as) : resolvedAs || resolvedHref
-    };
-  }, [
-    router2,
-    props.href,
-    props.as
-  ]);
-  let { children, replace, shallow, scroll, locale } = props;
-  if (typeof children === "string") {
-    children = /* @__PURE__ */ _react.default.createElement("a", null, children);
-  }
-  let child;
-  {
-    child = _react.default.Children.only(children);
-  }
-  const childRef = child && typeof child === "object" && child.ref;
-  const [setIntersectionRef, isVisible] = _useIntersection.useIntersection({
-    rootMargin: "200px"
-  });
-  const setRef = _react.default.useCallback((el) => {
-    setIntersectionRef(el);
-    if (childRef) {
-      if (typeof childRef === "function")
-        childRef(el);
-      else if (typeof childRef === "object") {
-        childRef.current = el;
-      }
-    }
-  }, [
-    childRef,
-    setIntersectionRef
-  ]);
-  _react.default.useEffect(() => {
-    const shouldPrefetch = isVisible && p2 && _router.isLocalURL(href);
-    const curLocale = typeof locale !== "undefined" ? locale : router2 && router2.locale;
-    const isPrefetched = prefetched[href + "%" + as + (curLocale ? "%" + curLocale : "")];
-    if (shouldPrefetch && !isPrefetched) {
-      prefetch(router2, href, as, {
-        locale: curLocale
-      });
-    }
-  }, [
-    as,
-    href,
-    isVisible,
-    locale,
-    p2,
-    router2
-  ]);
-  const childProps = {
-    ref: setRef,
-    onClick: (e) => {
-      if (child.props && typeof child.props.onClick === "function") {
-        child.props.onClick(e);
-      }
-      if (!e.defaultPrevented) {
-        linkClicked(e, router2, href, as, replace, shallow, scroll, locale);
-      }
-    }
-  };
-  childProps.onMouseEnter = (e) => {
-    if (child.props && typeof child.props.onMouseEnter === "function") {
-      child.props.onMouseEnter(e);
-    }
-    if (_router.isLocalURL(href)) {
-      prefetch(router2, href, as, {
-        priority: true
-      });
-    }
-  };
-  if (props.passHref || child.type === "a" && !("href" in child.props)) {
-    const curLocale = typeof locale !== "undefined" ? locale : router2 && router2.locale;
-    const localeDomain = router2 && router2.isLocaleDomain && _router.getDomainLocale(as, curLocale, router2 && router2.locales, router2 && router2.domainLocales);
-    childProps.href = localeDomain || _router.addBasePath(_router.addLocale(as, curLocale, router2 && router2.defaultLocale));
-  }
-  return /* @__PURE__ */ _react.default.cloneElement(child, childProps);
-}
-var _default = Link;
-link$1.default = _default;
-var link = link$1;
-function GCodeViewer(_Ca) {
-  var _Da = _Ca, {
-    className
-  } = _Da, props = __objRest(_Da, [
-    "className"
-  ]);
-  const canvas = useRef();
-  useEffect((_) => {
-    let size = canvas.current.parentElement.getBoundingClientRect();
-    canvas.current.width = size.width;
-    canvas.current.height = size.height;
-    let canvasRect = canvas.current.getBoundingClientRect();
-    let centerX = canvasRect.width / 2;
-    let centerY = canvasRect.height / 2;
-    let radius = 30;
-    let angle = 0;
-    const k = 100;
-    let draw = (_2) => {
-      if (radius < 1) {
-        clearInterval(timer);
-        return;
-      }
-      let ctx = canvas.current.getContext("2d");
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = "#164e63";
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, angle, angle + Math.PI / k);
-      ctx.closePath();
-      ctx.stroke();
-      radius -= Math.PI / k;
-      angle += Math.PI / k;
-    };
-    let timer = setInterval(draw, 100);
-    return (_2) => clearInterval(timer);
-  }, []);
-  return /* @__PURE__ */ jsx("div", __spreadProps(__spreadValues({
-    className: classNames("relative", "bg-gray-500", className)
-  }, props), {
-    children: /* @__PURE__ */ jsx("canvas", {
-      ref: canvas,
-      className: "absolute inset-0"
-    })
-  }));
-}
-function DeviceCard({
-  device
-}) {
-  var _a, _b;
-  const percentage = 0;
-  return /* @__PURE__ */ jsx(link, {
-    href: `/workspace/devices/${device.id}`,
-    passHref: true,
-    children: /* @__PURE__ */ jsx(Widget, {
-      className: classNames("h-80 cursor-pointer"),
-      children: /* @__PURE__ */ jsx(DeviceProvider, {
-        device,
-        children: /* @__PURE__ */ jsx("div", {
-          className: "card-body",
-          children: /* @__PURE__ */ jsxs("div", {
-            className: "flex-1 flex flex-col space-y-2",
-            children: [/* @__PURE__ */ jsxs("div", {
-              className: "flex flex-col items-stretch font-medium text-sm border-b border-gray-600 pb-0.5",
-              children: [/* @__PURE__ */ jsxs("div", {
-                className: "flex flex-row",
-                children: [/* @__PURE__ */ jsx("div", {
-                  className: "flex-1",
-                  children: device.name
-                }), /* @__PURE__ */ jsx("button", {
-                  children: /* @__PURE__ */ jsx(StarIcon, {})
-                })]
-              }), /* @__PURE__ */ jsxs("div", {
-                className: "flex flex-row space-x-1 items-center text-[10px] font-mono font-normal dark:text-gray-500",
-                children: [/* @__PURE__ */ jsx("div", {
-                  children: /* @__PURE__ */ jsx(DeviceTypeIcon, {
-                    device
-                  })
-                }), /* @__PURE__ */ jsxs("div", {
-                  className: "flex-1",
-                  children: [(_a = device.profile) == null ? void 0 : _a.brand, " ", (_b = device.profile) == null ? void 0 : _b.model]
-                }), /* @__PURE__ */ jsx("div", {
-                  children: /* @__PURE__ */ jsx(DeviceConnectionStatus, {
-                    device
-                  })
-                })]
-              })]
-            }), /* @__PURE__ */ jsxs("div", {
-              className: "text-[11px] font-medium text-gray-500",
-              children: [/* @__PURE__ */ jsxs("div", {
-                className: "flex flex-row items-center justify-between",
-                children: [/* @__PURE__ */ jsx("div", {
-                  children: "Nome_file.m3f"
-                }), /* @__PURE__ */ jsxs("div", {
-                  children: [percentage, " %"]
-                })]
-              }), /* @__PURE__ */ jsx(Progress, {
-                value: 20,
-                max: 100
-              })]
-            }), device.camera && /* @__PURE__ */ jsx("div", {
-              className: "relative w-full h-[160px] rounded-md overflow-hidden",
-              children: /* @__PURE__ */ jsx("div", {
-                className: "absolute inset-x-0 bottom-0 flex flex-row",
-                children: device.camera.live ? /* @__PURE__ */ jsxs("div", {
-                  className: "m-1 p-1 bg-gray-900 bg-opacity-75 text-red-700 flex flex-row items-center space-x-1 rounded-sm",
-                  children: [/* @__PURE__ */ jsx("div", {
-                    className: "w-1 h-1 rounded-full bg-current"
-                  }), /* @__PURE__ */ jsx("span", {
-                    className: "text-[10px] font-medium",
-                    children: "LIVE"
-                  })]
-                }) : /* @__PURE__ */ jsxs("div", {
-                  className: "m-1 p-1 bg-gray-900 bg-opacity-75 text-gray-400 rounded-sm text-[10px] flex flex-row items-center space-x-1",
-                  children: [/* @__PURE__ */ jsx(CameraIcon, {}), /* @__PURE__ */ jsx("span", {
-                    className: "font-mono",
-                    children: "15:32:12"
-                  })]
-                })
-              })
-            }), device.type == "cnc" && /* @__PURE__ */ jsx(GCodeViewer, {
-              className: "w-full h-[160px] rounded-md overflow-hidden"
-            })]
-          })
-        })
-      })
-    })
-  });
-}
-const ConnectionStatus = Object.freeze({
-  Loading: 0,
-  PortNotFound: 1,
-  DifferentDevice: 2,
-  Connected: 10
-});
-function DeviceConnectionStatus({
-  device
-}) {
-  const [connectionStatus, setConnectionStatus] = useState(ConnectionStatus.Loading);
-  useEffect((_) => {
-    coreSocket.emit("devices:connection:check", device.id, (port) => {
-      if (port) {
-        if (port.serialNumber == device.serialNumber && port.vendorId == device.vendorId && port.productId == device.productId) {
-          setConnectionStatus(ConnectionStatus.Connected);
-        } else {
-          setConnectionStatus(ConnectionStatus.DifferentDevice);
-        }
-      } else {
-        setConnectionStatus(ConnectionStatus.PortNotFound);
-      }
-    });
-  }, [device]);
-  const tooltipContent = useMemo$1((_) => {
-    switch (connectionStatus) {
-      case ConnectionStatus.Loading:
-        return /* @__PURE__ */ jsx("span", {
-          children: "Checking connection..."
-        });
-      case ConnectionStatus.PortNotFound:
-        return /* @__PURE__ */ jsxs("span", {
-          className: "text-red-300",
-          children: ["Port ", device.port, " not found"]
-        });
-      case ConnectionStatus.DifferentDevice:
-        return /* @__PURE__ */ jsxs("span", {
-          className: "text-yellow-600",
-          children: ["A different device is connected to port ", device.port]
-        });
-      case ConnectionStatus.Connected:
-        return /* @__PURE__ */ jsxs("span", {
-          className: "text-lime-500",
-          children: ["Device connected on ", device.port]
-        });
-    }
-  }, [connectionStatus, device.port]);
-  return /* @__PURE__ */ jsx(Tooltip, {
-    content: tooltipContent,
-    size: "sm",
-    className: "font-normal",
-    side: "left",
-    sideOffset: 18,
-    alignOffset: 0,
-    children: /* @__PURE__ */ jsxs("div", {
-      children: [connectionStatus == ConnectionStatus.Loading && /* @__PURE__ */ jsx(Loader, {}), connectionStatus == ConnectionStatus.PortNotFound && /* @__PURE__ */ jsx(LinkBreak1Icon, {
-        className: "text-red-600"
-      }), connectionStatus == ConnectionStatus.DifferentDevice && /* @__PURE__ */ jsx(LinkNone1Icon, {
-        className: "text-yellow-600"
-      }), connectionStatus == ConnectionStatus.Connected && /* @__PURE__ */ jsx(Link1Icon, {
-        className: "text-lime-600"
-      })]
-    })
-  });
-}
-function DevicePluginsSettingsWidget() {
-  return /* @__PURE__ */ jsx(Widget, {
-    title: "Plugins",
-    children: /* @__PURE__ */ jsxs("div", {
-      className: "grid grid-cols-2 gap-3",
-      children: [/* @__PURE__ */ jsxs(Group, {
-        className: "justify-between",
-        children: [/* @__PURE__ */ jsx(Label, {
-          children: "Plugin install directory"
-        }), /* @__PURE__ */ jsx(InputRaw, {
-          value: "/plugins",
-          disabled: true
-        })]
-      }), /* @__PURE__ */ jsx(Group, {
-        children: /* @__PURE__ */ jsx(Button, {
-          size: "sm",
-          children: "Install plugin"
-        })
-      })]
-    })
-  });
-}
-function DevicesGrid() {
-  const {
-    devices
-  } = useAppContext();
-  return /* @__PURE__ */ jsx("div", {
-    className: "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 px-2",
-    children: devices == null ? void 0 : devices.map((device) => /* @__PURE__ */ jsx(DeviceCard, {
-      device
-    }, device.id))
-  });
-}
-const ReactComponent$3 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
-  xmlns: "http://www.w3.org/2000/svg",
-  xmlnsXlink: "http://www.w3.org/1999/xlink",
-  width: 15,
-  height: 15,
-  viewBox: "0 0 15 15"
-}, props), /* @__PURE__ */ React.createElement("path", {
-  d: "M-158.762,87.6l1.484,4.019h2.125l1.391-4.019Z",
-  transform: "translate(163.762 -86.099)",
-  fill: "currentColor"
-}), /* @__PURE__ */ React.createElement("path", {
-  d: "M-159.48,87.1h6.42l-1.737,5.019h-2.829Zm5.016,1h-3.58l1.115,3.019h1.42Z",
-  transform: "translate(163.762 -86.099)",
-  fill: "currentColor"
-}), /* @__PURE__ */ React.createElement("path", {
-  d: "M12.5.5H-.5v-1h13Z",
-  transform: "translate(1.5 13.5)",
-  fill: "currentColor"
-}), /* @__PURE__ */ React.createElement("path", {
-  d: "M.5,2.5h-1v-3h1Z",
-  transform: "translate(7.5 7.5)",
-  fill: "currentColor"
-}), /* @__PURE__ */ React.createElement("path", {
-  d: "M8.5.5h-9v-1h9Z",
-  transform: "translate(3.5 11.5)",
-  fill: "currentColor"
-}));
-function FDMPrinterIcon(props) {
-  return /* @__PURE__ */ jsx(ReactComponent$3, __spreadValues({
-    viewBox: "0 0 15 15"
-  }, props));
-}
-const ReactComponent$2 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
-  xmlns: "http://www.w3.org/2000/svg",
-  xmlnsXlink: "http://www.w3.org/1999/xlink",
-  width: 15,
-  height: 15,
-  viewBox: "0 0 15 15",
-  fill: "currentColor"
-}, props), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_1",
-  "data-name": "Linea 1",
-  d: "M12.5.5H-.5v-1h13Z",
-  transform: "translate(1.5 3.5)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_1",
-  "data-name": "Rettangolo 1",
-  width: 7,
-  height: 2,
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_1_-_Contorno",
-  "data-name": "Rettangolo 1 - Contorno",
-  d: "M0,0H7V2H0Z",
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Tracciato_3",
-  "data-name": "Tracciato 3",
-  d: "M-140.564,98.413l-1-1h-1v1h12v-1h-1l-1,1Z",
-  transform: "translate(144.064 -84.913)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Tracciato_3_-_Contorno",
-  "data-name": "Tracciato 3 - Contorno",
-  d: "M-130.064,98.913h-13v-2h1.707l1,1h7.589l1-1h1.7Z",
-  transform: "translate(144.064 -84.913)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_4",
-  "data-name": "Linea 4",
-  d: "M10,.5H0v-1H10Z",
-  transform: "translate(2.5 5.5)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_5",
-  "data-name": "Linea 5",
-  d: "M.5,5.5h-1v-6h1Z",
-  transform: "translate(2.5 5.5)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_6",
-  "data-name": "Linea 6",
-  d: "M.5,5.5h-1v-6h1Z",
-  transform: "translate(12.5 5.5)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_2",
-  "data-name": "Rettangolo 2",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(10 10)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_3",
-  "data-name": "Rettangolo 3",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(8 10)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_4",
-  "data-name": "Rettangolo 4",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(6 10)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_5",
-  "data-name": "Rettangolo 5",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(4 10)"
-}));
-function MSLAPrinterIcon(props) {
-  return /* @__PURE__ */ jsx(ReactComponent$2, __spreadValues({}, props));
-}
-const ReactComponent$1 = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
-  xmlns: "http://www.w3.org/2000/svg",
-  xmlnsXlink: "http://www.w3.org/1999/xlink",
-  width: 15,
-  height: 15,
-  viewBox: "0 0 15 15",
-  fill: "currentColor"
-}, props), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_1",
-  "data-name": "Rettangolo 1",
-  width: 7,
-  height: 7,
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_1_-_Contorno",
-  "data-name": "Rettangolo 1 - Contorno",
-  d: "M1,1V6H6V1H1M0,0H7V7H0Z",
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_6",
-  "data-name": "Rettangolo 6",
-  width: 5,
-  height: 2,
-  transform: "translate(1 12)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_6_-_Contorno",
-  "data-name": "Rettangolo 6 - Contorno",
-  d: "M0,0H5V2H0Z",
-  transform: "translate(1 12)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_7",
-  "data-name": "Rettangolo 7",
-  width: 5,
-  height: 2,
-  transform: "translate(9 12)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_7_-_Contorno",
-  "data-name": "Rettangolo 7 - Contorno",
-  d: "M0,0H5V2H0Z",
-  transform: "translate(9 12)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_7",
-  "data-name": "Linea 7",
-  d: "M.5,4.5h-1v-5h1Z",
-  transform: "translate(7.5 9.5)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_8",
-  "data-name": "Rettangolo 8",
-  width: 3,
-  height: 2,
-  transform: "translate(6 8)",
-  fill: "#fff"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_8_-_Contorno",
-  "data-name": "Rettangolo 8 - Contorno",
-  d: "M0,0H3V2H0Z",
-  transform: "translate(6 8)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_9",
-  "data-name": "Rettangolo 9",
-  width: 1,
-  height: 1,
-  transform: "translate(4 10)",
-  fill: "#fff"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_9_-_Contorno",
-  "data-name": "Rettangolo 9 - Contorno",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(4 10)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_10",
-  "data-name": "Rettangolo 10",
-  width: 1,
-  height: 1,
-  transform: "translate(2 9)",
-  fill: "#fff"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_10_-_Contorno",
-  "data-name": "Rettangolo 10 - Contorno",
-  d: "M0,0H1V1H0Z",
-  transform: "translate(2 9)"
-}));
-function CNCIcon(props) {
-  return /* @__PURE__ */ jsx(ReactComponent$1, __spreadValues({}, props));
-}
-const ReactComponent = (props) => /* @__PURE__ */ React.createElement("svg", __spreadValues({
-  xmlns: "http://www.w3.org/2000/svg",
-  xmlnsXlink: "http://www.w3.org/1999/xlink",
-  width: 15,
-  height: 15,
-  viewBox: "0 0 15 15",
-  fill: "currentColor"
-}, props), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_1",
-  "data-name": "Rettangolo 1",
-  width: 7,
-  height: 3,
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_1_-_Contorno",
-  "data-name": "Rettangolo 1 - Contorno",
-  d: "M1,1V2H6V1H1M0,0H7V3H0Z",
-  transform: "translate(4 1)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_6",
-  "data-name": "Rettangolo 6",
-  width: 13,
-  height: 1,
-  transform: "translate(1 13)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_6_-_Contorno",
-  "data-name": "Rettangolo 6 - Contorno",
-  d: "M0,0H13V1H0Z",
-  transform: "translate(1 13)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_7",
-  "data-name": "Linea 7",
-  d: "M.5,4.5h-1v-5h1Z",
-  transform: "translate(7.5 5.5)"
-}), /* @__PURE__ */ React.createElement("rect", {
-  id: "Rettangolo_8",
-  "data-name": "Rettangolo 8",
-  width: 3,
-  height: 2,
-  transform: "translate(6 3)",
-  fill: "#fff"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Rettangolo_8_-_Contorno",
-  "data-name": "Rettangolo 8 - Contorno",
-  d: "M0,0H3V2H0Z",
-  transform: "translate(6 3)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_8",
-  "data-name": "Linea 8",
-  d: "M1.646,2.354l-2-2L.354-.354l2,2Z",
-  transform: "translate(3.5 9.5)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Tracciato_5",
-  "data-name": "Tracciato 5",
-  d: "M1.5,0A1.5,1.5,0,0,1,3,1.5H0A1.5,1.5,0,0,1,1.5,0Z",
-  transform: "translate(6 11)",
-  fill: "#fff"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Tracciato_5_-_Contorno",
-  "data-name": "Tracciato 5 - Contorno",
-  d: "M1.5,0A1.5,1.5,0,0,1,3,1.5H0A1.5,1.5,0,0,1,1.5,0Z",
-  transform: "translate(6 11)"
-}), /* @__PURE__ */ React.createElement("path", {
-  id: "Linea_9",
-  "data-name": "Linea 9",
-  d: "M.354,2.354l-.707-.707,2-2,.707.707Z",
-  transform: "translate(9.5 9.5)"
-}));
-function LaserIcon(props) {
-  return /* @__PURE__ */ jsx(ReactComponent, __spreadValues({}, props));
-}
-function DeviceTypeIcon(_Ea) {
-  var _Fa = _Ea, {
-    device
-  } = _Fa, props = __objRest(_Fa, [
-    "device"
-  ]);
-  const IconComponent = useMemo$1((_) => {
-    switch (device.profile.type) {
-      case ClientDeviceType.FDMPrinter:
-        return FDMPrinterIcon;
-      case ClientDeviceType.MSLAPrinter:
-        return MSLAPrinterIcon;
-      case ClientDeviceType.CNC:
-        return CNCIcon;
-      case ClientDeviceType.Laser:
-        return LaserIcon;
-      default:
-        return QuestionMarkCircledIcon;
-    }
-  }, [device == null ? void 0 : device.profile.type]);
-  return /* @__PURE__ */ jsx(IconComponent, __spreadValues({}, props));
-}
-var styles = {
-  "corner-bl": "_corner-bl_1r540_1",
-  "corner-br": "_corner-br_1r540_2",
-  "tab-item": "_tab-item_1r540_43"
-};
-var router = router$1;
+})(router$2);
+var router = router$2;
 function TabItem(_Ga) {
   var _Ha = _Ga, {
     href
@@ -6022,7 +5790,7 @@ function TabItem(_Ga) {
     "href"
   ]);
   const router$12 = router.useRouter();
-  const active = useMemo$1((_) => router$12.asPath.startsWith(href), [href, router$12.asPath]);
+  const active = useMemo$1((_) => router$12 == null ? void 0 : router$12.asPath.startsWith(href), [href, router$12]);
   return /* @__PURE__ */ jsxs("li", {
     className: classNames("relative", "z-0 hover:z-20", "flex items-center", "text-sm leading-none", "font-medium", "rounded-t-lg", "transition-all duration-300", "group", {
       "z-30": active,
@@ -6031,7 +5799,7 @@ function TabItem(_Ga) {
     }, {
       "active": active
     }, styles["tab-item"]),
-    children: [/* @__PURE__ */ jsx(link, {
+    children: [/* @__PURE__ */ jsx(Link, {
       href,
       passHref: true,
       children: /* @__PURE__ */ jsx("a", {
@@ -6154,7 +5922,7 @@ function PluginListItem(_Ia) {
       })]
     }), plugin.settings && /* @__PURE__ */ jsx("div", {
       className: "w-20 flex items-center justify-center",
-      children: /* @__PURE__ */ jsx(link, {
+      children: /* @__PURE__ */ jsx(Link, {
         href: `/settings/plugins/${plugin.name}`,
         passHref: true,
         children: /* @__PURE__ */ jsx(Button, {
@@ -6691,7 +6459,7 @@ const SidebarMenuItem = React__default.forwardRef((_Sa, ref) => {
     ref,
     className: "flex items-center justify-center"
   }, props), {
-    children: href ? /* @__PURE__ */ jsx(link, {
+    children: href ? /* @__PURE__ */ jsx(Link, {
       href,
       children: /* @__PURE__ */ jsx("a", {
         className: "dark:hover:bg-gray-700 hover:bg-opacity-10 p-3 rounded-md transition-colors duration-150",
@@ -7501,7 +7269,7 @@ function MenuItem(_cb) {
       "hover:bg-gray-800 hover:bg-opacity-40": !active,
       "bg-blue-600": active
     }),
-    children: href ? /* @__PURE__ */ jsx(link, {
+    children: href ? /* @__PURE__ */ jsx(Link, {
       href,
       passHref: true,
       children: /* @__PURE__ */ jsx("a", {
