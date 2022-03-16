@@ -1,0 +1,12 @@
+(function(i,u){typeof exports=="object"&&typeof module!="undefined"?u(exports,require("@fuse-labs/core-client"),require("@fuse-labs/core-ui"),require("react")):typeof define=="function"&&define.amd?define(["exports","@fuse-labs/core-client","@fuse-labs/core-ui","react"],u):(i=typeof globalThis!="undefined"?globalThis:i||self,u(i["@fuse-labs/grbl-move"]={},i.coreClient,i.coreUi,i.React))})(this,function(i,u,l,O){"use strict";function g(e){return e&&typeof e=="object"&&"default"in e?e:{default:e}}var j=g(O),p={exports:{}},c={};/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/var d=Object.getOwnPropertySymbols,_=Object.prototype.hasOwnProperty,h=Object.prototype.propertyIsEnumerable;function w(e){if(e==null)throw new TypeError("Object.assign cannot be called with null or undefined");return Object(e)}function x(){try{if(!Object.assign)return!1;var e=new String("abc");if(e[5]="de",Object.getOwnPropertyNames(e)[0]==="5")return!1;for(var r={},t=0;t<10;t++)r["_"+String.fromCharCode(t)]=t;var n=Object.getOwnPropertyNames(r).map(function(f){return r[f]});if(n.join("")!=="0123456789")return!1;var o={};return"abcdefghijklmnopqrst".split("").forEach(function(f){o[f]=f}),Object.keys(Object.assign({},o)).join("")==="abcdefghijklmnopqrst"}catch{return!1}}x();/** @license React v17.0.2
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */var R=j.default,v=60103;if(c.Fragment=60107,typeof Symbol=="function"&&Symbol.for){var b=Symbol.for;v=b("react.element"),c.Fragment=b("react.fragment")}var S=R.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,P=Object.prototype.hasOwnProperty,E={key:!0,ref:!0,__self:!0,__source:!0};function m(e,r,t){var n,o={},f=null,s=null;t!==void 0&&(f=""+t),r.key!==void 0&&(f=""+r.key),r.ref!==void 0&&(s=r.ref);for(n in r)P.call(r,n)&&!E.hasOwnProperty(n)&&(o[n]=r[n]);if(e&&e.defaultProps)for(n in r=e.defaultProps,r)o[n]===void 0&&(o[n]=r[n]);return{$$typeof:v,type:e,key:f,ref:s,props:o,_owner:S.current}}c.jsx=m,c.jsxs=m,p.exports=c;const y=p.exports.jsx;function q(){const{device:e}=l.useDeviceContext();function r(){console.log("Requesting move"),u.socket.emit("move:x",e.id,123,t=>{console.log("Response from socket",t)})}return y(l.Widget,{children:y(l.Button,{onClick:r,children:"Test move"})})}i.GRBLMoveWidget=q,Object.defineProperties(i,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}})});

@@ -2,21 +2,46 @@
   "name": "@fuse-labs/marlin-gcode-viewer",
   "version": "1.0.0",
   "description": "GCode viewer plugin for FUSE for Marlin-based devices",
-  "main": "index.js",
   "type": "module",
+  "private": true,
+  "files": [
+    "dist-client"
+  ],
+  "main": "./dist-client/marlin-gcode-viewer.umd.js",
+  "module": "./dist-client/marlin-gcode-viewer.es.js",
+  "exports": {
+    "./client": {
+      "require": "./dist-client/marlin-gcode-viewer.umd.js",
+      "import": "./dist-client/marlin-gcode-viewer.es.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preview": "vite preview"
   },
   "author": "Fabio Borella",
   "license": "ISC",
-  "exports": {
-    "./client": "./client/index.js"
-  },
   "fuse": {
     "title": "[Marlin] GCode Viewer",
     "pagesUrl": "gcode-viewer",
     "icon": "CodeIcon",
     "tooltip": "GCode monitor",
-    "devices": [ "fdm_printer" ]
+    "devices": [
+      "fdm_printer"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
+  },
+  "dependencies": {
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@radix-ui/react-aspect-ratio": "^0.1.4"
   }
 }

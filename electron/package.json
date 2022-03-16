@@ -22,6 +22,7 @@
     "start-app": "NODE_ENV=production electron-forge start"
   },
   "dependencies": {
+    "@fuse-labs/camera": "file:../plugins/@fuse-labs/camera",
     "@fuse-labs/core": "file:../plugins/@fuse-labs/core",
     "@fuse-labs/core-client": "file:../plugins/@fuse-labs/core-client",
     "@fuse-labs/core-ui": "file:../plugins/@fuse-labs/core-ui",

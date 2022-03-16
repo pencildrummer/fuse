@@ -2,18 +2,43 @@
   "name": "@fuse-labs/marlin-extruder",
   "version": "1.0.0",
   "description": "Extruder plugin for FUSE for Marlin-based devices",
-  "main": "index.js",
-  "type": "module",
+  "private": true,
+  "files": [
+    "dist-client"
+  ],
+  "main": "./dist-client/marlin-extruder.umd.js",
+  "module": "./dist-client/marlin-extruder.es.js",
+  "exports": {
+    "./client": {
+      "require": "./dist-client/marlin-extruder.umd.js",
+      "import": "./dist-client/marlin-extruder.es.js"
+    }
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "preview": "vite preview"
   },
   "author": "Fabio Borella",
   "license": "ISC",
-  "exports": {
-    "./client": "./client/index.js"
-  },
   "fuse": {
     "title": "[Marlin] Extruder",
-    "devices": [ "fdm_printer" ]
+    "devices": [
+      "fdm_printer"
+    ]
+  },
+  "dependencies": {
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@radix-ui/react-icons": "^1.1.0",
+    "classnames": "^2.3.1"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
   }
 }

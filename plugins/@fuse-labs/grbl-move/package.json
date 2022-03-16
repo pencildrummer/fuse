@@ -2,19 +2,45 @@
   "name": "@fuse-labs/grbl-move",
   "version": "1.0.0",
   "description": "Plugin for FUSE to support GRBL device movements",
-  "main": "index.js",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
   "type": "module",
   "exports": {
-    "./server": "./server/index.js",
-    "./client": "./client/index.js"
+    "./server": "./lib/server/index.js",
+    "./client": {
+      "require": "./dist-client/grbl-move.umd.js",
+      "import": "./dist-client/grbl-move.es.js"
+    }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
   },
   "author": "Fabio Borella",
   "license": "ISC",
   "fuse": {
     "title": "GRBL Movement and position",
-    "devices": [ "cnc" ]
+    "devices": [
+      "cnc"
+    ]
+  },
+  "dependencies": {
+    "@fuse-labs/core": "file:../core",
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/core-ui": "file:../core-ui"
   }
 }
