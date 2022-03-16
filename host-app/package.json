@@ -1,8 +1,8 @@
 {
-  "name": "electron-server",
-  "productName": "electron-server",
+  "name": "host-app",
+  "productName": "HostApp",
   "version": "1.0.0",
-  "description": "Fuse - server",
+  "description": "Fuse - host server",
   "private": true,
   "main": "src/main.js",
   "scripts": {
