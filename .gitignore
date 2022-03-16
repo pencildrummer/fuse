@@ -8,10 +8,6 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
 /build
 
@@ -35,5 +31,5 @@ yarn-error.log*
 storage/*
 system/devices/*
 
-# fuse development plugins
-/plugins
+# # fuse development plugins
+# /plugins
