@@ -11,7 +11,7 @@ import 'chartjs-adapter-date-fns';
 import { Line } from 'react-chartjs-2'
 import { useState, useEffect } from "react";
 import { useDeviceContext } from "@fuse-labs/core-client";
-import { ArrowRightIcon, CheckIcon } from "@radix-ui/react-icons";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { Button, Group, Label, Widget, InputRaw } from "@fuse-labs/core-ui";
 import merge from 'lodash/merge'
 
