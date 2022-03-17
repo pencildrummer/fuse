@@ -16,5 +16,22 @@
 			"label": "npm: start - docs",
 			"detail": "docusaurus start --port=3001"
 		},
+		{
+			"type": "npm",
+			"script": "dev-watch",
+			"path": "host-app/",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: dev-watch - host-app",
+			"detail": "nodemon src/server.mjs"
+		},
+		{
+			"type": "npm",
+			"script": "dev",
+			"path": "client-app/",
+			"problemMatcher": [],
+			"label": "npm: dev - client-app",
+			"detail": "node src/server.mjs"
+		}
 	]
 }

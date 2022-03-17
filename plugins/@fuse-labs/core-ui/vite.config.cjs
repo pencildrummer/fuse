@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: (format) => `core-ui.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', ...Object.keys(dependencies), 'next/link', 'next/router'],
+      external: ['react', 'react-dom', ...Object.keys(dependencies), 'next', 'next/link', 'next/router'],
       output: {
         globals: {
           react: 'React',
