@@ -3,7 +3,7 @@ import '../global.css'
 import { useEffect, useState } from 'react'
 import { AppProvider, ClientPluginManager, coreSocket } from '@fuse-labs/core-client'
 import { AppLoader } from '@fuse-labs/core-ui'
-import * as messages from './../../lang/index.js'
+import * as messages from '../../lang/index.js'
 import Head from 'next/head'
 import pkg from '../../package.json'
 
