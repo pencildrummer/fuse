@@ -4,14 +4,9 @@
   "version": "1.0.0",
   "description": "Fuse - host server",
   "private": true,
-  "main": "src/main.js",
   "scripts": {
     "dev": "node src/server.mjs",
     "dev-watch": "nodemon src/server.mjs",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
@@ -20,33 +15,6 @@
     "email": "4450251+pencildrummer@users.noreply.github.com"
   },
   "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "electron_server"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
-  },
   "dependencies": {
     "@fuse-labs/core": "file:../plugins/@fuse-labs/core",
     "@fuse-labs/file-manager": "file:../plugins/@fuse-labs/file-manager",
@@ -54,16 +22,9 @@
     "@fuse-labs/marlin-temperature": "file:../plugins/@fuse-labs/marlin-temperature",
     "@fuse-labs/shared-utils": "file:../plugins/@fuse-labs/shared-utils",
     "@fuse-labs/terminal": "file:../plugins/@fuse-labs/terminal",
-    "electron-squirrel-startup": "^1.0.0",
     "signale": "^1.4.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "electron": "17.1.2",
     "nodemon": "^2.0.15"
   }
 }

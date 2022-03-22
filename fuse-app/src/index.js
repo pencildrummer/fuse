@@ -7,7 +7,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = () => {
+const createClientWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
@@ -46,7 +46,7 @@ app.whenReady().then(_ => {
 
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Fuse server', type: 'normal' },
-    { label: 'Open Fuse', type: 'normal', click: createWindow },
+    { label: 'Open Fuse', type: 'normal', click: createClientWindow },
     { type: 'separator' },
     { label: 'Settings...', type: 'normal', click: createSettingsWindow },
     { type: 'separator' },
@@ -71,7 +71,7 @@ app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createClientWindow();
   }
 });
 
