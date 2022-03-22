@@ -16,10 +16,8 @@
     "dist-client",
     "lib/server"
   ],
-  "main": "./lib/server/index.js",
   "type": "module",
   "exports": {
-    "./server": "./lib/server/index.js",
     "./client": {
       "require": "./dist-client/grbl-move.umd.js",
       "import": "./dist-client/grbl-move.es.js"

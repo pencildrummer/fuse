@@ -67,6 +67,29 @@ class PluginManager {
       // Wait for previous plugin load process
       const plugins = await prev
 
+      const pluginPkgPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'package.json')
+
+      // Find package.json
+      if (!fs.existsSync(pluginPkgPath)) {
+        console.error('Unable to find package.json for plugin', pluginName)
+        return plugins
+      }
+
+      // Read package.json
+      let pluginPkg
+      try {
+        pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath))
+      } catch(err) {
+        console.error('Error reading package.json from plugin', pluginName)
+        return plugins
+      }
+
+      // Check if supports server side (should export server)
+      if (pluginPkg.exports?.['./server'] == undefined) {
+        console.warn(`${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`)
+        return plugins
+      }
+
       // TODO - Find a better way to load plugin or check if it is a bug that prevent loading from "exports" defined keys in package.json of plugins installed
       let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'lib', 'server', 'index.js')
       //const pluginModule = await import(`${pluginName}/server`)

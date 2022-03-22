@@ -1,5 +1,4 @@
 import { Plugin } from '@fuse-labs/core/server'
-import signale from 'signale';
 
 export default class MarlinTemperaturePlugin extends Plugin {
 
@@ -31,14 +30,14 @@ export default class MarlinTemperaturePlugin extends Plugin {
     // Init socket listeners and emitters
     
     socket.on('nozzle:set', (temp, fn) => {
-      signale.info('Requested nozzle temperature:', temp)
+      console.info('Requested nozzle temperature:', temp)
       // TODO - Set temperature target on device
       nozzleTarget = temp
       fn?.(true)
     })
 
     socket.on('heatbed:set', (temp, fn) => {
-      signale.info('Requested heatbed temperature:', temp)
+      console.info('Requested heatbed temperature:', temp)
       // TODO - Set temperature target on device
       heatbedTarget = temp
       fn?.(true)

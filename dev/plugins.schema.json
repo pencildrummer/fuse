@@ -1,0 +1,20 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "description": "The name of the installed plugin, scope is included just like in npm",
+        "type": "string"
+      },
+      "active": {
+        "description": "If the plugin is active",
+        "type": "boolean"
+      },
+      "installedAt": {
+        "description": "The date of first installation",
+        "type": "integer"
+      }
+    }
+  }
+}

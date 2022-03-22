@@ -4,6 +4,7 @@
   "version": "1.0",
   "author": "Fabio Borella",
   "license": "MIT",
+  "type": "module",
   "files": [
     "dist",
     "dist-client",
@@ -24,6 +25,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fuse-labs/core": "file:../core",
     "@fuse-labs/core-client": "file:../core-client",
     "@fuse-labs/core-ui": "file:../core-ui",
     "@radix-ui/react-icons": "^1.1.0",
