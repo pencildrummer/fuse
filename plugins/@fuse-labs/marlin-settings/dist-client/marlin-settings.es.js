@@ -1,4 +1,4 @@
-import { useDeviceContext } from "@fuse-labs/core-client";
+import { useDeviceContext, ClientPlugin } from "@fuse-labs/core-client";
 import { Widget } from "@fuse-labs/core-ui";
 import require$$0, { useEffect } from "react";
 var jsxRuntime = { exports: {} };
@@ -105,6 +105,7 @@ reactJsxRuntime_production_min.jsxs = q;
   jsxRuntime.exports = reactJsxRuntime_production_min;
 }
 const jsx = jsxRuntime.exports.jsx;
+const Fragment = jsxRuntime.exports.Fragment;
 function MarlinSettingsWidget() {
   const {
     device
@@ -119,4 +120,18 @@ function MarlinSettingsWidget() {
     children: "TODO - Show Marlin settings"
   });
 }
-export { MarlinSettingsWidget };
+function MarlinSettingsPage() {
+  return /* @__PURE__ */ jsx(Fragment, {
+    children: /* @__PURE__ */ jsx(MarlinSettingsWidget, {})
+  });
+}
+class MarlinSettingsClientPlugin extends ClientPlugin {
+  deviceComponents(device) {
+    return {
+      page: {
+        plugin: MarlinSettingsPage
+      }
+    };
+  }
+}
+export { MarlinSettingsWidget, MarlinSettingsClientPlugin as default };

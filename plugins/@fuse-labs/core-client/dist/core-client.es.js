@@ -137,6 +137,12 @@ class ClientPlugin {
   get displayTitle() {
     return this._fuse.title || this.name;
   }
+  components() {
+    return {};
+  }
+  deviceComponents(device) {
+    return {};
+  }
 }
 const _ClientPluginManager = class {
   constructor() {

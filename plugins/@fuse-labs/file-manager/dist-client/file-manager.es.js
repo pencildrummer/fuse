@@ -722,7 +722,17 @@ function FileManagerIndexTab() {
     })]
   });
 }
+function IndexPage() {
+  return /* @__PURE__ */ jsx(FileManagerProvider, {
+    children: /* @__PURE__ */ jsx(FileManagerIndexTab, {})
+  });
+}
 class FileManagerClientPlugin extends ClientPlugin {
+  components() {
+    return {
+      tab: IndexPage
+    };
+  }
   deviceComponents(device) {
     return {
       page: {

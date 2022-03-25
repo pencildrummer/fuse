@@ -85,5 +85,21 @@ export default class ClientPlugin {
       this.provision()
     }
   }
+
+  /**
+   * Returns dynamic plugin components
+   */
+  components() {
+    return {}
+  }
+  
+  /**
+   * Returns dynamic plugin components for device
+   * @param {ClientDevice} device 
+   * @returns 
+   */
+  deviceComponents(device) {
+    return {}
+  }
   
 }

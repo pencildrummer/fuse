@@ -1,6 +1,6 @@
-import { Page, Widget } from "@fuse-labs/core-ui"
-import dynamic from 'next/dynamic'
-import { usePlugin } from "plugins/@fuse-labs/core-client"
+import { Page, Widget, usePluginComponents } from "@fuse-labs/core-ui"
+//import dynamic from 'next/dynamic'
+import { usePlugin } from "@fuse-labs/core-client"
 import { useRouter } from "next/router"
 
 export default function InstalledPluginSettingsPage() {
@@ -11,8 +11,10 @@ export default function InstalledPluginSettingsPage() {
   const { pluginName } = query
 
   const plugin = usePlugin(pluginName.join('/'))
+  const PluginSettingsComponent = usePluginComponents(plugin, 'page.settings')
+
   // TODO - Make return component from plugin class?
-  const PluginSettingsComponent = dynamic(_ => import(`plugins/${plugin.name}/pages/settings.js`))
+  //const PluginSettingsComponent = dynamic(_ => import(`plugins/${plugin.name}/pages/settings.js`))
 
   if (PluginSettingsComponent)
     return <PluginSettingsComponent />

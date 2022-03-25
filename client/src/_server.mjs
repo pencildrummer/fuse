@@ -1,8 +1,9 @@
 import { createServer } from 'http'
-import { parse } from 'url'
+import { fileURLToPath, parse } from 'url'
 import next from 'next'
 import { logger } from '@fuse-labs/core/server'
 import signale from 'signale'
+import path from 'path'
 const { Signale } = signale
 
 // Override default console to use Fuse logger
@@ -13,6 +14,8 @@ const hostname = 'localhost'
 const port = process.env.PORT || 3000
 
 // when using middleware `hostname` and `port` must be provided below
+// let projectDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+// console.log('DIR', projectDirectory)
 const app = next({ dev, hostname, port })
 const handle = app.getRequestHandler()
 

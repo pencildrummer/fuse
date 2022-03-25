@@ -1,13 +1,14 @@
 {
-  "name": "host-app",
-  "productName": "HostApp",
+  "name": "@fuse-labs/host",
+  "productName": "Fuse-Host",
   "version": "1.0.0",
   "description": "Fuse - host server",
   "private": true,
+  "main": "src/server.mjs",
   "scripts": {
-    "dev": "node src/server.mjs",
-    "dev-watch": "nodemon src/server.mjs",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "dev": "nodemon src/server.mjs",
+    "start": "node src/server.mjs"
   },
   "keywords": [],
   "author": {
@@ -26,5 +27,9 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
-  }
+  },
+  "files": [
+    "src",
+    "system"
+  ]
 }

@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import get from 'lodash/get'
+import get from 'lodash-es/get'
 
 export default function useDeviceComponents(device, keyPath) {
 

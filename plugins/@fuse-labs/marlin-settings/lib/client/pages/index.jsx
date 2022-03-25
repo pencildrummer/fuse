@@ -1,4 +1,4 @@
-import MarlinSettingsWidget from "../client/components/MarlinSettingsWidget/MarlinSettingsWidget";
+import MarlinSettingsWidget from "../components/MarlinSettingsWidget/MarlinSettingsWidget";
 
 export default function MarlinSettingsPage() {
   return (

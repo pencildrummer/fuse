@@ -1,0 +1,13 @@
+{
+  "id": "vevor.3018",
+  "brand": "Vevor",
+  "model": "3018",
+  "type": "cnc",
+  "firmware": "grbl",
+  "connection": "serial",
+  "gCodeVersion": "grbl",
+  "volume": {
+    "width": 300,
+    "height": 180
+  }
+}

@@ -33,11 +33,25 @@ export default function DynamicPage({
     return <InactivePluginView />
   }
 
-  // TODO - Create dynamic retrieval manager or something more abstract than pure path in here
-  return null
-  // const TabPluginComponent = dynamic(_ => import(`plugins/${plugin.name}/tabs/index.js`))
+  // TODO - When added support for multiple tabs this should be changed
+  const pluginComponents = plugin?.components()
 
-  // return <MainLayout>
-  //   <TabPluginComponent />
-  // </MainLayout>
+  if (!pluginComponents.tab) {
+    return (
+      <BlockingView>
+         <Group orientation='vertical' className="items-center">
+          <ExclamationTriangleIcon className='w-20 h-20 text-gray-700'/>
+          <span className="font-bold text-gray-500">
+            Plugin tab not found
+          </span>
+        </Group>
+      </BlockingView>
+    )
+  }
+  
+  let TabPluginComponent = pluginComponents.tab
+
+  return <MainLayout>
+    <TabPluginComponent />
+  </MainLayout>
 }

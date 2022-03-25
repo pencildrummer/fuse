@@ -7,20 +7,30 @@ import { dependencies } from './package.json'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svgrPlugin(), react()],
+  // optimizeDeps: {
+  //   exclude: ['next', 'next/link', 'next/router']
+  // },
   build: {
     lib: {
       entry: path.resolve(__dirname, 'lib/index.js'),
       name: '@fuse-labs/core-ui',
+      formats: ['es'],
       fileName: (format) => `core-ui.${format}.js`
     },
+    //cssCodeSplit: true,
+    // commonjsOptions: {
+    //   exclude: ['next/link', 'next'],
+    //   ignore: ['next/link', 'next'],
+    //   defaultIsModuleExports: 'false',
+    // },
     rollupOptions: {
-      external: ['react', 'react-dom', ...Object.keys(dependencies), 'next', 'next/link', 'next/router'],
+      external: ['react', 'react-dom', /next\/?.*/, ...Object.keys(dependencies)],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
         }
       }
-    }
-  }
+    },
+  },
 })

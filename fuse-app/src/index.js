@@ -1,6 +1,18 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 
+(async () => {
+  console.log('Starting HOST server...')
+  // Start host server
+  await import('@fuse-labs/host')
+  
+  console.log('Starting CLIENT server...')
+  // Start client server
+  //await import('@fuse-labs/client')
+  //await import('../../client/src/server.mjs')
+  await import('./serve-client.js')
+})()
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   // eslint-disable-line global-require

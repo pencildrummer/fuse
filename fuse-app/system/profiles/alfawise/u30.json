@@ -1,0 +1,42 @@
+{
+  "id": "alfawise.u30",
+  "type": "fdm_printer",
+  "brand": "Alfawise",
+  "model": "U30",
+  "firmware": "marlin",
+  "connection": "serial",
+  "volume": {
+    "width": 100000,
+    "height": 600,
+    "depth": 200,
+    "formFactor": "rectangular",
+    "origin": "lower-left"
+  },
+  "bed": {
+    "heated": true
+  },
+  "gCodeVersion": "marlin",
+  "xAxis": {
+    "name": "x",
+    "maxSpeed": 6000
+  },
+  "yAxis": {
+    "name": "y",
+    "maxSpeed": 6000
+  },
+  "zAxis": {
+    "name": "z",
+    "maxSpeed": 3000
+  },
+  "extruders": [
+    {
+      "nozzleSize": "0.4",
+      "minNozzleSize": "0.4",
+      "maxNozzleSize": "0.4",
+      "axis": {
+        "name": "z",
+        "maxSpeed": 3000
+      }
+    }
+  ]
+}

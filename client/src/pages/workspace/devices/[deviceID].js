@@ -1,10 +1,10 @@
-import { CameraWidget } from '@fuse-labs/camera/client'
-import { ExtruderWidget } from '@fuse-labs/marlin-extruder/client'
-import { MarlinMiscWidget } from '@fuse-labs/marlin-extra/client'
-import { FeedRateWidget } from "@fuse-labs/marlin-move/client";
-import { MoveWidget } from "@fuse-labs/marlin-move/client";
-import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
-import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
+// import { CameraWidget } from '@fuse-labs/camera/client'
+// import { ExtruderWidget } from '@fuse-labs/marlin-extruder/client'
+// import { MarlinMiscWidget } from '@fuse-labs/marlin-extra/client'
+// import { FeedRateWidget } from "@fuse-labs/marlin-move/client";
+// import { MoveWidget } from "@fuse-labs/marlin-move/client";
+// import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
+// import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
 import { getDevicePageComponent, useDeviceComponents, Widget } from "@fuse-labs/core-ui";
 import { useRouter } from "next/router";

@@ -3,17 +3,15 @@
   "description": "CoreUI plugin for FUSE",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/core-ui.umd.js",
   "module": "./dist/core-ui.es.js",
   "exports": {
     ".": {
-      "require": "./dist/core-ui.umd.js",
       "import": "./dist/core-ui.es.js"
-    }
+    },
+    "./core-ui.css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",
@@ -43,18 +41,20 @@
     "@radix-ui/react-tooltip": "^0.1.7",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
-    "sass": "^1.49.9",
-    "vite-plugin-svgr": "^1.0.1",
+    "lodash-es": "^4.17.21",
+    "verbose": "^0.2.3",
     "yup": "^0.32.11"
   },
   "peerDependencies": {
     "next": "^12.1.0",
-    "react": "^17.0.2",
+    "react": "file:../../../client/node_modules/react",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
-    "vite": "^2.8.0"
+    "sass": "^1.49.9",
+    "vite": "^2.8.0",
+    "vite-plugin-svgr": "^1.0.1"
   },
   "fuse": {
     "title": "Core UI"

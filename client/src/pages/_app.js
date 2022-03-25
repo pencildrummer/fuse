@@ -1,5 +1,6 @@
 import 'tailwindcss/tailwind.css'
 import '../global.css'
+import '@fuse-labs/core-ui/core-ui.css'
 import { useEffect, useState } from 'react'
 import { AppProvider, ClientPluginManager, coreSocket } from '@fuse-labs/core-client'
 import { AppLoader } from '@fuse-labs/core-ui'
@@ -10,6 +11,7 @@ import pkg from '../../package.json'
 import TerminalClientPlugin from '@fuse-labs/terminal/client'
 import MarlinCoreClientPlugin from '@fuse-labs/marlin-core/client'
 import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
+import MarlinSettingsClientPlugin from '@fuse-labs/marlin-settings/client'
 import FileManagerClientPlugin from '@fuse-labs/file-manager/client'
 
 // Import Electron specific styles
@@ -20,6 +22,7 @@ ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
 ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
+ClientPluginManager.registerPlugin('@fuse-labs/marlin-settings', MarlinSettingsClientPlugin)
 
 function MyApp({ Component, pageProps }) {
 

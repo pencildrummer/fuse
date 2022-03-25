@@ -14,7 +14,7 @@ export default defineConfig({
       fileName: (format) => `file-manager.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', ...Object.keys(dependencies)],
+      external: ['react', 'react-dom', 'react-intl', ...Object.keys(dependencies)],
       output: {
         exports: 'named',
         globals: {

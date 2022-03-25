@@ -1,25 +1,22 @@
 {
-  "name": "fuse",
+  "name": "@fuse-labs/client",
+  "productName": "Fuse-Client",
   "version": "0.1",
-  "description": "Manager for 3D printers, CNC and laser",
+  "description": "Fuse client - Manager for 3D printers, CNC and laser",
   "author": {
     "name": "Fabio Borella",
     "email": "info@pencildrummer.com",
     "url": "https://pencildrummer.com"
   },
   "private": true,
-  "main": "src/main.js",
+  "main": "src/server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "next lint --no-cache",
-    "dev": "node src/server.mjs",
-    "dev-app": "electron .",
+    "dev": "next dev",
     "debug": "DEBUG=serialport* node --trace-warnings src/server.mjs",
     "build": "next build",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "start": "NODE_ENV=production node src/server.mjs",
-    "start-app": "NODE_ENV=production electron-forge start"
+    "start": "next start"
   },
   "dependencies": {
     "@fuse-labs/camera": "file:../plugins/@fuse-labs/camera",
@@ -28,31 +25,27 @@
     "@fuse-labs/core-ui": "file:../plugins/@fuse-labs/core-ui",
     "@fuse-labs/file-manager": "file:../plugins/@fuse-labs/file-manager",
     "@fuse-labs/marlin-core": "file:../plugins/@fuse-labs/marlin-core",
+    "@fuse-labs/marlin-settings": "file:../plugins/@fuse-labs/marlin-settings",
     "@fuse-labs/marlin-temperature": "file:../plugins/@fuse-labs/marlin-temperature",
+    "@fuse-labs/shared-utils": "file:../plugins/@fuse-labs/shared-utils",
     "@fuse-labs/terminal": "file:../plugins/@fuse-labs/terminal",
     "@radix-ui/react-icons": "^1.1.0",
     "classnames": "^2.3.1",
     "commander": "^9.0.0",
     "date-fns": "^2.28.0",
-    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.3",
     "next": "^12.1.0",
     "prompts": "^2.4.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-intl": "^5.24.7",
     "sass": "^1.49.4",
     "signale": "^1.4.0",
     "tailwindcss-radix": "^1.6.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "autoprefixer": "^10.2.6",
-    "electron": "^17.1.2",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
     "eslint-import-resolver-alias": "^1.1.2",
@@ -60,32 +53,5 @@
     "nodemon": "^2.0.15",
     "postcss": "^8.3.5",
     "tailwindcss": "^3.0.18"
-  },
-  "config": {
-    "forge": {
-      "packagerConfig": {},
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "fuse_electron"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
   }
 }

@@ -1240,11 +1240,15 @@ function TemperatureField(_a) {
     })]
   });
 }
+function PrinterTemperaturePage() {
+  return /* @__PURE__ */ jsx(TemperatureWidget, {});
+}
 class MarlinTemperatureClientPlugin extends ClientPlugin {
   deviceComponents() {
     return {
       page: {
-        home: TemperatureWidget
+        home: TemperatureWidget,
+        plugin: PrinterTemperaturePage
       }
     };
   }

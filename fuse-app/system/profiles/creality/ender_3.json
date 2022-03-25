@@ -1,0 +1,42 @@
+{
+  "id": "creality.ender_3",
+  "type": "fdm_printer",
+  "brand": "Creality",
+  "model": "Ender 3",
+  "firmware": "marlin",
+  "connection": "serial",
+  "volume": {
+    "width": 200,
+    "depth": 200,
+    "height": 200,
+    "origin": "lower-left",
+    "formFactor": "rectangular"
+  },
+  "bed": {
+    "heated": true
+  },
+  "gCodeVersion": "marlin",
+  "xAxis": {
+    "name": "x",
+    "maxSpeed": 6000
+  },
+  "yAxis": {
+    "name": "y",
+    "maxSpeed": 6000
+  },
+  "zAxis": {
+    "name": "z",
+    "maxSpeed": 3000
+  },
+  "extruders": [
+    {
+      "nozzleSize": "0.4",
+      "minNozzleSize": "0.4",
+      "maxNozzleSize": "0.4",
+      "axis": {
+        "name": "z",
+        "maxSpeed": 3000
+      }
+    }
+  ]
+}

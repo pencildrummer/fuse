@@ -130,6 +130,7 @@ reactJsxRuntime_production_min.jsxs = q;
 }
 const jsx = jsxRuntime.exports.jsx;
 const jsxs = jsxRuntime.exports.jsxs;
+const Fragment = jsxRuntime.exports.Fragment;
 function MarlinTerminalSettingsWidget(_a) {
   var props = __objRest(_a, []);
   const {
@@ -442,10 +443,22 @@ class ClientTerminal {
     }
   }
 }
+function TerminalPage() {
+  return /* @__PURE__ */ jsxs(Fragment, {
+    children: [/* @__PURE__ */ jsx(MarlinTerminalWidget, {}), /* @__PURE__ */ jsx(MarlinTerminalSettingsWidget, {})]
+  });
+}
 class TerminalClientPlugin extends ClientPlugin {
   constructor(data) {
     super(data);
     ClientDeviceManager.shared.addEventListener("updatedDevices", this.provision);
+  }
+  deviceComponents(device) {
+    return {
+      page: {
+        plugin: TerminalPage
+      }
+    };
   }
   provision() {
     const devices = ClientDeviceManager.shared.devices;

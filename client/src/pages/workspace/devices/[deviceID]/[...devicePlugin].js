@@ -1,8 +1,7 @@
-import dynamic from 'next/dynamic'
-import getDevicePageComponent from '@fuse-labs/core-ui/components/pages/getDevicePageComponent.js'
+//import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
 import { useDevice, useDevicePlugin } from '@fuse-labs/core-client'
-import { BlockingView, Group, InactivePluginView } from '@fuse-labs/core-ui'
+import { BlockingView, Group, InactivePluginView, getDevicePageComponent, useDevicePluginComponents } from '@fuse-labs/core-ui'
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 
 export default function DevicePluginPage() {
@@ -16,6 +15,7 @@ export default function DevicePluginPage() {
 
   const pluginUrl = devicePlugin.join('/')
   const plugin = useDevicePlugin(deviceID, pluginUrl)
+  const PluginComponent = useDevicePluginComponents(device, plugin, 'page.plugin')
 
   if (!plugin) {
     router.replace('/workspace')
@@ -43,7 +43,6 @@ export default function DevicePluginPage() {
   }
 
   const DevicePageComponent = getDevicePageComponent(device.profile.type);
-  const PluginComponent = dynamic(_ => import(`plugins/${plugin.name}/pages/index.js`))
 
 	return (
 		<DevicePageComponent device={device}>

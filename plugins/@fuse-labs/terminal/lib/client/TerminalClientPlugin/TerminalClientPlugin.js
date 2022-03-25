@@ -1,5 +1,6 @@
 import { ClientPlugin, ClientDeviceManager } from '@fuse-labs/core-client'
 import ClientTerminal from '../lib/ClientTerminal/ClientTerminal'
+import TerminalPage from '../../pages'
 
 export default class TerminalClientPlugin extends ClientPlugin {
 
@@ -7,6 +8,14 @@ export default class TerminalClientPlugin extends ClientPlugin {
     super(data)
     // Add listener to provision plugin on each updated devices event
     ClientDeviceManager.shared.addEventListener('updatedDevices', this.provision)
+  }
+
+  deviceComponents(device) {
+    return {
+      page: {
+        plugin: TerminalPage
+      }
+    }
   }
 
   provision() {

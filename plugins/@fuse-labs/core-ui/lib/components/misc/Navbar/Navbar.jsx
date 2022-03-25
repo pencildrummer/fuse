@@ -25,15 +25,18 @@ export default function Navbar() {
 						<span className='ml-2'>Workspace</span>
 					</TabItem>
 					{plugins?.map(plugin => {
-						if (!plugin.hasTabs) return
 
-						let Icon = icons[plugin._fuse.icon]
-						return (
-							<TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
-								{Icon && <Icon className="mr-2"/>}
-								<span>{plugin.displayTitle}</span>
-							</TabItem>
-						)
+						let pluginComponents = plugin.components()
+
+						if (pluginComponents.tab) {
+							let Icon = icons[plugin._fuse.icon]
+							return (
+								<TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
+									{Icon && <Icon className="mr-2"/>}
+									<span>{plugin.displayTitle}</span>
+								</TabItem>
+							)
+						}
 					})}
 				</ul>
 				

@@ -13,7 +13,7 @@ export default defineConfig({
       fileName: (format) => `core-client.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', ...Object.keys(dependencies)],
+      external: ['react', 'react-dom', 'react-intl', ...Object.keys(dependencies)],
       output: {
         globals: {
           react: 'React',

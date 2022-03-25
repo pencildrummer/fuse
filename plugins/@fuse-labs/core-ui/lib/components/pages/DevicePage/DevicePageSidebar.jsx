@@ -20,8 +20,12 @@ export default function DevicePageSidebar() {
         {activePlugins?.map(plugin => {
             // Check if plugin support this type of device
             if (!plugin.deviceTypes?.includes(device.profile.type)) return
-            // Check if plugin has additional pages to allow for a link
-            if (!plugin.hasPages) return
+
+            let pluginComponents = plugin.deviceComponents(device)
+            let PluginPageComponent = pluginComponents.page?.plugin
+            if (!PluginPageComponent)
+              return null
+
             let icon = icons[plugin._fuse.icon] || icons.QuestionMarkIcon
             let href = `/workspace/devices/${device.id}/`+plugin.url
             return <Tooltip key={plugin.name}
