@@ -50,50 +50,55 @@ class PluginManager {
 
     // Init plugin manager
     // Get available installed plugins based on package presence
-    console.warn(`Scanning directory for plugin: '${PLUGINS_BASE_PATH}'. Find better way because once packaged we cannot do it anymore. Maybe save plugin ref in user directory?`)
-    let dirs = fs.readdirSync(PLUGINS_BASE_PATH)
-    let scopes = dirs.filter(dir => dir.startsWith("@"))
-    let scopedPlugins = scopes.flatMap( scope => 
-      fs.readdirSync(path.join(PLUGINS_BASE_PATH, scope)).map(name => path.join(scope, name))
-    )
+    // console.warn(`Scanning directory for plugin: '${PLUGINS_BASE_PATH}'. Find better way because once packaged we cannot do it anymore. Maybe save plugin ref in user directory?`)
+    // let dirs = fs.readdirSync(PLUGINS_BASE_PATH)
+    // let scopes = dirs.filter(dir => dir.startsWith("@"))
+    // let scopedPlugins = scopes.flatMap( scope => 
+    //   fs.readdirSync(path.join(PLUGINS_BASE_PATH, scope)).map(name => path.join(scope, name))
+    // )
 
-    let pluginNames = [
-      ...scopedPlugins,
-      dirs.filter(d => !scopes.includes(d))
-    ].flat()
+    // let pluginNames = [
+    //   ...scopedPlugins,
+    //   dirs.filter(d => !scopes.includes(d))
+    // ].flat()
+
+    // ATTENTION - This is just for now, we should retrieve the installed plugin names, we need an install process,
+    // we also already bundle some plugins, before externalizing them
+    let pluginNames = this.activePluginsNames
 
     // Init Plugin(s) based on names and add it to the plugin manager store
     this._plugins = await pluginNames.reduce( async (prev, pluginName) => {
       // Wait for previous plugin load process
       const plugins = await prev
 
-      const pluginPkgPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'package.json')
+      // const pluginPkgPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'package.json')
 
-      // Find package.json
-      if (!fs.existsSync(pluginPkgPath)) {
-        console.error('Unable to find package.json for plugin', pluginName)
-        return plugins
-      }
+      // // Find package.json
+      // if (!fs.existsSync(pluginPkgPath)) {
+      //   console.error('Unable to find package.json for plugin', pluginName)
+      //   return plugins
+      // }
 
-      // Read package.json
-      let pluginPkg
-      try {
-        pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath))
-      } catch(err) {
-        console.error('Error reading package.json from plugin', pluginName)
-        return plugins
-      }
+      // // Read package.json
+      // let pluginPkg
+      // try {
+      //   pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath))
+      // } catch(err) {
+      //   console.error('Error reading package.json from plugin', pluginName)
+      //   return plugins
+      // }
 
-      // Check if supports server side (should export server)
-      if (pluginPkg.exports?.['./server'] == undefined) {
-        console.warn(`${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`)
-        return plugins
-      }
+      // // Check if supports server side (should export server)
+      // if (pluginPkg.exports?.['./server'] == undefined) {
+      //   console.warn(`${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`)
+      //   return plugins
+      // }
 
-      // TODO - Find a better way to load plugin or check if it is a bug that prevent loading from "exports" defined keys in package.json of plugins installed
-      let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'lib', 'server', 'index.js')
+      // // TODO - Find a better way to load plugin or check if it is a bug that prevent loading from "exports" defined keys in package.json of plugins installed
+      // let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'lib', 'server', 'index.js')
+
       //const pluginModule = await import(`${pluginName}/server`)
-      const pluginModule = await import(`${pluginPath}`)
+      const pluginModule = await import(`${pluginName}/server`)
         .then(res => {
           if (!res.default) {
             throw new Error('Found module but no default export is found. Should export the plugin class.')
@@ -108,6 +113,9 @@ class PluginManager {
           return res
         }).catch(err => {
           switch (err.code) {
+            case 'ERR_PACKAGE_PATH_NOT_EXPORTED':
+              signale.warn(`${chalk.yellow(pluginName+'/server')}: not loaded, "${chalk.bold.yellow(pluginName)}" do not support server side. If unexpected check "${pluginName}" exports ./server`)
+              break
             case 'ERR_MODULE_NOT_FOUND':
             // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
             default:

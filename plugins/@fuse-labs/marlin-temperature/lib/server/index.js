@@ -1,2 +1,0 @@
-import MarlinTemperaturePlugin from './MarlinTemperaturePlugin/MarlinTemperaturePlugin.js'
-export default MarlinTemperaturePlugin

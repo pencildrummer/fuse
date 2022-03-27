@@ -1,7 +1,17 @@
 import { Plugin, PluginManager, ProfileManager, DeviceManager } from "../index.js"
 import { SerialPort } from "serialport"
+import { DeviceType } from "../models/index.js"
 
 export default class CorePlugin extends Plugin {
+
+  deviceTypes() {
+    return [
+      DeviceType.FDMPrinter,
+      DeviceType.CNC,
+      DeviceType.Laser,
+      DeviceType.MSLAPrinter
+    ]
+  }
 
   initSocket(socket) {
     /**

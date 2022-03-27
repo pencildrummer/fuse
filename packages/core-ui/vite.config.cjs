@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
 import path from 'path'
 import { dependencies } from './package.json'
+import { workspacesExternalPackages } from '../../dev/workspacesExternal'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +25,7 @@ export default defineConfig({
     //   defaultIsModuleExports: 'false',
     // },
     rollupOptions: {
-      external: ['react', 'react-dom', /next\/?.*/, /@fuse-labs\/?.*/, ...Object.keys(dependencies)],
+      external: ['react', 'react-dom', ...Object.keys(dependencies), ...workspacesExternalPackages],
       output: {
         globals: {
           react: 'React',

@@ -34,6 +34,7 @@ import { io } from "socket.io-client";
 import lodash from "lodash";
 import { object, string, boolean, number } from "yup";
 import React, { useContext, useMemo, useState, useEffect } from "react";
+import { pathCase } from "@fuse-labs/shared-utils";
 import { IntlProvider } from "react-intl";
 function fetcher(url, opts) {
   return fetch(url, opts).then((res) => res.json());
@@ -376,7 +377,6 @@ function useProviderPlugins(data) {
   const [plugins, setPlugins] = useState(Singleton$1.shared.plugins);
   return plugins;
 }
-const pathCase = (s) => s.toLowerCase().trim().replace(" ", "_");
 function useProviderProfiles(data) {
   const [profiles, setProfiles] = useState(data || {});
   useEffect((_) => {

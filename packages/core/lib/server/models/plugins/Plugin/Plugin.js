@@ -4,6 +4,7 @@ import { object, string } from 'yup'
 import { PLUGINS_BASE_PATH } from '../../../constants.js'
 import PluginManager from '../../../managers/PluginManager/PluginManager.js'
 import signale from 'signale'
+import { DeviceType } from '../../devices/index.js'
 
 const PLUGIN_SCHEMA = object({
   name: string().required(),
@@ -24,6 +25,9 @@ export default class Plugin {
   _settings = false;
   get settings() { return this._settings }
 
+  /**
+   * @deprecated to be removed, use components in client
+   */
   _hasPages = false;
   get hasPages() { return this._hasPages }
 
@@ -60,60 +64,64 @@ export default class Plugin {
     return PluginManager.shared.SYSTEM_PLUGIN_NAMES.includes(this.name)
   }
 
+  // TODO - Improve this method, like default values, value for all devices, etc.
   get deviceTypes() {
-    return this._fuse.devices
+    return []
   }
 
   constructor(name) {
-    let packagePath = path.join(PLUGINS_BASE_PATH, name, 'package.json')
+    // Set name
+    this.name = name
+
+    // let packagePath = path.join(PLUGINS_BASE_PATH, name, 'package.json')
   
-    try {
-      if (!fs.existsSync(packagePath)) {
-        signale.error('No package found for', name)
-        return null
-      }
-    } catch (e) {
-      signale.error('Error retrieving package for', name)
-      return null
-    }
+    // try {
+    //   if (!fs.existsSync(packagePath)) {
+    //     signale.error('No package found for', name)
+    //     return null
+    //   }
+    // } catch (e) {
+    //   signale.error('Error retrieving package for', name)
+    //   return null
+    // }
 
-    let info
+    // let info
 
-    try {
-      info = fs.readFileSync(packagePath)
-      info = JSON.parse(info)
-    } catch (e) {
-      signale.error('Error reading package', e)
-      return null
-    }
+    // try {
+    //   info = fs.readFileSync(packagePath)
+    //   info = JSON.parse(info)
+    // } catch (e) {
+    //   signale.error('Error reading package', e)
+    //   return null
+    // }
 
-    // Add fuse key to safely add custom settings if not provided by package.json
-    info._fuse = { ...info.fuse }
+    // // Add fuse key to safely add custom settings if not provided by package.json
+    // info._fuse = { ...info.fuse }
 
-    // Validate package
-    let pluginData = PLUGIN_SCHEMA.validateSync(info)
+    // // Validate package
+    // let pluginData = PLUGIN_SCHEMA.validateSync(info)
 
-    // TODO - Improve this
-    // Clear .fuse to be set onto ._fuse
-    delete pluginData.fuse
+    // // TODO - Improve this
+    // // Clear .fuse to be set onto ._fuse
+    // delete pluginData.fuse
 
-    // Apply info to Plugin instance
-    Object.assign(this, pluginData)
+    // // Apply info to Plugin instance
+    // Object.assign(this, pluginData)
 
     // Check has setting page
-    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'settings.js'))) {
-      this._settings = true
-    }
+    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'settings.js'))) {
+    //   this._settings = true
+    // }
 
-    // Check has pages
-    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'index.js'))) {
-      this._hasPages = true
-    }
+    // // Check has pages
+    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'index.js'))) {
+    //   this._hasPages = true
+    // }
 
-    // Check has tab structure
-    if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'tabs', 'index.js'))) {
-      this._hasTabs = true
-    }
+    // // Check has tab structure
+    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'tabs', 'index.js'))) {
+    //   this._hasTabs = true
+    // }
 
     // Call provision if any
     if (typeof this.provision == 'function') {

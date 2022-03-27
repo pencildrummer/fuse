@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { dependencies } from './package.json'
+import { workspacesExternalPackages } from '../../dev/workspacesExternal'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,7 +14,7 @@ export default defineConfig({
       fileName: (format) => `core-client.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'react-intl', ...Object.keys(dependencies)],
+      external: ['react', 'react-dom', 'react-intl', ...Object.keys(dependencies), ...workspacesExternalPackages],
       output: {
         globals: {
           react: 'React',

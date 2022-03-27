@@ -3,8 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "workspaces": [
-    "./packages/shared-utils",
-    "./packages/core-client",
-    "./packages/core-ui"
+    "./packages/*"
   ]
 }
