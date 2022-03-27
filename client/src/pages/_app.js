@@ -8,21 +8,21 @@ import * as messages from '../../lang/index.js'
 import Head from 'next/head'
 import pkg from '../../package.json'
 
-import TerminalClientPlugin from '@fuse-labs/terminal/client'
-import MarlinCoreClientPlugin from '@fuse-labs/marlin-core/client'
-import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
-import MarlinSettingsClientPlugin from '@fuse-labs/marlin-settings/client'
-import FileManagerClientPlugin from '@fuse-labs/file-manager/client'
+// import TerminalClientPlugin from '@fuse-labs/terminal/client'
+// import MarlinCoreClientPlugin from '@fuse-labs/marlin-core/client'
+// import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
+// import MarlinSettingsClientPlugin from '@fuse-labs/marlin-settings/client'
+// import FileManagerClientPlugin from '@fuse-labs/file-manager/client'
 
 // Import Electron specific styles
 import '../electron.css'
 
 // TODO - Move into a _plugin.js file or something like the manager on the server side
-ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
-ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
-ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
-ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
-ClientPluginManager.registerPlugin('@fuse-labs/marlin-settings', MarlinSettingsClientPlugin)
+//ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
+//ClientPluginManager.registerPlugin('@fuse-labs/marlin-core', MarlinCoreClientPlugin)
+//ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
+//ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
+//ClientPluginManager.registerPlugin('@fuse-labs/marlin-settings', MarlinSettingsClientPlugin)
 
 function MyApp({ Component, pageProps }) {
 

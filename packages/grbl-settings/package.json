@@ -1,0 +1,41 @@
+{
+  "name": "@fuse-labs/grbl-settings",
+  "version": "1.0.0",
+  "description": "Plugin to view and edit GRBL device settings",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "fuse": {
+    "title": "GRBL Settings",
+    "icon": "MixerHorizontalIcon",
+    "devices": [
+      "cnc"
+    ]
+  },
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "type": "module",
+  "exports": {
+    "./client": {
+      "require": "./dist-client/grbl-move.umd.js",
+      "import": "./dist-client/grbl-move.es.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "preview": "vite preview"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-intl": "^5.24.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
+  }
+}

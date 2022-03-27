@@ -1,0 +1,48 @@
+{
+  "name": "@fuse-labs/marlin-move",
+  "version": "1.0.0",
+  "description": "Movement and position plugin for FUSE for Marlin-based devices",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "files": [
+    "dist",
+    "dist-client",
+    "lib/server"
+  ],
+  "main": "./lib/server/index.js",
+  "type": "module",
+  "exports": {
+    "./server": "./lib/server/index.js",
+    "./client": {
+      "require": "./dist-client/marlin-move.umd.js",
+      "import": "./dist-client/marlin-move.es.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "fuse": {
+    "title": "[Marlin] Movement and position",
+    "icon": "MoveIcon",
+    "devices": [
+      "fdm_printer"
+    ]
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
+  },
+  "dependencies": {
+    "@fuse-labs/core": "file:../core",
+    "@fuse-labs/core-client": "file:../core-client",
+    "@fuse-labs/core-ui": "file:../core-ui",
+    "@radix-ui/react-icons": "^1.1.0"
+  }
+}

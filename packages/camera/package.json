@@ -1,0 +1,40 @@
+{
+  "name": "@fuse-labs/camera",
+  "version": "1.0.0",
+  "description": "Camera core plugin for FUSE",
+  "private": true,
+  "files": [
+    "dist-client"
+  ],
+  "main": "./dist-client/camera.umd.js",
+  "module": "./dist-client/camera.es.js",
+  "exports": {
+    "./client": {
+      "require": "./dist-client/camera.umd.js",
+      "import": "./dist-client/camera.es.js"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "preview": "vite preview"
+  },
+  "type": "module",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^1.0.7",
+    "vite": "^2.8.0"
+  },
+  "fuse": {
+    "title": "Camera",
+    "icon": "CameraIcon"
+  },
+  "dependencies": {
+    "@radix-ui/react-aspect-ratio": "^0.1.4"
+  }
+}

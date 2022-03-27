@@ -1,0 +1,62 @@
+$size: 8px;
+// Get color from tailwind
+$color: theme('colors.gray.800');
+
+.corner-bl,
+.corner-br {
+  width: $size;
+  height: $size;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+}
+.corner-bl {
+  left: -1*$size;
+}
+.corner-br {
+  right: -1*$size;
+}
+
+.corner-bl:before,
+.corner-br:before {
+  content: "";
+  display: block;
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  border-radius: 50%;
+}
+.corner-br:before {
+  bottom: 0;
+  left: 0;
+  box-shadow: calc(-1*$size/2) calc($size/2) 0 0 currentColor;
+}
+.corner-bl:before {
+  bottom: 0;
+  right: 0;
+  box-shadow: calc($size/2) calc($size/2) 0 0 currentColor;
+}
+
+/*
+* Separators
+*/
+.tab-item::before {
+  content: "";
+  width: 1px;
+  height: 50%;
+  display: inline-flex;
+  position: absolute;
+  left: -1px;
+  opacity: 100%;
+  @apply transition-opacity duration-300;
+  @apply bg-gray-700;
+}
+.tab-item:hover::before,
+.tab-item:hover + .tab-item::before {
+  opacity: 0%;
+}
+.tab-item:global(.active)::before,
+.tab-item:global(.active) + .tab-item::before,
+.tab-item:first-child::before {
+  display: none;
+}
