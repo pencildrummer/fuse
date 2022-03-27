@@ -6,7 +6,7 @@ module.exports = {
     './src/pages/**/*.{js,ts,jsx,tsx}',
     // These needs to be changed to allow styles included in plugins?
     // Or something more automatic instead adding every style for every plugin
-    '../plugins/**/lib/**/*.{js,ts,jsx,tsx}'
+    '../../packages/**/lib/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
