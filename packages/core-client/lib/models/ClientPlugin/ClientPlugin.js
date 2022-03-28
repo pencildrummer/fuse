@@ -1,16 +1,18 @@
-import { object, string, boolean } from 'yup'
+import { object, string, boolean, array } from 'yup'
 import { socket } from '../../socket'
+import { QuestionMarkIcon } from '@radix-ui/react-icons'
 import ClientDeviceType from '../ClientDeviceType/ClientDeviceType'
 
 const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
   version: string().required(),
+  deviceTypes: array().required(),
   _settings: boolean().required(),
   _hasPages: boolean().required(),
   _hasTabs: boolean().required(),
   _hasSocket: boolean().required(),
   _hasDeviceSocket: boolean().required(),
-  _fuse: object().required(),
+  //_fuse: object().required(),
   _active: boolean().required(),
   _system: boolean().required(),
 })
@@ -26,7 +28,7 @@ export default class ClientPlugin {
   name;
   version;
 
-  _fuse;
+  //_fuse;
 
   _settings = false;
   get settings() { return this._settings }
@@ -36,7 +38,8 @@ export default class ClientPlugin {
 
   get url() {
     // Check url is manually provided or generate one based on plugin name
-    return this._fuse.pagesUrl || this.name
+    return this.name
+    //return this._fuse.pagesUrl || this.name
   }
 
   _hasTabs = false;
@@ -44,7 +47,8 @@ export default class ClientPlugin {
 
   get tabsUrl() {
     // Check url is manually provided or generate one based on plugin name
-    return this._fuse.tabsUrl || this.name
+    return this.name
+    //return this._fuse.tabsUrl || this.name
   }
 
   _hasSocket = undefined;
@@ -61,13 +65,18 @@ export default class ClientPlugin {
   _system
   get system() { return this._system }
 
-  get deviceTypes() {
-    if (this._fuse.devices == '*') return Object.values(ClientDeviceType)
-    return this._fuse.devices
+  get icon() {
+    return QuestionMarkIcon
   }
+  // get deviceTypes() {
+
+  //   // if (this._fuse.devices == '*') return Object.values(ClientDeviceType)
+  //   // return this._fuse.devices
+  // }
 
   get displayTitle() {
-    return this._fuse.title || this.name
+    return this.name
+    //return this._fuse.title || this.name
   }
 
   constructor(data) {

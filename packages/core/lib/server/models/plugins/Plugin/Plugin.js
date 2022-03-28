@@ -9,18 +9,18 @@ import { DeviceType } from '../../devices/index.js'
 const PLUGIN_SCHEMA = object({
   name: string().required(),
   version: string().required(),
-  _fuse: object({
-    url: string(),
-    tabsUrl: string(),
-  })
+  // _fuse: object({
+  //   url: string(),
+  //   tabsUrl: string(),
+  // })
 })
 
 export default class Plugin {
 
   name;
-  version;
+  version = '0.0.1'; // TODO - Make something to set automatically from package json?
 
-  _fuse;
+  // _fuse;
 
   _settings = false;
   get settings() { return this._settings }
@@ -33,7 +33,8 @@ export default class Plugin {
 
   get url() {
     // Check url is manually provided or generate one based on plugin name
-    return this._fuse.pagesUrl || this.name
+    return this.name
+    //return this._fuse.pagesUrl || this.name
   }
 
   _hasTabs = false;
@@ -41,7 +42,8 @@ export default class Plugin {
 
   get tabsUrl() {
     // Check url is manually provided or generate one based on plugin name
-    return this._fuse.tabsUrl || this.name
+    return this.name
+    //return this._fuse.tabsUrl || this.name
   }
 
   get hasSocket() {
@@ -130,8 +132,10 @@ export default class Plugin {
   }
 
   toJSON() {
+    console.log('To JSON', this.deviceTypes)
     return {
       ...this,
+      deviceTypes: this.deviceTypes,
       _active: this.active,
       _system: this.system,
       _hasSocket: this.hasSocket,

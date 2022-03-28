@@ -17,7 +17,8 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules"
   },
   "author": "Fabio Borella",
   "license": "ISC",

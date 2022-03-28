@@ -9,14 +9,14 @@
     "url": "https://pencildrummer.com"
   },
   "private": true,
-  "main": "src/server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "next lint --no-cache",
     "dev": "next dev",
     "debug": "DEBUG=serialport* node --trace-warnings src/server.mjs",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "clean": "rm -rf node_modules"
   },
   "dependencies": {
     "classnames": "^2.3.1",

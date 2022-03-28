@@ -17,9 +17,11 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules"
   },
   "dependencies": {
+    "@radix-ui/react-icons": "^1.1.0",
     "lodash": "^4.17.21",
     "socket.io-client": "^4.4.1",
     "yup": "^0.32.11"

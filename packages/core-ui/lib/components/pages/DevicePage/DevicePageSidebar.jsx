@@ -26,12 +26,11 @@ export default function DevicePageSidebar() {
             if (!PluginPageComponent)
               return null
 
-            let icon = icons[plugin._fuse.icon] || icons.QuestionMarkIcon
             let href = `/workspace/devices/${device.id}/`+plugin.url
             return <Tooltip key={plugin.name}
-              content={plugin._fuse.tooltip || plugin.title || plugin.name}
+              content={plugin.title || plugin.name}
               side="right" sideOffset={10}>
-              <SidebarMenuItem icon={icon} href={href} />
+              <SidebarMenuItem icon={plugin.icon} href={href} />
             </Tooltip>
           })}
       </SidebarMenu>

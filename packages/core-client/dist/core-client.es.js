@@ -32,7 +32,8 @@ var __publicField = (obj, key, value) => {
 };
 import { io } from "socket.io-client";
 import lodash from "lodash";
-import { object, string, boolean, number } from "yup";
+import { object, string, array, boolean, number } from "yup";
+import { QuestionMarkIcon } from "@radix-ui/react-icons";
 import React, { useContext, useMemo, useState, useEffect } from "react";
 import { pathCase } from "@fuse-labs/shared-utils";
 import { IntlProvider } from "react-intl";
@@ -67,12 +68,12 @@ const ClientDeviceType = Object.freeze({
 const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
   version: string().required(),
+  deviceTypes: array().required(),
   _settings: boolean().required(),
   _hasPages: boolean().required(),
   _hasTabs: boolean().required(),
   _hasSocket: boolean().required(),
   _hasDeviceSocket: boolean().required(),
-  _fuse: object().required(),
   _active: boolean().required(),
   _system: boolean().required()
 });
@@ -85,7 +86,6 @@ class ClientPlugin {
   constructor(data) {
     __publicField(this, "name");
     __publicField(this, "version");
-    __publicField(this, "_fuse");
     __publicField(this, "_settings", false);
     __publicField(this, "_hasPages", false);
     __publicField(this, "_hasTabs", false);
@@ -109,13 +109,13 @@ class ClientPlugin {
     return this._hasPages;
   }
   get url() {
-    return this._fuse.pagesUrl || this.name;
+    return this.name;
   }
   get hasTabs() {
     return this._hasTabs;
   }
   get tabsUrl() {
-    return this._fuse.tabsUrl || this.name;
+    return this.name;
   }
   get hasSocket() {
     return this._hasSocket;
@@ -129,13 +129,11 @@ class ClientPlugin {
   get system() {
     return this._system;
   }
-  get deviceTypes() {
-    if (this._fuse.devices == "*")
-      return Object.values(ClientDeviceType);
-    return this._fuse.devices;
+  get icon() {
+    return QuestionMarkIcon;
   }
   get displayTitle() {
-    return this._fuse.title || this.name;
+    return this.name;
   }
   components() {
     return {};

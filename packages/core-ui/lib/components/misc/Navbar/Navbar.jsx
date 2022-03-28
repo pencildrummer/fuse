@@ -29,7 +29,7 @@ export default function Navbar() {
 						let pluginComponents = plugin.components()
 
 						if (pluginComponents.tab) {
-							let Icon = icons[plugin._fuse.icon]
+							let Icon = icons[plugin.icon]
 							return (
 								<TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
 									{Icon && <Icon className="mr-2"/>}

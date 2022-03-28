@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "echo \"No linting configured\"",
     "dev": "nodemon src/server.mjs",
-    "start": "node src/server.mjs"
+    "start": "node src/server.mjs",
+    "clean": "rm -rf node_modules && rm package-lock.json"
   },
   "keywords": [],
   "author": {
@@ -17,11 +18,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@fuse-labs/file-manager": "file:../../plugins/@fuse-labs/file-manager",
-    "@fuse-labs/marlin-core": "file:../../plugins/@fuse-labs/marlin-core",
-    "@fuse-labs/marlin-temperature": "file:../../plugins/@fuse-labs/marlin-temperature",
-    "@fuse-labs/shared-utils": "file:../../plugins/@fuse-labs/shared-utils",
-    "@fuse-labs/terminal": "file:../../plugins/@fuse-labs/terminal",
     "signale": "^1.4.0"
   },
   "devDependencies": {
