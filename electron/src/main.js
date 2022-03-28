@@ -29,6 +29,7 @@ const createClientWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: path.resolve(__dirname, 'assets', 'AppIcon.png'),
     frame: false,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 14, y: 14 },
