@@ -370,11 +370,11 @@ function DialogContent(_o) {
   ]);
   return /* @__PURE__ */ jsxs(DialogPrimitive.Portal, {
     children: [/* @__PURE__ */ jsx(DialogPrimitive.Overlay, {
-      className: "fixed inset-0 bg-gray-900/50 backdrop-blur-sm z-40"
+      className: "fixed inset-0 bg-black/70 z-40"
     }), /* @__PURE__ */ jsx(DialogPrimitive.Content, {
       className: "fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50",
       children: /* @__PURE__ */ jsxs(Widget, {
-        className: classNames("w-[90vw] max-h-[85vh]", className),
+        className: classNames("w-[90vw] max-h-[85vh]", "ring-1 ring-white/20", className),
         title: /* @__PURE__ */ jsxs(Fragment, {
           children: [title && /* @__PURE__ */ jsx(DialogPrimitive.Title, {
             children: title

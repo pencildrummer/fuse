@@ -1,6 +1,11 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 
+const isMac = process.platform === 'darwin'
+
+// Hide the app from the doc
+app.dock.hide()
+
 // (async () => {
 //   console.log('Starting HOST server...')
 //   // Start host server
@@ -35,6 +40,8 @@ const createClientWindow = () => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  app.dock.show()
 };
 
 const createSettingsWindow = () => {
@@ -57,12 +64,18 @@ const createSettingsWindow = () => {
 // Some APIs can only be used after this event occurs.
 let tray
 app.whenReady().then(_ => {
-  let imagePath = path.resolve(__dirname, 'assets', 'tray.png')
+  let imagePath = path.resolve(__dirname, 'assets', isMac ? 'trayTemplate.png' : 'tray.png')
   const icon = nativeImage.createFromPath(imagePath)
   tray = new Tray(icon)
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Fuse server', type: 'normal' },
+    { label: 'Fuse v.', enabled: false },
+    {
+      label: 'Server online',
+      enabled: true,
+      icon: path.resolve(__dirname, 'assets', 'status-online.png')
+    },
+    { type: 'separator' },
     { label: 'Open Fuse', type: 'normal', click: createClientWindow },
     { type: 'separator' },
     { label: 'Settings...', type: 'normal', click: createSettingsWindow },
@@ -79,9 +92,10 @@ app.whenReady().then(_ => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+  if (!isMac) {
     app.quit();
   }
+  app.dock.hide()
 });
 
 app.on('activate', () => {
