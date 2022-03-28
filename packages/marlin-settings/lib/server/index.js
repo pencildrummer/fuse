@@ -1,5 +1,12 @@
-import { Plugin } from '@fuse-labs/core/server'
+import { Plugin, DeviceType } from '@fuse-labs/core/server'
+
 export default class MarlinSettingsPlugin extends Plugin {
+
+  get deviceTypes() {
+    return [
+      DeviceType.FDMPrinter,
+    ]
+  }
 
   initDeviceSocket(socket) {
     // TODO - Add listener method on DeviceTerminal
@@ -8,7 +15,7 @@ export default class MarlinSettingsPlugin extends Plugin {
     
     socket.on('settings:read', (deviceId, fn) => {
       if (!socket.device.terminal) {
-        signale.warn('Requested settings but no device terminal is available')
+        console.warn('Requested settings but no device terminal is available')
         return fn?.(false)
       }
 

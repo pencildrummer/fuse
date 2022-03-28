@@ -28,6 +28,13 @@ class ClientPluginManager {
     // While mapping should match if a plugin with a certain pattern to be decided i matched
     // And so register the plugin not as a generic ClientPlugin but as a registered one
     this._plugins = fetchedPluginsData?.map(data => {
+      // TODO - Later on make dynamic import on installed plugins, we need a plugin install system to be implemente
+      // try {
+      //   const clientDefault = await import(`${data.name}`)
+      //   console.log('Client default', clientDefault)
+      // } catch (err) {
+      //   console.error(err)
+      // }
       let PluginClass = ClientPluginManager._registeredPlugins[data.name]
       if (PluginClass) {
         return new PluginClass(data)

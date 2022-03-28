@@ -68,7 +68,7 @@ export default class Plugin {
 
   // TODO - Improve this method, like default values, value for all devices, etc.
   get deviceTypes() {
-    return []
+    return DeviceType.ALL
   }
 
   constructor(name) {
@@ -132,7 +132,6 @@ export default class Plugin {
   }
 
   toJSON() {
-    console.log('To JSON', this.deviceTypes)
     return {
       ...this,
       deviceTypes: this.deviceTypes,

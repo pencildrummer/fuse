@@ -2856,7 +2856,7 @@ function Navbar() {
         }), plugins == null ? void 0 : plugins.map((plugin) => {
           let pluginComponents = plugin.components();
           if (pluginComponents.tab) {
-            let Icon = icons[plugin._fuse.icon];
+            let Icon = icons[plugin.icon];
             return /* @__PURE__ */ jsxs(TabItem, {
               href: `/${plugin.url}`,
               children: [Icon && /* @__PURE__ */ jsx(Icon, {
@@ -3437,17 +3437,17 @@ function DevicePageSidebar() {
         if (!((_a = plugin.deviceTypes) == null ? void 0 : _a.includes(device.profile.type)))
           return;
         let pluginComponents = plugin.deviceComponents(device);
+        console.log(plugin, plugin.deviceComponents());
         let PluginPageComponent = (_b = pluginComponents.page) == null ? void 0 : _b.plugin;
         if (!PluginPageComponent)
           return null;
-        let icon = icons[plugin._fuse.icon] || icons.QuestionMarkIcon;
         let href = `/workspace/devices/${device.id}/` + plugin.url;
         return /* @__PURE__ */ jsx(Tooltip, {
-          content: plugin._fuse.tooltip || plugin.title || plugin.name,
+          content: plugin.title || plugin.name,
           side: "right",
           sideOffset: 10,
           children: /* @__PURE__ */ jsx(SidebarMenuItem, {
-            icon,
+            icon: plugin.icon,
             href
           })
         }, plugin.name);

@@ -1,9 +1,15 @@
-import { Plugin } from '@fuse-labs/core/server'
+import { Plugin, DeviceType } from '@fuse-labs/core/server'
 
 export default class MarlinTemperaturePlugin extends Plugin {
 
   provision() {
     // TODO - Add temperature parser to device controller
+  }
+
+  get deviceTypes() {
+    return [
+      DeviceType.FDMPrinter,
+    ]
   }
 
   initDeviceSocket(socket) {

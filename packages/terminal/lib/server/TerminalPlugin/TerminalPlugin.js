@@ -1,4 +1,4 @@
-import { Plugin, DeviceManager } from '@fuse-labs/core/server'
+import { Plugin, DeviceManager, DeviceType } from '@fuse-labs/core/server'
 import { v4 as uuidv4 } from 'uuid'
 import DeviceTerminal from '../DeviceTerminal/DeviceTerminal.js'
 import signale from 'signale'
