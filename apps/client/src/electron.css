@@ -1,15 +1,22 @@
 body {
   -webkit-app-region: drag;
-  @apply select-none;
 }
 
 /* Helper class */
-.electron-drag {
-  @apply select-none;
+.drag {
   -webkit-app-region: drag;
+}
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Prefligh to disable cursor pointer and user selection to feel native */
+*, a, button {
+  -webkit-user-drag: none;
+  @apply select-none cursor-default;
 }
 
 /* Allow interactive items to be clickable */
-button {
+a, button {
   -webkit-app-region: no-drag;
 }

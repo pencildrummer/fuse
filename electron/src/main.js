@@ -1,17 +1,17 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
 
-(async () => {
-  console.log('Starting HOST server...')
-  // Start host server
-  await import('@fuse-labs/host')
+// (async () => {
+//   console.log('Starting HOST server...')
+//   // Start host server
+//   await import('@fuse-labs/host')
   
-  console.log('Starting CLIENT server...')
-  // Start client server
-  //await import('@fuse-labs/client')
-  //await import('../../client/src/server.mjs')
-  await import('./serve-client.js')
-})()
+//   console.log('Starting CLIENT server...')
+//   // Start client server
+//   //await import('@fuse-labs/client')
+//   //await import('../../client/src/server.mjs')
+//   await import('./serve-client.js')
+// })()
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -24,6 +24,10 @@ const createClientWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    frame: false,
+    titleBarStyle: 'hidden',
+    trafficLightPosition: { x: 14, y: 14 },
+    backgroundColor: '#18181b'
   });
 
   // and load the index.html of the app.
@@ -38,6 +42,7 @@ const createSettingsWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    titleBarStyle: 'hidden'
   });
 
   // and load the index.html of the app.

@@ -8,6 +8,6 @@ div#__next > div {
 }
 
 html, body {
-  @apply dark:bg-gray-800;
+  @apply bg-gray-800 dark:bg-gray-800;
   @apply antialiased;
 }
