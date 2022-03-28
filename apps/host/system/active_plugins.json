@@ -10,6 +10,7 @@
     "@fuse-labs/marlin-gcode-viewer",
     "@fuse-labs/marlin-move",
     "@fuse-labs/marlin-settings",
-    "@fuse-labs/camera"
+    "@fuse-labs/camera",
+    "@fuse-labs/terminal"
   ]
 }

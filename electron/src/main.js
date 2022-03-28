@@ -1,22 +1,17 @@
 const { app, BrowserWindow, Tray, Menu, nativeImage } = require('electron');
 const path = require('path');
+const Store = require('electron-store');
+
+const store = new Store({
+  defaults: {
+    client_url: 'http://localhost:3000'
+  }
+})
 
 const isMac = process.platform === 'darwin'
 
 // Hide the app from the doc
 app.dock.hide()
-
-// (async () => {
-//   console.log('Starting HOST server...')
-//   // Start host server
-//   await import('@fuse-labs/host')
-  
-//   console.log('Starting CLIENT server...')
-//   // Start client server
-//   //await import('@fuse-labs/client')
-//   //await import('../../client/src/server.mjs')
-//   await import('./serve-client.js')
-// })()
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -28,16 +23,21 @@ const createClientWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 800,
+    minWidth: 600,
     height: 600,
-    icon: path.resolve(__dirname, 'assets', 'AppIcon.png'),
+    minHeight: 400,
+    icon: path.resolve(__dirname, 'assets', 'app-icons', 'AppIcon.png'),
     frame: false,
     titleBarStyle: 'hidden',
     trafficLightPosition: { x: 14, y: 14 },
     backgroundColor: '#18181b'
   });
 
+  // Get host client url
+  let clientURL = store.get('client_url')
+
   // and load the index.html of the app.
-  mainWindow.loadURL('http://localhost:3000')
+  mainWindow.loadURL(clientURL)
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
