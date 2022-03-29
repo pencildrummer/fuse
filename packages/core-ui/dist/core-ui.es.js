@@ -3437,7 +3437,6 @@ function DevicePageSidebar() {
         if (!((_a = plugin.deviceTypes) == null ? void 0 : _a.includes(device.profile.type)))
           return;
         let pluginComponents = plugin.deviceComponents(device);
-        console.log(plugin, plugin.deviceComponents());
         let PluginPageComponent = (_b = pluginComponents.page) == null ? void 0 : _b.plugin;
         if (!PluginPageComponent)
           return null;
@@ -3655,13 +3654,13 @@ function DeviceStatusListProvider(props) {
   const [statusList, setStatusList] = useState([]);
   function addStatus(message, opts) {
     let statusObj = __spreadValues({
-      id: Date.now(),
+      id: (opts == null ? void 0 : opts.id) || Date.now(),
       message,
       date: Date.now(),
       type: "normal"
     }, opts);
     setStatusList((prev) => {
-      return [...prev, statusObj];
+      return [...prev, statusObj].sort((a, b) => b.date - a.date);
     });
     return statusObj;
   }
@@ -4160,6 +4159,42 @@ function DevicePageTopBar() {
     })]
   });
 }
+function DevicePageErrorHandler() {
+  const {
+    device
+  } = useDeviceContext();
+  const {
+    addStatus
+  } = useDeviceStatusListContext();
+  useEffect((_) => {
+    let errorHandler = (err) => {
+      switch (err.code) {
+        default:
+          addStatus(err.message, {
+            type: "error"
+          });
+      }
+    };
+    let statusHandler = (status) => {
+      addStatus(status.message, {
+        type: status.type
+      });
+    };
+    device.socket.on("error", errorHandler);
+    device.socket.on("status:error", statusHandler);
+    device.socket.on("status:warning", statusHandler);
+    device.socket.on("status:success", statusHandler);
+    device.socket.on("status:info", statusHandler);
+    return (_2) => {
+      device.socket.off("error", errorHandler);
+      device.socket.off("status:error", statusHandler);
+      device.socket.off("status:warning", statusHandler);
+      device.socket.off("status:success", statusHandler);
+      device.socket.off("status:info", statusHandler);
+    };
+  }, [device]);
+  return null;
+}
 function DevicePage(_Ya) {
   var _Za = _Ya, {
     device
@@ -4172,8 +4207,8 @@ function DevicePage(_Ya) {
   return /* @__PURE__ */ jsx(MainLayout, {
     children: /* @__PURE__ */ jsx(DeviceProvider, {
       device,
-      children: /* @__PURE__ */ jsx(DeviceStatusListProvider, {
-        children: /* @__PURE__ */ jsxs("div", {
+      children: /* @__PURE__ */ jsxs(DeviceStatusListProvider, {
+        children: [/* @__PURE__ */ jsx(DevicePageErrorHandler, {}), /* @__PURE__ */ jsxs("div", {
           className: "w-full h-full flex flex-col",
           children: [/* @__PURE__ */ jsx(DevicePageTopBar, {
             device
@@ -4187,7 +4222,7 @@ function DevicePage(_Ya) {
               })
             })]
           })]
-        })
+        })]
       })
     })
   });

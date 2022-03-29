@@ -1,5 +1,5 @@
 import { Button, Popover, Progress, EmptyView, useDeviceStatusListContext } from '@fuse-labs/core-ui'
-import { LayersIcon, PauseIcon, StopIcon } from '@radix-ui/react-icons'
+import { LayersIcon, PauseIcon, StopIcon, PlayIcon } from '@radix-ui/react-icons'
 import isElectron from 'is-electron'
 import { useDeviceContext } from '@fuse-labs/core-client'
 import { useEffect, useState } from 'react'
@@ -11,8 +11,34 @@ export default function MarlinJobQueueHandler() {
   const [jobs, setJobs] = useState([])
 
   useEffect(_ => {
+    // Retrieve jobs
+    device.sockets.fuseLabs.marlinCore.emit('queue:jobs', jobs => {
+      console.log('List of jobs', jobs)
+      setJobs(jobs)
+    })
+  }, [device])
+
+  useEffect(_ => {
     const handleJobAdded = job => {
       setJobs(jobs => [...jobs, job])
+      addStatus(`Added job "${job.name}"`)
+    }
+
+    const handleJobRemoved = job => {
+      setJobs(jobs => jobs.filter(j => j.id != job.id))
+      addStatus(`Removed job "${job.name}"`)
+    }
+
+    const handleJobStart = job => {
+      addStatus(`Started job "${job.name}"`)
+    }
+
+    const handleJobPause = job => {
+      addStatus(`Paused job "${job.name}"`, { type: 'warning' })
+    }
+
+    const handleJobResume = job => {
+      addStatus(`Resumed job "${job.name}"`)
     }
 
     const handleJobProgress = job => {
@@ -31,7 +57,7 @@ export default function MarlinJobQueueHandler() {
     const handleJobFinish = job => {
       setJobs(jobs => jobs.filter(j => j.id !== job.id))
 
-      let status = addStatus(`Finished job ${job.name}`, { type: 'success'})
+      let status = addStatus(`Finished job "${job.name}"`, { type: 'success'})
       setTimeout(_ => removeStatus(status.id), 1500)
 
       if (isElectron()) {
@@ -43,10 +69,18 @@ export default function MarlinJobQueueHandler() {
     }
 
     device.socket.on('job:added', handleJobAdded)
+    device.socket.on('job:removed', handleJobRemoved)
+    device.socket.on('job:start', handleJobStart)
+    device.socket.on('job:pause', handleJobPause)
+    device.socket.on('job:resume', handleJobResume)
     device.socket.on('job:progress', handleJobProgress)
     device.socket.on('job:finish', handleJobFinish)
     return _ => {
       device.socket.off('job:added', handleJobAdded)
+      device.socket.off('job:removed', handleJobRemoved)
+      device.socket.off('job:start', handleJobStart)
+      device.socket.off('job:pause', handleJobPause)
+      device.socket.off('job:resume', handleJobResume)
       device.socket.off('job:progress', handleJobProgress)
       device.socket.off('job:finish', handleJobFinish)
     }
@@ -91,6 +125,28 @@ function JobList({
 function JobListItem({
   job
 }) {
+
+  const { device } = useDeviceContext()
+
+  function handleStart() {
+    // Handle start or resume on backend
+    device.sockets.fuseLabs.marlinCore.emit('job:start', job.id, res => {
+      console.log('Handle start res:', res)
+    })
+  }
+
+  function handlePause() {
+    device.sockets.fuseLabs.marlinCore.emit('job:pause', job.id, res => {
+      console.log('Handle pause res:', res)
+    })
+  }
+
+  function handleStop() {
+    device.sockets.fuseLabs.marlinCore.emit('job:stop', job.id, res => {
+      console.log('Handle stop res:', res)
+    })
+  }
+
   return (
     <li className='flex flex-col max-w-[200px] pb-2 last:pb-0'>
       <div className='flex flex-row h-10 items-center space-x-2'>
@@ -107,10 +163,15 @@ function JobListItem({
           </div>
         </div>
         <div className='flex flex-row items-center'>
-          <Button size="sm" mode="ghost" rounded squared className="text-amber-500">
+          {!job.paused && job.running &&
+          <Button size="sm" mode="ghost" rounded squared className="text-amber-500" onClick={handlePause}>
             <PauseIcon />
-          </Button>
-          <Button size="sm" mode="ghost" rounded squared className="text-red-400">
+          </Button>}
+          {(job.paused || !job.running) &&
+          <Button size="sm" mode="ghost" rounded squared className="text-lime-500" onClick={handleStart}>
+            <PlayIcon />
+          </Button>} 
+          <Button size="sm" mode="ghost" rounded squared className="text-red-400" onClick={handleStop}>
             <StopIcon />
           </Button>
         </div>

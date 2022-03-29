@@ -10,7 +10,7 @@ export default class MarlinGCodeJob extends EventEmitter {
   get id() { return this.#id }
 
   #name
-  get name() { return this.#name }
+  get name() { return this.#name }
 
   #startedAt
   get startedAt() { return this.#startedAt }
@@ -23,6 +23,9 @@ export default class MarlinGCodeJob extends EventEmitter {
 
   #running = false;
   get running() { return this.#running }
+
+  #paused = false;
+  get paused() { return this.#paused }
 
   get progress() {
     return {
@@ -46,12 +49,19 @@ export default class MarlinGCodeJob extends EventEmitter {
   }
 
   start() {
-    if (this.#running) return
+    if (this.#paused) {
+      return console.warn('Trying to start a paused job. Call resume() instead.')
+    }
+
+    if (this.#running) {
+      return console.warn('Trying to start an already running job.')
+    }
     
     console.start('Started job')
 
     // Set running flag
     this.#running = true
+    
     // Set start date
     this.#startedAt = new Date()
     
@@ -59,19 +69,62 @@ export default class MarlinGCodeJob extends EventEmitter {
     let okHandler = _ => {
       if (!this.#running) return
       // 'ok' has been received from latest command (can we have a ref to the command sent?)
-      process.nextTick(_ => this.emit('next'))
+      process.nextTick(_ => this.emit('next', this))
     }
     this.#controller.on('data:ok', okHandler)
     this.on('finish', _ => {
       this.#controller.off('data:ok', okHandler)
     })
 
+    let errorHandler = _ => {
+      console.log('Controller error received on MarlinGCodeJob')
+      // Pause job automatically
+      this.pause()
+    }
+    this.#controller.on('error', errorHandler)
+    this.on('finish', _ => {
+      this.#controller.off('error', errorHandler)
+    })
+
+    // Start job
     process.nextTick(_ => {
       // Send start event
-      this.emit('start')
+      this.emit('start', this)
 
       // Send next event to process next command (first one on start)
-      this.emit('next')
+      this.emit('next', this)
+    })
+  }
+
+  pause() {
+    if (!this.running) {
+      return console.warn('Trying to pause a job not running')
+    }
+
+    console.note('Pausing job')
+
+    this.#running = false
+    
+    process.nextTick(_ => this.emit('pause', this))
+  }
+
+  resume() {
+    if (!this.paused) {
+      return console.warn('Trying to resume a job not paused')
+    }
+
+    if (this.running) {
+      return console.warn('Trying to resume an already running job')
+    }
+
+    // Set paused and running flag
+    this.#paused = false
+    this.#running = true
+
+    // Resume job
+    process.nextTick(_ => {
+      this.emit('resume', this)
+      this.emit('next', this)
     })
   }
 
@@ -81,7 +134,7 @@ export default class MarlinGCodeJob extends EventEmitter {
     this.#running = false
 
     // Send finish event (in the next tick to allow running flag to be set)
-    process.nextTick(_ => this.emit('finish'))
+    process.nextTick(_ => this.emit('finish', this))
   }
 
   /**
@@ -105,7 +158,7 @@ export default class MarlinGCodeJob extends EventEmitter {
       // Check if comment
       if (command.trim().startsWith(';')) {
         // Send next event to process next command
-        process.nextTick(_ => this.emit('next'))
+        process.nextTick(_ => this.emit('next', this))
       } else {
         // Send command
         this.#controller.sendCommand(command)
@@ -122,7 +175,9 @@ export default class MarlinGCodeJob extends EventEmitter {
       id: this.id,
       name: this.name,
       startedAt: this.startedAt,
-      progress: this.progress
+      progress: this.progress,
+      running: this.running,
+      paused: this.paused,
     }
   }
 

@@ -15,14 +15,14 @@ export default function DeviceStatusListProvider(props) {
 
   function addStatus(message, opts) {
     let statusObj = {
-      id: Date.now(),
+      id: opts?.id || Date.now(),
       message: message,
       date: Date.now(),
       type: 'normal',
       ...opts
     }
     setStatusList(prev => {
-      return [...prev, statusObj]
+      return [...prev, statusObj].sort((a, b) => b.date - a.date)
     })
     return statusObj
   }

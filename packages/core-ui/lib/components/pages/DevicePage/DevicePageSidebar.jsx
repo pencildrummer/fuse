@@ -22,7 +22,7 @@ export default function DevicePageSidebar() {
             if (!plugin.deviceTypes?.includes(device.profile.type)) return
 
             let pluginComponents = plugin.deviceComponents(device)
-            console.log(plugin, plugin.deviceComponents())
+          
             let PluginPageComponent = pluginComponents.page?.plugin
             if (!PluginPageComponent)
               return null

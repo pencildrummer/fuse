@@ -146,6 +146,15 @@ export default class Device {
     // Set socket namespace
     // Add listener to this on data:* events to be broadcasted on device namespace socket
     this._namespace = socketServer.of('/device:'+this.id)
+
+    // Add listeners
+    this.controller.on('error', err => {
+      console.error('Error handled by Device from controller', err)
+      this.namespace.emit('error', {
+        message: err.message,
+        code: err.code
+      })
+    })
   }
 
   /**

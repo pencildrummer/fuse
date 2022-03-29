@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollArea, MainLayout } from "../../../index";
 import { DeviceProvider } from "@fuse-labs/core-client";
 import DevicePageSidebar from "./DevicePageSidebar";
 import DevicePageTopBar from "./DevicePageTopBar";
 import DeviceStatusListProvider from './DeviceStatusListProvider';
+import DevicePageStatusHandler from "./DevicePageStatusHandler";
 
 export default function DevicePage({
   device,
@@ -17,6 +18,7 @@ export default function DevicePage({
   return <MainLayout>
     <DeviceProvider device={device}>
       <DeviceStatusListProvider>
+        <DevicePageStatusHandler />
         <div className="w-full h-full flex flex-col">
           <DevicePageTopBar device={device} />
 

@@ -1,6 +1,6 @@
 import { useDeviceContext, ClientPlugin } from "@fuse-labs/core-client";
 import { useDeviceStatusListContext, Popover, Button, EmptyView, Progress } from "@fuse-labs/core-ui";
-import { LayersIcon, PauseIcon, StopIcon } from "@radix-ui/react-icons";
+import { LayersIcon, PauseIcon, PlayIcon, StopIcon } from "@radix-ui/react-icons";
 import isElectron from "is-electron";
 import require$$0, { useState, useEffect } from "react";
 var jsxRuntime = { exports: {} };
@@ -118,8 +118,30 @@ function MarlinJobQueueHandler() {
   } = useDeviceStatusListContext();
   const [jobs, setJobs] = useState([]);
   useEffect((_) => {
+    device.sockets.fuseLabs.marlinCore.emit("queue:jobs", (jobs2) => {
+      console.log("List of jobs", jobs2);
+      setJobs(jobs2);
+    });
+  }, [device]);
+  useEffect((_) => {
     const handleJobAdded = (job) => {
       setJobs((jobs2) => [...jobs2, job]);
+      addStatus(`Added job "${job.name}"`);
+    };
+    const handleJobRemoved = (job) => {
+      setJobs((jobs2) => jobs2.filter((j) => j.id != job.id));
+      addStatus(`Removed job "${job.name}"`);
+    };
+    const handleJobStart = (job) => {
+      addStatus(`Started job "${job.name}"`);
+    };
+    const handleJobPause = (job) => {
+      addStatus(`Paused job "${job.name}"`, {
+        type: "warning"
+      });
+    };
+    const handleJobResume = (job) => {
+      addStatus(`Resumed job "${job.name}"`);
     };
     const handleJobProgress = (job) => {
       setJobs((jobs2) => {
@@ -135,7 +157,7 @@ function MarlinJobQueueHandler() {
     };
     const handleJobFinish = (job) => {
       setJobs((jobs2) => jobs2.filter((j) => j.id !== job.id));
-      let status = addStatus(`Finished job ${job.name}`, {
+      let status = addStatus(`Finished job "${job.name}"`, {
         type: "success"
       });
       setTimeout((_2) => removeStatus(status.id), 1500);
@@ -147,10 +169,18 @@ function MarlinJobQueueHandler() {
       }
     };
     device.socket.on("job:added", handleJobAdded);
+    device.socket.on("job:removed", handleJobRemoved);
+    device.socket.on("job:start", handleJobStart);
+    device.socket.on("job:pause", handleJobPause);
+    device.socket.on("job:resume", handleJobResume);
     device.socket.on("job:progress", handleJobProgress);
     device.socket.on("job:finish", handleJobFinish);
     return (_2) => {
       device.socket.off("job:added", handleJobAdded);
+      device.socket.off("job:removed", handleJobRemoved);
+      device.socket.off("job:start", handleJobStart);
+      device.socket.off("job:pause", handleJobPause);
+      device.socket.off("job:resume", handleJobResume);
       device.socket.off("job:progress", handleJobProgress);
       device.socket.off("job:finish", handleJobFinish);
     };
@@ -196,6 +226,24 @@ function JobListItem({
   job
 }) {
   var _a, _b;
+  const {
+    device
+  } = useDeviceContext();
+  function handleStart() {
+    device.sockets.fuseLabs.marlinCore.emit("job:start", job.id, (res) => {
+      console.log("Handle start res:", res);
+    });
+  }
+  function handlePause() {
+    device.sockets.fuseLabs.marlinCore.emit("job:pause", job.id, (res) => {
+      console.log("Handle pause res:", res);
+    });
+  }
+  function handleStop() {
+    device.sockets.fuseLabs.marlinCore.emit("job:stop", job.id, (res) => {
+      console.log("Handle stop res:", res);
+    });
+  }
   return /* @__PURE__ */ jsxs("li", {
     className: "flex flex-col max-w-[200px] pb-2 last:pb-0",
     children: [/* @__PURE__ */ jsxs("div", {
@@ -218,19 +266,29 @@ function JobListItem({
         })]
       }), /* @__PURE__ */ jsxs("div", {
         className: "flex flex-row items-center",
-        children: [/* @__PURE__ */ jsx(Button, {
+        children: [!job.paused && job.running && /* @__PURE__ */ jsx(Button, {
           size: "sm",
           mode: "ghost",
           rounded: true,
           squared: true,
           className: "text-amber-500",
+          onClick: handlePause,
           children: /* @__PURE__ */ jsx(PauseIcon, {})
+        }), (job.paused || !job.running) && /* @__PURE__ */ jsx(Button, {
+          size: "sm",
+          mode: "ghost",
+          rounded: true,
+          squared: true,
+          className: "text-lime-500",
+          onClick: handleStart,
+          children: /* @__PURE__ */ jsx(PlayIcon, {})
         }), /* @__PURE__ */ jsx(Button, {
           size: "sm",
           mode: "ghost",
           rounded: true,
           squared: true,
           className: "text-red-400",
+          onClick: handleStop,
           children: /* @__PURE__ */ jsx(StopIcon, {})
         })]
       })]

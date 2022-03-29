@@ -8,6 +8,7 @@ export default class MarlinJobQueue extends EventEmitter {
 
   /** All the jobs */
   #jobs = []
+  get jobs() { return this.#jobs }
 
   /** If the queue should pause before sending the next job after a the previous one is finished */
   waitBetweenJobs = false
@@ -89,19 +90,41 @@ export default class MarlinJobQueue extends EventEmitter {
     if (job) {
       this.#currentJob = job
       
-      let jobNextHandler = _ => {
-        let eventJob = this.currentJob
-        process.nextTick(_ => this.emit('job:progress', eventJob))
+      let jobStartHandler = j => {
+        console.log('Queue job start handler', j)
+        process.nextTick(_ => this.emit('job:start', j))
       }
 
-      let jobFinishHandler = _ => {
-        this.#currentJob.off('next', jobNextHandler)
-        this.#currentJob.off('finish', jobFinishHandler)
-        let eventJob = this.currentJob
-        process.nextTick(_ => this.emit('job:finish', eventJob))
+      let jobNextHandler = j => {
+        process.nextTick(_ => this.emit('job:progress', j))
+      }
+
+      let jobPauseHandler = j => {
+        console.log('Queue PAUSE job handler', j)
+        process.nextTick(_ => this.emit('job:pause', j))
+      }
+
+      let jobResumeHandler = _ => {
+        console.log('Queue RESUME job handler', j)
+        process.nextTick(_ => this.emit('job:resume', j))
+      }
+
+      let jobFinishHandler = j => {
+        // Remove job listeners
+        this.#currentJob.off('start', jobStartHandler)
+        this.#currentJob.off('pause', jobPauseHandler)
+        this.#currentJob.off('resume', jobResumeHandler)
+        this.#currentJob.on('next', jobNextHandler)
+        this.#currentJob.on('finish', jobFinishHandler)
+        // Send queue job:finish event
+        process.nextTick(_ => this.emit('job:finish', j))
+        // TODO - Remove job? instead of clearing current job?
         this.#currentJob = null
       }
 
+      this.#currentJob.on('start', jobStartHandler)
+      this.#currentJob.on('pause', jobPauseHandler)
+      this.#currentJob.on('resume', jobResumeHandler)
       this.#currentJob.on('next', jobNextHandler)
       this.#currentJob.on('finish', jobFinishHandler)
       

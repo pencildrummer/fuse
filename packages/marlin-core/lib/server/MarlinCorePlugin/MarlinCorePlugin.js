@@ -11,6 +11,35 @@ export default class MarlinCorePlugin extends Plugin {
 
   initDeviceSocket(socket) {
 
+    /**
+     * List queue jobs
+     */
+    socket.on('queue:jobs', (fn) => {
+      let device = socket.device
+      // TODO - Check for controller in device middleware?
+      return fn?.(device.controller.jobs)
+    })
+
+    socket.on('job:start', (jobID, fn) => {
+      socket.device.controller.startJob(jobID)
+      fn?.(true)
+    })
+
+    socket.on('job:pause', (jobID, fn) => {
+      socket.device.controller.pauseJob(jobID)
+      fn?.(true)
+    })
+
+    socket.on('job:resume', (jobID, fn) => {
+      socket.device.controller.resumeJob(jobID)
+      fn?.(true)
+    })
+
+    socket.on('job:stop', (jobID, fn) => {
+      socket.device.controller.stopJob(jobID)
+      fn?.(true)
+    })
+
     socket.on('print:file', (path, fn) => {
       if (!path) {
         console.error('Missing file path to start print')

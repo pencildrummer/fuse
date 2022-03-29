@@ -56,7 +56,35 @@ export default class MarlinController extends Controller {
       this.#queue.clear()
       this.device.connection.off('close', closeHandler)
     }
+
+    // On error 
+    let errorHandler = _ => {
+
+    }
     this.device.connection.on('close', closeHandler)
+  }
+
+  /**
+   * Return the jobs in the queue
+   */
+  get jobs() {
+    return this.#queue.jobs
+  }
+
+  startJob(jobID) {
+    console.log('TODO - start job in MarlinController')
+  }
+
+  resumeJob(jobID) {
+    console.log('TODO - resume job in MarlinController')
+  }
+
+  pauseJob(jobID) {
+    console.log('TODO - pause job in MarlinController')
+  }
+
+  stopJob(jobID) {
+    console.log('TODO - stop job in MarlinController')
   }
 
   /**
@@ -134,6 +162,13 @@ export default class MarlinController extends Controller {
     })
     this.#queue.on('job:progress', job => {
       this.device.namespace.emit('job:progress', job)
+    })
+    this.#queue.on('job:pause', job => {
+      console.log('PAUSEEEED JOB')
+      this.device.namespace.emit('job:pause', job)
+    })
+    this.#queue.on('job:resume', job => {
+      this.device.namespace.emit('job:resume', job)
     })
     this.#queue.on('job:finish', job => {
       this.device.namespace.emit('job:finish', job)
