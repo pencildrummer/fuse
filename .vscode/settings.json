@@ -4,5 +4,6 @@
   "material-icon-theme.folders.associations": {
       "client-app": "app",
       "host-app": "server"
-  }
+  },
+  "editor.formatOnSave": true
 }

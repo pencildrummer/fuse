@@ -40,19 +40,21 @@ export default function Tooltip({
   }, [size])
 
   return (
-    <TooltipPrimitive.Root delayDuration={delayDuration || preferredDelayDuration}>
-      <TooltipPrimitive.Trigger asChild>
-        {props.children}
-      </TooltipPrimitive.Trigger>
-      <TooltipPrimitive.Content {...defaultProps} {...props}
-        className={classNames(
-          'leading-none',
-          'bg-gray-700 text-gray-100 font-bold shadow-sm',
-          sizeClassNames
-        )}>
-        {showArrow && <TooltipPrimitive.Arrow className='fill-gray-700' />}
-        {content}
-      </TooltipPrimitive.Content>
-    </TooltipPrimitive.Root>
+    <TooltipPrimitive.Provider>
+      <TooltipPrimitive.Root delayDuration={delayDuration || preferredDelayDuration}>
+        <TooltipPrimitive.Trigger asChild>
+          {props.children}
+        </TooltipPrimitive.Trigger>
+        <TooltipPrimitive.Content {...defaultProps} {...props}
+          className={classNames(
+            'leading-none',
+            'bg-gray-700 text-gray-100 font-bold shadow-sm',
+            sizeClassNames
+          )}>
+          {showArrow && <TooltipPrimitive.Arrow className='fill-gray-700' />}
+          {content}
+        </TooltipPrimitive.Content>
+      </TooltipPrimitive.Root>
+    </TooltipPrimitive.Provider>
   )
 }

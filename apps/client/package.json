@@ -1,5 +1,5 @@
 {
-  "name": "@fuse-labs/client",
+  "name": "client",
   "productName": "Fuse-Client",
   "version": "0.1",
   "description": "Fuse client - Manager for 3D printers, CNC and laser",
@@ -19,28 +19,35 @@
     "clean": "rm -rf node_modules"
   },
   "dependencies": {
-    "classnames": "^2.3.1",
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
+    "@radix-ui/react-icons": "^1.1.1",
+    "classnames": "^2.3.2",
     "commander": "^9.0.0",
     "date-fns": "^2.28.0",
-    "express": "^4.17.3",
+    "express": "^4.18.1",
     "is-electron": "^2.2.1",
-    "next": "^12.1.0",
+    "next": "12.3.1",
+    "next-transpile-modules": "^9.0.0",
     "prompts": "^2.4.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "sass": "^1.49.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intl": "^6.1.1",
+    "sass": "^1.55.0",
     "signale": "^1.4.0",
-    "tailwindcss-radix": "^1.6.0",
+    "tailwindcss": "^3.1.8",
+    "tailwindcss-radix": "^2.6.0",
     "validate-npm-package-name": "^3.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.6",
-    "eslint": "8.10.0",
-    "eslint-config-next": "12.1.0",
+    "@svgr/webpack": "^6.3.1",
+    "autoprefixer": "^10.4.12",
+    "eslint": "8.23.1",
+    "eslint-config-next": "12.3.1",
     "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-import": "^2.25.4",
-    "nodemon": "^2.0.15",
-    "postcss": "^8.3.5",
-    "tailwindcss": "^3.0.18"
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.16"
   }
 }

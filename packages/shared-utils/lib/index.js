@@ -1,7 +1,7 @@
-export * from './strings' 
-export * from './uuid'
-import getProductInfo from './getProductInfo'
-import getSuggestedName from './getSuggestedName'
+export * from './strings.js' 
+export * from './uuid.js'
+import getProductInfo from './getProductInfo.js'
+import getSuggestedName from './getSuggestedName.js'
 export {
   getProductInfo,
   getSuggestedName

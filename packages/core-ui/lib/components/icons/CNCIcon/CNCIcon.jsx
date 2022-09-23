@@ -1,4 +1,4 @@
-import { ReactComponent as CNC } from './CNC.svg'
+import CNC from './CNC.svg'
 
 export default function CNCIcon(props) {
   return <CNC {...props}/>

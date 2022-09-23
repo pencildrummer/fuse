@@ -138,7 +138,8 @@ export default class Device {
     // Set controller
     let ControllerClass = Controller.getControllerClass(this.profile.firmware)
     if (!ControllerClass) {
-      throw new Error(`No controller class found for device firmware '${this.profile.firmware}'`)
+      //throw new Error(`No controller class found for device firmware '${this.profile.firmware}'`)
+      console.error(`No controller class found for device firmware '${this.profile.firmware}'`)
     } else {
       this.controller = new ControllerClass(this)
     }
@@ -148,7 +149,7 @@ export default class Device {
     this._namespace = socketServer.of('/device:'+this.id)
 
     // Add listeners
-    this.controller.on('error', err => {
+    this.controller?.on('error', err => {
       console.error('Error handled by Device from controller', err)
       this.namespace.emit('error', {
         message: err.message,

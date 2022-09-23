@@ -5,9 +5,18 @@
   "workspaces": [
     "./apps/client",
     "./apps/host",
-    "./packages/*"
+    "./packages/core",
+    "./packages/core-ui",
+    "./packages/core-client",
+    "./packages/shared-utils"
   ],
   "scripts": {
-    "dev": "npm run dev -w @fuse-labs/client & npm run dev -w @fuse-labs/host"
+    "client:dev": "yarn workspace client dev",
+    "host:dev": "yarn workspace host dev",
+    "dev": "yarn workspace client dev & yarn workspace host dev"
+  },
+  "packageManager": "yarn@3.2.3",
+  "dependencies": {
+    "supports-color": "^8"
   }
 }

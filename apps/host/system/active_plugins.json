@@ -1,16 +1,5 @@
 {
   "data": [
-    "@fuse-labs/file-manager",
-    "@fuse-labs/shared-utils",
-    "@fuse-labs/marlin-core",
-    "@fuse-labs/marlin-temperature",
-    "@fuse-labs/grbl-move",
-    "@fuse-labs/grbl-settings",
-    "@fuse-labs/marlin-extruder",
-    "@fuse-labs/marlin-gcode-viewer",
-    "@fuse-labs/marlin-move",
-    "@fuse-labs/marlin-settings",
-    "@fuse-labs/camera",
-    "@fuse-labs/terminal"
+    
   ]
 }

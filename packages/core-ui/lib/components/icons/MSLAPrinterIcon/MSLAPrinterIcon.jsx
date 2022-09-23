@@ -1,4 +1,4 @@
-import { ReactComponent as MSLA } from './MSLA.svg'
+import MSLA from './MSLA.svg'
 
 export default function MSLAPrinterIcon(props) {
   return <MSLA {...props}/>

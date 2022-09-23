@@ -1,4 +1,4 @@
-import { ReactComponent as Laser } from './Laser.svg'
+import Laser from './Laser.svg'
 
 export default function LaserIcon(props) {
   return <Laser {...props}/>

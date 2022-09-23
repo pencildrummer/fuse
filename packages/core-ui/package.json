@@ -2,57 +2,43 @@
   "name": "@fuse-labs/core-ui",
   "description": "CoreUI plugin for FUSE",
   "private": true,
-  "version": "0.0.0",
-  "files": [
-    "dist"
-  ],
-  "module": "./dist/core-ui.es.js",
-  "exports": {
-    ".": {
-      "import": "./dist/core-ui.es.js"
-    },
-    "./core-ui.css": "./dist/style.css"
-  },
-  "scripts": {
-    "build": "vite build",
-    "dev": "vite build --watch",
-    "preview": "vite preview",
-    "clean": "rm -rf node_modules"
-  },
+  "version": "0.0.1",
+  "main": "./lib/index.js",
   "dependencies": {
-    "@radix-ui/react-alert-dialog": "^0.1.7",
-    "@radix-ui/react-aspect-ratio": "^0.1.4",
-    "@radix-ui/react-checkbox": "^0.1.5",
-    "@radix-ui/react-context-menu": "^0.1.6",
-    "@radix-ui/react-dialog": "^0.1.7",
-    "@radix-ui/react-dropdown-menu": "^0.1.6",
-    "@radix-ui/react-icons": "^1.1.0",
-    "@radix-ui/react-label": "^0.1.5",
-    "@radix-ui/react-popover": "^0.1.6",
-    "@radix-ui/react-progress": "^0.1.4",
-    "@radix-ui/react-scroll-area": "^0.1.4",
-    "@radix-ui/react-separator": "^0.1.4",
-    "@radix-ui/react-slider": "^0.1.4",
-    "@radix-ui/react-switch": "^0.1.5",
-    "@radix-ui/react-toggle-group": "^0.1.5",
-    "@radix-ui/react-toolbar": "^0.1.5",
-    "@radix-ui/react-tooltip": "^0.1.7",
-    "classnames": "^2.3.1",
+    "@radix-ui/react-alert-dialog": "^1.0.0",
+    "@radix-ui/react-aspect-ratio": "^1.0.0",
+    "@radix-ui/react-checkbox": "^1.0.0",
+    "@radix-ui/react-context-menu": "^1.0.0",
+    "@radix-ui/react-dialog": "^1.0.0",
+    "@radix-ui/react-dropdown-menu": "^1.0.0",
+    "@radix-ui/react-icons": "^1.1.1",
+    "@radix-ui/react-label": "^1.0.0",
+    "@radix-ui/react-popover": "^1.0.0",
+    "@radix-ui/react-progress": "^1.0.0",
+    "@radix-ui/react-scroll-area": "^1.0.0",
+    "@radix-ui/react-separator": "^1.0.0",
+    "@radix-ui/react-slider": "^1.0.0",
+    "@radix-ui/react-switch": "^1.0.0",
+    "@radix-ui/react-toggle-group": "^1.0.0",
+    "@radix-ui/react-toolbar": "^1.0.0",
+    "@radix-ui/react-tooltip": "^1.0.0",
+    "classnames": "^2.3.2",
     "formik": "^2.2.9",
     "lodash-es": "^4.17.21",
-    "verbose": "^0.2.3",
     "yup": "^0.32.11"
   },
   "peerDependencies": {
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
     "next": "^12.1.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "*",
+    "tailwindcss": "*",
+    "tailwindcss-radix": "*"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
-    "sass": "^1.49.9",
-    "vite": "^2.8.0",
-    "vite-plugin-svgr": "^1.0.1"
+    "@svgr/webpack": "^6.3.1"
   },
   "fuse": {
     "title": "Core UI"

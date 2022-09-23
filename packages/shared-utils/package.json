@@ -3,17 +3,8 @@
   "description": "Shared utilities (core and client) for FUSE",
   "private": true,
   "version": "0.0.0",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/shared-utils.umd.js",
-  "module": "./dist/shared-utils.es.mjs",
-  "exports": {
-    ".": {
-      "require": "./dist/shared-utils.umd.js",
-      "import": "./dist/shared-utils.es.mjs"
-    }
-  },
+  "main": "./lib/index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -21,6 +12,6 @@
     "clean": "rm -rf node_modules"
   },
   "devDependencies": {
-    "vite": "^2.8.0"
+    "vite": "^3.1.3"
   }
 }
