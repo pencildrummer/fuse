@@ -1,5 +1,7 @@
 [
   {
-    "name": "@fuse-labs/terminal"
+    "name": "@fuse-labs/terminal",
+    "path": "./plugins/@fuse-labs/terminal",
+    "active": false
   }
 ]
