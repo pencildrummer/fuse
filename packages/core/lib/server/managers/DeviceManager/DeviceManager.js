@@ -25,7 +25,7 @@ class DeviceManager {
     fs.ensureDirSync(DEVICES_BASE_PATH)
     let entries = fs.readdirSync(DEVICES_BASE_PATH, { withFileTypes: true})
 
-    // Loop and create Device isntances
+    // Loop and create Device instances
     this._devices = entries.reduce((entries, entry) => {
       if (entry.isFile()) {
         // Check for correct extension

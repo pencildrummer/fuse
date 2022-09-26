@@ -1,4 +1,4 @@
-import { Plugin, PluginManager, ProfileManager, DeviceManager } from "../index.js"
+import { Plugin, PluginManager, ProfileManager, DeviceManager, ConfigManager } from "../index.js"
 import { SerialPort } from "serialport"
 import { DeviceType } from "../models/index.js"
 
@@ -21,7 +21,8 @@ export default class CorePlugin extends Plugin {
       let data = {
         devices: DeviceManager.shared.devices,
         plugins: PluginManager.shared.plugins,
-        profiles: ProfileManager.shared.profiles
+        profiles: ProfileManager.shared.profiles,
+        config: ConfigManager.shared.config
       }
       fn?.(data)
     })

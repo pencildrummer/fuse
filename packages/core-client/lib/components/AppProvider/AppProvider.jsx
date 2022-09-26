@@ -4,11 +4,13 @@ import useProviderPlugins from '../../hooks/useProviderPlugins.js'
 import useProviderDevices from '../../hooks/useProviderDevices.js'
 import useProviderProfiles from '../../hooks/useProviderProfiles.js'
 import { AppContext } from '../../hooks/useAppContext.js'
+import useProviderConfig from '../../hooks/useProviderConfig.js'
 
 export default function AppProvider({
   devices: fetchedDevices,
   profiles: fetchedProfiles,
   plugins: fetchedPlugins,
+  config: fetchedConfig,
   locale = 'en',
   messages,
   ...props
@@ -22,11 +24,14 @@ export default function AppProvider({
 
   const devices = useProviderDevices(fetchedDevices)
 
+  const config = useProviderConfig(fetchedConfig);
+
   return <AppContext.Provider value={{
     devices,
     profiles,
     plugins,
     activePlugins,
+    config,
   }}>
     <IntlProvider defaultLocale='en' locale={locale} messages={messages}>
       {props.children}
