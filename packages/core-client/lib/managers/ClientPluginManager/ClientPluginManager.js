@@ -33,79 +33,31 @@ class ClientPluginManager {
     //
   }
 
-  async init(fetchedPluginsData) {
+  async init(installedPluginsData) {
     this._loading = true;
+
+    console.log("Plugins data", installedPluginsData);
+    console.log("Already registered:", ClientPluginManager._registeredPlugins);
 
     // Map fetched data to generic client plugin
     // While mapping should match if a plugin with a certain pattern to be decided i matched
     // And so register the plugin not as a generic ClientPlugin but as a registered one
-    if (fetchedPluginsData) {
-      this._plugins = await Promise.all(
-        fetchedPluginsData
-          ?.filter((data) => {
-            // TODO: Change later
-            // Skipping system for now
-            return !data._system;
-          })
-          .map(async (data) => {
-            console.log("Plugin data", data);
-
-            // TODO - Later on make dynamic import on installed plugins, we need a plugin install system to be implemente
-            try {
-              const base = "http://localhost:3000/system";
-              //const importPath = `${data._path}/lib/client/index.js`
-              const pluginDir = data._path.split("/").pop();
-              //const importPath = 'file:///Users/pencildrummer/Sites/fuse/apps/client/public/test.js'
-              // const test = await import(/* webpackIgnore: true */ `./${data.name}.js`)
-              // console.log('TEST', test)
-              const importPath = `${base}/${pluginDir}/dist-client/main.js`;
-              console.log(
-                `Registering plugin '${data.name}' from '${importPath}'`
-              );
-              // IMPORTANT: The magic is to skip webpack bundling for await import! (with the webpackIgnore rule)
-              const pluginImported = await import(
-                /* webpackIgnore: true */ `${importPath}`
-              )
-                .then((res) => {
-                  console.log("Imported");
-                  // Access loaded plugin from window because we are loading from UMD
-                  // TODO: Investigate bettere this loading process
-                  return window[data._libraryName];
-                })
-                .catch((err) => {
-                  console.error(err);
-                  return null;
-                });
-
-              if (pluginImported) {
-                // Get the default implementation
-                const { default: pluginClass } = pluginImported;
-                // Register plugin class
-                ClientPluginManager.registerPlugin(data.name, pluginClass);
-              }
-            } catch (err) {
-              console.error(err);
-              throw err;
-            }
-
-            let PluginClass = ClientPluginManager._registeredPlugins[data.name];
-            if (PluginClass) {
-              return new PluginClass(data);
-            } else {
-              return new ClientPlugin(data);
-            }
-          })
-      );
-    } else {
-      this._plugins = [];
+    if (installedPluginsData) {
+      await this.registerInstalledPlugins(installedPluginsData);
     }
 
-    // Now when all the plugin has been mapped, we can call the provision method on it
-    console.log("INIT MANAGER Plugins", this._plugins);
+    // Load registered plugins
+    this.loadRegisteredPlugins(installedPluginsData);
+
+    // // Now when all the plugin has been mapped, we can call the provision method on it
+    // console.log("INIT MANAGER Plugins", this._plugins);
     this._initialized = true;
     this._loading = false;
+
+    console.log("ClientPluginManager initialized");
   }
 
+  // TODO: Mark as private
   static _registeredPlugins = {};
   /**
    * Use this method to register client plugins, call it before initializing the plugin manager
@@ -113,6 +65,113 @@ class ClientPluginManager {
    */
   static registerPlugin(pluginName, pluginClass) {
     ClientPluginManager._registeredPlugins[pluginName] = pluginClass;
+    console.log(`Registered ${pluginName}`);
+  }
+
+  /** Private */
+
+  /**
+   * Register plugins installed based on list of fetched from host
+   */
+  async registerInstalledPlugins(pluginsData) {
+    await Promise.all(
+      Object.values(pluginsData)
+        ?.filter((data) => {
+          // TODO: Change later
+          // Skipping system for now
+          if (data._system) {
+            // TODO: Check if already registered before initialization?
+            console.log(
+              `Prevent registration from fetched data of plugin ${data.name} marked as system.`
+            );
+          }
+          // We hard code in app bundle the plugin registration
+          return !data._system;
+        })
+        .map(async (data) => {
+          console.log("Plugin data", data);
+
+          try {
+            // TODO: Replace base url with global constants or something similar
+            const base = "http://localhost:3000/system";
+            // Extract plugin directory from path
+            const pluginDir = data._path.split("/").pop();
+            // TODO: Read package.json and import path accordingly? 'main' field should match
+            // Build dynamic import path, served from host custom server
+            const importPath = `${base}/${pluginDir}/dist-client/main.js`;
+            console.log(
+              `Registering plugin '${data.name}' from '${importPath}'...`
+            );
+
+            // IMPORTANT: The magic is to skip webpack bundling for await import! (with the webpackIgnore rule)
+            const pluginImported = await import(
+              /* webpackIgnore: true */ `${importPath}`
+            )
+              .then((res) => {
+                console.log(`Imported ${data.name} as ${data._libraryName}`);
+                // Access loaded plugin from window because we are loading from UMD
+                // TODO: Investigate bettere this loading process
+                return window[data._libraryName];
+              })
+              .catch((err) => {
+                console.error(err);
+                return null;
+              });
+
+            if (pluginImported) {
+              // Get the default implementation
+              const { default: pluginClass } = pluginImported;
+              // Register plugin class
+              ClientPluginManager.registerPlugin(data.name, pluginClass);
+              return true;
+            } else {
+              console.error(`Error importing ${data.name} from ${importPath}`);
+            }
+          } catch (err) {
+            console.error(err);
+            throw err;
+          }
+        })
+    );
+  }
+
+  /**
+   * This methods register system plugins. These are hard coded and bundled on build, these are not dynamically imported.
+   */
+  /*registerSystemPlugins() {
+    // ClientPluginManager.registerPlugin('@fuse-labs/terminal', TerminalClientPlugin)
+    // ClientPluginManager.registerPlugin(
+    //   "@fuse-labs/terminal-client",
+    //   TerminalClientPlugin
+    // );
+  }*/
+
+  /**
+   * Load and intialize registered plugins
+   */
+  loadRegisteredPlugins(installedPluginsData) {
+    console.log("Start loading registered plugins...");
+    this._plugins = Object.keys(ClientPluginManager._registeredPlugins).map(
+      (name) => {
+        let PluginClass = ClientPluginManager._registeredPlugins[name];
+        if (!PluginClass) {
+          throw new Error(`Missing constructor for register plugin '${name}'`);
+        }
+
+        console.log(`Loading '${name}'...`);
+        console.log(installedPluginsData);
+        let pluginData = installedPluginsData[name];
+
+        return new PluginClass(pluginData);
+      }
+    );
+    console.log("Loaded plugins", this._plugins);
+    // let PluginClass = ClientPluginManager._registeredPlugins[data.name];
+    // if (PluginClass) {
+    //   return new PluginClass(data);
+    // } else {
+    //   return new ClientPlugin(data);
+    // }
   }
 }
 

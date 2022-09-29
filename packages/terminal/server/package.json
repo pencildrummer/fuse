@@ -1,0 +1,32 @@
+{
+  "name": "@fuse-labs/terminal-server",
+  "version": "1.0.0",
+  "description": "Plugin to send terminal request from client ot backend",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "main": "./index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules"
+  },
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^",
+    "chalk": "^5.0.1",
+    "signale": "^1.4.0",
+    "uuid": "^8.3.2"
+  },
+  "fuse": {
+    "title": "Terminal",
+    "pagesUrl": "terminal",
+    "icon": "ReaderIcon",
+    "tooltip": "Terminal",
+    "devices": [
+      "fdm_printer",
+      "cnc"
+    ]
+  }
+}

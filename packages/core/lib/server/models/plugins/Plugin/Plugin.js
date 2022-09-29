@@ -100,12 +100,13 @@ export default class Plugin {
     if (fs.existsSync(packagePath)) {
       let info = fs.readFileSync(packagePath);
       info = JSON.parse(info);
-      signale.info("Setting plugin info from package.json discovered file");
+      signale.info(`Setting plugin info from package.json for ${name}`);
 
       // Set version from package if not manually set
       this._version = info.version;
     } else {
-      signale.warn("No package found for", name);
+      signale.warn("No package.json found for", name);
+      signale.log("Searched at", packagePath);
     }
 
     // // Add fuse key to safely add custom settings if not provided by package.json

@@ -8,7 +8,8 @@
     "./packages/core",
     "./packages/core-ui",
     "./packages/core-client",
-    "./packages/shared-utils"
+    "./packages/shared-utils",
+    "./packages/terminal/*"
   ],
   "scripts": {
     "client:dev": "yarn workspace client dev",

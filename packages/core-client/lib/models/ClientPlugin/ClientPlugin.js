@@ -7,14 +7,14 @@ const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
   _version: string().required(),
   deviceTypes: array().required(),
-  _settings: boolean().required(),
-  _hasPages: boolean().required(),
-  _hasTabs: boolean().required(),
-  _hasSocket: boolean().required(),
-  _hasDeviceSocket: boolean().required(),
+  _settings: boolean(),
+  _hasPages: boolean(),
+  _hasTabs: boolean(),
+  _hasSocket: boolean(),
+  _hasDeviceSocket: boolean(),
   //_fuse: object().required(),
-  _active: boolean().required(),
-  _system: boolean().required(),
+  _active: boolean(),
+  _system: boolean(),
 });
 
 const SCHEMA = object({
@@ -75,7 +75,7 @@ export default class ClientPlugin {
     return this._active;
   }
 
-  _system;
+  _system = false;
   get system() {
     return this._system;
   }
@@ -95,6 +95,10 @@ export default class ClientPlugin {
   }
 
   constructor(data) {
+    if (!data) {
+      throw new Error(`Missing data to initialize plugin`);
+    }
+
     // Set validated data on instance
     let pluginData = CONSTRUCTOR_SCHEMA.validateSync(data);
     Object.assign(this, pluginData);

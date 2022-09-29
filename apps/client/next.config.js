@@ -1,6 +1,8 @@
 const withTM = require("next-transpile-modules")([
   "@fuse-labs/core-client",
   "@fuse-labs/core-ui",
+  "@fuse-labs/shared-utils",
+  "@fuse-labs/terminal-client",
 ]);
 
 const config = {
@@ -38,7 +40,6 @@ const config = {
     }
 
     if (!options.isServer) {
-      console.log("core-client resolved to:", require.resolve("react-intl"));
       config.module.rules.push({
         test: require.resolve("react"),
         loader: "expose-loader",
