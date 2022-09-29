@@ -46,7 +46,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       }\
     ],\
     "enableTopLevelFallback": true,\
-    "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
+    "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)|(^(?:plugins\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?=.)[^/]*?\\\\/?)$)",\
     "fallbackExclusionList": [\
       ["@fuse-labs/core", ["workspace:packages/core"]],\
       ["@fuse-labs/core-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client", "workspace:packages/core-client"]],\
@@ -2684,6 +2684,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["signale", "npm:1.4.0"],\
             ["socket.io", "npm:4.5.2"],\
             ["uuid", "npm:8.3.2"],\
+            ["varname", "npm:4.1.1"],\
             ["yup", "npm:0.32.11"]\
           ],\
           "linkType": "SOFT"\
@@ -6730,6 +6731,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-next", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:12.3.1"],\
             ["eslint-import-resolver-alias", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.2"],\
             ["eslint-plugin-import", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:2.26.0"],\
+            ["expose-loader", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:4.0.0"],\
             ["express", "npm:4.18.1"],\
             ["is-electron", "npm:2.2.1"],\
             ["next", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:12.3.1"],\
@@ -8230,6 +8232,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["expose-loader", [\
+        ["npm:4.0.0", {\
+          "packageLocation": "./.yarn/cache/expose-loader-npm-4.0.0-8e8fecc3bc-a674397dfb.zip/node_modules/expose-loader/",\
+          "packageDependencies": [\
+            ["expose-loader", "npm:4.0.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:4.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/expose-loader-virtual-578041bc4e/0/cache/expose-loader-npm-4.0.0-8e8fecc3bc-a674397dfb.zip/node_modules/expose-loader/",\
+          "packageDependencies": [\
+            ["expose-loader", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:4.0.0"],\
+            ["@types/webpack", null],\
+            ["webpack", null]\
+          ],\
+          "packagePeers": [\
+            "@types/webpack",\
+            "webpack"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["express", [\
         ["npm:4.18.1", {\
           "packageLocation": "./.yarn/cache/express-npm-4.18.1-842e583ae1-c3d44c92e4.zip/node_modules/express/",\
@@ -8337,6 +8361,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["file-entry-cache", "npm:6.0.1"],\
             ["flat-cache", "npm:3.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["filesize", [\
+        ["npm:9.0.11", {\
+          "packageLocation": "./.yarn/cache/filesize-npm-9.0.11-3b5a24c45b-7e8a9f9a40.zip/node_modules/filesize/",\
+          "packageDependencies": [\
+            ["filesize", "npm:9.0.11"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -8809,8 +8842,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["host", "workspace:apps/host"],\
             ["@fuse-labs/core", "workspace:packages/core"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
             ["chalk", "npm:5.0.1"],\
+            ["classnames", "npm:2.3.2"],\
+            ["filesize", "npm:9.0.11"],\
             ["nodemon", "npm:2.0.20"],\
+            ["react", "npm:18.2.0"],\
+            ["react-intl", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:6.1.1"],\
             ["signale", "npm:1.4.0"]\
           ],\
           "linkType": "SOFT"\
@@ -12084,6 +12123,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["validate-npm-package-name", "npm:3.0.0"],\
             ["builtins", "npm:1.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["varname", [\
+        ["npm:4.1.1", {\
+          "packageLocation": "./.yarn/cache/varname-npm-4.1.1-6bbbbbebd2-c1d9a9939e.zip/node_modules/varname/",\
+          "packageDependencies": [\
+            ["varname", "npm:4.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\

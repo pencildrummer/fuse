@@ -1,22 +1,36 @@
-import path from 'path'
-import signale from 'signale';
-import fs from 'fs-extra'
-import { SYSTEM_BASE_PATH, PLUGINS_BASE_PATH } from '../../constants.js';
-import Plugin from '../../models/plugins/Plugin/Plugin.js';
 import chalk from 'chalk';
+import fs from 'fs-extra';
+import path from 'path';
+import signale from 'signale';
+import { fileURLToPath, pathToFileURL } from 'url';
+import { SYSTEM_BASE_PATH } from '../../constants.js';
+import Plugin from '../../models/plugins/Plugin/Plugin.js';
 
-const ACTIVE_PLUGINS_PATH = path.resolve(path.join(SYSTEM_BASE_PATH, 'active_plugins.json'))
+const PLUGINS_LIST_FILE_PATH = path.resolve(path.join(SYSTEM_BASE_PATH, 'plugins.json'))
 
-const __SYSTEM_PLUGIN_NAMES__ = Object.freeze([
-  '@fuse-labs/core',
-  '@fuse-labs/core-ui',
-  '@fuse-labs/core-client',
-])
+const __SYSTEM_PLUGINS__ = Object.freeze({
+  '@fuse-labs/core': {
+    name: '@fuse-labs/core',
+    path: '@fuse-labs/core',
+    active: true,
+    host: true,
+  },
+  // '@fuse-labs/core-ui': {
+  //   name: '@fuse-labs/core-ui',
+  //   path: '@fuse-labs/core-ui',
+  //   active: true
+  // },
+  // '@fuse-labs/core-client': {
+  //   name: '@fuse-labs/core-client',
+  //   path: '@fuse-labs/core-client',
+  //   active: true
+  // },
+})
 
 class PluginManager {
 
   get SYSTEM_PLUGIN_NAMES() {
-    return __SYSTEM_PLUGIN_NAMES__
+    return Object.keys(__SYSTEM_PLUGINS__)
   }
 
   _plugins = [];
@@ -45,117 +59,155 @@ class PluginManager {
 
     signale.pending('Initializing PluginManager')
 
-    // Load active plugin names
-    this.getActivePluginsNames()
+    // Set system plugins as always active
+    this._activePluginsNames = [
+      ...Object.keys(__SYSTEM_PLUGINS__),
+    ]
 
-    // Init plugin manager
-    // Get available installed plugins based on package presence
-    // console.warn(`Scanning directory for plugin: '${PLUGINS_BASE_PATH}'. Find better way because once packaged we cannot do it anymore. Maybe save plugin ref in user directory?`)
-    // let dirs = fs.readdirSync(PLUGINS_BASE_PATH)
-    // let scopes = dirs.filter(dir => dir.startsWith("@"))
-    // let scopedPlugins = scopes.flatMap( scope => 
-    //   fs.readdirSync(path.join(PLUGINS_BASE_PATH, scope)).map(name => path.join(scope, name))
-    // )
+    // Load installed plugins based on stored plugins.json config file
+    let pluginsList = this.getPluginsListInfo()
+    signale.debug(pluginsList)
 
-    // let pluginNames = [
-    //   ...scopedPlugins,
-    //   dirs.filter(d => !scopes.includes(d))
-    // ].flat()
-
-    // ATTENTION - This is just for now, we should retrieve the installed plugin names, we need an install process,
-    // we also already bundle some plugins, before externalizing them
-    let pluginNames = this.activePluginsNames
+    let pluginNames = Object.keys(pluginsList)
 
     // Init Plugin(s) based on names and add it to the plugin manager store
     this._plugins = await pluginNames.reduce( async (prev, pluginName) => {
       // Wait for previous plugin load process
       const plugins = await prev
 
-      // const pluginPkgPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'package.json')
-
-      // // Find package.json
-      // if (!fs.existsSync(pluginPkgPath)) {
-      //   console.error('Unable to find package.json for plugin', pluginName)
-      //   return plugins
-      // }
-
-      // // Read package.json
-      // let pluginPkg
-      // try {
-      //   pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath))
-      // } catch(err) {
-      //   console.error('Error reading package.json from plugin', pluginName)
-      //   return plugins
-      // }
-
-      // // Check if supports server side (should export server)
-      // if (pluginPkg.exports?.['./server'] == undefined) {
-      //   console.warn(`${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`)
-      //   return plugins
-      // }
-
-      // // TODO - Find a better way to load plugin or check if it is a bug that prevent loading from "exports" defined keys in package.json of plugins installed
-      // let pluginPath = path.resolve(PLUGINS_BASE_PATH, pluginName, 'lib', 'server', 'index.js')
-
-      //const pluginModule = await import(`${pluginName}/server`)
-      const pluginModule = await import(`${pluginName}/server`)
-        .then(res => {
-          if (!res.default) {
-            throw new Error('Found module but no default export is found. Should export the plugin class.')
-          }
-          if (typeof res.default !== 'function') {
-            throw new Error(`Default export of ${pluginName}/server is not a class`)
-          }
-          if (!(res.default.prototype instanceof Plugin)) {
-            throw new Error(`Plugin class "${chalk.red(res.default.name)}" must extend "${chalk.bold(Plugin.name)}" from ${chalk.underline('@fuse-labs/core/server')}`)
-          }
-          signale.success(`${chalk.green(pluginName+'/server')}: module found, using "${chalk.green.bold(res.default.name)}" to initialize plugin`)
-          return res
-        }).catch(err => {
-          switch (err.code) {
-            case 'ERR_PACKAGE_PATH_NOT_EXPORTED':
-              signale.warn(`${chalk.yellow(pluginName+'/server')}: not loaded, "${chalk.bold.yellow(pluginName)}" do not support server side. If unexpected check "${pluginName}" exports ./server`)
-              break
-            case 'ERR_MODULE_NOT_FOUND':
-            // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
-            default:
-              signale.error(err)
-              signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
-          }
-          return null
-        })
-
-      let PluginClass = Plugin
-      if (pluginModule?.default)
-        PluginClass = pluginModule.default
-
-      // Create Plugin instance for required pluginName
-      let plugin = new PluginClass(pluginName)
+      let plugin
+      // Check if system plugin
+      if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
+        plugin = await this.loadSystemPlugin(pluginName)
+      } else {
+        const pluginInfo = pluginsList[pluginName]
+        plugin = await this.loadInstalledPlugin(pluginInfo)
+      }
+      
       if (plugin) {
+        // Add plugin
         plugins.push(plugin)
+        console.success(`Loaded plugin ${chalk.bold.green(pluginName)}`)
       }
       return plugins
-    }, Promise.resolve([]))
+    }, Promise.resolve(this._plugins))
 
     this._initialized = true
     
     signale.success('PluginManager is now ready')
   }
 
-  /**
-   * Used internally to retrieve list of plugin names active from system file 'active_plugins.json'.
-   * You should use PluginManager.activePluginsNames for operations.
-   * @returns List of active plugin names
-   */
-  getActivePluginsNames() {
-    // Get list of active plugins
-    let content = fs.readFileSync(ACTIVE_PLUGINS_PATH)
-    
-    // Set on singleton instance
+  async loadSystemPlugin(systemPluginName) {
+    const pluginPath = path.resolve(systemPluginName)
+    //const pluginPkgPath = path.resolve(pluginPath, 'package.json')
+    // const packageJson = await import(`${systemPluginName}/package.json`, { assert: { type: 'json' }})
+    // TODO - Load reading exports or better, these are system plugins, we can control them
+    const pluginModule = await import(`${systemPluginName}/lib/server/index.js`)
+    let PluginClass = pluginModule.default
+    let systemPlugin = new PluginClass(systemPluginName, 'system')
+    // System plugins are always active
     this._activePluginsNames = [
-      ...__SYSTEM_PLUGIN_NAMES__,
-      ...(JSON.parse(content)?.data || []),
+      ...this._activePluginsNames,
+      systemPluginName
     ]
+    return systemPlugin
+  }
+
+  async loadInstalledPlugin(pluginInfo) {
+
+    const pluginName = pluginInfo.name
+    const pluginPath = path.resolve(pluginInfo.path)
+    const pluginPkgPath = path.resolve(pluginPath, 'package.json')
+
+    // Find package.json
+    if (!fs.existsSync(pluginPkgPath)) {
+      console.error('Unable to find package.json for plugin', pluginName)
+      return plugins
+    }
+
+    // Read package.json
+    let pluginPkg
+    try {
+      pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath))
+    } catch(err) {
+      console.error('Error reading package.json from plugin', pluginName)
+      return plugins
+    }
+
+    // Check if supports server side (should export server)
+    if (pluginPkg.exports?.['./server'] == undefined) {
+      console.warn(`${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`)
+      return plugins
+    }     
+
+    // Build final import path
+    const importPath = path.join(pluginPath, pluginPkg.exports['./server'])
+    console.debug(importPath)
+    const pluginModule = await import(pathToFileURL(importPath ))
+      .then(res => {
+        if (!res.default) {
+          throw new Error('Found module but no default export is found. Should export the plugin class.')
+        }
+        if (typeof res.default !== 'function') {
+          throw new Error(`Default export of ${pluginName}/server is not a class`)
+        }
+        if (!(res.default.prototype instanceof Plugin)) {
+          throw new Error(`Plugin class "${chalk.red(res.default.name)}" must extend "${chalk.bold(Plugin.name)}" from ${chalk.underline('@fuse-labs/core')}`)
+        }
+        signale.success(`${chalk.green(pluginName+'/server')}: module found, using "${chalk.green.bold(res.default.name)}" to initialize plugin`)
+        return res
+      }).catch(err => {
+        switch (err.code) {
+          case 'ERR_PACKAGE_PATH_NOT_EXPORTED':
+            signale.warn(`${chalk.yellow(pluginName+'/server')}: not loaded, "${chalk.bold.yellow(pluginName)}" do not support server side. If unexpected check "${pluginName}" exports ./server`)
+            break
+          case 'ERR_MODULE_NOT_FOUND':
+          // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
+          default:
+            signale.error(err)
+            signale.warn(`${chalk.yellow(pluginName+'/server')}: module not found, using generic ${chalk.yellow(Plugin.name)} class to initialize "${chalk.bold(pluginName)}"`)
+        }
+        return null
+      })
+
+    let PluginClass = Plugin
+    if (pluginModule?.default)
+      PluginClass = pluginModule.default
+
+    // Create Plugin instance for required pluginName
+    let plugin = new PluginClass(pluginName, pluginPath)
+    if (plugin) {
+      // Configure plugin activation status
+      if (pluginInfo.active === true) {
+        this._activePluginsNames = [
+          ...this._activePluginsNames,
+          pluginName
+        ]
+      }
+      return plugin
+    } else {
+      console.error(`Error initializing plugin instance for ${pluginName}`)
+      return null
+    }
+  }
+
+  /** Get all plugins info, including system plugins */
+  getPluginsListInfo() {
+    return {
+      ...__SYSTEM_PLUGINS__,
+      ...this.getInstalledPluginsListInfo()
+    }
+  }
+
+  /** Get installed plugin info, without system plugins */
+  getInstalledPluginsListInfo() {
+    if (!fs.existsSync(PLUGINS_LIST_FILE_PATH)) {
+      signale.warn('No plugins list path to load from. This should be an error, at least an empty configuration plugins.json file should exists.')
+      return {}
+    }
+
+    let content = fs.readFileSync(PLUGINS_LIST_FILE_PATH)
+    return JSON.parse(content)
   }
 
   activate(pluginName) {
@@ -182,7 +234,7 @@ class PluginManager {
       throw new Error('Trying to deactivate system plugin', plugin.name)
     }
 
-    // Update system activet list file, later will be moved onto Plugin class
+    // Update system active list file, later will be moved onto Plugin class
 
     if (active) {
       this._activePluginsNames.push(name)
@@ -190,14 +242,19 @@ class PluginManager {
       this._activePluginsNames = this._activePluginsNames.filter(activePluginName => activePluginName != name)
     }
 
-    // Remove system plugin names before storing list on file system
-    const storedActivePluginNames = this._activePluginsNames
-      .filter(name => !__SYSTEM_PLUGIN_NAMES__.includes(name))
+    // Updated installed plugin database
 
-    // And update in memory list
-    fs.writeFileSync(ACTIVE_PLUGINS_PATH, JSON.stringify({
-      "data": storedActivePluginNames
-    }, null, 2))
+    let pluginsListInfo = this.getInstalledPluginsListInfo()
+
+    if (!pluginsListInfo[name]) {
+      throw new Error('Trying to change active state for a plugin that is not installed. Plugins database is corrupted.')
+    }
+
+    // Set plugin as specified active state
+    pluginsListInfo[name].active = active
+
+    // Updated plugins database
+    fs.writeFileSync(PLUGINS_LIST_FILE_PATH, JSON.stringify(pluginsListInfo, null, 2))
 
     signale.success(`Changed plugin ${chalk.magenta(plugin.name)} active state to ${active ? chalk.greenBright('active') : chalk.redBright('not active')}`)
   }

@@ -1,6 +1,6 @@
-const withTM = require('next-transpile-modules')([
-  '@fuse-labs/core-client',
-  '@fuse-labs/core-ui',
+const withTM = require("next-transpile-modules")([
+  "@fuse-labs/core-client",
+  "@fuse-labs/core-ui",
 ]);
 
 const config = {
@@ -9,24 +9,24 @@ const config = {
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/workspace',
-        permanent: true
-      },
-      {
-        source: '/settings',
-        destination: '/settings/general',
+        source: "/",
+        destination: "/workspace",
         permanent: true,
       },
-    ]
+      {
+        source: "/settings",
+        destination: "/settings/general",
+        permanent: true,
+      },
+    ];
   },
   async rewrites() {
     return [
       {
-        source: '/settings',
-        destination: '/settings/general',
+        source: "/settings",
+        destination: "/settings/general",
       },
-    ]
+    ];
   },
 
   webpack: (config, options) => {
@@ -34,11 +34,42 @@ const config = {
     // See: https://github.com/netlify/netlify-lambda/issues/179
     if (options.isServer) {
       // Server side
-      config.externals = [
-        ...config.externals,
-        'utf-8-validate',
-        'bufferutil'
-      ]
+      config.externals = [...config.externals, "utf-8-validate", "bufferutil"];
+    }
+
+    if (!options.isServer) {
+      console.log("core-client resolved to:", require.resolve("react-intl"));
+      config.module.rules.push({
+        test: require.resolve("react"),
+        loader: "expose-loader",
+        options: {
+          exposes: "React",
+        },
+      });
+
+      config.module.rules.push({
+        test: require.resolve("react-dom"),
+        loader: "expose-loader",
+        options: {
+          exposes: "ReactDOM",
+        },
+      });
+
+      config.module.rules.push({
+        test: require.resolve("@fuse-labs/core-client"),
+        loader: "expose-loader",
+        options: {
+          exposes: "CoreClient",
+        },
+      });
+
+      config.module.rules.push({
+        test: require.resolve("@fuse-labs/core-ui"),
+        loader: "expose-loader",
+        options: {
+          exposes: "CoreUi",
+        },
+      });
     }
 
     //console.log('Adding loader - ', options.isServer ? 'SERVER' : 'CLIENT')
@@ -47,7 +78,7 @@ const config = {
     config.module.rules.push({
       test: /\.svg$/i,
       // issuer: { and: [/\.(js|ts)x?$/] },
-      use: ['@svgr/webpack'],
+      use: ["@svgr/webpack"],
     });
 
     return config;

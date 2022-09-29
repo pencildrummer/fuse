@@ -38,13 +38,14 @@ plugin # Root directory of your plugin
 ```
 
 #### Package config
+
 ```json title="package.json"
 {
   "name": "<your-plugin>",
   "version": "<your-plugin-version>",
   // Fuse specific fields
   "fuse": {
-    "title": "Your plugin",
+    "title": "Your plugin"
   }
 }
 ```
@@ -56,29 +57,24 @@ To easily create a plugin folder with a minimum package.json you can use `npm in
 Fuse plugin are npm packages with additional features attached.
 :::
 
-
 ### Server side
 
 ```js
-import { Plugin } from '@fuse-labs/core/server'
+import { Plugin } from "@fuse-labs/core";
 
-export default class MyAwesomePlugin extends Plugin {
-
-}
+export default class MyAwesomePlugin extends Plugin {}
 ```
 
 :::caution
-Must inherit `Plugin` from `@fuse-labs/core/server`
+Must inherit `Plugin` from `@fuse-labs/core`
 :::
 
 ### Client side
 
 ```js
-import { ClientPlugin } from '@fuse-labs/core-client'
+import { ClientPlugin } from "@fuse-labs/core-client";
 
-export default class MyAwesomeClientPlugin extends ClientPlugin {
-
-}
+export default class MyAwesomeClientPlugin extends ClientPlugin {}
 ```
 
 :::caution

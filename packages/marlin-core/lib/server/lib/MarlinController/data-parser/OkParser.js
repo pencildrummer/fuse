@@ -1,4 +1,4 @@
-import { DataParser } from "@fuse-labs/core/server"
+import { DataParser } from "@fuse-labs/core"
 
 export default class OkParser extends DataParser {
 

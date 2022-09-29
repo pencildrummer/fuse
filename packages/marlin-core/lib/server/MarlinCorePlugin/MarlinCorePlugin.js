@@ -1,4 +1,4 @@
-import { Plugin, Controller } from '@fuse-labs/core/server'
+import { Plugin, Controller } from '@fuse-labs/core'
 import MarlinController from '../lib/MarlinController/MarlinController.js'
 import fs from 'fs-extra'
 import chalk from 'chalk'

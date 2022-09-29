@@ -7,7 +7,7 @@
   "main": "src/server.mjs",
   "scripts": {
     "lint": "echo \"No linting configured\"",
-    "dev": "nodemon src/server.mjs",
+    "dev": "yarn node --inspect src/server.mjs",
     "start": "node src/server.mjs",
     "clean": "rm -rf node_modules && rm package-lock.json"
   },
@@ -19,7 +19,13 @@
   "license": "MIT",
   "dependencies": {
     "@fuse-labs/core": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
+    "@radix-ui/react-icons": "^1.1.1",
     "chalk": "^5.0.1",
+    "classnames": "^2.3.2",
+    "filesize": "^9.0.11",
+    "react": "^18.2.0",
+    "react-intl": "^6.1.1",
     "signale": "^1.4.0"
   },
   "devDependencies": {

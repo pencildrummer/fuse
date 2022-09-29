@@ -1,5 +1,5 @@
 import path from 'path'
-import { Controller } from '@fuse-labs/core/server'
+import { Controller } from '@fuse-labs/core'
 import MarlinReadyParser from './MarlinReadyParser.js'
 import MarlinLineParser from "./MarlinLineParser.js"
 import parser from 'gcode-parser'

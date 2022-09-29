@@ -1,4 +1,4 @@
-import { Plugin } from "@fuse-labs/core/server";
+import { Plugin } from "@fuse-labs/core";
 
 export default class MarlinMovePlugin extends Plugin {
 

@@ -1,16 +1,26 @@
-import { ToggleGroup, CNCIcon, FDMPrinterIcon, LaserIcon, MSLAPrinterIcon } from "../../../../index";
 import { useEffect, useState } from "react";
+import {
+  CNCIcon,
+  FDMPrinterIcon,
+  LaserIcon,
+  MSLAPrinterIcon,
+} from "../../../icons";
+import { ToggleGroup } from "../../../shared";
 
 export default function DeviceProfilePickerTypeFilter({
   defaultValue,
   onChange,
 }) {
-  const [type, setType] = useState(defaultValue)
+  const [type, setType] = useState(defaultValue);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(_ => onChange?.(type), [type])
+  useEffect((_) => onChange?.(type), [type]);
 
   return (
-    <ToggleGroup value={type} onValueChange={v => setType(v?.length ? v : null)} className="flex-none">
+    <ToggleGroup
+      value={type}
+      onValueChange={(v) => setType(v?.length ? v : null)}
+      className="flex-none"
+    >
       <ToggleGroup.Item value="fdm_printer" className="rounded-md">
         <FDMPrinterIcon />
       </ToggleGroup.Item>
@@ -24,5 +34,5 @@ export default function DeviceProfilePickerTypeFilter({
         <LaserIcon />
       </ToggleGroup.Item>
     </ToggleGroup>
-  )
+  );
 }

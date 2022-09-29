@@ -1,10 +1,11 @@
-import path from 'path'
-import fs from 'fs-extra'
-import { object, string } from 'yup'
-import { PLUGINS_BASE_PATH } from '../../../constants.js'
-import PluginManager from '../../../managers/PluginManager/PluginManager.js'
-import signale from 'signale'
-import { DeviceType } from '../../devices/index.js'
+import path from "path";
+import fs from "fs-extra";
+import { object, string } from "yup";
+import { PLUGINS_BASE_PATH } from "../../../constants.js";
+import PluginManager from "../../../managers/PluginManager/PluginManager.js";
+import signale from "signale";
+import { DeviceType } from "../../devices/index.js";
+import varname from "varname";
 
 const PLUGIN_SCHEMA = object({
   name: string().required(),
@@ -13,89 +14,99 @@ const PLUGIN_SCHEMA = object({
   //   url: string(),
   //   tabsUrl: string(),
   // })
-})
+});
 
 export default class Plugin {
-
   name;
-  version = '0.0.1'; // TODO - Make something to set automatically from package json?
+
+  _path;
+  _version = "0.0.0";
+  _libraryName;
 
   // _fuse;
 
   _settings = false;
-  get settings() { return this._settings }
+  get settings() {
+    return this._settings;
+  }
 
   /**
    * @deprecated to be removed, use components in client
    */
   _hasPages = false;
-  get hasPages() { return this._hasPages }
+  get hasPages() {
+    return this._hasPages;
+  }
 
   get url() {
     // Check url is manually provided or generate one based on plugin name
-    return this.name
+    return this.name;
     //return this._fuse.pagesUrl || this.name
   }
 
   _hasTabs = false;
-  get hasTabs() { return this._hasTabs }
+  get hasTabs() {
+    return this._hasTabs;
+  }
 
   get tabsUrl() {
     // Check url is manually provided or generate one based on plugin name
-    return this.name
+    return this.name;
     //return this._fuse.tabsUrl || this.name
   }
 
   get hasSocket() {
     // If the plugin instance is not being subclassed, do not check initSocket because is an empty implementation
-    if (this.constructor === Plugin) return false
-    return typeof this.initSocket === 'function'
+    if (this.constructor === Plugin) return false;
+    return typeof this.initSocket === "function";
   }
 
   get hasDeviceSocket() {
     // If the plugin instance is not being subclassed, do not check initDeviceSocket because is an empty implementation
-    if (this.constructor === Plugin) return false
-    return typeof this.initDeviceSocket === 'function' && this.deviceTypes?.length > 0
+    if (this.constructor === Plugin) return false;
+    return (
+      typeof this.initDeviceSocket === "function" &&
+      this.deviceTypes?.length > 0
+    );
   }
 
   get active() {
-    return PluginManager.shared.activePluginsNames.includes(this.name)
+    return PluginManager.shared.activePluginsNames.includes(this.name);
   }
 
   get system() {
-    return PluginManager.shared.SYSTEM_PLUGIN_NAMES.includes(this.name)
+    return PluginManager.shared.SYSTEM_PLUGIN_NAMES.includes(this.name);
   }
 
   // TODO - Improve this method, like default values, value for all devices, etc.
   get deviceTypes() {
-    return DeviceType.ALL
+    return DeviceType.ALL;
   }
 
-  constructor(name) {
+  constructor(name, installPath) {
     // Set name
-    this.name = name
+    this.name = name;
 
-    // let packagePath = path.join(PLUGINS_BASE_PATH, name, 'package.json')
-  
-    // try {
-    //   if (!fs.existsSync(packagePath)) {
-    //     signale.error('No package found for', name)
-    //     return null
-    //   }
-    // } catch (e) {
-    //   signale.error('Error retrieving package for', name)
-    //   return null
-    // }
+    // Set installation path
+    this._path = installPath;
 
-    // let info
+    // Set default library name
+    if (!this._libraryName) {
+      this._libraryName = varname.camelcase(this.name);
+    }
 
-    // try {
-    //   info = fs.readFileSync(packagePath)
-    //   info = JSON.parse(info)
-    // } catch (e) {
-    //   signale.error('Error reading package', e)
-    //   return null
-    // }
+    let packagePath = path.join(this._path, "package.json");
+
+    if (fs.existsSync(packagePath)) {
+      let info = fs.readFileSync(packagePath);
+      info = JSON.parse(info);
+      signale.info("Setting plugin info from package.json discovered file");
+
+      // Set version from package if not manually set
+      this._version = info.version;
+    } else {
+      signale.warn("No package found for", name);
+    }
 
     // // Add fuse key to safely add custom settings if not provided by package.json
     // info._fuse = { ...info.fuse }
@@ -126,8 +137,8 @@ export default class Plugin {
     // }
 
     // Call provision if any
-    if (typeof this.provision == 'function') {
-      this.provision()
+    if (typeof this.provision == "function") {
+      this.provision();
     }
   }
 
@@ -139,7 +150,9 @@ export default class Plugin {
       _system: this.system,
       _hasSocket: this.hasSocket,
       _hasDeviceSocket: this.hasDeviceSocket,
-    }
+      _path: this._path,
+      _libraryName: this._libraryName,
+    };
   }
 
   /**
@@ -155,12 +168,11 @@ export default class Plugin {
 
   initSocket(socket) {
     // To be implemented by subsclass
-    console.warn('initSocket did nothing on', this.constructor.name)
+    console.warn("initSocket did nothing on", this.constructor.name);
   }
 
   initDeviceSocket(socket) {
     // To be implemented by subsclass
-    console.warn('initDeviceSocket did nothing on', this.constructor.name)
+    console.warn("initDeviceSocket did nothing on", this.constructor.name);
   }
-  
 }

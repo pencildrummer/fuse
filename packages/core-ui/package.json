@@ -2,7 +2,7 @@
   "name": "@fuse-labs/core-ui",
   "description": "CoreUI plugin for FUSE",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "./lib/index.js",
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.0",

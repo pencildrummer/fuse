@@ -2,7 +2,7 @@ import Link from "next/link";
 import { CameraIcon, Link1Icon, LinkBreak1Icon, StarIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
 import GCodeViewer from "./viewers/GCodeViewer/GCodeViewer";
-import { Widget, Progress } from "../../..";
+import { Widget, Progress } from "../../shared";
 import { DeviceConnectionStatus, DeviceTypeIcon } from "../index";
 import { DeviceProvider } from "@fuse-labs/core-client";
 

@@ -1,4 +1,4 @@
-import { socketServer as io } from '@fuse-labs/core/server'
+import { socketServer as io } from '@fuse-labs/core'
 import _init_Socket from './lib/_init_Socket.mjs'
 import _init_PluginsSocket from './lib/_init_PluginsSocket.mjs'
 
@@ -14,5 +14,5 @@ await _init_PluginsSocket()
 let port = process.env.SOCKET_PORT || 8888
 
 io.httpServer.listen(port, () => {
-  console.ready(`> Socket ready on PORT: ${port}`)
+  console.log(`> Socket ready on PORT: ${port}`)
 })

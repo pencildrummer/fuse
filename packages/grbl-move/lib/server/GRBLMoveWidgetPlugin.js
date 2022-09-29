@@ -1,4 +1,4 @@
-import { Plugin } from '@fuse-labs/core/server'
+import { Plugin } from '@fuse-labs/core'
 export default class GRBLMoveWidgetPlugin extends Plugin {
 
   initDeviceSocket(socket) {

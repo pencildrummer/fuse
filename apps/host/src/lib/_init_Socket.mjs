@@ -1,6 +1,6 @@
 import signale from 'signale'
 import chalk from "chalk"
-import { socketServer as io, useDeviceMiddleware } from '@fuse-labs/core/server'
+import { socketServer as io, useDeviceMiddleware } from '@fuse-labs/core'
 
 export default async function _init_Socket() {
 

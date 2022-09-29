@@ -4,7 +4,7 @@ import { DeviceType } from "../models/index.js"
 
 export default class CorePlugin extends Plugin {
 
-  get deviceTypes() {
+  get installPath() {
     return [
       DeviceType.FDMPrinter,
       DeviceType.CNC,

@@ -1621,6 +1621,7 @@ __metadata:
     signale: ^1.4.0
     socket.io: ^4.5.2
     uuid: ^8.3.2
+    varname: ^4.1.1
     yup: ^0.32.11
   languageName: unknown
   linkType: soft
@@ -3623,6 +3624,7 @@ __metadata:
     eslint-config-next: 12.3.1
     eslint-import-resolver-alias: ^1.1.2
     eslint-plugin-import: ^2.26.0
+    expose-loader: ^4.0.0
     express: ^4.18.1
     is-electron: ^2.2.1
     next: 12.3.1
@@ -4789,6 +4791,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expose-loader@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "expose-loader@npm:4.0.0"
+  peerDependencies:
+    webpack: ^5.0.0
+  checksum: a674397dfb93e961aade42e09c78e28c63314f5050231e3b5ecc48a0a2d8aebc70327d3bbde5a9e4e0c28a3e02d18d2f8c0de844025f696d00964707611224c1
+  languageName: node
+  linkType: hard
+
 "express@npm:^4.18.1":
   version: 4.18.1
   resolution: "express@npm:4.18.1"
@@ -4886,6 +4897,13 @@ __metadata:
   dependencies:
     flat-cache: ^3.0.4
   checksum: f49701feaa6314c8127c3c2f6173cfefff17612f5ed2daaafc6da13b5c91fd43e3b2a58fd0d63f9f94478a501b167615931e7200e31485e320f74a33885a9c74
+  languageName: node
+  linkType: hard
+
+"filesize@npm:^9.0.11":
+  version: 9.0.11
+  resolution: "filesize@npm:9.0.11"
+  checksum: 7e8a9f9a4089e3ee29de64c241b50db8db4008351ace959873cb950bac0c2e1e09f4b45f42eaed8acd589a895dde978ed199e7a9982902fa06ca0be48e5ea92d
   languageName: node
   linkType: hard
 
@@ -5289,8 +5307,14 @@ __metadata:
   resolution: "host@workspace:apps/host"
   dependencies:
     "@fuse-labs/core": "workspace:^"
+    "@fuse-labs/shared-utils": "workspace:^"
+    "@radix-ui/react-icons": ^1.1.1
     chalk: ^5.0.1
+    classnames: ^2.3.2
+    filesize: ^9.0.11
     nodemon: ^2.0.20
+    react: ^18.2.0
+    react-intl: ^6.1.1
     signale: ^1.4.0
   languageName: unknown
   linkType: soft
@@ -8027,6 +8051,13 @@ __metadata:
   dependencies:
     builtins: ^1.0.3
   checksum: ce4c68207abfb22c05eedb09ff97adbcedc80304a235a0844f5344f1fd5086aa80e4dbec5684d6094e26e35065277b765c1caef68bcea66b9056761eddb22967
+  languageName: node
+  linkType: hard
+
+"varname@npm:^4.1.1":
+  version: 4.1.1
+  resolution: "varname@npm:4.1.1"
+  checksum: c1d9a9939e60708551597aca3b04a9a9b79bc879f0c7ed4d4f023bc06e7d3de4e32b03590f8f42113fda809510b0f6fce194787da176ef758c645ab5cf627654
   languageName: node
   linkType: hard
 

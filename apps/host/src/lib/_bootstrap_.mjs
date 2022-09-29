@@ -1,4 +1,4 @@
-import { logger, PluginManager, ConfigManager } from '@fuse-labs/core/server'
+import { logger, PluginManager, ConfigManager } from '@fuse-labs/core'
 
 // Override default console to use Fuse logger
 console = logger

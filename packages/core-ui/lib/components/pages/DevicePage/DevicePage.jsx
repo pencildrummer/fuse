@@ -1,40 +1,37 @@
 import React, { useEffect } from "react";
-import { ScrollArea, MainLayout } from "../../../index";
+import { MainLayout } from "../../layouts";
+import { ScrollArea } from "../../shared";
 import { DeviceProvider } from "@fuse-labs/core-client";
 import DevicePageSidebar from "./DevicePageSidebar";
 import DevicePageTopBar from "./DevicePageTopBar";
-import DeviceStatusListProvider from './DeviceStatusListProvider';
+import DeviceStatusListProvider from "./DeviceStatusListProvider";
 import DevicePageStatusHandler from "./DevicePageStatusHandler";
 
-export default function DevicePage({
-  device,
-  ...props
-}) {
-
+export default function DevicePage({ device, ...props }) {
   if (!device) {
-    throw new Error('DevicePage requires a device')
+    throw new Error("DevicePage requires a device");
   }
 
-  return <MainLayout>
-    <DeviceProvider device={device}>
-      <DeviceStatusListProvider>
-        <DevicePageStatusHandler />
-        <div className="w-full h-full flex flex-col">
-          <DevicePageTopBar device={device} />
+  return (
+    <MainLayout>
+      <DeviceProvider device={device}>
+        <DeviceStatusListProvider>
+          <DevicePageStatusHandler />
+          <div className="w-full h-full flex flex-col">
+            <DevicePageTopBar device={device} />
 
-          <div className="flex-1 flex flex-row overflow-hidden">
+            <div className="flex-1 flex flex-row overflow-hidden">
+              <DevicePageSidebar />
 
-            <DevicePageSidebar />
-                
-            <ScrollArea className="flex-1">
-              <div className="p-2 pr-3 flex flex-col space-y-3">
-                {props.children}
-              </div>
-            </ScrollArea>
-
+              <ScrollArea className="flex-1">
+                <div className="p-2 pr-3 flex flex-col space-y-3">
+                  {props.children}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
-        </div>
-      </DeviceStatusListProvider>
-    </DeviceProvider>
-  </MainLayout>
+        </DeviceStatusListProvider>
+      </DeviceProvider>
+    </MainLayout>
+  );
 }

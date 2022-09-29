@@ -1,4 +1,4 @@
-import { Plugin, DeviceType } from '@fuse-labs/core/server'
+import { Plugin, DeviceType } from '@fuse-labs/core'
 
 export default class MarlinSettingsPlugin extends Plugin {
 

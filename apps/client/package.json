@@ -12,7 +12,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "next lint --no-cache",
-    "dev": "next dev",
+    "dev": "node ./src/server.js",
     "debug": "DEBUG=serialport* node --trace-warnings src/server.mjs",
     "build": "next build",
     "start": "next start",
@@ -47,6 +47,7 @@
     "eslint-config-next": "12.3.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.26.0",
+    "expose-loader": "^4.0.0",
     "nodemon": "^2.0.20",
     "postcss": "^8.4.16"
   }
