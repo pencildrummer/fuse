@@ -1,12 +1,14 @@
 import { object, string, boolean, array } from "yup";
 import { socket } from "../../socket";
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
+import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
 import ClientDeviceType from "../ClientDeviceType/ClientDeviceType";
+import lodash from "lodash";
 
 const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
   _version: string().required(),
-  deviceTypes: array().required(),
+  _deviceTypes: array().required(),
   _settings: boolean(),
   _hasPages: boolean(),
   _hasTabs: boolean(),
@@ -83,15 +85,22 @@ export default class ClientPlugin {
   get icon() {
     return QuestionMarkIcon;
   }
-  // get deviceTypes() {
 
-  //   // if (this._fuse.devices == '*') return Object.values(ClientDeviceType)
-  //   // return this._fuse.devices
-  // }
+  _deviceTypes = [];
+  get deviceTypes() {
+    return this._deviceTypes;
+  }
 
   get displayTitle() {
     return this.name;
     //return this._fuse.title || this.name
+  }
+
+  // Retrieve device compatible with plugin
+  get devices() {
+    return ClientDeviceManager.shared.devices.filter((device) =>
+      this.deviceTypes.includes(device.profile.type)
+    );
   }
 
   constructor(data) {
@@ -108,10 +117,8 @@ export default class ClientPlugin {
       this.socket = socket(this.name);
     }
 
-    // Provision plugin if provision() exists
-    if (typeof this.provision === "function") {
-      this.provision();
-    }
+    // Automatically provision plugin on initialization
+    //this.provision();
   }
 
   /**
@@ -128,5 +135,35 @@ export default class ClientPlugin {
    */
   deviceComponents(device) {
     return {};
+  }
+
+  /**
+   * Called each time a plugin is installed. Called also on ClientManager "updatedDevices".
+   * Call super.provision() when subclasses
+   */
+  provision() {
+    if (!this.active) {
+      throw new Error("Trying to provision inactive plugin");
+    }
+
+    //
+
+    // TODO: Move into specific method and decide if keep in this class or in ClientPluginManager
+
+    // Create device socket if needed
+    if (this.hasDeviceSocket) {
+      this.devices?.forEach((device) => {
+        let keyPath = this.name
+          .split("/")
+          .map((key) => lodash.camelCase(key))
+          .join(".");
+        if (!lodash.get(device, "sockets." + keyPath)) {
+          let pluginDeviceSocket = socket(`device:${device.id}/${this.name}`);
+          lodash.set(device, "sockets." + keyPath, pluginDeviceSocket);
+        }
+      });
+    }
+
+    // To be implemented in subclasses
   }
 }

@@ -36,7 +36,6 @@ export default function AppProvider({
 
   const config = useProviderConfig(fetchedConfig);
 
-  // TODO: MAbe not the best bay, at every render cycle it will be regenerated
   const intl = useMemo(
     (_) =>
       createIntl(

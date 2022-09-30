@@ -146,7 +146,7 @@ export default class Plugin {
   toJSON() {
     return {
       ...this,
-      deviceTypes: this.deviceTypes,
+      _deviceTypes: this.deviceTypes,
       _active: this.active,
       _system: this.system,
       _hasSocket: this.hasSocket,

@@ -1,19 +1,16 @@
-import { Plugin, DeviceType } from '@fuse-labs/core'
+import { Plugin, DeviceType } from "@fuse-labs/core";
 
 export default class MarlinTemperaturePlugin extends Plugin {
-
   provision() {
+    super.provision();
     // TODO - Add temperature parser to device controller
   }
 
   get deviceTypes() {
-    return [
-      DeviceType.FDMPrinter,
-    ]
+    return [DeviceType.FDMPrinter];
   }
 
   initDeviceSocket(socket) {
-
     let nozzleTarget = null;
     let heatbedTarget = null;
 
@@ -34,21 +31,19 @@ export default class MarlinTemperaturePlugin extends Plugin {
     // }, 1500)
 
     // Init socket listeners and emitters
-    
-    socket.on('nozzle:set', (temp, fn) => {
-      console.info('Requested nozzle temperature:', temp)
-      // TODO - Set temperature target on device
-      nozzleTarget = temp
-      fn?.(true)
-    })
 
-    socket.on('heatbed:set', (temp, fn) => {
-      console.info('Requested heatbed temperature:', temp)
+    socket.on("nozzle:set", (temp, fn) => {
+      console.info("Requested nozzle temperature:", temp);
       // TODO - Set temperature target on device
-      heatbedTarget = temp
-      fn?.(true)
-    })
+      nozzleTarget = temp;
+      fn?.(true);
+    });
 
+    socket.on("heatbed:set", (temp, fn) => {
+      console.info("Requested heatbed temperature:", temp);
+      // TODO - Set temperature target on device
+      heatbedTarget = temp;
+      fn?.(true);
+    });
   }
-
 }

@@ -1,6 +1,6 @@
-import ClientPlugin from "../../models/ClientPlugin/ClientPlugin";
+import ClientDeviceManager from "../ClientDeviceManager/ClientDeviceManager";
 
-class ClientPluginManager {
+class ClientPluginManager extends EventTarget {
   _initialized = false;
   get initialized() {
     return this._initialized;
@@ -30,13 +30,20 @@ class ClientPluginManager {
   }
 
   constructor() {
-    //
+    super();
+
+    // Add listener to provision plugins on each ClientDeviceManager updateDevices event
+    const handler = (_) => {
+      console.log("Handling updatedDevices");
+      this.provisionPlugins();
+    };
+    ClientDeviceManager.shared.addEventListener("updatedDevices", handler);
   }
 
   async init(installedPluginsData) {
     this._loading = true;
 
-    console.log("Plugins data", installedPluginsData);
+    console.log("Plugins data:", installedPluginsData);
     console.log("Already registered:", ClientPluginManager._registeredPlugins);
 
     // Map fetched data to generic client plugin
@@ -49,12 +56,17 @@ class ClientPluginManager {
     // Load registered plugins
     this.loadRegisteredPlugins(installedPluginsData);
 
+    // Provision loaded plugins
+    this.provisionPlugins();
+
     // // Now when all the plugin has been mapped, we can call the provision method on it
     // console.log("INIT MANAGER Plugins", this._plugins);
     this._initialized = true;
     this._loading = false;
 
-    console.log("ClientPluginManager initialized");
+    this.dispatchEvent(new Event("initialized"));
+
+    console.info("ClientPluginManager is ready");
   }
 
   // TODO: Mark as private
@@ -166,12 +178,16 @@ class ClientPluginManager {
       }
     );
     console.log("Loaded plugins", this._plugins);
-    // let PluginClass = ClientPluginManager._registeredPlugins[data.name];
-    // if (PluginClass) {
-    //   return new PluginClass(data);
-    // } else {
-    //   return new ClientPlugin(data);
-    // }
+  }
+
+  /**
+   * These method call the provision() method on all the installed and active plugins.
+   * Plugin are already provisioned after first initialization of ClientPluginManager
+   */
+  provisionPlugins() {
+    console.log("Provisioning active plugins...");
+    console.log(this.activePlugins);
+    this.activePlugins.forEach((plugin) => plugin.provision());
   }
 }
 

@@ -10,7 +10,6 @@ export default function useProviderPlugins(data) {
         !ClientPluginManager.shared.loading
       ) {
         await ClientPluginManager.shared.init(data);
-        console.log("Initialized ClientPluginManager");
         setPlugins(ClientPluginManager.shared.plugins);
       }
     };

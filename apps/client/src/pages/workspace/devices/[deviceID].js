@@ -6,33 +6,35 @@
 // import { TemperatureWidget } from "@fuse-labs/marlin-temperature/client";
 // import { DeviceFileManagerWidget } from "@fuse-labs/file-manager/client";
 
-import { getDevicePageComponent, useDeviceComponents, Widget } from "@fuse-labs/core-ui";
+import {
+  getDevicePageComponent,
+  useDeviceComponents,
+  Widget,
+  DeviceNotFoundView,
+} from "@fuse-labs/core-ui";
 import { useRouter } from "next/router";
 import { useDevice } from "@fuse-labs/core-client";
-import { generateUniqueID } from '@fuse-labs/shared-utils';
-
+import { generateUniqueID } from "@fuse-labs/shared-utils";
 
 export default function DeviceHomePage() {
-
-  const router = useRouter()
-  const { query } = router
-  const { deviceID } = query
+  const router = useRouter();
+  const { query } = router;
+  const { deviceID } = query;
 
   // Retrieve device with requested ID from the app context
-  const device = useDevice(deviceID)
-  const widgets = useDeviceComponents(device, 'page.home')
+  const device = useDevice(deviceID);
+  const widgets = useDeviceComponents(device, "page.home");
 
   if (!device) {
-    router.replace('/workspace')
-    return null
+    return <DeviceNotFoundView />;
   }
   const DevicePageComponent = getDevicePageComponent(device.profile.type);
 
-	return (
+  return (
     // TODO - Return correct page based on device type
-		<DevicePageComponent device={device}>
+    <DevicePageComponent device={device}>
       <HomeWidgetsLayout widgets={widgets} />
-			{/* <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      {/* <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
 
 				<div className="col-span-3">
 					<CameraWidget />
@@ -51,18 +53,16 @@ export default function DeviceHomePage() {
 					<TemperatureWidget />
 				</div>
       </div> */}
-		</DevicePageComponent>
-	)
+    </DevicePageComponent>
+  );
 }
 
-function HomeWidgetsLayout({
-  widgets
-}) {
+function HomeWidgetsLayout({ widgets }) {
   return (
     <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-      {widgets?.map(WidgetComponent => (
-        <WidgetComponent key={`widget-${generateUniqueID()}`}/>
+      {widgets?.map((WidgetComponent) => (
+        <WidgetComponent key={`widget-${generateUniqueID()}`} />
       ))}
     </div>
-  )
+  );
 }

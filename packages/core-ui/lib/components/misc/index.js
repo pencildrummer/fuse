@@ -1,4 +1,4 @@
-import BlockingView from './BlockingView/BlockingView'
+import BlockingView from "./BlockingView/BlockingView";
 import AddDeviceWizard from "./AddDeviceWizard/AddDeviceWizard";
 import AppLoader from "./AppLoader/AppLoader";
 import DeviceCard from "./DeviceCard/DeviceCard";
@@ -11,13 +11,14 @@ import Navbar from "./Navbar/Navbar";
 import PluginsList from "./PluginsList/PluginsList";
 import SerialPortListWidget from "./SerialPortListWidget/SerialPortListWidget";
 import SettingsWidget from "./SettingsWidget/SettingsWidget";
-import InactivePluginView from './InactivePluginView/InactivePluginView'
-import PrinterProfileForm from './PrinterProfileForm/PrinterProfileForm'
-import EmptyView from './EmptyView/EmptyView'
+import InactivePluginView from "./InactivePluginView/InactivePluginView";
+import DeviceNotFoundView from "./DeviceNotFoundView/DeviceNotFoundView";
+import PrinterProfileForm from "./PrinterProfileForm/PrinterProfileForm";
+import EmptyView from "./EmptyView/EmptyView";
 
 // // TODO - Improved folder structure
-import DeviceProfilesWidget from './DeviceSettings/DeviceProfilesWidget/DeviceProfilesWidget'
-import DeviceConnectionWidget from './DeviceSettings/DeviceConnectionWidget/DeviceConnectionWidget'
+import DeviceProfilesWidget from "./DeviceSettings/DeviceProfilesWidget/DeviceProfilesWidget";
+import DeviceConnectionWidget from "./DeviceSettings/DeviceConnectionWidget/DeviceConnectionWidget";
 
 export {
   BlockingView,
@@ -34,9 +35,9 @@ export {
   SerialPortListWidget,
   SettingsWidget,
   InactivePluginView,
+  DeviceNotFoundView,
   PrinterProfileForm,
   EmptyView,
-  
   DeviceProfilesWidget,
   DeviceConnectionWidget,
-}
+};
