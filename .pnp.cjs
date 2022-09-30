@@ -2896,8 +2896,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-client-virtual-a27e97aa06/1/packages/core-client/",\
           "packageDependencies": [\
             ["@fuse-labs/core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
+            ["@types/fuse-labs__core-ui", null],\
             ["@types/fuse-labs__shared-utils", null],\
             ["@types/react", null],\
             ["@types/react-dom", null],\
@@ -2910,7 +2912,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["yup", "npm:0.32.11"]\
           ],\
           "packagePeers": [\
+            "@fuse-labs/core-ui",\
             "@fuse-labs/shared-utils",\
+            "@types/fuse-labs__core-ui",\
             "@types/fuse-labs__shared-utils",\
             "@types/react-dom",\
             "@types/react-intl",\

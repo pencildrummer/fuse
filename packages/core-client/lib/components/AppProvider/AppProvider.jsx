@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo } from "react";
-import { RawIntlProvider, createIntl, createIntlCache } from "react-intl";
-import useProviderPlugins from "../../hooks/useProviderPlugins.js";
-import useProviderDevices from "../../hooks/useProviderDevices.js";
-import useProviderProfiles from "../../hooks/useProviderProfiles.js";
+import { createIntl, createIntlCache, RawIntlProvider } from "react-intl";
 import { AppContext } from "../../hooks/useAppContext.js";
 import useProviderConfig from "../../hooks/useProviderConfig.js";
+import useProviderDevices from "../../hooks/useProviderDevices.js";
+import useProviderPlugins from "../../hooks/useProviderPlugins.js";
+import useProviderProfiles from "../../hooks/useProviderProfiles.js";
+import AppLoadingView from "./AppLoadingView/AppLoadingView.jsx";
 
 const cache = createIntlCache();
 
@@ -51,11 +52,6 @@ export default function AppProvider({
 
   const isReady = useMemo(
     (_) => {
-      console.log(config);
-      console.log("Config", Boolean(config));
-      console.log("plugins", Boolean(plugins));
-      console.log("devices", Boolean(devices));
-      console.log("profiles", Boolean(profiles));
       return (
         Boolean(config) &&
         Boolean(plugins) &&
@@ -66,26 +62,23 @@ export default function AppProvider({
     [config, plugins, devices, profiles]
   );
 
-  useEffect(
-    (_) => {
-      console.log("Changed app data", isReady);
-    },
-    [isReady]
-  );
-
-  return (
-    <AppContext.Provider
-      value={{
-        isReady,
-        config,
-        devices,
-        profiles,
-        plugins,
-        activePlugins,
-        intl,
-      }}
-    >
-      <RawIntlProvider value={intl}>{props.children}</RawIntlProvider>
-    </AppContext.Provider>
-  );
+  if (isReady) {
+    return (
+      <AppContext.Provider
+        value={{
+          isReady,
+          config,
+          devices,
+          profiles,
+          plugins,
+          activePlugins,
+          intl,
+        }}
+      >
+        <RawIntlProvider value={intl}>{props.children}</RawIntlProvider>
+      </AppContext.Provider>
+    );
+  } else {
+    return <AppLoadingView />;
+  }
 }

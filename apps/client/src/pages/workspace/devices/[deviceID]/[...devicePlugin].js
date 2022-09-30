@@ -6,6 +6,7 @@ import {
   Group,
   InactivePluginView,
   DeviceNotFoundView,
+  PluginNotFoundView,
   getDevicePageComponent,
   useDevicePluginComponents,
 } from "@fuse-labs/core-ui";
@@ -23,7 +24,6 @@ export default function DevicePluginPage() {
     console.warn(
       `No device with ID ${deviceID} found. Redirecting to /workspace...`
     );
-    // router.replace("/workspace");
     return <DeviceNotFoundView />;
   }
 
@@ -40,12 +40,14 @@ export default function DevicePluginPage() {
       `Plugin not found for deviceID '${deviceID}' and pluginUrl '${pluginUrl}'. Redirecting to /workspace...`
     );
     console.log("Device", device);
-    router.replace("/workspace");
-    return null;
+    return (
+      <PluginNotFoundView pluginName={pluginUrl} deviceName={device.name} />
+    );
   }
 
   // Check plugin is active
   if (!plugin.active) {
+    console.log("active:", plugin.active.toString());
     return <InactivePluginView />;
   }
 

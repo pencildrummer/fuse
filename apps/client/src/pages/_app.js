@@ -1,15 +1,7 @@
 import "tailwindcss/tailwind.css";
 import "../global.css";
 // import '@fuse-labs/core-ui/core-ui.css'
-import { useEffect, useState } from "react";
-import {
-  AppProvider,
-  ClientPluginManager,
-  coreSocket,
-} from "@fuse-labs/core-client";
-import { useAppContext } from "@fuse-labs/core-client";
-import { AppLoadingView } from "@fuse-labs/core-ui";
-import * as messages from "../../lang/index.js";
+import { CoreApp, ClientPluginManager } from "@fuse-labs/core-client";
 import Head from "next/head";
 import pkg from "../../package.json";
 
@@ -30,44 +22,13 @@ ClientPluginManager.registerPlugin("@fuse-labs/terminal", TerminalClientPlugin);
 // ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
 // ClientPluginManager.registerPlugin('@fuse-labs/marlin-settings', MarlinSettingsClientPlugin)
 
-function AppLoader(props) {
-  const { isReady } = useAppContext();
-  if (!isReady) {
-    return <AppLoadingView />;
-  }
-  return props.children;
-}
-
-function MyApp({ Component, pageProps }) {
-  const locale = "en";
-
-  const [appData, setAppData] = useState();
-
-  useEffect((_) => {
-    coreSocket.connect();
-    coreSocket.on("connect_error", (err) =>
-      console.error("Error connecting to coreSocket", err)
-    );
-    coreSocket.emit("app:data", (data) => {
-      if (data) {
-        setAppData(data);
-        console.log("Updated app data", data);
-      } else {
-        console.error("Error retrieving app data");
-      }
-    });
-  }, []);
-
+function MyApp(props) {
   return (
     <>
       <Head>
         <title>{`Fuse • v.${pkg.version}`}</title>
       </Head>
-      <AppProvider {...appData} locale={locale} messages={messages[locale]}>
-        <AppLoader>
-          <Component {...pageProps} />
-        </AppLoader>
-      </AppProvider>
+      <CoreApp {...props} />
     </>
   );
 }

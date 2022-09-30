@@ -1,6 +1,6 @@
 const withTM = require("next-transpile-modules")([
-  "@fuse-labs/core-client",
   "@fuse-labs/core-ui",
+  "@fuse-labs/core-client",
   "@fuse-labs/shared-utils",
   "@fuse-labs/terminal-client",
 ]);

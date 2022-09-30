@@ -1679,6 +1679,7 @@ __metadata:
     socket.io-client: ^4.5.2
     yup: ^0.32.11
   peerDependencies:
+    "@fuse-labs/core-ui": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
     react: ^18.2.0
     react-dom: ^18.2.0

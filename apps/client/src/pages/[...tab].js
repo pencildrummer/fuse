@@ -3,6 +3,7 @@ import {
   BlockingView,
   Group,
   InactivePluginView,
+  PluginNotFoundView,
   MainLayout,
 } from "@fuse-labs/core-ui";
 import { ClientPluginManager } from "@fuse-labs/core-client";
@@ -41,24 +42,8 @@ export default function DynamicPage({ ...props }) {
     [pluginName]
   );
 
-  useEffect(
-    (_) => {
-      console.log("PLUGIN", plugin);
-    },
-    [plugin]
-  );
-
   if (!plugin && !isLoading) {
-    return (
-      <BlockingView>
-        <Group orientation="vertical" className="items-center">
-          <ExclamationTriangleIcon className="w-20 h-20 text-gray-700" />
-          <span className="font-bold text-gray-500">
-            Plugin '{pluginName}' not found
-          </span>
-        </Group>
-      </BlockingView>
-    );
+    return <PluginNotFoundView pluginName={pluginName} />;
   }
 
   if (!plugin.active) {
