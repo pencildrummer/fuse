@@ -1,6 +1,6 @@
 import BlockingView from "./BlockingView/BlockingView";
 import AddDeviceWizard from "./AddDeviceWizard/AddDeviceWizard";
-import AppLoader from "./AppLoader/AppLoader";
+import AppLoadingView from "./AppLoadingView/AppLoadingView";
 import DeviceCard from "./DeviceCard/DeviceCard";
 import DeviceConnectionStatus from "./DeviceConnectionStatus/DeviceConnectionStatus";
 import DeviceForm from "./DeviceForm/DeviceForm";
@@ -23,7 +23,7 @@ import DeviceConnectionWidget from "./DeviceSettings/DeviceConnectionWidget/Devi
 export {
   BlockingView,
   AddDeviceWizard,
-  AppLoader,
+  AppLoadingView,
   DeviceCard,
   DeviceConnectionStatus,
   DeviceForm,

@@ -1,8 +1,17 @@
 import { ClientPlugin } from "@fuse-labs/core-client";
+import { ReaderIcon } from "@fuse-labs/core-ui";
 import ClientTerminal from "../lib/ClientTerminal/ClientTerminal";
 import TerminalPage from "../pages";
 
 export default class TerminalClientPlugin extends ClientPlugin {
+  get displayTitle() {
+    return "Terminal";
+  }
+
+  get icon() {
+    return ReaderIcon;
+  }
+
   deviceComponents(device) {
     return {
       page: {

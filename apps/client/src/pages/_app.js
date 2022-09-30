@@ -7,7 +7,8 @@ import {
   ClientPluginManager,
   coreSocket,
 } from "@fuse-labs/core-client";
-import { AppLoader } from "@fuse-labs/core-ui";
+import { useAppContext } from "@fuse-labs/core-client";
+import { AppLoadingView } from "@fuse-labs/core-ui";
 import * as messages from "../../lang/index.js";
 import Head from "next/head";
 import pkg from "../../package.json";
@@ -29,6 +30,14 @@ ClientPluginManager.registerPlugin("@fuse-labs/terminal", TerminalClientPlugin);
 // ClientPluginManager.registerPlugin('@fuse-labs/file-manager', FileManagerClientPlugin)
 // ClientPluginManager.registerPlugin('@fuse-labs/marlin-settings', MarlinSettingsClientPlugin)
 
+function AppLoader(props) {
+  const { isReady } = useAppContext();
+  if (!isReady) {
+    return <AppLoadingView />;
+  }
+  return props.children;
+}
+
 function MyApp({ Component, pageProps }) {
   const locale = "en";
 
@@ -42,6 +51,7 @@ function MyApp({ Component, pageProps }) {
     coreSocket.emit("app:data", (data) => {
       if (data) {
         setAppData(data);
+        console.log("Updated app data", data);
       } else {
         console.error("Error retrieving app data");
       }
@@ -53,13 +63,11 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>{`Fuse • v.${pkg.version}`}</title>
       </Head>
-      {appData ? (
-        <AppProvider {...appData} locale={locale} messages={messages[locale]}>
+      <AppProvider {...appData} locale={locale} messages={messages[locale]}>
+        <AppLoader>
           <Component {...pageProps} />
-        </AppProvider>
-      ) : (
-        <AppLoader />
-      )}
+        </AppLoader>
+      </AppProvider>
     </>
   );
 }

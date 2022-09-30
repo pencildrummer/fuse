@@ -93,7 +93,6 @@ export default class ClientPlugin {
 
   get displayTitle() {
     return this.name;
-    //return this._fuse.title || this.name
   }
 
   // Retrieve device compatible with plugin

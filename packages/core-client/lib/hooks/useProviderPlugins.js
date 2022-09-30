@@ -3,19 +3,28 @@ import ClientPluginManager from "../managers/ClientPluginManager/ClientPluginMan
 import { coreSocket } from "../socket";
 
 export default function useProviderPlugins(data) {
-  useEffect((_) => {
-    let initializeClientManager = async (_) => {
-      if (
-        !ClientPluginManager.shared.initialized &&
-        !ClientPluginManager.shared.loading
-      ) {
-        await ClientPluginManager.shared.init(data);
-        setPlugins(ClientPluginManager.shared.plugins);
-      }
-    };
+  const [managerReady, setManagerReady] = useState(false);
 
-    initializeClientManager().catch((err) => console.error(err));
-  }, []);
+  useEffect(
+    (_) => {
+      if (!data) return;
+
+      setManagerReady(ClientPluginManager.shared.ready);
+
+      let initializeClientManager = async (_) => {
+        if (!ClientPluginManager.shared.ready) {
+          console.log("Initializing ClietPluginManager with data", data);
+          await ClientPluginManager.shared.init(data);
+          setPlugins(ClientPluginManager.shared.plugins);
+          console.log("READY?", ClientPluginManager.shared.ready);
+          setManagerReady(ClientPluginManager.shared.ready);
+        }
+      };
+
+      initializeClientManager().catch((err) => console.error(err));
+    },
+    [data]
+  );
 
   useEffect((_) => {
     function handleActivation(pluginName) {
@@ -46,5 +55,5 @@ export default function useProviderPlugins(data) {
 
   const [plugins, setPlugins] = useState(ClientPluginManager.shared.plugins);
 
-  return plugins;
+  return managerReady ? plugins : undefined;
 }

@@ -49,14 +49,39 @@ export default function AppProvider({
     [locale, messages]
   );
 
+  const isReady = useMemo(
+    (_) => {
+      console.log(config);
+      console.log("Config", Boolean(config));
+      console.log("plugins", Boolean(plugins));
+      console.log("devices", Boolean(devices));
+      console.log("profiles", Boolean(profiles));
+      return (
+        Boolean(config) &&
+        Boolean(plugins) &&
+        Boolean(devices) &&
+        Boolean(profiles)
+      );
+    },
+    [config, plugins, devices, profiles]
+  );
+
+  useEffect(
+    (_) => {
+      console.log("Changed app data", isReady);
+    },
+    [isReady]
+  );
+
   return (
     <AppContext.Provider
       value={{
+        isReady,
+        config,
         devices,
         profiles,
         plugins,
         activePlugins,
-        config,
         intl,
       }}
     >

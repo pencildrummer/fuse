@@ -3,16 +3,21 @@ import ClientConfigManager from "../managers/ClientConfigManager/ClientConfigMan
 import { coreSocket } from "../socket";
 
 export default function useProviderConfig(data) {
+  const [config, setConfig] = useState(ClientConfigManager.shared.config);
 
-  if (!ClientConfigManager.shared.initialized) {
-    ClientConfigManager.shared.init(data)
-  }
+  useEffect(
+    (_) => {
+      if (!data) return;
 
-  const [config, setConfig] = useState(ClientConfigManager.shared.config)
+      ClientConfigManager.shared.init(data);
+      setConfig(ClientConfigManager.shared.config);
+    },
+    [data]
+  );
 
-  useEffect(_ => {
+  useEffect((_) => {
     // TODO: Add listeners for config updates from server
-  }, [])
+  }, []);
 
-  return config
+  return config;
 }

@@ -18,16 +18,16 @@ export default function Navbar() {
         <ul className="flex-1 flex flex-row items-end">
           <TabItem href="/workspace">
             <icons.HomeIcon />
-            <span className="ml-2">Workspace</span>
+            <span>Workspace</span>
           </TabItem>
           {activePlugins?.map((plugin) => {
             let pluginComponents = plugin.components();
-            console.log("Installing tabs");
+
             if (pluginComponents.tab) {
-              let Icon = icons[plugin.icon];
+              let Icon = plugin.icon;
               return (
                 <TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
-                  {Icon && <Icon className="mr-2" />}
+                  {Icon && <Icon />}
                   <span>{plugin.displayTitle}</span>
                 </TabItem>
               );

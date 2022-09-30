@@ -6,12 +6,12 @@ class ClientPluginManager extends EventTarget {
     return this._initialized;
   }
 
-  _loading = false;
-  get loading() {
-    return this._loading;
+  _ready = false;
+  get ready() {
+    return this._ready;
   }
 
-  _plugins = [];
+  _plugins = undefined;
   get plugins() {
     return this._plugins;
   }
@@ -22,11 +22,11 @@ class ClientPluginManager extends EventTarget {
   }
 
   get activePlugins() {
-    return this._plugins.filter((plugin) => plugin.active);
+    return this._plugins?.filter((plugin) => plugin.active);
   }
 
   getPlugin(name) {
-    return this._plugins.find((plugin) => plugin.name == name);
+    return this._plugins?.find((plugin) => plugin.name == name);
   }
 
   constructor() {
@@ -41,7 +41,7 @@ class ClientPluginManager extends EventTarget {
   }
 
   async init(installedPluginsData) {
-    this._loading = true;
+    this._ready = false;
 
     console.log("Plugins data:", installedPluginsData);
     console.log("Already registered:", ClientPluginManager._registeredPlugins);
@@ -62,7 +62,7 @@ class ClientPluginManager extends EventTarget {
     // // Now when all the plugin has been mapped, we can call the provision method on it
     // console.log("INIT MANAGER Plugins", this._plugins);
     this._initialized = true;
-    this._loading = false;
+    this._ready = true;
 
     this.dispatchEvent(new Event("initialized"));
 
@@ -187,7 +187,11 @@ class ClientPluginManager extends EventTarget {
   provisionPlugins() {
     console.log("Provisioning active plugins...");
     console.log(this.activePlugins);
-    this.activePlugins.forEach((plugin) => plugin.provision());
+    if (!this.activePlugins) {
+      console.log("No plugins registered to provision");
+    } else {
+      this.activePlugins?.forEach((plugin) => plugin.provision());
+    }
   }
 }
 
