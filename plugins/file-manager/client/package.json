@@ -1,0 +1,20 @@
+{
+  "name": "@fuse-labs/file-manager-client",
+  "description": "Core file manager for FUSE",
+  "private": true,
+  "version": "0.1",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "filesize": "^9.0.11"
+  },
+  "peerDependencies": {
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
+    "@radix-ui/react-icons": "^1.1.1",
+    "classnames": "^2.3.2",
+    "react": "^18.0",
+    "react-dom": "^18.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@fuse-labs/file-manager-server",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^"
+  }
+}

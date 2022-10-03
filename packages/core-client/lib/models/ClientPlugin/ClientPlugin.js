@@ -161,6 +161,8 @@ export default class ClientPlugin {
           lodash.set(device, "sockets." + keyPath, pluginDeviceSocket);
         }
       });
+    } else {
+      console.log("No device socket to provision for ", this.name);
     }
 
     // To be implemented in subclasses

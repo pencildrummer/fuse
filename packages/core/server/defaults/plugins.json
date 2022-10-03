@@ -1,0 +1,18 @@
+{
+  "@fuse-labs/core": {
+    "name": "@fuse-labs/core",
+    "path": "packages/core"
+  },
+  "@fuse-labs/terminal": {
+    "name": "@fuse-labs/terminal",
+    "path": "plugins/terminal"
+  },
+  "@fuse-labs/marlin-core": {
+    "name": "@fuse-labs/marlin-core",
+    "path": "plugins/marlin-core"
+  },
+  "@fuse-labs/file-manager": {
+    "name": "@fuse-labs/file-manager",
+    "path": "plugins/file-manager"
+  }
+}

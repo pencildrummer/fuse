@@ -108,22 +108,43 @@ class ClientPluginManager extends EventTarget {
             const base = "http://localhost:3000/system";
             // Extract plugin directory from path
             const pluginDir = data._path.split("/").pop();
-            // TODO: Read package.json and import path accordingly? 'main' field should match
+
             // Build dynamic import path, served from host custom server
-            const importPath = `${base}/${pluginDir}/dist-client/main.js`;
+            const importPath = `${base}/${pluginDir}/package.json`;
             console.log(
               `Registering plugin '${data.name}' from '${importPath}'...`
             );
 
             // IMPORTANT: The magic is to skip webpack bundling for await import! (with the webpackIgnore rule)
             const pluginImported = await import(
-              /* webpackIgnore: true */ `${importPath}`
+              /* webpackIgnore: true */ `${importPath}`,
+              { assert: { type: "json" } }
             )
               .then((res) => {
-                console.log(`Imported ${data.name} as ${data._libraryName}`);
-                // Access loaded plugin from window because we are loading from UMD
-                // TODO: Investigate bettere this loading process
-                return window[data._libraryName];
+                console.log(`Imported package.json for ${data.name}`);
+                console.log("JSON", res.default);
+                let packageJSON = res.default;
+                let moduleImportPath;
+                // Check browser, exports or main field
+                if (packageJSON.browser) {
+                  moduleImportPath = `${base}/${pluginDir}/${packageJSON.browser}`;
+                } else if (packageJSON.exports?.["./client"]) {
+                  moduleImportPath = `${base}/${pluginDir}/${packageJSON.exports?.["./client"]}`;
+                } else if (packageJSON.main) {
+                  moduleImportPath = `${base}/${pluginDir}/${packageJSON.main}`;
+                } else {
+                  moduleImportPath = `${base}/${pluginDir}/index.js`;
+                }
+                console.log(`Importing from ${moduleImportPath}`);
+                return import(
+                  /* webpackIgnore: true */ `${moduleImportPath}`
+                ).then((_) => {
+                  console.log(`Imported ${data.name} as ${data._libraryName}`);
+                  console.log(window[data._libraryName]);
+                  // Access loaded plugin from window because we are loading from UMD
+                  // TODO: Investigate bettere this loading process
+                  return window[data._libraryName];
+                });
               })
               .catch((err) => {
                 console.error(err);

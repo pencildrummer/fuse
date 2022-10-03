@@ -3,6 +3,8 @@ const withTM = require("next-transpile-modules")([
   "@fuse-labs/core-client",
   "@fuse-labs/shared-utils",
   "@fuse-labs/terminal-client",
+  "@fuse-labs/file-manager-client",
+  "@fuse-labs/marlin-core-client",
 ]);
 
 const config = {

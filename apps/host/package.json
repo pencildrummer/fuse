@@ -19,6 +19,8 @@
   "license": "MIT",
   "dependencies": {
     "@fuse-labs/core": "workspace:^",
+    "@fuse-labs/file-manager-server": "workspace:^",
+    "@fuse-labs/marlin-core-server": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/terminal-server": "workspace:^",
     "chalk": "^5.0.1",

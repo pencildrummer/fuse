@@ -18,6 +18,7 @@
   },
   "peerDependencies": {
     "@fuse-labs/shared-utils": "workspace:^",
+    "is-electron": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intl": "^6.1.1"

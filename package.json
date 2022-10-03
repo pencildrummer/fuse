@@ -5,11 +5,8 @@
   "workspaces": [
     "./apps/client",
     "./apps/host",
-    "./packages/core",
-    "./packages/core-ui",
-    "./packages/core-client",
-    "./packages/shared-utils",
-    "./packages/terminal/*"
+    "./packages/*",
+    "./plugins/**/*"
   ],
   "scripts": {
     "client:dev": "yarn workspace client dev",

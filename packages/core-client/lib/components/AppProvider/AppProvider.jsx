@@ -6,6 +6,7 @@ import useProviderDevices from "../../hooks/useProviderDevices.js";
 import useProviderPlugins from "../../hooks/useProviderPlugins.js";
 import useProviderProfiles from "../../hooks/useProviderProfiles.js";
 import AppLoadingView from "./AppLoadingView/AppLoadingView.jsx";
+import isElectron from "is-electron";
 
 const cache = createIntlCache();
 
@@ -67,6 +68,7 @@ export default function AppProvider({
       <AppContext.Provider
         value={{
           isReady,
+          isElectron,
           config,
           devices,
           profiles,
