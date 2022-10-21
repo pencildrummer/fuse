@@ -76,6 +76,10 @@ class ClientPluginManager extends EventTarget {
    * @param {} pluginInstance
    */
   static registerPlugin(pluginName, pluginClass) {
+    if (!pluginClass)
+      throw new Error(
+        `Undefined pluginClass provided to register plugin "${pluginName}"`
+      );
     ClientPluginManager._registeredPlugins[pluginName] = pluginClass;
     console.log(`Registered ${pluginName}`);
   }

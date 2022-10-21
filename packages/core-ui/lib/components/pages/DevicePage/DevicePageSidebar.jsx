@@ -10,7 +10,7 @@ export default function DevicePageSidebar() {
   const { device } = useDeviceContext();
 
   return (
-    <div className="flex-none dark:bg-gray-900 dark:text-gray-200 rounded-lg m-2 mr-0 w-20 flex flex-col items-center justify-center">
+    <div className="flex-none dark:bg-gray-900 dark:text-gray-200 rounded-lg m-2 mr-0 w-20 flex flex-col items-center justify-center z-10">
       <SidebarMenu>
         <Tooltip content={"Dashboard"} side="right" sideOffset={10}>
           <SidebarMenuItem

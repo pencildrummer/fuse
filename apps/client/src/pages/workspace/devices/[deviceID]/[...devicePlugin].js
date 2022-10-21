@@ -20,20 +20,20 @@ export default function DevicePluginPage() {
   // Retrieve device
   const device = useDevice(deviceID);
 
-  if (!device) {
-    console.warn(
-      `No device with ID ${deviceID} found. Redirecting to /workspace...`
-    );
-    return <DeviceNotFoundView />;
-  }
-
-  const pluginUrl = devicePlugin.join("/");
+  const pluginUrl = devicePlugin?.join("/");
   const plugin = useDevicePlugin(deviceID, pluginUrl);
   const PluginComponent = useDevicePluginComponents(
     device,
     plugin,
     "page.plugin"
   );
+
+  if (!device) {
+    console.warn(
+      `No device with ID ${deviceID} found. Redirecting to /workspace...`
+    );
+    return <DeviceNotFoundView />;
+  }
 
   if (!plugin) {
     console.warn(

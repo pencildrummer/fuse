@@ -38,5 +38,9 @@
   "@fuse-labs/marlin-gcode-viewer": {
     "name": "@fuse-labs/marlin-gcode-viewer",
     "path": "plugins/marlin-gcode-viewer"
+  },
+  "@fuse-labs/camera": {
+    "name": "@fuse-labs/camera",
+    "path": "plugins/camera"
   }
 }

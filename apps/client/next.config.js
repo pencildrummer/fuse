@@ -12,6 +12,7 @@ const withTM = require("next-transpile-modules")([
   "@fuse-labs/marlin-extruder-client",
   "@fuse-labs/marlin-extra-client",
   "@fuse-labs/marlin-gcode-viewer-client",
+  "@fuse-labs/camera-client",
 ]);
 
 const config = {

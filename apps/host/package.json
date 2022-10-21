@@ -18,6 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@fuse-labs/camera-server": "workspace:^",
     "@fuse-labs/core": "workspace:^",
     "@fuse-labs/file-manager-server": "workspace:^",
     "@fuse-labs/marlin-core-server": "workspace:^",

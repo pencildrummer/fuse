@@ -136,7 +136,20 @@ class PluginManager {
 
     let PluginClass = pluginModule.default;
 
-    let systemPlugin = new PluginClass(systemPluginInfo.name, systemPluginPath);
+    // Check import default is a class
+
+    let systemPlugin;
+    try {
+      systemPlugin = new PluginClass(systemPluginInfo.name, systemPluginPath);
+    } catch (e) {
+      console.error(
+        `${chalk.bold.red(
+          systemPluginInfo.name
+        )} default export is not a class. Imported from ${importPath}`
+      );
+      return null;
+    }
+
     // System plugins are always active
     this._activePluginsNames = [
       ...this._activePluginsNames,

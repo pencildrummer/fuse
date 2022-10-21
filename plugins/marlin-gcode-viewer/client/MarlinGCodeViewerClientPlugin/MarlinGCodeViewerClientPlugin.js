@@ -3,6 +3,10 @@ import { CodeIcon } from "@fuse-labs/core-ui";
 import GCodeViewerPage from "../pages";
 
 export default class MarlinGCodeViewerClientPlugin extends ClientPlugin {
+  get displayTitle() {
+    return "GCode viewer";
+  }
+
   get icon() {
     return CodeIcon;
   }

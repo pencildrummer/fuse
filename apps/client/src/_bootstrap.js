@@ -10,6 +10,7 @@ import MarlinExtruderClientPlugin from "@fuse-labs/marlin-extruder-client";
 import MarlinExtraClientPlugin from "@fuse-labs/marlin-extra-client";
 import MarlinGCodeViewerClientPlugin from "@fuse-labs/marlin-gcode-viewer-client";
 import FileManagerClientPlugin from "@fuse-labs/file-manager-client";
+import CameraClientPlugin from "@fuse-labs/camera-client";
 
 // TODO - Move into a _plugin.js file or something like the manager on the server side, some sort of install process for plugins
 ClientPluginManager.registerPlugin("@fuse-labs/terminal", TerminalClientPlugin);
@@ -45,3 +46,4 @@ ClientPluginManager.registerPlugin(
   "@fuse-labs/marlin-gcode-viewer",
   MarlinGCodeViewerClientPlugin
 );
+ClientPluginManager.registerPlugin("@fuse-labs/camera", CameraClientPlugin);
