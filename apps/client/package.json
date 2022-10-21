@@ -25,6 +25,7 @@
     "@fuse-labs/marlin-core-client": "workspace:^",
     "@fuse-labs/marlin-extra-client": "workspace:^",
     "@fuse-labs/marlin-extruder-client": "workspace:^",
+    "@fuse-labs/marlin-gcode-viewer-client": "workspace:^",
     "@fuse-labs/marlin-move-client": "workspace:^",
     "@fuse-labs/marlin-settings-client": "workspace:^",
     "@fuse-labs/marlin-temperature-client": "workspace:^",

@@ -34,5 +34,9 @@
   "@fuse-labs/marlin-extra": {
     "name": "@fuse-labs/marlin-extra",
     "path": "plugins/marlin-extra"
+  },
+  "@fuse-labs/marlin-gcode-viewer": {
+    "name": "@fuse-labs/marlin-gcode-viewer",
+    "path": "plugins/marlin-gcode-viewer"
   }
 }

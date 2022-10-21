@@ -23,6 +23,7 @@
     "@fuse-labs/marlin-core-server": "workspace:^",
     "@fuse-labs/marlin-extra-server": "workspace:^",
     "@fuse-labs/marlin-extruder-server": "workspace:^",
+    "@fuse-labs/marlin-gcode-viewer-server": "workspace:^",
     "@fuse-labs/marlin-move-server": "workspace:^",
     "@fuse-labs/marlin-settings-server": "workspace:^",
     "@fuse-labs/marlin-temperature-server": "workspace:^",
