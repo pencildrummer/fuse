@@ -1,0 +1,15 @@
+{
+  "name": "@fuse-labs/marlin-extra-server",
+  "version": "1.0.0",
+  "description": "Extra features plugin for FUSE for Marlin-based devices",
+  "private": true,
+  "type": "module",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^"
+  },
+  "peerDependencies": {
+    "@fuse-labs/marlin-core-server": "workspace:^"
+  }
+}
