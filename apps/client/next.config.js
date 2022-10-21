@@ -1,10 +1,12 @@
 const withTM = require("next-transpile-modules")([
+  // TODO - Make dynamic? Or leave it hardcode because plugins will be loaded runtime later?
   "@fuse-labs/core-ui",
   "@fuse-labs/core-client",
   "@fuse-labs/shared-utils",
   "@fuse-labs/terminal-client",
   "@fuse-labs/file-manager-client",
   "@fuse-labs/marlin-core-client",
+  "@fuse-labs/marlin-settings-client",
 ]);
 
 const config = {

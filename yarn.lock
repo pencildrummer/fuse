@@ -2005,15 +2005,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@fuse-labs/marlin-settings@workspace:plugins/marlin-settings":
+"@fuse-labs/marlin-settings-client@workspace:^, @fuse-labs/marlin-settings-client@workspace:plugins/marlin-settings/client":
   version: 0.0.0-use.local
-  resolution: "@fuse-labs/marlin-settings@workspace:plugins/marlin-settings"
+  resolution: "@fuse-labs/marlin-settings-client@workspace:plugins/marlin-settings/client"
   dependencies:
-    "@vitejs/plugin-react": ^2.1.0
-    vite: ^3.1.3
+    filesize: ^9.0.11
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    "@fuse-labs/core-client": "workspace:^"
+    "@fuse-labs/core-ui": "workspace:^"
+    "@fuse-labs/shared-utils": "workspace:^"
+    "@radix-ui/react-icons": ^1.1.1
+    classnames: ^2.3.2
+    react: ^18.0
+    react-dom: ^18.0
+  languageName: unknown
+  linkType: soft
+
+"@fuse-labs/marlin-settings-server@workspace:^, @fuse-labs/marlin-settings-server@workspace:plugins/marlin-settings/server":
+  version: 0.0.0-use.local
+  resolution: "@fuse-labs/marlin-settings-server@workspace:plugins/marlin-settings/server"
+  dependencies:
+    "@fuse-labs/core": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -4419,6 +4431,7 @@ __metadata:
     "@fuse-labs/core-ui": "workspace:^"
     "@fuse-labs/file-manager-client": "workspace:^"
     "@fuse-labs/marlin-core-client": "workspace:^"
+    "@fuse-labs/marlin-settings-client": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
     "@fuse-labs/terminal-client": "workspace:^"
     "@radix-ui/react-icons": ^1.1.1
@@ -6237,6 +6250,7 @@ __metadata:
     "@fuse-labs/core": "workspace:^"
     "@fuse-labs/file-manager-server": "workspace:^"
     "@fuse-labs/marlin-core-server": "workspace:^"
+    "@fuse-labs/marlin-settings-server": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
     "@fuse-labs/terminal-server": "workspace:^"
     chalk: ^5.0.1

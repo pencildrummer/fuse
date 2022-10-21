@@ -14,5 +14,9 @@
   "@fuse-labs/file-manager": {
     "name": "@fuse-labs/file-manager",
     "path": "plugins/file-manager"
+  },
+  "@fuse-labs/marlin-settings": {
+    "name": "@fuse-labs/marlin-settings",
+    "path": "plugins/marlin-settings"
   }
 }

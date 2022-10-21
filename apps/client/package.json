@@ -23,6 +23,7 @@
     "@fuse-labs/core-ui": "workspace:^",
     "@fuse-labs/file-manager-client": "workspace:^",
     "@fuse-labs/marlin-core-client": "workspace:^",
+    "@fuse-labs/marlin-settings-client": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/terminal-client": "workspace:^",
     "@radix-ui/react-icons": "^1.1.1",

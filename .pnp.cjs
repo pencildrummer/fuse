@@ -89,8 +89,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:plugins/marlin-move"\
       },\
       {\
-        "name": "@fuse-labs/marlin-settings",\
-        "reference": "workspace:plugins/marlin-settings"\
+        "name": "@fuse-labs/marlin-settings-client",\
+        "reference": "workspace:plugins/marlin-settings/client"\
+      },\
+      {\
+        "name": "@fuse-labs/marlin-settings-server",\
+        "reference": "workspace:plugins/marlin-settings/server"\
       },\
       {\
         "name": "@fuse-labs/marlin-temperature",\
@@ -123,7 +127,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@fuse-labs/marlin-extruder", ["workspace:plugins/marlin-extruder"]],\
       ["@fuse-labs/marlin-gcode-viewer", ["workspace:plugins/marlin-gcode-viewer"]],\
       ["@fuse-labs/marlin-move", ["workspace:plugins/marlin-move"]],\
-      ["@fuse-labs/marlin-settings", ["workspace:plugins/marlin-settings"]],\
+      ["@fuse-labs/marlin-settings-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client", "workspace:plugins/marlin-settings/client"]],\
+      ["@fuse-labs/marlin-settings-server", ["workspace:plugins/marlin-settings/server"]],\
       ["@fuse-labs/marlin-temperature", ["workspace:plugins/marlin-temperature"]],\
       ["@fuse-labs/shared-utils", ["workspace:packages/shared-utils"]],\
       ["@fuse-labs/terminal-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/terminal/client", "workspace:plugins/terminal/client"]],\
@@ -4536,13 +4541,60 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT"\
         }]\
       ]],\
-      ["@fuse-labs/marlin-settings", [\
-        ["workspace:plugins/marlin-settings", {\
-          "packageLocation": "./plugins/marlin-settings/",\
+      ["@fuse-labs/marlin-settings-client", [\
+        ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-marlin-settings-client-virtual-678d56c677/1/plugins/marlin-settings/client/",\
           "packageDependencies": [\
-            ["@fuse-labs/marlin-settings", "workspace:plugins/marlin-settings"],\
-            ["@vitejs/plugin-react", "virtual:d5c9ec8fcfa7ccf10c6140f5f0795b6f8c35ae8194156532697c6c15a684b4686552c9b9b372a88365570b71bf50ff3d36a5feae848477326d302f7d7b6b3b07#npm:2.1.0"],\
-            ["vite", "virtual:87dabff3cf9f2d32da3697cacab38fa00b358f5c4a10ce3c0bbead74e1ad3a5d8a675c5a5537b25f5185749f1ebe30ccb957afbe2aa694cd1bd5125be38771ee#npm:3.1.3"]\
+            ["@fuse-labs/marlin-settings-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client"],\
+            ["@fuse-labs/core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
+            ["@types/classnames", null],\
+            ["@types/fuse-labs__core-client", null],\
+            ["@types/fuse-labs__core-ui", null],\
+            ["@types/fuse-labs__shared-utils", null],\
+            ["@types/radix-ui__react-icons", null],\
+            ["@types/react", null],\
+            ["@types/react-dom", null],\
+            ["classnames", "npm:2.3.2"],\
+            ["filesize", "npm:9.0.11"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-client",\
+            "@fuse-labs/core-ui",\
+            "@fuse-labs/shared-utils",\
+            "@radix-ui/react-icons",\
+            "@types/classnames",\
+            "@types/fuse-labs__core-client",\
+            "@types/fuse-labs__core-ui",\
+            "@types/fuse-labs__shared-utils",\
+            "@types/radix-ui__react-icons",\
+            "@types/react-dom",\
+            "@types/react",\
+            "classnames",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["workspace:plugins/marlin-settings/client", {\
+          "packageLocation": "./plugins/marlin-settings/client/",\
+          "packageDependencies": [\
+            ["@fuse-labs/marlin-settings-client", "workspace:plugins/marlin-settings/client"],\
+            ["filesize", "npm:9.0.11"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@fuse-labs/marlin-settings-server", [\
+        ["workspace:plugins/marlin-settings/server", {\
+          "packageLocation": "./plugins/marlin-settings/server/",\
+          "packageDependencies": [\
+            ["@fuse-labs/marlin-settings-server", "workspace:plugins/marlin-settings/server"],\
+            ["@fuse-labs/core", "workspace:packages/core"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -9160,6 +9212,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fuse-labs/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui"],\
             ["@fuse-labs/file-manager-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/file-manager/client"],\
             ["@fuse-labs/marlin-core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-core/client"],\
+            ["@fuse-labs/marlin-settings-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["@fuse-labs/terminal-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/terminal/client"],\
             ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
@@ -11422,6 +11475,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fuse-labs/core", "workspace:packages/core"],\
             ["@fuse-labs/file-manager-server", "workspace:plugins/file-manager/server"],\
             ["@fuse-labs/marlin-core-server", "workspace:plugins/marlin-core/server"],\
+            ["@fuse-labs/marlin-settings-server", "workspace:plugins/marlin-settings/server"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["@fuse-labs/terminal-server", "workspace:plugins/terminal/server"],\
             ["chalk", "npm:5.0.1"],\

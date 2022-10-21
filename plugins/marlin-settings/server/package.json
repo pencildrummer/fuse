@@ -1,0 +1,8 @@
+{
+  "name": "@fuse-labs/marlin-settings-server",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^"
+  }
+}
