@@ -3,7 +3,7 @@ import { ClientPluginManager } from "@fuse-labs/core-client";
 // These imports should be dynamic, loaded runtime, Fuse will not come with plugin pre-bundled in the main binary
 import TerminalClientPlugin from "@fuse-labs/terminal-client";
 import MarlinCoreClientPlugin from "@fuse-labs/marlin-core-client";
-// import MarlinTemperatureClientPlugin from '@fuse-labs/marlin-temperature/client'
+import MarlinTemperatureClientPlugin from "@fuse-labs/marlin-temperature-client";
 import MarlinSettingsClientPlugin from "@fuse-labs/marlin-settings-client";
 import FileManagerClientPlugin from "@fuse-labs/file-manager-client";
 
@@ -13,7 +13,10 @@ ClientPluginManager.registerPlugin(
   "@fuse-labs/marlin-core",
   MarlinCoreClientPlugin
 );
-// ClientPluginManager.registerPlugin('@fuse-labs/marlin-temperature', MarlinTemperatureClientPlugin)
+ClientPluginManager.registerPlugin(
+  "@fuse-labs/marlin-temperature",
+  MarlinTemperatureClientPlugin
+);
 ClientPluginManager.registerPlugin(
   "@fuse-labs/file-manager",
   FileManagerClientPlugin

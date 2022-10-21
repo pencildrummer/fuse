@@ -15,6 +15,10 @@
     "name": "@fuse-labs/file-manager",
     "path": "plugins/file-manager"
   },
+  "@fuse-labs/marlin-temperature": {
+    "name": "@fuse-labs/marlin-temperature",
+    "path": "plugins/marlin-temperature"
+  },
   "@fuse-labs/marlin-settings": {
     "name": "@fuse-labs/marlin-settings",
     "path": "plugins/marlin-settings"

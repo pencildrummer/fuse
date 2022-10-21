@@ -97,8 +97,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:plugins/marlin-settings/server"\
       },\
       {\
-        "name": "@fuse-labs/marlin-temperature",\
-        "reference": "workspace:plugins/marlin-temperature"\
+        "name": "@fuse-labs/marlin-temperature-client",\
+        "reference": "workspace:plugins/marlin-temperature/client"\
+      },\
+      {\
+        "name": "@fuse-labs/marlin-temperature-server",\
+        "reference": "workspace:plugins/marlin-temperature/server"\
       },\
       {\
         "name": "@fuse-labs/terminal-client",\
@@ -129,7 +133,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@fuse-labs/marlin-move", ["workspace:plugins/marlin-move"]],\
       ["@fuse-labs/marlin-settings-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client", "workspace:plugins/marlin-settings/client"]],\
       ["@fuse-labs/marlin-settings-server", ["workspace:plugins/marlin-settings/server"]],\
-      ["@fuse-labs/marlin-temperature", ["workspace:plugins/marlin-temperature"]],\
+      ["@fuse-labs/marlin-temperature-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-temperature/client", "workspace:plugins/marlin-temperature/client"]],\
+      ["@fuse-labs/marlin-temperature-server", ["workspace:plugins/marlin-temperature/server"]],\
       ["@fuse-labs/shared-utils", ["workspace:packages/shared-utils"]],\
       ["@fuse-labs/terminal-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/terminal/client", "workspace:plugins/terminal/client"]],\
       ["@fuse-labs/terminal-server", ["workspace:plugins/terminal/server"]],\
@@ -4599,19 +4604,61 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT"\
         }]\
       ]],\
-      ["@fuse-labs/marlin-temperature", [\
-        ["workspace:plugins/marlin-temperature", {\
-          "packageLocation": "./plugins/marlin-temperature/",\
+      ["@fuse-labs/marlin-temperature-client", [\
+        ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-temperature/client", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-marlin-temperature-client-virtual-1fac7a539a/1/plugins/marlin-temperature/client/",\
           "packageDependencies": [\
-            ["@fuse-labs/marlin-temperature", "workspace:plugins/marlin-temperature"],\
-            ["@radix-ui/react-icons", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#npm:1.1.1"],\
-            ["@vitejs/plugin-react", "virtual:d5c9ec8fcfa7ccf10c6140f5f0795b6f8c35ae8194156532697c6c15a684b4686552c9b9b372a88365570b71bf50ff3d36a5feae848477326d302f7d7b6b3b07#npm:2.1.0"],\
+            ["@fuse-labs/marlin-temperature-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-temperature/client"],\
+            ["@fuse-labs/core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui"],\
+            ["@fuse-labs/marlin-core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-core/client"],\
+            ["@types/fuse-labs__core-client", null],\
+            ["@types/fuse-labs__core-ui", null],\
+            ["@types/fuse-labs__marlin-core-client", null],\
+            ["@types/react", null],\
+            ["@types/react-dom", null],\
             ["chart.js", "npm:3.9.1"],\
-            ["chartjs-adapter-date-fns", "virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:2.0.0"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.0"],\
             ["date-fns", "npm:2.29.3"],\
             ["lodash", "npm:4.17.21"],\
-            ["react-chartjs-2", "virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:4.3.1"],\
-            ["vite", "virtual:87dabff3cf9f2d32da3697cacab38fa00b358f5c4a10ce3c0bbead74e1ad3a5d8a675c5a5537b25f5185749f1ebe30ccb957afbe2aa694cd1bd5125be38771ee#npm:3.1.3"]\
+            ["react", "npm:18.2.0"],\
+            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1"],\
+            ["react-dom", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-client",\
+            "@fuse-labs/core-ui",\
+            "@fuse-labs/marlin-core-client",\
+            "@types/fuse-labs__core-client",\
+            "@types/fuse-labs__core-ui",\
+            "@types/fuse-labs__marlin-core-client",\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["workspace:plugins/marlin-temperature/client", {\
+          "packageLocation": "./plugins/marlin-temperature/client/",\
+          "packageDependencies": [\
+            ["@fuse-labs/marlin-temperature-client", "workspace:plugins/marlin-temperature/client"],\
+            ["chart.js", "npm:3.9.1"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.0"],\
+            ["date-fns", "npm:2.29.3"],\
+            ["lodash", "npm:4.17.21"],\
+            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@fuse-labs/marlin-temperature-server", [\
+        ["workspace:plugins/marlin-temperature/server", {\
+          "packageLocation": "./plugins/marlin-temperature/server/",\
+          "packageDependencies": [\
+            ["@fuse-labs/marlin-temperature-server", "workspace:plugins/marlin-temperature/server"],\
+            ["@fuse-labs/core", "workspace:packages/core"],\
+            ["@fuse-labs/marlin-core-server", "workspace:plugins/marlin-core/server"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -9136,10 +9183,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:2.0.0", {\
-          "packageLocation": "./.yarn/__virtual__/chartjs-adapter-date-fns-virtual-6f17490202/0/cache/chartjs-adapter-date-fns-npm-2.0.0-8412d1dcec-08ee2f99da.zip/node_modules/chartjs-adapter-date-fns/",\
+        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/chartjs-adapter-date-fns-virtual-02b44b9e6e/0/cache/chartjs-adapter-date-fns-npm-2.0.0-8412d1dcec-08ee2f99da.zip/node_modules/chartjs-adapter-date-fns/",\
           "packageDependencies": [\
-            ["chartjs-adapter-date-fns", "virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:2.0.0"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.0"],\
             ["@types/chart.js", null],\
             ["chart.js", "npm:3.9.1"]\
           ],\
@@ -9213,6 +9260,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fuse-labs/file-manager-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/file-manager/client"],\
             ["@fuse-labs/marlin-core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-core/client"],\
             ["@fuse-labs/marlin-settings-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-settings/client"],\
+            ["@fuse-labs/marlin-temperature-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-temperature/client"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["@fuse-labs/terminal-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/terminal/client"],\
             ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
@@ -13458,10 +13506,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:4.3.1", {\
-          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-9733fa245e/0/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
+        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-394bdaf88a/0/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
           "packageDependencies": [\
-            ["react-chartjs-2", "virtual:45968ed04a2075997211de343b9818742c543247d3bc3f810cc56c4f3b7e9664735c4fb4cfd33f0301497c7312c545c49b6b8ed0653ee28706f43095c06ed9fd#npm:4.3.1"],\
+            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1"],\
+            ["@types/chart.js", null],\
+            ["@types/react", null],\
+            ["chart.js", "npm:3.9.1"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/chart.js",\
+            "@types/react",\
+            "chart.js",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-469b4865d9/0/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
+          "packageDependencies": [\
+            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1"],\
             ["@types/chart.js", null],\
             ["@types/react", null],\
             ["chart.js", "npm:3.9.1"],\

@@ -7,6 +7,7 @@ const withTM = require("next-transpile-modules")([
   "@fuse-labs/file-manager-client",
   "@fuse-labs/marlin-core-client",
   "@fuse-labs/marlin-settings-client",
+  "@fuse-labs/marlin-temperature-client",
 ]);
 
 const config = {

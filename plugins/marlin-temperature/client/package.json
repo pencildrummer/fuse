@@ -1,0 +1,31 @@
+{
+  "name": "@fuse-labs/marlin-temperature-client",
+  "description": "Temperature monitor plugin for FUSE for Marlin-based devices",
+  "version": "0.0.1",
+  "author": "Fabio Borella",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "chart.js": "^3.9.1",
+    "chartjs-adapter-date-fns": "^2.0.0",
+    "date-fns": "^2.28.0",
+    "lodash": "^4.17.21",
+    "react-chartjs-2": "^4.0.1"
+  },
+  "peerDependencies": {
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "@fuse-labs/marlin-core-client": "workspace:^",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "fuse": {
+    "title": "[Marlin] Temperature monitor",
+    "pagesUrl": "temperature",
+    "icon": "BarChartIcon",
+    "tooltip": "Temperature",
+    "devices": [
+      "fdm_printer"
+    ]
+  }
+}

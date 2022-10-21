@@ -1,0 +1,21 @@
+{
+  "name": "@fuse-labs/marlin-temperature-server",
+  "description": "Temperature monitor plugin for FUSE for Marlin-based devices",
+  "version": "1.0",
+  "author": "Fabio Borella",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^",
+    "@fuse-labs/marlin-core-server": "workspace:^"
+  },
+  "fuse": {
+    "title": "[Marlin] Temperature monitor",
+    "pagesUrl": "temperature",
+    "icon": "BarChartIcon",
+    "tooltip": "Temperature",
+    "devices": [
+      "fdm_printer"
+    ]
+  }
+}
