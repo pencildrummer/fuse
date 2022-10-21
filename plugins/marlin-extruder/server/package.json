@@ -1,0 +1,12 @@
+{
+  "name": "@fuse-labs/marlin-extruder-server",
+  "version": "1.0.0",
+  "description": "Extruder plugin for FUSE for Marlin-based devices",
+  "private": true,
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^"
+  }
+}

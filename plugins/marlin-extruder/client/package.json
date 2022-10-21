@@ -1,0 +1,23 @@
+{
+  "name": "@fuse-labs/marlin-extruder-client",
+  "version": "1.0.0",
+  "description": "Extruder plugin for FUSE for Marlin-based devices",
+  "private": true,
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "fuse": {
+    "title": "[Marlin] Extruder",
+    "devices": [
+      "fdm_printer"
+    ]
+  },
+  "dependencies": {
+    "classnames": "^2.3.2"
+  },
+  "peerDependencies": {
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "react": "^18",
+    "react-dom": "^18"
+  }
+}

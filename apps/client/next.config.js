@@ -9,6 +9,7 @@ const withTM = require("next-transpile-modules")([
   "@fuse-labs/marlin-settings-client",
   "@fuse-labs/marlin-temperature-client",
   "@fuse-labs/marlin-move-client",
+  "@fuse-labs/marlin-extruder-client",
 ]);
 
 const config = {

@@ -1960,17 +1960,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@fuse-labs/marlin-extruder@workspace:plugins/marlin-extruder":
+"@fuse-labs/marlin-extruder-client@workspace:^, @fuse-labs/marlin-extruder-client@workspace:plugins/marlin-extruder/client":
   version: 0.0.0-use.local
-  resolution: "@fuse-labs/marlin-extruder@workspace:plugins/marlin-extruder"
+  resolution: "@fuse-labs/marlin-extruder-client@workspace:plugins/marlin-extruder/client"
   dependencies:
-    "@radix-ui/react-icons": ^1.1.1
-    "@vitejs/plugin-react": ^2.1.0
     classnames: ^2.3.2
-    vite: ^3.1.3
   peerDependencies:
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    "@fuse-labs/core-client": "workspace:^"
+    "@fuse-labs/core-ui": "workspace:^"
+    react: ^18
+    react-dom: ^18
+  languageName: unknown
+  linkType: soft
+
+"@fuse-labs/marlin-extruder-server@workspace:^, @fuse-labs/marlin-extruder-server@workspace:plugins/marlin-extruder/server":
+  version: 0.0.0-use.local
+  resolution: "@fuse-labs/marlin-extruder-server@workspace:plugins/marlin-extruder/server"
+  dependencies:
+    "@fuse-labs/core": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -1995,8 +2002,8 @@ __metadata:
     "@fuse-labs/core-client": "workspace:^"
     "@fuse-labs/core-ui": "workspace:^"
     next: "*"
-    react: ^17.0.2
-    react-dom: ^17.0.2
+    react: ^18
+    react-dom: ^18
     react-intl: "*"
   languageName: unknown
   linkType: soft
@@ -4445,6 +4452,7 @@ __metadata:
     "@fuse-labs/core-ui": "workspace:^"
     "@fuse-labs/file-manager-client": "workspace:^"
     "@fuse-labs/marlin-core-client": "workspace:^"
+    "@fuse-labs/marlin-extruder-client": "workspace:^"
     "@fuse-labs/marlin-move-client": "workspace:^"
     "@fuse-labs/marlin-settings-client": "workspace:^"
     "@fuse-labs/marlin-temperature-client": "workspace:^"
@@ -6266,6 +6274,7 @@ __metadata:
     "@fuse-labs/core": "workspace:^"
     "@fuse-labs/file-manager-server": "workspace:^"
     "@fuse-labs/marlin-core-server": "workspace:^"
+    "@fuse-labs/marlin-extruder-server": "workspace:^"
     "@fuse-labs/marlin-move-server": "workspace:^"
     "@fuse-labs/marlin-settings-server": "workspace:^"
     "@fuse-labs/marlin-temperature-server": "workspace:^"
