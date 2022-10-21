@@ -1,0 +1,17 @@
+{
+  "name": "@fuse-labs/marlin-move-client",
+  "version": "1.0.0",
+  "description": "Movement and position plugin for FUSE for Marlin-based devices",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "type": "module",
+  "peerDependencies": {
+    "@fuse-labs/core": "workspace:^",
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "next": "*",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-intl": "*"
+  }
+}

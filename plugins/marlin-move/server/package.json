@@ -1,0 +1,19 @@
+{
+  "name": "@fuse-labs/marlin-move-server",
+  "version": "1.0.0",
+  "description": "Movement and position plugin for FUSE for Marlin-based devices",
+  "author": "Fabio Borella",
+  "license": "ISC",
+  "type": "module",
+  "fuse": {
+    "title": "[Marlin] Movement and position",
+    "icon": "MoveIcon",
+    "devices": [
+      "fdm_printer"
+    ]
+  },
+  "dependencies": {
+    "@fuse-labs/core": "workspace:^",
+    "@fuse-labs/marlin-core-server": "workspace:^"
+  }
+}

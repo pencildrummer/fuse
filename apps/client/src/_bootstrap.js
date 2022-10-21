@@ -5,6 +5,7 @@ import TerminalClientPlugin from "@fuse-labs/terminal-client";
 import MarlinCoreClientPlugin from "@fuse-labs/marlin-core-client";
 import MarlinTemperatureClientPlugin from "@fuse-labs/marlin-temperature-client";
 import MarlinSettingsClientPlugin from "@fuse-labs/marlin-settings-client";
+import MarlinMoveClientPlugin from "@fuse-labs/marlin-move-client";
 import FileManagerClientPlugin from "@fuse-labs/file-manager-client";
 
 // TODO - Move into a _plugin.js file or something like the manager on the server side, some sort of install process for plugins
@@ -24,4 +25,8 @@ ClientPluginManager.registerPlugin(
 ClientPluginManager.registerPlugin(
   "@fuse-labs/marlin-settings",
   MarlinSettingsClientPlugin
+);
+ClientPluginManager.registerPlugin(
+  "@fuse-labs/marlin-move",
+  MarlinMoveClientPlugin
 );

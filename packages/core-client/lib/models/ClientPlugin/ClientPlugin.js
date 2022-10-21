@@ -104,7 +104,9 @@ export default class ClientPlugin {
 
   constructor(data) {
     if (!data) {
-      throw new Error(`Missing data to initialize plugin`);
+      throw new Error(
+        `Missing data to initialize plugin. Probably plugin is not configured correctly or listed as loaded on the host`
+      );
     }
 
     // Set validated data on instance

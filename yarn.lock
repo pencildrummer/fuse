@@ -1987,13 +1987,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@fuse-labs/marlin-move@workspace:plugins/marlin-move":
+"@fuse-labs/marlin-move-client@workspace:^, @fuse-labs/marlin-move-client@workspace:plugins/marlin-move/client":
   version: 0.0.0-use.local
-  resolution: "@fuse-labs/marlin-move@workspace:plugins/marlin-move"
-  dependencies:
-    "@radix-ui/react-icons": ^1.1.1
-    "@vitejs/plugin-react": ^2.1.0
-    vite: ^3.1.3
+  resolution: "@fuse-labs/marlin-move-client@workspace:plugins/marlin-move/client"
   peerDependencies:
     "@fuse-labs/core": "workspace:^"
     "@fuse-labs/core-client": "workspace:^"
@@ -2002,6 +1998,15 @@ __metadata:
     react: ^17.0.2
     react-dom: ^17.0.2
     react-intl: "*"
+  languageName: unknown
+  linkType: soft
+
+"@fuse-labs/marlin-move-server@workspace:^, @fuse-labs/marlin-move-server@workspace:plugins/marlin-move/server":
+  version: 0.0.0-use.local
+  resolution: "@fuse-labs/marlin-move-server@workspace:plugins/marlin-move/server"
+  dependencies:
+    "@fuse-labs/core": "workspace:^"
+    "@fuse-labs/marlin-core-server": "workspace:^"
   languageName: unknown
   linkType: soft
 
@@ -2047,7 +2052,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@fuse-labs/marlin-temperature-server@workspace:plugins/marlin-temperature/server":
+"@fuse-labs/marlin-temperature-server@workspace:^, @fuse-labs/marlin-temperature-server@workspace:plugins/marlin-temperature/server":
   version: 0.0.0-use.local
   resolution: "@fuse-labs/marlin-temperature-server@workspace:plugins/marlin-temperature/server"
   dependencies:
@@ -4440,6 +4445,7 @@ __metadata:
     "@fuse-labs/core-ui": "workspace:^"
     "@fuse-labs/file-manager-client": "workspace:^"
     "@fuse-labs/marlin-core-client": "workspace:^"
+    "@fuse-labs/marlin-move-client": "workspace:^"
     "@fuse-labs/marlin-settings-client": "workspace:^"
     "@fuse-labs/marlin-temperature-client": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
@@ -6260,7 +6266,9 @@ __metadata:
     "@fuse-labs/core": "workspace:^"
     "@fuse-labs/file-manager-server": "workspace:^"
     "@fuse-labs/marlin-core-server": "workspace:^"
+    "@fuse-labs/marlin-move-server": "workspace:^"
     "@fuse-labs/marlin-settings-server": "workspace:^"
+    "@fuse-labs/marlin-temperature-server": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
     "@fuse-labs/terminal-server": "workspace:^"
     chalk: ^5.0.1

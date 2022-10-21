@@ -12,7 +12,7 @@ export default class MarlinTemperatureClientPlugin extends ClientPlugin {
     return {
       page: {
         // Add widget to the device home page
-        home: TemperatureWidget,
+        // home: TemperatureWidget,
         // The specifi device/plugin page
         plugin: PrinterTemperaturePage,
       },

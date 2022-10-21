@@ -22,5 +22,9 @@
   "@fuse-labs/marlin-settings": {
     "name": "@fuse-labs/marlin-settings",
     "path": "plugins/marlin-settings"
+  },
+  "@fuse-labs/marlin-move": {
+    "name": "@fuse-labs/marlin-move",
+    "path": "plugins/marlin-move"
   }
 }
