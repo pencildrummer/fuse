@@ -94,6 +94,15 @@ const config = {
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8898",
+      },
+    ],
+  },
 };
 
 module.exports = withTM(config);

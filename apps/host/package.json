@@ -31,7 +31,9 @@
     "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/terminal-server": "workspace:^",
     "chalk": "^5.0.1",
+    "express": "^4.18.2",
     "filesize": "^9.0.11",
+    "fs-extra": "^10.1.0",
     "signale": "^1.4.0"
   },
   "devDependencies": {
