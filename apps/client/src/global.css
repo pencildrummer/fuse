@@ -7,8 +7,9 @@ div#__next > div {
   height: 100%;
 }
 
-html, body {
+html,
+body {
   @apply bg-gray-800 dark:bg-gray-800;
-  @apply antialiased;
-  font-size: 14px;
+  /* @apply antialiased; */
+  font-size: 16px;
 }

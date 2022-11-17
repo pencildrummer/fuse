@@ -1,0 +1,10 @@
+{
+  "references": [
+    {
+      "path": "./packages/core-client"
+    },
+    {
+      "path": "./apps/client"
+    }
+  ]
+}
