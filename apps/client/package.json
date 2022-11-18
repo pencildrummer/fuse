@@ -12,7 +12,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "next lint --no-cache",
-    "dev": "node ./src/server.js",
+    "dev": "PORT=3001 next dev",
     "debug": "DEBUG=serialport* node --trace-warnings src/server.mjs",
     "build": "next build",
     "start": "next start",
