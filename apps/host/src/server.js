@@ -1,11 +1,9 @@
 import { socketServer as io } from "@fuse-labs/core";
-import _init_Socket from "./lib/_init_Socket.mjs";
-import _init_PluginsSocket from "./lib/_init_PluginsSocket.mjs";
-import express from "express";
-import path from "path";
+import _init_Socket from "./lib/_init_Socket.js";
+import _init_PluginsSocket from "./lib/_init_PluginsSocket.js";
 
 // Boostrap server
-import "./lib/_bootstrap_.mjs";
+import "./lib/_bootstrap_.js";
 
 // Init main socket
 await _init_Socket();
@@ -20,4 +18,4 @@ io.httpServer.listen(port, () => {
 });
 
 // Start http server
-import "./lib/_http_.mjs";
+import "./lib/_http_.js";

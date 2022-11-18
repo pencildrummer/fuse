@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "description": "Fuse - host server",
   "private": true,
-  "main": "src/server.mjs",
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
     "lint": "echo \"No linting configured\"",
-    "dev": "yarn node --inspect src/server.mjs",
-    "start": "node src/server.mjs",
+    "dev": "yarn node --inspect src/server.js",
+    "start": "node src/server.js",
     "clean": "rm -rf node_modules && rm package-lock.json"
   },
   "keywords": [],
