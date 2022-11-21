@@ -3,7 +3,7 @@ import MarlinSettingsPage from "../pages/index";
 import { MixerVerticalIcon } from "@fuse-labs/core-ui";
 
 export default class MarlinSettingsClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "Marlin settings";
   }
 

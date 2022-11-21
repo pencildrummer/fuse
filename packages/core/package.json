@@ -27,5 +27,8 @@
     "uuid": "^8.3.2",
     "varname": "^4.1.1",
     "yup": "^0.32.11"
+  },
+  "devDependencies": {
+    "@fuse-labs/types": "workspace:^"
   }
 }

@@ -1,32 +1,31 @@
+import { PluginDataType } from "@fuse-labs/types";
+import { ClientPlugin } from "../../models";
 import ClientDeviceManager from "../ClientDeviceManager/ClientDeviceManager";
 
 class ClientPluginManager extends EventTarget {
-  _initialized = false;
+  protected _initialized: boolean = false;
   get initialized() {
     return this._initialized;
   }
 
-  _ready = false;
+  protected _ready: boolean = false;
   get ready() {
     return this._ready;
   }
 
-  _plugins = undefined;
+  protected _plugins: ClientPlugin[] = undefined;
   get plugins() {
     return this._plugins;
   }
 
-  _activePluginsNames = [];
-  get activePluginsNames() {
-    return this._activePluginsNames;
-  }
+  readonly activePluginsNames: string[] = [];
 
   get activePlugins() {
-    return this._plugins?.filter((plugin) => plugin.active);
+    return this.plugins?.filter((plugin) => plugin.active);
   }
 
-  getPlugin(name) {
-    return this._plugins?.find((plugin) => plugin.name == name);
+  getPlugin(name: string) {
+    return this.plugins?.find((plugin) => plugin.name == name);
   }
 
   constructor() {
@@ -40,7 +39,7 @@ class ClientPluginManager extends EventTarget {
     ClientDeviceManager.shared.addEventListener("updatedDevices", handler);
   }
 
-  async init(installedPluginsData) {
+  async init(installedPluginsData: { [key: string]: PluginDataType }) {
     this._ready = false;
 
     console.log("Plugins data:", installedPluginsData);
@@ -70,12 +69,20 @@ class ClientPluginManager extends EventTarget {
   }
 
   // TODO: Mark as private
-  static _registeredPlugins = {};
+  private static _registeredPlugins: { [key: string]: typeof ClientPlugin } =
+    {};
+
   /**
    * Use this method to register client plugins, call it before initializing the plugin manager
    * @param {} pluginInstance
    */
-  static registerPlugin(pluginName, pluginClass) {
+  static registerPlugin(pluginName: string, pluginClass: typeof ClientPlugin) {
+    // Check if already initialized an throw a wranign for now, later on fix this beahviour if needed
+    if (Singleton.shared.initialized) {
+      return console.warn(
+        `Trying to register a plugin '${pluginName}' on already intialized ClientPluginManager`
+      );
+    }
     if (!pluginClass)
       throw new Error(
         `Undefined pluginClass provided to register plugin "${pluginName}"`
@@ -89,20 +96,22 @@ class ClientPluginManager extends EventTarget {
   /**
    * Register plugins installed based on list of fetched from host
    */
-  async registerInstalledPlugins(pluginsData) {
+  async registerInstalledPlugins(pluginsData: {
+    [key: string]: PluginDataType;
+  }) {
     await Promise.all(
       Object.values(pluginsData)
         ?.filter((data) => {
           // TODO: Change later
           // Skipping system for now
-          if (data._system) {
+          if (data.system) {
             // TODO: Check if already registered before initialization?
             console.log(
               `Prevent registration from fetched data of plugin ${data.name} marked as system.`
             );
           }
           // We hard code in app bundle the plugin registration
-          return !data._system;
+          return !data.system;
         })
         .map(async (data) => {
           console.log("Plugin data", data);
@@ -111,7 +120,7 @@ class ClientPluginManager extends EventTarget {
             // TODO: Replace base url with global constants or something similar
             const base = "http://localhost:3000/system";
             // Extract plugin directory from path
-            const pluginDir = data._path.split("/").pop();
+            const pluginDir = data.path.split("/").pop();
 
             // Build dynamic import path, served from host custom server
             const importPath = `${base}/${pluginDir}/package.json`;
@@ -143,11 +152,11 @@ class ClientPluginManager extends EventTarget {
                 return import(
                   /* webpackIgnore: true */ `${moduleImportPath}`
                 ).then((_) => {
-                  console.log(`Imported ${data.name} as ${data._libraryName}`);
-                  console.log(window[data._libraryName]);
+                  console.log(`Imported ${data.name} as ${data.libraryName}`);
+                  console.log(window[data.libraryName]);
                   // Access loaded plugin from window because we are loading from UMD
                   // TODO: Investigate bettere this loading process
-                  return window[data._libraryName];
+                  return window[data.libraryName];
                 });
               })
               .catch((err) => {
@@ -186,17 +195,21 @@ class ClientPluginManager extends EventTarget {
   /**
    * Load and intialize registered plugins
    */
-  loadRegisteredPlugins(installedPluginsData) {
+  loadRegisteredPlugins(installedPluginsData: {
+    [key: string]: PluginDataType;
+  }) {
     console.log("Start loading registered plugins...");
     this._plugins = Object.keys(ClientPluginManager._registeredPlugins).map(
       (name) => {
-        let PluginClass = ClientPluginManager._registeredPlugins[name];
+        let PluginClass: typeof ClientPlugin =
+          ClientPluginManager._registeredPlugins[name];
         if (!PluginClass) {
           throw new Error(`Missing constructor for register plugin '${name}'`);
         }
 
         console.log(`Loading '${name}'...`);
         console.log(installedPluginsData);
+
         let pluginData = installedPluginsData[name];
 
         return new PluginClass(pluginData);
@@ -221,17 +234,19 @@ class ClientPluginManager extends EventTarget {
 }
 
 class Singleton {
+  private static sharedInstance: ClientPluginManager;
   constructor() {
     throw new Error("Use ClienPluginManager.shared instead");
   }
-  static get shared() {
+  public static get shared(): ClientPluginManager {
     if (!Singleton.sharedInstance) {
       Singleton.sharedInstance = new ClientPluginManager();
     }
     return Singleton.sharedInstance;
   }
+
+  // Frowarding static method to register plugin because we are exporting Singleton instance of ClientPluginManager
+  // Maybe found a cleaner way later on
+  static registerPlugin = ClientPluginManager.registerPlugin;
 }
-// Copy static method to register plugin because we are exporting Singleton instance of ClientDeviceManager
-// Maybe found a cleaner way later on
-Singleton.registerPlugin = ClientPluginManager.registerPlugin;
 export default Singleton;

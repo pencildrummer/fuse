@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
+import { ClientDevice, ClientPlugin } from "../models";
 
-export const AppContext = React.createContext();
+interface AppContextInterface {
+  devices: ClientDevice[];
+  plugins: ClientPlugin[];
+}
+
+export const AppContext = React.createContext<AppContextInterface | null>(null);
 
 export default function useAppContext() {
   const ctx = useContext(AppContext);

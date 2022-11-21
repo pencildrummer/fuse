@@ -28,7 +28,7 @@ export default function Navbar() {
               return (
                 <TabItem href={`/${plugin.url}`} key={`tab-${plugin.name}`}>
                   {Icon && <Icon />}
-                  <span>{plugin.displayTitle}</span>
+                  <span>{plugin.displayName}</span>
                 </TabItem>
               );
             }

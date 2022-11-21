@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "emitDeclarationOnly": true,
+    "isolatedModules": true,
+    "moduleResolution": "node"
+  },
+  "include": ["**/*.d.ts"]
+}

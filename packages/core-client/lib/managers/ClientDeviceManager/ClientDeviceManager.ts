@@ -1,13 +1,18 @@
+import {
+  DeviceDataType,
+  DeviceType,
+  DeviceUpdateDataType,
+} from "@fuse-labs/types";
 import ClientDevice from "../../models/ClientDevice/ClientDevice.js";
 import { coreSocket } from "../../socket.js";
 
 class ClientDeviceManager extends EventTarget {
-  _initialized = false;
+  private _initialized = false;
   get initialized() {
     return this._initialized;
   }
 
-  _devices = [];
+  private _devices: ClientDevice[] = [];
   get devices() {
     return this._devices;
   }
@@ -16,7 +21,7 @@ class ClientDeviceManager extends EventTarget {
     super();
   }
 
-  init(fetchedDevicesData) {
+  init(fetchedDevicesData: DeviceDataType[]) {
     this._devices =
       fetchedDevicesData?.map((deviceData) => new ClientDevice(deviceData)) ||
       [];
@@ -34,26 +39,26 @@ class ClientDeviceManager extends EventTarget {
     this._initialized = true;
   }
 
-  getDevice(deviceId) {
+  getDevice(deviceId: string) {
     return this._devices.find((device) => device.id == deviceId);
   }
 
-  getDevicesForType(deviceType) {
-    return this._devices.filter((device) => device.type == deviceType);
+  getDevicesForType(deviceType: DeviceType) {
+    return this._devices.filter((device) => device.profile.type == deviceType);
   }
 
   /**
    * Private
    */
 
-  _handleDeviceAdded(deviceData) {
+  _handleDeviceAdded(deviceData: DeviceDataType) {
     let device = new ClientDevice(deviceData);
     this._devices = [...this._devices, device];
     // Notify
     this.dispatchEvent(new Event("updatedDevices"));
   }
 
-  _handleDeviceUpdated(deviceData) {
+  _handleDeviceUpdated(deviceData: DeviceUpdateDataType) {
     let device = this._devices.find((d) => d.id === deviceData.id);
     if (device) {
       device.update(deviceData);
@@ -67,7 +72,7 @@ class ClientDeviceManager extends EventTarget {
     this.dispatchEvent(new Event("updatedDevices"));
   }
 
-  _handleDeviceRemoved(deviceData) {
+  _handleDeviceRemoved(deviceData: DeviceUpdateDataType) {
     this._devices = this._devices.filter(
       (device) => device.id !== deviceData.id
     );
@@ -77,6 +82,7 @@ class ClientDeviceManager extends EventTarget {
 }
 
 class Singleton {
+  static sharedInstance: ClientDeviceManager;
   constructor() {
     throw new Error("Use ClientDeviceManager.shared instead");
   }

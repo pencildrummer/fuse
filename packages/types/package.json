@@ -1,0 +1,4 @@
+{
+  "name": "@fuse-labs/types",
+  "types": "./index.d.ts"
+}

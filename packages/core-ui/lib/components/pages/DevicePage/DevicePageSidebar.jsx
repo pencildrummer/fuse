@@ -32,7 +32,7 @@ export default function DevicePageSidebar() {
           return (
             <Tooltip
               key={plugin.name}
-              content={plugin.displayTitle}
+              content={plugin.displayName}
               side="right"
               sideOffset={10}
             >

@@ -4,7 +4,7 @@ import ClientTerminal from "../lib/ClientTerminal/ClientTerminal";
 import TerminalPage from "../pages";
 
 export default class TerminalClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "Terminal";
   }
 

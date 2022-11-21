@@ -4,7 +4,7 @@ import { DeviceFileManagerWidget } from "./components/index.js";
 import IndexPage from "./tabs/index.jsx";
 
 export default class FileManagerClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "File manager";
   }
 

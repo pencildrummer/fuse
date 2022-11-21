@@ -1,36 +1,43 @@
 import { socket } from "../../socket";
-import { object, string, number } from "yup";
+import { object, string, number, SchemaOf } from "yup";
 import ClientPluginManager from "../../managers/ClientPluginManager/ClientPluginManager";
 import ClientPlugin from "../ClientPlugin/ClientPlugin";
+import {
+  DeviceDataType,
+  DeviceInterface,
+  DeviceUpdateDataType,
+} from "@fuse-labs/types";
+import { Socket } from "socket.io-client";
 
-const SCHEMA = object({
-  id: string().required(),
-  name: string().defined().required(),
-  port: string().defined().required(),
-  baudrate: number().defined().required(),
-  profileId: string().defined().required(),
+const SCHEMA: SchemaOf<DeviceDataType> = object({
+  id: string().defined(),
+  name: string().defined(),
+  port: string().defined(),
+  baudrate: number().defined(),
+  profileId: string().defined(),
 
-  serialNumber: string().nullable().default(null),
-  vendorId: string().nullable().default(null),
-  productId: string().nullable().default(null),
+  serialNumber: string().optional().nullable().default(null),
+  vendorId: string().optional().nullable().default(null),
+  productId: string().optional().nullable().default(null),
 });
 
-export default class ClientDevice {
-  id;
-  name;
-  port;
-  baudrate;
+export default class ClientDevice implements DeviceInterface {
+  id: string;
+  name: string;
+  port: string;
+  baudrate: number;
 
-  profileId;
-  profile;
+  profileId: string;
+  profile: any; // TODO: Create ClientDeviceProfile type
 
-  serialNumber;
-  vendorId;
-  productId;
+  serialNumber: string;
+  vendorId: string;
+  productId: string;
+
+  socket?: Socket; // TODO: Set socket type
 
   /**
    * Return active plugins compatible with this device
-   *  @type {Array<ClientPlugin>}
    */
   get plugins() {
     return ClientPluginManager.shared.activePlugins.filter((plugin) =>
@@ -40,19 +47,19 @@ export default class ClientDevice {
 
   /**
    * Return all compatible plugins with this device
-   *  @type {Array<ClientPlugin>}
    */
-  get allPlugins() {
+  get allPlugins(): ClientPlugin[] {
     return ClientPluginManager.shared.plugins.filter((plugin) =>
       plugin.deviceTypes.includes(this.profile.type)
     );
   }
 
-  get immutableKeys() {
+  // TODO: Maybe use already declared in types or something similar
+  private get immutableKeys() {
     return ["id", "profile", "serialNumber", "vendorId", "productId"];
   }
 
-  constructor(data) {
+  constructor(data: DeviceDataType) {
     // Create device object
     let device = SCHEMA.validateSync(data);
     Object.assign(this, device);
@@ -63,7 +70,7 @@ export default class ClientDevice {
     }
   }
 
-  update(data) {
+  update(data: DeviceUpdateDataType) {
     // Remove id data
     let cleanData = Object.keys(data).reduce(
       (res, key) => {

@@ -22,7 +22,7 @@ export default function DeviceHomePage() {
   const { deviceID } = query;
 
   // Retrieve device with requested ID from the app context
-  const device = useDevice(deviceID);
+  const device = useDevice(deviceID as string);
   const widgets = useDeviceComponents(device, "page.home");
 
   if (!device) {

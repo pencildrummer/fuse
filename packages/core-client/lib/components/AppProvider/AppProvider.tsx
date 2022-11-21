@@ -5,10 +5,10 @@ import useProviderConfig from "../../hooks/useProviderConfig.js";
 import useProviderDevices from "../../hooks/useProviderDevices.js";
 import useProviderPlugins from "../../hooks/useProviderPlugins.js";
 import useProviderProfiles from "../../hooks/useProviderProfiles.js";
-import AppLoadingView from "./AppLoadingView/AppLoadingView.jsx";
+import AppLoadingView from "./AppLoadingView/AppLoadingView.js";
 import isElectron from "is-electron";
 import { coreSocket } from "../../socket.js";
-import AppErrorView from "./AppErrorView.jsx";
+import AppErrorView from "./AppErrorView.js";
 
 const cache = createIntlCache();
 
@@ -17,7 +17,7 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
   const [error, setError] = useState(null);
 
   // Main startup function
-  useEffect((_) => {
+  useEffect(() => {
     coreSocket.connect();
 
     coreSocket.on("connect_error", (err) => {
@@ -47,20 +47,17 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
   const config = useProviderConfig(appData?.config);
 
   const activePlugins = useMemo(
-    (_) => plugins?.filter((p) => p.active),
+    () => plugins?.filter((p) => p.active),
     [plugins]
   );
 
   // Debug
-  useEffect(
-    (_) => {
-      console.log("Changed plugins in AppContext", plugins);
-    },
-    [plugins]
-  );
+  useEffect(() => {
+    console.log("Changed plugins in AppContext", plugins);
+  }, [plugins]);
 
   const intl = useMemo(
-    (_) =>
+    () =>
       createIntl(
         {
           defaultLocale: "en",
@@ -72,17 +69,14 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     [locale, messages]
   );
 
-  const isReady = useMemo(
-    (_) => {
-      return (
-        Boolean(config) &&
-        Boolean(plugins) &&
-        Boolean(devices) &&
-        Boolean(profiles)
-      );
-    },
-    [config, plugins, devices, profiles]
-  );
+  const isReady = useMemo(() => {
+    return (
+      Boolean(config) &&
+      Boolean(plugins) &&
+      Boolean(devices) &&
+      Boolean(profiles)
+    );
+  }, [config, plugins, devices, profiles]);
 
   if (error) {
     return <AppErrorView error={error} />;

@@ -17,7 +17,7 @@ export default function PluginSettingsMenuItems() {
           <MenuItem href={`/settings/plugins/${plugin.name}`}>
             <div className="flex space-x-2 items-center">
               {plugin.icon && <plugin.icon className="flex-none" />}
-              <span className="truncate">{plugin.displayTitle}</span>
+              <span className="truncate">{plugin.displayName}</span>
             </div>
           </MenuItem>
         ))}

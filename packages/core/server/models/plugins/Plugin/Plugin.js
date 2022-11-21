@@ -145,16 +145,17 @@ export default class Plugin {
     }
   }
 
+  // TODO: Set DeviceDataType as return type
   toJSON() {
     return {
       ...this,
-      _deviceTypes: this.deviceTypes,
-      _active: this.active,
-      _system: this.system,
-      _hasSocket: this.hasSocket,
-      _hasDeviceSocket: this.hasDeviceSocket,
-      _path: this._path,
-      _libraryName: this._libraryName,
+      deviceTypes: this.deviceTypes,
+      active: this.active,
+      system: this.system,
+      hasSocket: this.hasSocket,
+      hasDeviceSocket: this.hasDeviceSocket,
+      path: this._path,
+      libraryName: this._libraryName,
     };
   }
 

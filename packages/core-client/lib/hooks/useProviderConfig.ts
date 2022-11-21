@@ -1,21 +1,19 @@
+import { ConfigDataType } from "@fuse-labs/types";
 import { useEffect, useState } from "react";
 import ClientConfigManager from "../managers/ClientConfigManager/ClientConfigManager";
 import { coreSocket } from "../socket";
 
-export default function useProviderConfig(data) {
+export default function useProviderConfig(data: ConfigDataType) {
   const [config, setConfig] = useState(ClientConfigManager.shared.config);
 
-  useEffect(
-    (_) => {
-      if (!data) return;
+  useEffect(() => {
+    if (!data) return;
 
-      ClientConfigManager.shared.init(data);
-      setConfig(ClientConfigManager.shared.config);
-    },
-    [data]
-  );
+    ClientConfigManager.shared.init(data);
+    setConfig(ClientConfigManager.shared.config);
+  }, [data]);
 
-  useEffect((_) => {
+  useEffect(() => {
     // TODO: Add listeners for config updates from server
   }, []);
 

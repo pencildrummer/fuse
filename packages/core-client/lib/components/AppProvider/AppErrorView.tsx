@@ -3,7 +3,11 @@ import {
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 
-export default function AppErrorView({ error }) {
+type Props = {
+  error: Error;
+};
+
+export default function AppErrorView({ error }: Props) {
   return (
     <div className="w-full h-full flex items-center justify-center">
       <div className="flex flex-col space-y-2">

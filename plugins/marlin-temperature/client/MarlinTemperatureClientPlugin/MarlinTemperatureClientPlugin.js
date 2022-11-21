@@ -4,7 +4,7 @@ import PrinterTemperaturePage from "../pages/index";
 import { BarChartIcon } from "@fuse-labs/core-ui";
 
 export default class MarlinTemperatureClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "Temperature monitor";
   }
 

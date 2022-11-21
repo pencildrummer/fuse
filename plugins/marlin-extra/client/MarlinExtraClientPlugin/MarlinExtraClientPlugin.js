@@ -2,7 +2,7 @@ import { ClientPlugin } from "@fuse-labs/core-client";
 import MarlinExtraWidget from "../components/MarlinExtraWidget/MarlinExtraWidget";
 
 export default class MarlinExtraClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "Marlin extra";
   }
 

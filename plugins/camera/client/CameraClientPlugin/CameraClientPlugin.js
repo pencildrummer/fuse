@@ -4,7 +4,7 @@ import CameraPage from "../pages/CameraPage";
 import SettingsPage from "../pages/SettingsPage";
 
 export default class CameraClientPlugin extends ClientPlugin {
-  get displayTitle() {
+  get displayName() {
     return "Camera";
   }
 

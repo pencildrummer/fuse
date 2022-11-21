@@ -6,6 +6,7 @@
       "@fuse-labs/core-client": ["packages/core-client"],
       "@fuse-labs/core-ui": ["packages/core-ui"],
       "@fuse-labs/shared-utils": ["packages/shared-utils"],
+      "@fuse-labs/types": ["packages/types"],
       "@fuse-labs/terminal/client": ["plugins/terminal/client"]
     }
   },

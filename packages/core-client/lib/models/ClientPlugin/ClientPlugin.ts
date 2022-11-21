@@ -4,7 +4,11 @@ import { QuestionMarkIcon } from "@radix-ui/react-icons";
 import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
 import ClientDeviceType from "../ClientDeviceType/ClientDeviceType";
 import lodash from "lodash";
+import { DeviceType, PluginInterface } from "@fuse-labs/types";
+import { ClientDevice } from "..";
+import React from "react";
 
+// TODO: Reverse yup schema from TS type?
 const CONSTRUCTOR_SCHEMA = object({
   name: string().required(),
   _version: string().required(),
@@ -19,31 +23,32 @@ const CONSTRUCTOR_SCHEMA = object({
   _system: boolean(),
 });
 
-const SCHEMA = object({
-  name: string().required(),
-  version: string().required(),
-  fuse: object().required(),
-});
+// TODO: Check type and improve
+type ClientPluginComponentsType = {
+  page?: React.Component;
+  tab?: React.Component;
+};
 
-export default class ClientPlugin {
-  name;
+// TODO: Check type and improve
+type ClientPluginDeviceComponentsType = {
+  page?: {
+    plugin: React.Component;
+  };
+  settings?: React.Component;
+};
 
-  _version;
-  get version() {
-    return this._version;
-  }
-
-  //_fuse;
-
-  _settings = false;
-  get settings() {
-    return this._settings;
-  }
-
-  _hasPages = false;
-  get hasPages() {
-    return this._hasPages;
-  }
+export default class ClientPlugin implements PluginInterface {
+  /* PluginInterface implementation */
+  name: string;
+  version: string;
+  settings: any;
+  path: string;
+  libraryName: string;
+  hasSocket: boolean;
+  hasDeviceSocket: boolean;
+  active: boolean;
+  system: boolean;
+  deviceTypes: DeviceType[];
 
   get url() {
     // Check url is manually provided or generate one based on plugin name
@@ -51,47 +56,13 @@ export default class ClientPlugin {
     //return this._fuse.pagesUrl || this.name
   }
 
-  _hasTabs = false;
-  get hasTabs() {
-    return this._hasTabs;
-  }
-
-  get tabsUrl() {
-    // Check url is manually provided or generate one based on plugin name
-    return this.name;
-    //return this._fuse.tabsUrl || this.name
-  }
-
-  _hasSocket = undefined;
-  get hasSocket() {
-    return this._hasSocket;
-  }
-
-  _hasDeviceSocket = undefined;
-  get hasDeviceSocket() {
-    return this._hasDeviceSocket;
-  }
-
-  _active = false;
-  get active() {
-    return this._active;
-  }
-
-  _system = false;
-  get system() {
-    return this._system;
-  }
+  readonly socket: any; // TODO Use socket type
 
   get icon() {
     return QuestionMarkIcon;
   }
 
-  _deviceTypes = [];
-  get deviceTypes() {
-    return this._deviceTypes;
-  }
-
-  get displayTitle() {
+  get displayName() {
     return this.name;
   }
 
@@ -125,7 +96,7 @@ export default class ClientPlugin {
   /**
    * Returns dynamic plugin components
    */
-  components() {
+  components(): ClientPluginComponentsType {
     return {};
   }
 
@@ -134,7 +105,7 @@ export default class ClientPlugin {
    * @param {ClientDevice} device
    * @returns
    */
-  deviceComponents(device) {
+  deviceComponents(device: ClientDevice): ClientPluginDeviceComponentsType {
     return {};
   }
 
