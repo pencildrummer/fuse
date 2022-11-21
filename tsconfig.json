@@ -1,10 +1,13 @@
 {
-  "references": [
-    {
-      "path": "./packages/core-client"
-    },
-    {
-      "path": "./apps/client"
+  "compilerOptions": {
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
+    "baseUrl": ".",
+    "paths": {
+      "@fuse-labs/core-client": ["packages/core-client"],
+      "@fuse-labs/core-ui": ["packages/core-ui"],
+      "@fuse-labs/shared-utils": ["packages/shared-utils"],
+      "@fuse-labs/terminal/client": ["plugins/terminal/client"]
     }
-  ]
+  },
+  "exclude": ["node_modules", "electron", "docs", "dev"]
 }

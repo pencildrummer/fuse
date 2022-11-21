@@ -22,8 +22,8 @@
     "@fuse-labs/core-client": "workspace:^",
     "@fuse-labs/core-ui": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
-    "react": "^18.0",
-    "react-dom": "^18.0"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^2.1.0",

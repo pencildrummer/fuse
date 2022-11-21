@@ -31,8 +31,8 @@
     "clean": "rm -rf node_modules"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18",
+    "react-dom": "^18",
     "react-intl": "^5.24.8"
   },
   "devDependencies": {

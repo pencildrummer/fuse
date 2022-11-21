@@ -14,7 +14,7 @@
     "@fuse-labs/shared-utils": "workspace:^",
     "@radix-ui/react-icons": "^1.1.1",
     "classnames": "^2.3.2",
-    "react": "^18.0",
-    "react-dom": "^18.0"
+    "react": "^18",
+    "react-dom": "^18"
   }
 }

@@ -15,8 +15,8 @@
     "@radix-ui/react-icons": "^1.1.1",
     "classnames": "^2.3.2",
     "filesize": "^9.0.11",
-    "react": "^18.0",
-    "react-dom": "^18.0"
+    "react": "^18",
+    "react-dom": "^18"
   },
   "peerDependencies": {
     "@fuse-labs/core-client": "workspace:^",

@@ -12,15 +12,7 @@ import AppErrorView from "./AppErrorView.jsx";
 
 const cache = createIntlCache();
 
-export default function AppProvider({
-  devices: fetchedDevices,
-  profiles: fetchedProfiles,
-  plugins: fetchedPlugins,
-  config: fetchedConfig,
-  locale = "en",
-  messages,
-  ...props
-}) {
+export default function AppProvider({ locale = "en", messages, ...props }) {
   const [appData, setAppData] = useState(null);
   const [error, setError] = useState(null);
 
