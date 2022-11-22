@@ -1,4 +1,4 @@
-import { Device.Type } from "./device";
+import { Device } from "./device";
 
 // TODO: Verify if type is correct, merge with PluginInterface?
 export interface PluginDataType {

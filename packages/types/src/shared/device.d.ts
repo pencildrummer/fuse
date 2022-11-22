@@ -1,3 +1,5 @@
+import { Connection } from "./connection";
+
 export namespace Device {
   export interface DataType {
     readonly id: string;
@@ -24,72 +26,93 @@ export namespace Device {
       readonly id: string;
     }
   }
-}
 
-export namespace Device {
   export interface DeviceInterface {
     id: string;
     name: string;
-    port: string;
+    port: number;
     baudrate: number;
 
     profileId: string;
-    profile: Device.ProfileInterface;
+    profile: Device.Profile.BaseInterface;
 
     serialNumber: string;
     vendorId: string;
     productId: string;
   }
-}
 
-export namespace Device {
-  export type Type = "fdm_printer" | "msla_printer" | "cnc" | "laser";
   export type FirmwareType = "marlin" | "grbl";
-  export type ConnectionType = "serial";
 
-  export interface ProfileInterface {
-    id: string;
-    type: Device.Type;
-    brand: string;
-    model: string;
+  export namespace Profile {
+    export type Type = "fdm_printer" | "msla_printer" | "cnc" | "laser";
 
-    firmware: Device.FirmwareType;
-    connection: Device.ConnectionType;
+    // Base generic profile
+    export type BaseDataType = {
+      id: string;
+      type: Device.Profile.Type;
+      brand: string;
+      model: string;
 
-    // This should be added only for a ProfileInterface generic type when .type is FDMPrinter
-    /*"volume": {
-    "width": 100000,
-    "height": 600,
-    "depth": 200,
-    "formFactor": "rectangular",
-    "origin": "lower-left"
-  },
-  "bed": {
-    "heated": true
-  },
-  "gCodeVersion": "marlin",
-  "xAxis": {
-    "name": "x",
-    "maxSpeed": 6000
-  },
-  "yAxis": {
-    "name": "y",
-    "maxSpeed": 6000
-  },
-  "zAxis": {
-    "name": "z",
-    "maxSpeed": 3000
-  },
-  "extruders": [
-    {
-      "nozzleSize": "0.4",
-      "minNozzleSize": "0.4",
-      "maxNozzleSize": "0.4",
-      "axis": {
-        "name": "z",
-        "maxSpeed": 3000
-      }
+      firmware: Device.FirmwareType;
+      connectionType: Connection.Type;
+    };
+
+    namespace Base {
+      type Axis = {
+        name: string;
+        maxSpeed: number;
+      };
     }
-  ]*/
+    export interface BaseInterface extends BaseDataType {}
+
+    // GCode device profile
+    interface GCodeCapableProfileDevice {}
+    namespace GCodeCapableDeviceProfile {
+      type GCodeVersion = "marlin";
+    }
+
+    // FDM Printer profile
+    export type FDMPrinterDataType = BaseDataType & {
+      volume: FDMPrinter.Volume;
+      bed: FDMPrinter.Bed;
+      gCodeVersion: GCodeCapableDeviceProfile.GCodeVersion;
+      xAxis: Base.Axis;
+      yAxis: Base.Axis;
+      zAxis: Base.Axis;
+      extruders: FDMPrinter.Extruder[];
+    };
+
+    namespace FDMPrinter {
+      type Volume = {
+        width: number;
+        height: number;
+        depth: number;
+        formFactor: "rectangular" | "oval";
+        origin:
+          | "lower-left"
+          | "lower-right"
+          | "top-left"
+          | "top-right"
+          | "center";
+      };
+
+      type Bed = {
+        heated: boolean;
+      };
+
+      type Extruder = {
+        nozzleSize: number;
+        minNozzleSize: number;
+        maxNozzleSize: number;
+        axis: Base.Axis;
+      };
+    }
+
+    export interface FDMPrinterInterface extends FDMPrinterDataType {}
   }
+
+  // Controller
+
+  export interface ControllerInterface {}
+  namespace Controller {}
 }

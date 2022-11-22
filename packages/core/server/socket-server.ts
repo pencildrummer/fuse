@@ -27,14 +27,23 @@ export declare class CoreSocket extends SocketServer<
 
 // Device socket
 
-export interface ServerToClientDeviceEvents {}
+export interface ServerToClientDeviceEvents {
+  error: (error?: { message: string; code: number }) => void;
+}
 export interface ClientToServerDeviceEvents {}
 export interface InterServerDeviceEvents {}
 export interface DeviceSocketData {}
 
-export declare class DeviceSocket extends Socket<
-  ServerToClientDeviceEvents,
+export type DeviceNamespace = Namespace<
   ClientToServerDeviceEvents,
+  ServerToClientDeviceEvents,
+  InterServerDeviceEvents,
+  DeviceSocketData
+>;
+
+export declare class DeviceSocket extends Socket<
+  ClientToServerDeviceEvents,
+  ServerToClientDeviceEvents,
   InterServerDeviceEvents,
   DeviceSocketData
 > {

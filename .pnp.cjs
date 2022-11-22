@@ -2922,6 +2922,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/fs-extra", "npm:9.0.13"],\
             ["@types/node", "npm:18.11.9"],\
             ["@types/signale", "npm:1.4.4"],\
+            ["@types/uuid", "npm:8.3.4"],\
             ["chalk", "npm:5.1.2"],\
             ["express", "npm:4.18.2"],\
             ["fs-extra", "npm:10.1.0"],\
@@ -7483,6 +7484,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/signale", "npm:1.4.4"],\
             ["@types/node", "npm:18.11.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/uuid", [\
+        ["npm:8.3.4", {\
+          "packageLocation": "./.yarn/cache/@types-uuid-npm-8.3.4-7547f4402c-6f11f3ff70.zip/node_modules/@types/uuid/",\
+          "packageDependencies": [\
+            ["@types/uuid", "npm:8.3.4"]\
           ],\
           "linkType": "HARD"\
         }]\
