@@ -4,6 +4,7 @@ import {
   socketServer as io,
   PluginManager,
   useDeviceMiddleware,
+  logger,
 } from "@fuse-labs/core";
 
 export default async function _init_PluginsSocket() {
@@ -40,7 +41,7 @@ export default async function _init_PluginsSocket() {
           );
         });
       });
-      console.success(
+      logger.success(
         "Prepared registration for plugin socket",
         chalk.green(plugin.name)
       );
@@ -78,7 +79,7 @@ export default async function _init_PluginsSocket() {
             );
           });
         });
-      console.success(
+      logger.success(
         "Prepared registration for device plugin socket",
         chalk.green(plugin.name)
       );

@@ -3,6 +3,7 @@
     "lib": ["dom", "DOM.Iterable", "ESNext"],
     "baseUrl": ".",
     "paths": {
+      "@fuse-labs/core": ["packages/core"],
       "@fuse-labs/core-client": ["packages/core-client"],
       "@fuse-labs/core-ui": ["packages/core-ui"],
       "@fuse-labs/shared-utils": ["packages/shared-utils"],

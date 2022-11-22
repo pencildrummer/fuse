@@ -1,8 +1,9 @@
 import path from "path";
 import { PluginManager } from "@fuse-labs/core";
 import fs from "fs-extra";
+import { Request, Response } from "express";
 
-const getLogo = (req, res, next) => {
+const getLogo = (req: Request, res: Response) => {
   let plugin = PluginManager.shared.getPlugin(
     path.join(req.params.pluginScope, req.params.pluginName)
   );

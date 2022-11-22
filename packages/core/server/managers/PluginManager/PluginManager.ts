@@ -2,53 +2,35 @@ import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
 import signale from "signale";
-import { fileURLToPath, pathToFileURL } from "url";
+import { pathToFileURL } from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
 import Plugin from "../../models/plugins/Plugin/Plugin.js";
+
+type PluginInfo = {
+  name: string;
+  path: string;
+  active?: Plugin["active"];
+};
 
 const PLUGINS_LIST_FILE_PATH = path.resolve(
   path.join(SYSTEM_BASE_PATH, "plugins.json")
 );
 
 import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };
-/*const __SYSTEM_PLUGINS__ = Object.freeze({
-  "@fuse-labs/core": {
-    name: "@fuse-labs/core",
-    path: "packages/core",
-    // active: true,
-    // host: true,
-  },
-  // '@fuse-labs/core-ui': {
-  //   name: '@fuse-labs/core-ui',
-  //   path: '@fuse-labs/core-ui',
-  //   active: true
-  // },
-  // '@fuse-labs/core-client': {
-  //   name: '@fuse-labs/core-client',
-  //   path: '@fuse-labs/core-client',
-  //   active: true
-  // },
-  "@fuse-labs/terminal": {
-    name: "@fuse-labs/terminal",
-    // path: "packages/terminal",
-    path: {
-      client: "packages/terminal/client",
-      server: "packages/terminal/server",
-    },
-  },
-});*/
+
+import { logger } from "../../logger.js";
 
 class PluginManager {
   get SYSTEM_PLUGIN_NAMES() {
     return Object.keys(__SYSTEM_PLUGINS__);
   }
 
-  _plugins = {};
+  private _plugins: { [key: string]: Plugin } = {};
   get plugins() {
     return this._plugins;
   }
 
-  _activePluginsNames = [];
+  private _activePluginsNames: string[] = [];
   get activePluginsNames() {
     return this._activePluginsNames;
   }
@@ -57,12 +39,12 @@ class PluginManager {
     return Object.values(this._plugins).filter((plugin) => plugin.active);
   }
 
-  getPlugin(name) {
+  getPlugin(name: Plugin["name"]) {
     return this._plugins[name];
     //return this._plugins.find((plugin) => plugin.name == name);
   }
 
-  _initialized = false;
+  private _initialized = false;
 
   constructor() {
     //
@@ -72,14 +54,14 @@ class PluginManager {
     if (this._initialized)
       throw new Error("Trying to re-initialize PluginManager");
 
-    signale.pending("Initializing PluginManager");
+    logger.pending("Initializing PluginManager");
 
     // Set system plugins as always active
     this._activePluginsNames = [...Object.keys(__SYSTEM_PLUGINS__)];
 
     // Load installed plugins based on stored plugins.json config file
     let pluginsList = this.getPluginsListInfo();
-    signale.debug(pluginsList);
+    logger.debug(pluginsList);
 
     // Init Plugin(s) based on names and add it to the plugin manager store
     this._plugins = await Object.keys(pluginsList).reduce(
@@ -101,7 +83,7 @@ class PluginManager {
           // Add plugin
           plugins[pluginName] = plugin;
           //plugins.push(plugin);
-          console.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
+          logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
         }
         return plugins;
       },
@@ -113,7 +95,7 @@ class PluginManager {
     signale.success("PluginManager is now ready");
   }
 
-  async loadSystemPlugin(systemPluginInfo) {
+  async loadSystemPlugin(systemPluginInfo: PluginInfo) {
     // TODO: Merge client and server in one pacakge with internal workspaces and allow package json to export correct ones?
     // const pkg = await import(`${systemPluginName}/package.json`, {
     //   assert: { type: "json" },
@@ -158,38 +140,41 @@ class PluginManager {
     return systemPlugin;
   }
 
-  async loadInstalledPlugin(pluginInfo) {
+  async loadInstalledPlugin(pluginInfo: PluginInfo) {
     const pluginName = pluginInfo.name;
     const pluginPath = path.resolve(pluginInfo.path);
     const pluginPkgPath = path.resolve(pluginPath, "package.json");
 
     // Find package.json
     if (!fs.existsSync(pluginPkgPath)) {
-      console.error("Unable to find package.json for plugin", pluginName);
-      return plugins;
+      return console.error(
+        "Unable to find package.json for plugin",
+        pluginName
+      );
     }
 
     // Read package.json
     let pluginPkg;
     try {
-      pluginPkg = JSON.parse(fs.readFileSync(pluginPkgPath));
+      pluginPkg = fs.readJsonSync(pluginPkgPath);
     } catch (err) {
-      console.error("Error reading package.json from plugin", pluginName);
-      return plugins;
+      return console.error(
+        "Error reading package.json from plugin",
+        pluginName
+      );
     }
 
     // Check if supports server side (should export server)
     if (pluginPkg.exports?.["./server"] == undefined) {
-      console.warn(
+      return console.warn(
         `${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`
       );
-      return plugins;
     }
 
     // Build final import path
     const importPath = path.join(pluginPath, pluginPkg.exports["./server"]);
     console.debug(importPath);
-    const pluginModule = await import(pathToFileURL(importPath))
+    const pluginModule = await import(pathToFileURL(importPath).toString())
       .then((res) => {
         if (!res.default) {
           throw new Error(
@@ -263,7 +248,7 @@ class PluginManager {
   }
 
   /** Get all plugins info, including system plugins */
-  getPluginsListInfo() {
+  getPluginsListInfo(): { [key: string]: PluginInfo } {
     return {
       ...__SYSTEM_PLUGINS__,
       ...this.getInstalledPluginsListInfo(),
@@ -271,7 +256,7 @@ class PluginManager {
   }
 
   /** Get installed plugin info, without system plugins */
-  getInstalledPluginsListInfo() {
+  getInstalledPluginsListInfo(): { [key: string]: PluginInfo } {
     if (!fs.existsSync(PLUGINS_LIST_FILE_PATH)) {
       signale.warn(
         "No plugins list path to load from. This should be an error, at least an empty configuration plugins.json file should exists."
@@ -279,15 +264,14 @@ class PluginManager {
       return {};
     }
 
-    let content = fs.readFileSync(PLUGINS_LIST_FILE_PATH);
-    return JSON.parse(content);
+    return fs.readJsonSync(PLUGINS_LIST_FILE_PATH);
   }
 
-  activate(pluginName) {
+  activate(pluginName: Plugin["name"]) {
     this.setPluginActive(pluginName, true);
   }
 
-  deactivate(pluginName) {
+  deactivate(pluginName: Plugin["name"]) {
     this.setPluginActive(pluginName, false);
   }
 
@@ -295,19 +279,18 @@ class PluginManager {
    * Private
    */
 
-  setPluginActive(name, active) {
+  setPluginActive(name: Plugin["name"], active: Plugin["active"]) {
     // Check plugin is in installed plugins
     let plugin = this.getPlugin(name);
     if (!plugin) {
       throw new Error(
-        "Trying to change active state for a plugin not installed",
-        name
+        "Trying to change active state for a plugin not installed: " + name
       );
     }
 
     // Check plugin is not a system one
     if (plugin.system) {
-      throw new Error("Trying to deactivate system plugin", plugin.name);
+      throw new Error("Trying to deactivate system plugin: " + plugin.name);
     }
 
     // Update system active list file, later will be moved onto Plugin class
@@ -349,6 +332,7 @@ class PluginManager {
 
 // Export shared manager
 class Singleton {
+  private static sharedInstance: PluginManager;
   constructor() {
     throw new Error("User PluginManager.shared instead");
   }

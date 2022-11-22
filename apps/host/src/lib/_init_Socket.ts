@@ -1,11 +1,19 @@
 import signale from "signale";
 import chalk from "chalk";
-import { socketServer as io, useDeviceMiddleware } from "@fuse-labs/core";
+import {
+  _start_SocketServer,
+  socketServer as io,
+  useDeviceMiddleware,
+} from "@fuse-labs/core";
 
 export default async function _init_Socket() {
+  // Add listener
   io.on("connection", async (socket) => {
     signale.success("Connected to main localhost socket");
   });
+
+  // Actually start and init the socket server
+  await _start_SocketServer();
 
   signale.note("Registering device namespace on connection handler");
 

@@ -1,41 +1,22 @@
-import path from "path";
+import { Device, PluginInterface } from "@fuse-labs/types";
 import fs from "fs-extra";
-import { object, string } from "yup";
-import { PLUGINS_BASE_PATH } from "../../../constants.js";
-import PluginManager from "../../../managers/PluginManager/PluginManager.js";
+import path from "path";
 import signale from "signale";
+import { camelcase } from "varname";
+import PluginManager from "../../../managers/PluginManager/PluginManager.js";
+import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
 import { DeviceType } from "../../devices/index.js";
-import varname from "varname";
 
-const PLUGIN_SCHEMA = object({
-  name: string().required(),
-  version: string().required(),
-  // _fuse: object({
-  //   url: string(),
-  //   tabsUrl: string(),
-  // })
-});
-
-export default class Plugin {
-  name;
-
-  _path;
-  _version = "0.0.0";
-  _libraryName;
-
-  // _fuse;
+export default class Plugin implements PluginInterface {
+  name: string;
+  displayName: string;
+  path;
+  version = "0.0.0";
+  libraryName;
 
   _settings = false;
   get settings() {
     return this._settings;
-  }
-
-  /**
-   * @deprecated to be removed, use components in client
-   */
-  _hasPages = false;
-  get hasPages() {
-    return this._hasPages;
   }
 
   get url() {
@@ -80,30 +61,31 @@ export default class Plugin {
 
   // TODO - Improve this method, like default values, value for all devices, etc.
   get deviceTypes() {
-    return DeviceType.ALL;
+    return DeviceType.ALL as Device.Type[];
   }
 
-  constructor(name, installPath) {
+  constructor(name: string, installPath: string) {
     // Set name
     this.name = name;
 
+    // Set default display name as plugin name
+    this.displayName = name;
+
     // Set installation path
-    this._path = installPath;
+    this.path = installPath;
 
     // Set default library name
-    if (!this._libraryName) {
-      this._libraryName = varname.camelcase(this.name);
-    }
+    this.libraryName = camelcase(this.name);
 
-    let packagePath = path.join(this._path, "package.json");
+    let packagePath = path.join(this.path, "package.json");
 
     if (fs.existsSync(packagePath)) {
-      let info = fs.readFileSync(packagePath);
-      info = JSON.parse(info);
+      let packageInfo = fs.readJsonSync(packagePath);
+
       signale.info(`Setting plugin info from package.json for ${name}`);
 
       // Set version from package if not manually set
-      this._version = info.version;
+      this.version = packageInfo.version;
     } else {
       signale.warn(
         `No package.json found for ${name}. Skipping retrieving info such as version from package.json.`
@@ -148,14 +130,15 @@ export default class Plugin {
   // TODO: Set DeviceDataType as return type
   toJSON() {
     return {
-      ...this,
+      // ...this,
+      ...JSON.parse(JSON.stringify(this)),
       deviceTypes: this.deviceTypes,
       active: this.active,
       system: this.system,
       hasSocket: this.hasSocket,
       hasDeviceSocket: this.hasDeviceSocket,
-      path: this._path,
-      libraryName: this._libraryName,
+      // path: this.path,
+      // libraryName: this._libraryName,
     };
   }
 
@@ -170,12 +153,12 @@ export default class Plugin {
    * Socket initialization
    */
 
-  initSocket(socket) {
+  initSocket(socket: CoreSocket) {
     // To be implemented by subsclass
     console.warn("initSocket did nothing on", this.constructor.name);
   }
 
-  initDeviceSocket(socket) {
+  initDeviceSocket(socket: DeviceSocket) {
     // To be implemented by subsclass
     console.warn("initDeviceSocket did nothing on", this.constructor.name);
   }

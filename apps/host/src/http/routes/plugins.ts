@@ -1,4 +1,4 @@
-import * as plugins from "../controllers/plugins.js";
+import * as plugins from "../controllers/plugins";
 import express from "express";
 
 const router = express.Router();
