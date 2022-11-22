@@ -53,6 +53,7 @@ export namespace Device {
       brand: string;
       model: string;
 
+      /** String identify which firmware is used on the motherboard. It will use to determine which Controller to use */
       firmware: Device.FirmwareType;
       connectionType: Connection.Type;
     };
@@ -66,21 +67,37 @@ export namespace Device {
     export interface BaseInterface extends BaseDataType {}
 
     // GCode device profile
-    interface GCodeCapableProfileDevice {}
-    namespace GCodeCapableDeviceProfile {
+    interface GCodeCapableProfileDevice {
+      /** Custom printer GCode to attach at the begin of the print process */
+      beginGCode: string;
+      /** Custom printer GCode to attach at the end of the print process */
+      endGCode: string;
+    }
+    namespace GCodeCapableProfileDevice {
       type GCodeVersion = "marlin";
     }
 
+    //
     // FDM Printer profile
-    export type FDMPrinterDataType = BaseDataType & {
-      volume: FDMPrinter.Volume;
-      bed: FDMPrinter.Bed;
-      gCodeVersion: GCodeCapableDeviceProfile.GCodeVersion;
-      xAxis: Base.Axis;
-      yAxis: Base.Axis;
-      zAxis: Base.Axis;
-      extruders: FDMPrinter.Extruder[];
-    };
+    //
+
+    export type FDMPrinterDataType = BaseDataType &
+      GCodeCapableProfileDevice & {
+        /** Print volume based on provided config width, height and depth */
+        volume: FDMPrinter.Volume;
+        /** The bed of the printer, size is determined by printArea */
+        bed: FDMPrinter.Bed;
+        /** Type of GCode used (from Cura) */
+        gCodeVersion: GCodeCapableProfileDevice.GCodeVersion;
+        /** X axis definition */
+        xAxis: Base.Axis;
+        /** Y axis definition */
+        yAxis: Base.Axis;
+        /** Z axis definition */
+        zAxis: Base.Axis;
+        /** Extruders available on this printer */
+        extruders: FDMPrinter.Extruder[];
+      };
 
     namespace FDMPrinter {
       type Volume = {
@@ -109,6 +126,11 @@ export namespace Device {
     }
 
     export interface FDMPrinterInterface extends FDMPrinterDataType {}
+
+    // CNC profile
+    export type CNCDataType = BaseDataType & {};
+    namespace CNC {}
+    export interface CNCInterface extends CNCDataType {}
   }
 
   // Controller

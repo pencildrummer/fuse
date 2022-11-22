@@ -1,7 +1,8 @@
-import path from 'path'
+import path from "path";
 import { SYSTEM_BASE_PATH } from "../../../constants.js";
-import { pathCase } from '@fuse-labs/shared-utils';
-import { object, string } from 'yup'
+import { pathCase } from "@fuse-labs/shared-utils";
+import { object, string } from "yup";
+import { Connection, Device as CoreDevice } from "@fuse-labs/types";
 
 export const DEVICE_PROFILE_SCHEMA = object({
   id: string().required(),
@@ -10,39 +11,49 @@ export const DEVICE_PROFILE_SCHEMA = object({
   model: string().required(),
 
   firmware: string().required(),
-  connection: string().required() // Add validation for available types of connection
-})
+  connection: string().required(), // Add validation for available types of connection
+});
 
-export default class DeviceProfile {
+export default class DeviceProfile implements CoreDevice.Profile.BaseInterface {
+  id: string;
+  type: CoreDevice.Profile.Type;
+  brand: string;
+  model: string;
 
-  id;
-  type;   // Device type: 'fdm_printer', 'msla_printer', 'cnc', 'laser'
-  brand;
-  model;
+  firmware: CoreDevice.FirmwareType;
 
-  firmware; // String identify which firmware is used on the motherboard. It will use to determine which Controller to use
+  connectionType: Connection.Type;
 
-  // Storage path relative to project root
+  /** Storage path relative to project root */
   get path() {
-    let pathBrand = pathCase(this.brand)
-    let pathModel = pathCase(this.model)
-    return path.join(SYSTEM_BASE_PATH, 'profiles', pathBrand, pathModel+'.json')
+    let pathBrand = pathCase(this.brand);
+    let pathModel = pathCase(this.model);
+    return path.join(
+      SYSTEM_BASE_PATH,
+      "profiles",
+      pathBrand,
+      pathModel + ".json"
+    );
   }
 
-  // Costructor using JSON parsed content
-  constructor(data) {
+  /** Costructor using JSON parsed content */
+  constructor(data: CoreDevice.Profile.BaseDataType) {
     if (this.constructor == DeviceProfile) {
-      throw new Error('DeviceProfile cannot be instantiated, is in an abstract class')
+      throw new Error(
+        "DeviceProfile cannot be instantiated, is in an abstract class"
+      );
     }
 
     // Manually set ID on creation
-    data.id = [pathCase(data.brand), pathCase(data.model)].join('.')
+    data.id = [pathCase(data.brand), pathCase(data.model)].join(".");
     // Validate data and set on instance
-    let profileData = DEVICE_PROFILE_SCHEMA.validateSync(data, { stripUnknown: true })
-    Object.assign(this, profileData)
+    let profileData = DEVICE_PROFILE_SCHEMA.validateSync(data, {
+      stripUnknown: true,
+    });
+    Object.assign(this, profileData);
   }
 
-  // 
+  //
   save() {
     // TODO - Implement for server side use only
   }

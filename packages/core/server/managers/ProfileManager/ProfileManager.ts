@@ -7,11 +7,12 @@ import { titleCase } from "@fuse-labs/shared-utils";
 import PrinterDeviceProfile from "../../models/profiles/DeviceProfile/PrinterDeviceProfile.js";
 import CNCDeviceProfile from "../../models/profiles/CNCDeviceProfile/CNCDeviceProfile.js";
 import { Device } from "@fuse-labs/types";
+import { DeviceProfile } from "../../models/index.js";
 
 class ProfileManager {
   _initialized = false;
 
-  private _profiles: { [key: string]: Device.ProfileInterface } = {};
+  private _profiles: { [key: string]: DeviceProfile } = {};
   get profiles() {
     return this._profiles;
   }
@@ -47,22 +48,26 @@ class ProfileManager {
     signale.success("ProfileManager is now ready");
   }
 
-  getProfile(profileId: Device.ProfileInterface["id"]) {
+  getProfile(profileId: DeviceProfile["id"]) {
     return this._profiles[profileId];
   }
 
-  addProfile(profileData: Device.ProfileInterface.) {
+  addProfile(profileData: Device.Profile.BaseDataType) {
     let profile;
     // Check device type
     switch (profileData.type) {
       case "fdm_printer":
-        profile = new PrinterDeviceProfile(profileData);
+        profile = new PrinterDeviceProfile(
+          profileData as Device.Profile.FDMPrinterDataType
+        );
         break;
       case "cnc":
-        profile = new CNCDeviceProfile(profileData);
+        profile = new CNCDeviceProfile(
+          profileData as Device.Profile.CNCDataType
+        );
         break;
       default:
-        throw new Error("Unsupported profile type", profileData.type);
+        throw new Error("Unsupported profile type: " + profileData.type);
     }
     // When implemented for server side use only use profile.save() instead?
     this._writeProfile(profile);
@@ -70,7 +75,10 @@ class ProfileManager {
     return profile;
   }
 
-  updateProfile(id, profileData) {
+  updateProfile(
+    id: DeviceProfile["id"],
+    profileData: Device.Profile.BaseDataType
+  ) {
     signale.info("Updating profile", id);
     if (!id) {
       throw new Error("Profile ID to update not provided");
@@ -80,22 +88,21 @@ class ProfileManager {
     // Check device type
     switch (profileData.type) {
       case "fdm_printer":
-        profile = new PrinterDeviceProfile(profileData);
+        profile = new PrinterDeviceProfile(
+          profileData as Device.Profile.FDMPrinterDataType
+        );
         break;
       case "cnc":
         profile = new CNCDeviceProfile(profileData);
         break;
       default:
-        throw new Error("Unsupported profile type", profileData.type);
+        throw new Error("Unsupported profile type: " + profileData.type);
     }
 
     // Check id provided is the same as the profile data
     if (id != profile.id) {
       throw new Error(
-        "Profile ID provided does not match profile generated data ID",
-        id,
-        "!=",
-        profile.id
+        `Profile ID provided does not match profile generated data ID ${id} != ${profile.id}`
       );
     }
 
@@ -111,13 +118,13 @@ class ProfileManager {
     return profile;
   }
 
-  deleteProfile(profileId) {
+  deleteProfile(profileId: DeviceProfile["id"]) {
     let profile = this.getProfile(profileId);
 
     if (!fs.existsSync(profile.path)) {
       throw new Error(
         `Requested deletion of profile with id ${chalk.magenta(
-          id
+          profileId
         )} but no profile file is found at path ${chalk.magenta(profile.path)}`
       );
     }
@@ -131,9 +138,10 @@ class ProfileManager {
    * INTERNAL
    */
 
-  _readProfile(profileId) {
+  _readProfile(profileId: DeviceProfile["id"]): DeviceProfile {
     let fileProfilePath = profileId.replace(".", path.sep);
-    let fileContent = fs.readFileSync(
+    // Read and parse content
+    let profileData = fs.readJsonSync(
       path.join(
         process.cwd(),
         SYSTEM_BASE_PATH,
@@ -141,8 +149,6 @@ class ProfileManager {
         fileProfilePath + ".json"
       )
     );
-    // Parse content
-    let profileData = JSON.parse(fileContent);
     // Set brand and model in title case based on path if not specifically provided in json file
     profileData.brand =
       profileData.brand || titleCase(fileProfilePath.split(path.sep)[0]);
@@ -164,11 +170,11 @@ class ProfileManager {
     return profile;
   }
 
-  _writeProfile(profile, overwrite = false) {
+  _writeProfile(profile: DeviceProfile, overwrite = false) {
     let storagePath = path.join(process.cwd(), profile.path);
     // Check file already exists, prevent save
     if (!overwrite && fs.existsSync(storagePath)) {
-      throw new Error("Profile already exists:", storagePath);
+      throw new Error(`Profile already exists: ${storagePath}`);
     }
     // Ensure file exists and directories in between
     fs.ensureFileSync(storagePath);
@@ -181,6 +187,7 @@ class ProfileManager {
 
 // Export shared manager
 class Singleton {
+  private static sharedInstance: ProfileManager;
   constructor() {
     throw new Error("User ProfileManager.shared instead");
   }

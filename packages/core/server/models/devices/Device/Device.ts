@@ -5,9 +5,9 @@ import { DEVICES_BASE_PATH } from "../../../constants.js";
 import { v4 as uuid } from "uuid";
 import signale from "signale";
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js";
-import { Controller, NetworkConnection } from "../../index.js";
+import { Connection, Controller, NetworkConnection } from "../../index.js";
 import { ProfileManager, socketServer } from "../../../index.js";
-import { Connection, Device as CoreDevice } from "@fuse-labs/types";
+import { Device as CoreDevice } from "@fuse-labs/types";
 import { DeviceNamespace, DeviceSocket } from "../../../socket-server.js";
 
 export const DEVICE_SCHEMA = object({
@@ -35,7 +35,7 @@ export default class Device implements CoreDevice.DeviceInterface {
   vendorId: string;
   productId: string;
 
-  connection: Connection.Interface;
+  connection: Connection;
 
   private controller: Controller;
 

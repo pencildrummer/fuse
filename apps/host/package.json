@@ -5,9 +5,10 @@
   "description": "Fuse - host server",
   "private": true,
   "main": "src/server.ts",
+  "type": "module",
   "scripts": {
     "lint": "echo \"No linting configured\"",
-    "dev": "yarn ts-node src/server.ts",
+    "dev": "yarn pnpify ts-node-esm --experimental-specifier-resolution=node ./src/server.ts",
     "build": "tsc",
     "start": "node src/server.js",
     "clean": "rm -rf node_modules && rm package-lock.json"
@@ -31,6 +32,7 @@
     "@fuse-labs/marlin-temperature-server": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/terminal-server": "workspace:^",
+    "@yarnpkg/pnpify": "^4.0.0-rc.31",
     "chalk": "^5.0.1",
     "express": "^4.18.2",
     "filesize": "^9.0.11",

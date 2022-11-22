@@ -61,7 +61,7 @@ export default class Plugin implements PluginInterface {
 
   // TODO - Improve this method, like default values, value for all devices, etc.
   get deviceTypes() {
-    return DeviceType.ALL as Device.Type[];
+    return DeviceType.ALL as Device.Profile.Type[];
   }
 
   constructor(name: string, installPath: string) {

@@ -16,34 +16,34 @@ export default class Controller
    * Reference to the device that this instance is controlling
    * @type {Device}
    */
-  #device;
+  protected _device: Device;
   get device() {
-    return this.#device;
+    return this._device;
   }
 
   constructor(device) {
     super();
-    this.#device = device;
+    this._device = device;
     // Add listener to connection to pass it through
     // TODO - Validate? Connection must exists
-    this.#device.connection.on("error", (err) => this.emit("error", err));
+    this._device.connection.on("error", (err) => this.emit("error", err));
 
-    this.#device.connection.on("open", (_) => this.emit("open"));
-    this.#device.connection.on("close", (_) => this.emit("close"));
+    this._device.connection.on("open", (_) => this.emit("open"));
+    this._device.connection.on("close", (_) => this.emit("close"));
   }
 
   /**
    * Request opening of the connection to the device
    */
   openConnection(callback) {
-    this.#device.connection.open(callback);
+    this._device.connection.open(callback);
   }
 
   /**
    * Request closing of the connection to the device
    */
   closeConnection(callback) {
-    this.#device.connection.close(callback);
+    this._device.connection.close(callback);
   }
 
   /** STATIC */

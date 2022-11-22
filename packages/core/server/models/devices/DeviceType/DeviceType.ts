@@ -1,3 +1,4 @@
+// TODO: Reuse devie types defined in TS
 const types = {
   FDMPrinter: "fdm_printer",
   MSLAPrinter: "msla_printer",
