@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { SerialPort } from "serialport";
 import signale from "signale";
 import Connection from "../Connection/Connection.js";
@@ -10,7 +11,14 @@ export default class SerialConnection extends Connection {
   private opts: any;
 
   private _serialPort: SerialPort;
-
+  private get serialPort() {
+    if (!this._serialPort) {
+      throw new Error(
+        "Trying to access device missing serialPort. Probably the device is not connected and so the serial port is not present on the host. We should improved this error handling behaviour."
+      );
+    }
+    return this._serialPort;
+  }
   constructor(
     portPath: string,
     baudRate: number,
@@ -24,17 +32,16 @@ export default class SerialConnection extends Connection {
       this.initSerialPort(portPath, callback);
     } catch (error) {
       signale.error(
-        "Error creating serial connection on port",
-        portPath,
-        "@",
-        baudRate
+        `Error creating serial connection on port ${chalk.bold(
+          `${portPath}@${baudRate}`
+        )}`
       );
       signale.error(error);
     }
   }
 
   get isOpen() {
-    return this._serialPort.isOpen;
+    return this.serialPort.isOpen;
   }
 
   /**
@@ -42,10 +49,7 @@ export default class SerialConnection extends Connection {
    * @param {number} baudRate
    */
   setBaudRate(baudRate: number, callback?: ErrorCallback) {
-    if (!this._serialPort) {
-      return signale.error("No serial port to update baud rate");
-    }
-    this._serialPort.update(
+    this.serialPort.update(
       {
         baudRate: baudRate,
       },
@@ -54,19 +58,19 @@ export default class SerialConnection extends Connection {
   }
 
   open(callback?: ErrorCallback) {
-    this._serialPort.open(callback);
+    this.serialPort.open(callback);
   }
 
   close(callback?: ErrorCallback) {
-    if (this._serialPort.isOpen) this._serialPort.close(callback);
+    if (this.serialPort.isOpen) this._serialPort.close(callback);
   }
 
   write(data: any, opts: any) {
-    let hasDrained = this._serialPort.write(data, opts);
+    let hasDrained = this.serialPort.write(data, opts);
   }
 
   addParser(parser) {
-    return this._serialPort.pipe(parser);
+    return this.serialPort.pipe(parser);
   }
 
   /**

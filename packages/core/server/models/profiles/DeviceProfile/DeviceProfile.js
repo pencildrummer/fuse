@@ -9,7 +9,6 @@ export const DEVICE_PROFILE_SCHEMA = object({
     type: string().required(),
     brand: string().required(),
     model: string().required(),
-    path: string().required(),
     firmware: string().required(),
     connectionType: string().required(), // Add validation for available types of connection
 });

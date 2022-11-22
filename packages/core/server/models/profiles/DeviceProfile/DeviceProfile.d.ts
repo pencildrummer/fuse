@@ -4,7 +4,6 @@ export declare const DEVICE_PROFILE_SCHEMA: import("yup/lib/object.js").Optional
     type: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     brand: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     model: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
-    path: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     firmware: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     connectionType: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
 }, import("yup/lib/object.js").AnyObject, import("yup/lib/object.js").TypeOfShape<{
@@ -12,7 +11,6 @@ export declare const DEVICE_PROFILE_SCHEMA: import("yup/lib/object.js").Optional
     type: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     brand: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     model: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
-    path: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     firmware: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     connectionType: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
 }>>;

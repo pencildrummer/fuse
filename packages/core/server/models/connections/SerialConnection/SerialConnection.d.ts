@@ -4,6 +4,7 @@ export default class SerialConnection extends Connection {
     private baudRate;
     private opts;
     private _serialPort;
+    private get serialPort();
     constructor(portPath: string, baudRate: number, opts?: any, callback?: ErrorCallback);
     get isOpen(): boolean;
     /**
