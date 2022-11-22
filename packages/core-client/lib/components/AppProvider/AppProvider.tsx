@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createIntl, createIntlCache, RawIntlProvider } from "react-intl";
-import { AppContext } from "../../hooks/useAppContext.js";
-import useProviderConfig from "../../hooks/useProviderConfig.js";
-import useProviderDevices from "../../hooks/useProviderDevices.js";
-import useProviderPlugins from "../../hooks/useProviderPlugins.js";
-import useProviderProfiles from "../../hooks/useProviderProfiles.js";
-import AppLoadingView from "./AppLoadingView/AppLoadingView.js";
+import { AppContext } from "../../hooks/useAppContext";
+import useProviderConfig from "../../hooks/useProviderConfig";
+import useProviderDevices from "../../hooks/useProviderDevices";
+import useProviderPlugins from "../../hooks/useProviderPlugins";
+import useProviderProfiles from "../../hooks/useProviderProfiles";
+import AppLoadingView from "./AppLoadingView/AppLoadingView";
 import isElectron from "is-electron";
-import { coreSocket } from "../../socket.js";
-import AppErrorView from "./AppErrorView.js";
+import { coreSocket } from "../../socket";
+import AppErrorView from "./AppErrorView";
 
 const cache = createIntlCache();
 

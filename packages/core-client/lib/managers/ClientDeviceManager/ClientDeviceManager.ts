@@ -1,10 +1,6 @@
-import {
-  DeviceDataType,
-  DeviceType,
-  DeviceUpdateDataType,
-} from "@fuse-labs/types";
-import ClientDevice from "../../models/ClientDevice/ClientDevice.js";
-import { coreSocket } from "../../socket.js";
+import { Device } from "@fuse-labs/types";
+import ClientDevice from "../../models/ClientDevice/ClientDevice";
+import { coreSocket } from "../../socket";
 
 class ClientDeviceManager extends EventTarget {
   private _initialized = false;
@@ -21,7 +17,7 @@ class ClientDeviceManager extends EventTarget {
     super();
   }
 
-  init(fetchedDevicesData: DeviceDataType[]) {
+  init(fetchedDevicesData: Device.DataType[]) {
     this._devices =
       fetchedDevicesData?.map((deviceData) => new ClientDevice(deviceData)) ||
       [];
@@ -43,7 +39,7 @@ class ClientDeviceManager extends EventTarget {
     return this._devices.find((device) => device.id == deviceId);
   }
 
-  getDevicesForType(deviceType: DeviceType) {
+  getDevicesForType(deviceType: Device.Type) {
     return this._devices.filter((device) => device.profile.type == deviceType);
   }
 
@@ -51,14 +47,14 @@ class ClientDeviceManager extends EventTarget {
    * Private
    */
 
-  _handleDeviceAdded(deviceData: DeviceDataType) {
+  _handleDeviceAdded(deviceData: Device.DataType) {
     let device = new ClientDevice(deviceData);
     this._devices = [...this._devices, device];
     // Notify
     this.dispatchEvent(new Event("updatedDevices"));
   }
 
-  _handleDeviceUpdated(deviceData: DeviceUpdateDataType) {
+  _handleDeviceUpdated(deviceData: Device.DataType.Mutable) {
     let device = this._devices.find((d) => d.id === deviceData.id);
     if (device) {
       device.update(deviceData);
@@ -72,7 +68,7 @@ class ClientDeviceManager extends EventTarget {
     this.dispatchEvent(new Event("updatedDevices"));
   }
 
-  _handleDeviceRemoved(deviceData: DeviceUpdateDataType) {
+  _handleDeviceRemoved(deviceData: Device.DataType) {
     this._devices = this._devices.filter(
       (device) => device.id !== deviceData.id
     );

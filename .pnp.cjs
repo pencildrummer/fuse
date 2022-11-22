@@ -2961,6 +2961,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/core-client/",\
           "packageDependencies": [\
             ["@fuse-labs/core-client", "workspace:packages/core-client"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["@fuse-labs/types", "workspace:packages/types"],\
             ["@radix-ui/react-icons", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#npm:1.1.1"],\
             ["@types/node", "npm:18.11.9"],\

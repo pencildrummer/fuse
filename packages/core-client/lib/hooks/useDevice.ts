@@ -1,4 +1,4 @@
-import useAppContext from "./useAppContext.js";
+import useAppContext from "./useAppContext";
 import { useMemo } from "react";
 
 /**

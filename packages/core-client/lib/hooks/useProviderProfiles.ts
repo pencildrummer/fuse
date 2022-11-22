@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { coreSocket } from "../socket";
 import { pathCase } from "@fuse-labs/shared-utils";
-import { DeviceProfileInterface } from "@fuse-labs/types";
+import { Device } from "@fuse-labs/types";
 
-// TODO: Create type for hook
-export default function useProviderProfiles(data) {
+type ClientDeviceProfilesMap = { [key: string]: Device.ProfileInterface[] };
+export default function useProviderProfiles(data: ClientDeviceProfilesMap) {
   const [profiles, setProfiles] = useState(data || {});
 
   useEffect(() => {
     /**
      * Profiles
      */
-    coreSocket.on("profiles:added", (profile) => {
+    coreSocket.on("profiles:added", (profile: Device.ProfileInterface) => {
       // Add received new profile to in memory ones
-      const brand = pathCase(profile.brand) as string;
+      const brand = pathCase(profile.brand);
       setProfiles((profiles) => {
         let newProfiles = { ...profiles };
         newProfiles[brand] = newProfiles[brand] || [];
@@ -22,7 +22,7 @@ export default function useProviderProfiles(data) {
       });
     });
 
-    coreSocket.on("profiles:updated", (profile) => {
+    coreSocket.on("profiles:updated", (profile: Device.ProfileInterface) => {
       // Updated received profile to in memory ones
       setProfiles((profiles) => {
         let brand = pathCase(profile.brand);
@@ -41,7 +41,7 @@ export default function useProviderProfiles(data) {
       });
     });
 
-    coreSocket.on("profiles:deleted", (id) => {
+    coreSocket.on("profiles:deleted", (id: Device.ProfileInterface["id"]) => {
       // Remove deleted profiles form the in memory ones
       setProfiles((profiles) => {
         let keyPath = id.split(".");

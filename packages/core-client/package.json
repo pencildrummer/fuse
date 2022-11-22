@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "main": "./lib/index.js",
+  "main": "./lib/index.ts",
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
@@ -24,6 +24,7 @@
     "react-intl": "^6.1.1"
   },
   "devDependencies": {
+    "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/types": "workspace:^",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",

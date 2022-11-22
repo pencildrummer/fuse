@@ -1,4 +1,4 @@
-import useAppContext from "./useAppContext.js";
+import useAppContext from "./useAppContext";
 import { useMemo } from "react";
 
 // TODO - Maybe create a plugin class for client to be used instead of using React specific hook?

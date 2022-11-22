@@ -2,14 +2,10 @@ import { socket } from "../../socket";
 import { object, string, number, SchemaOf } from "yup";
 import ClientPluginManager from "../../managers/ClientPluginManager/ClientPluginManager";
 import ClientPlugin from "../ClientPlugin/ClientPlugin";
-import {
-  DeviceDataType,
-  DeviceInterface,
-  DeviceUpdateDataType,
-} from "@fuse-labs/types";
+import { Device } from "@fuse-labs/types";
 import { Socket } from "socket.io-client";
 
-const SCHEMA: SchemaOf<DeviceDataType> = object({
+const SCHEMA: SchemaOf<Device.DataType> = object({
   id: string().defined(),
   name: string().defined(),
   port: string().defined(),
@@ -21,7 +17,7 @@ const SCHEMA: SchemaOf<DeviceDataType> = object({
   productId: string().optional().nullable().default(null),
 });
 
-export default class ClientDevice implements DeviceInterface {
+export default class ClientDevice implements Device.DeviceInterface {
   id: string;
   name: string;
   port: string;
@@ -59,7 +55,7 @@ export default class ClientDevice implements DeviceInterface {
     return ["id", "profile", "serialNumber", "vendorId", "productId"];
   }
 
-  constructor(data: DeviceDataType) {
+  constructor(data: Device.DataType) {
     // Create device object
     let device = SCHEMA.validateSync(data);
     Object.assign(this, device);
@@ -70,7 +66,7 @@ export default class ClientDevice implements DeviceInterface {
     }
   }
 
-  update(data: DeviceUpdateDataType) {
+  update(data: Device.DataType.Mutable) {
     // Remove id data
     let cleanData = Object.keys(data).reduce(
       (res, key) => {

@@ -1,4 +1,4 @@
-import { DeviceType } from "./device";
+import { Device.Type } from "./device";
 
 // TODO: Verify if type is correct, merge with PluginInterface?
 export interface PluginDataType {
@@ -23,7 +23,7 @@ export interface PluginDataType {
   /** Returns if the plugin is a system plugin */
   readonly system: boolean;
   /** Returns allowed device type for this plugin */
-  readonly deviceTypes: DeviceType[];
+  readonly deviceTypes: Device.Type[];
 }
 
 export interface PluginInterface {
@@ -48,5 +48,5 @@ export interface PluginInterface {
   /** Returns if the plugin is a system plugin */
   readonly system: boolean;
   /** Returns allowed device type for this plugin */
-  readonly deviceTypes: DeviceType[];
+  readonly deviceTypes: Device.Type[];
 }

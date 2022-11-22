@@ -1,12 +1,11 @@
-import { object, string, boolean, array } from "yup";
-import { socket } from "../../socket";
+import { Device, PluginInterface } from "@fuse-labs/types";
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
-import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
-import ClientDeviceType from "../ClientDeviceType/ClientDeviceType";
 import lodash from "lodash";
-import { DeviceType, PluginInterface } from "@fuse-labs/types";
-import { ClientDevice } from "..";
 import React from "react";
+import { array, boolean, object, string } from "yup";
+import { ClientDevice } from "..";
+import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
+import { socket } from "../../socket";
 
 // TODO: Reverse yup schema from TS type?
 const CONSTRUCTOR_SCHEMA = object({
@@ -48,7 +47,7 @@ export default class ClientPlugin implements PluginInterface {
   hasDeviceSocket: boolean;
   active: boolean;
   system: boolean;
-  deviceTypes: DeviceType[];
+  deviceTypes: Device.Type[];
 
   get url() {
     // Check url is manually provided or generate one based on plugin name

@@ -1,8 +1,8 @@
-import { DeviceDataType } from "@fuse-labs/types";
+import { Device } from "@fuse-labs/types";
 import { useEffect, useState } from "react";
 import ClientDeviceManager from "../managers/ClientDeviceManager/ClientDeviceManager";
 
-export default function useProviderDevices(data: DeviceDataType[]) {
+export default function useProviderDevices(data: Device.DataType[]) {
   const [devices, setDevices] = useState(ClientDeviceManager.shared.devices);
 
   useEffect(() => {

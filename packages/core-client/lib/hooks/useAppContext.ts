@@ -1,9 +1,17 @@
+import { ClientDeviceProfile, ConfigDataType } from "@fuse-labs/types";
 import React, { useContext } from "react";
+import { IntlShape } from "react-intl";
 import { ClientDevice, ClientPlugin } from "../models";
 
 interface AppContextInterface {
-  devices: ClientDevice[];
-  plugins: ClientPlugin[];
+  isReady: boolean;
+  isElectron: () => boolean;
+  devices?: ClientDevice[];
+  plugins?: ClientPlugin[];
+  activePlugins?: ClientPlugin[];
+  profiles?: { [x: string]: ClientDeviceProfile[] };
+  config?: ConfigDataType;
+  intl: IntlShape;
 }
 
 export const AppContext = React.createContext<AppContextInterface | null>(null);
