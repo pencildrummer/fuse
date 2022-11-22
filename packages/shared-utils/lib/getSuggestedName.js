@@ -1,9 +1,6 @@
 import getProductInfo from "./getProductInfo";
 
-export default function getSuggestedName(
-  vendorId: string,
-  productId: string
-): string {
+export default function getSuggestedName(vendorId, productId) {
   if (vendorId) {
     let productInfo = getProductInfo(vendorId, productId);
     if (productInfo) {

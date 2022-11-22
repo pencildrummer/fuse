@@ -5,10 +5,13 @@ import classNames from "classnames";
 import Widget from "../Widget/Widget";
 import Button from "../Button/Button";
 
-function Dialog({ children, content, ...props }) {
+type Props = React.ComponentProps<"div"> &
+  React.PropsWithChildren<{ content: React.ReactNode }>;
+
+function Dialog({ content, ...props }: Props) {
   return (
     <DialogRoot {...props}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger asChild>{props.children}</DialogTrigger>
       <DialogContent className={props.className}>{content}</DialogContent>
     </DialogRoot>
   );
@@ -21,16 +24,19 @@ function DialogTrigger(props) {
   return <DialogPrimitive.Trigger {...props} />;
 }
 
+type DialogContentProps = React.ComponentPropsWithoutRef<"div"> &
+  React.PropsWithChildren<{
+    title?: string;
+    description?: string;
+    showClose?: boolean;
+  }>;
+
 function DialogContent({
   title,
   description,
   showClose = false,
   ...props
-}: {
-  title: string;
-  description: string;
-  showClose?: boolean;
-}) {
+}: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="fixed inset-0 bg-black/70 z-40" />

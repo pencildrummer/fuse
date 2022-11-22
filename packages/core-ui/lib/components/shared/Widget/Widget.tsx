@@ -28,11 +28,13 @@ function WidgetVersion({ ...props }) {
   );
 }
 
-interface Props extends React.ComponentPropsWithoutRef<"div"> {
-  title?: string;
+type Props = React.PropsWithChildren<{
+  title?: React.ReactNode;
   version?: string;
   full?: boolean;
-}
+  className: string;
+}>;
+let asd: Props["title"];
 
 const Widget = React.forwardRef<HTMLDivElement, Props>(
   ({ title, version, full = false, ...props }, ref) => {
