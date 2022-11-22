@@ -2,6 +2,9 @@ import { SerialPort } from "serialport";
 import signale from "signale";
 import Connection from "../Connection/Connection.js";
 
+// SerialPort doe not export ErrorCallback error workaround
+type ErrorCallback = (err: Error | null) => void;
+
 export default class SerialConnection extends Connection {
   private baudRate: number;
   private opts: any;
@@ -9,7 +12,7 @@ export default class SerialConnection extends Connection {
   private _serialPort: SerialPort;
 
   constructor(
-    port: number,
+    portPath: string,
     baudRate: number,
     opts?: any,
     callback?: ErrorCallback
@@ -18,11 +21,11 @@ export default class SerialConnection extends Connection {
     try {
       this.baudRate = baudRate;
       this.opts = opts;
-      this.initSerialPort(port, callback);
+      this.initSerialPort(portPath, callback);
     } catch (error) {
       signale.error(
         "Error creating serial connection on port",
-        port,
+        portPath,
         "@",
         baudRate
       );
@@ -70,10 +73,10 @@ export default class SerialConnection extends Connection {
    * Private
    */
 
-  initSerialPort(port: number, callback?: ErrorCallback) {
+  initSerialPort(portPath: string, callback?: ErrorCallback) {
     this._serialPort = new SerialPort(
       {
-        path: port,
+        path: portPath,
         baudRate: this.baudRate,
         dataBits: 8,
         parity: "none",
@@ -89,21 +92,21 @@ export default class SerialConnection extends Connection {
     this._serialPort.on("open", (args) => {
       signale
         .scope(this.constructor.name)
-        .note("Opened port ", port, "@", this.baudRate);
+        .note("Opened port ", portPath, "@", this.baudRate);
       this.emit("open", args);
     });
 
     this._serialPort.on("close", (args) => {
       signale
         .scope(this.constructor.name)
-        .info("Closed serial connection on port", port, "@", this.baudRate);
+        .info("Closed serial connection on port", portPath, "@", this.baudRate);
       this.emit("close", args);
     });
 
     this._serialPort.on("error", (err) => {
       signale
         .scope(this.constructor.name)
-        .error("Error on port path", port, "@", this.baudRate);
+        .error("Error on port path", portPath, "@", this.baudRate);
       signale.scope(this.constructor.name).error(err);
       this.emit("error", err);
     });

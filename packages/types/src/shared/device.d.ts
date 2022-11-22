@@ -30,7 +30,7 @@ export namespace Device {
   export interface DeviceInterface {
     id: string;
     name: string;
-    port: number;
+    portPath: string;
     baudrate: number;
 
     profileId: string;

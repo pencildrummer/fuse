@@ -18,7 +18,14 @@ export interface InterServerEvents {}
 
 export interface SocketData {}
 
-export declare class CoreSocket extends SocketServer<
+export declare class CoreSocketServer extends SocketServer<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+> {}
+
+export declare class CoreSocket extends Socket<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
@@ -57,7 +64,7 @@ const expressApp = express();
 const httpServer = createServer(expressApp);
 
 // Main socket server (/ namespace)
-const io = new CoreSocket(httpServer, {
+const io = new CoreSocketServer(httpServer, {
   cors: {
     origin: [
       // TODO: Allow for configurable hosts, or truste client in some different ways

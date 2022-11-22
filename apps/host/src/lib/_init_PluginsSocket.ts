@@ -6,6 +6,7 @@ import {
   useDeviceMiddleware,
   logger,
 } from "@fuse-labs/core";
+import { CoreSocketServer } from "@fuse-labs/core/server/socket-server";
 
 export default async function _init_PluginsSocket() {
   // Get list of plugins

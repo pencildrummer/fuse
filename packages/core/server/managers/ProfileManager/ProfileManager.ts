@@ -165,7 +165,7 @@ class ProfileManager {
         profile = new CNCDeviceProfile(profileData);
         break;
       default:
-        throw new Error("Unsupported profile type", profileData.type);
+        throw new Error(`Unsupported profile type: ${profileData.type}`);
     }
     return profile;
   }

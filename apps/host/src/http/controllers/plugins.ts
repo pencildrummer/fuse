@@ -9,7 +9,7 @@ const getLogo = (req: Request, res: Response) => {
   );
 
   if (plugin) {
-    let iconPath = path.resolve(path.join(plugin._path, "logo.png"));
+    let iconPath = path.resolve(path.join(plugin.path, "logo.png"));
     if (fs.existsSync(iconPath)) {
       res.sendFile(iconPath);
     } else {

@@ -85,7 +85,7 @@ export default class CorePlugin extends Plugin {
           profileId = profile.id;
         }
         // Add device to the system
-        DeviceManager.shared.addDevice({
+        let device = DeviceManager.shared.addDevice({
           name,
           profileId,
           port,
@@ -137,7 +137,7 @@ export default class CorePlugin extends Plugin {
     socket.on("devices:connection:check", async (deviceId, fn) => {
       let device = DeviceManager.shared.getDevice(deviceId);
       let list = await SerialPort.list();
-      let devicePort = list.find((port) => port.path == device.port);
+      let devicePort = list.find((port) => port.path == device.portPath);
       return fn?.(devicePort);
     });
 

@@ -1,1 +1,1 @@
-export * from './getDeviceID.js'
+export * from "./getDeviceId.js";

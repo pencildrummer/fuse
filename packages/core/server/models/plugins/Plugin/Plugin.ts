@@ -4,7 +4,11 @@ import path from "path";
 import signale from "signale";
 import { camelcase } from "varname";
 import PluginManager from "../../../managers/PluginManager/PluginManager.js";
-import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
+import {
+  CoreSocket,
+  CoreSocketServer,
+  DeviceSocket,
+} from "../../../socket-server.js";
 import { DeviceType } from "../../devices/index.js";
 
 export default class Plugin implements PluginInterface {

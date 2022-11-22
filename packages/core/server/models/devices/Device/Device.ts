@@ -25,7 +25,7 @@ export const DEVICE_SCHEMA = object({
 export default class Device implements CoreDevice.DeviceInterface {
   id: string;
   name: string;
-  port: number;
+  portPath: string;
   baudrate: number;
 
   profileId: string;
@@ -51,7 +51,7 @@ export default class Device implements CoreDevice.DeviceInterface {
     return path.resolve(path.join(DEVICES_BASE_PATH, this.id + ".json"));
   }
 
-  constructor(filePathOrData: string | CoreDevice.DataType) {
+  constructor(filePathOrData: string | Omit<CoreDevice.DataType, "id">) {
     if (typeof filePathOrData === "string") {
       // Retrieve file from path
       this.initDeviceFromPath(filePathOrData);
@@ -104,7 +104,7 @@ export default class Device implements CoreDevice.DeviceInterface {
     this.fillDeviceWithData(json);
   }
 
-  initDeviceFromData(data: CoreDevice.DataType) {
+  private initDeviceFromData(data: Omit<CoreDevice.DataType, "id">) {
     // Fill data
     this.fillDeviceWithData({
       ...data,
@@ -113,7 +113,7 @@ export default class Device implements CoreDevice.DeviceInterface {
     });
   }
 
-  fillDeviceWithData(data: CoreDevice.DataType) {
+  private fillDeviceWithData(data: CoreDevice.DataType) {
     // Set data
     let deviceData = DEVICE_SCHEMA.validateSync(data, {
       stripUnknown: true,
@@ -126,14 +126,14 @@ export default class Device implements CoreDevice.DeviceInterface {
   /**
    * Configure device with necessary properties
    */
-  configureDevice() {
+  private configureDevice() {
     // Expand profile with id
     this.profile = ProfileManager.shared.getProfile(this.profileId);
     // Set connection
 
     switch (this.profile.connectionType) {
       case "serial":
-        this.connection = new SerialConnection(this.port, this.baudrate);
+        this.connection = new SerialConnection(this.portPath, this.baudrate);
         break;
       case "network":
         this.connection = new NetworkConnection();
@@ -177,7 +177,7 @@ export default class Device implements CoreDevice.DeviceInterface {
       name: this.name,
       profileId: this.profileId,
       profile: this.profile,
-      port: this.port,
+      port: this.portPath,
       baudrate: this.baudrate,
       serialNumber: this.serialNumber,
       vendorId: this.vendorId,

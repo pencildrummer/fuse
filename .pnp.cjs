@@ -2931,6 +2931,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/express", "npm:4.17.14"],\
             ["@types/fs-extra", "npm:9.0.13"],\
             ["@types/node", "npm:18.11.9"],\
+            ["@types/serialport", "npm:8.0.2"],\
             ["@types/signale", "npm:1.4.4"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["chalk", "npm:5.1.2"],\
@@ -7552,6 +7553,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-semver-npm-7.3.13-56212b60da-00c0724d54.zip/node_modules/@types/semver/",\
           "packageDependencies": [\
             ["@types/semver", "npm:7.3.13"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/serialport", [\
+        ["npm:8.0.2", {\
+          "packageLocation": "./.yarn/cache/@types-serialport-npm-8.0.2-a6d3f2b2ea-c81152b0e8.zip/node_modules/@types/serialport/",\
+          "packageDependencies": [\
+            ["@types/serialport", "npm:8.0.2"],\
+            ["@types/node", "npm:18.11.9"]\
           ],\
           "linkType": "HARD"\
         }]\

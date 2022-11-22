@@ -9,9 +9,9 @@
   "scripts": {
     "lint": "echo \"No linting configured\"",
     "dev": "yarn pnpify ts-node-esm --experimental-specifier-resolution=node ./src/server.ts",
-    "build": "tsc",
-    "start": "node src/server.js",
-    "clean": "rm -rf node_modules && rm package-lock.json"
+    "build": "yarn pnpify tsc -b",
+    "clean": "yarn pnpify tsc -b --clean",
+    "start": "node src/server.js"
   },
   "keywords": [],
   "author": {

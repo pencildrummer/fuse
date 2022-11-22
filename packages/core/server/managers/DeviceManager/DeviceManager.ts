@@ -51,7 +51,7 @@ class DeviceManager {
     return this._devices?.find((device) => device.id == deviceId);
   }
 
-  addDevice(data: CoreDevice.DataType) {
+  addDevice(data: Omit<CoreDevice.DataType, "id">) {
     // TODO - Validate device parameter
     // TODO - Use Device class when able to import ESM
     let device = new Device(data);
