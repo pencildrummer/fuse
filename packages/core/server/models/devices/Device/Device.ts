@@ -1,14 +1,14 @@
+import { Device as CoreDevice } from "@fuse-labs/types";
 import fs from "fs-extra";
-import { string, object, number } from "yup";
 import path from "path";
-import { DEVICES_BASE_PATH } from "../../../constants.js";
-import { v4 as uuid } from "uuid";
 import signale from "signale";
+import { v4 as uuid } from "uuid";
+import { number, object, string } from "yup";
+import { DEVICES_BASE_PATH } from "../../../constants.js";
+import { ProfileManager, socketServer } from "../../../index.js";
+import { DeviceNamespace } from "../../../socket-server.js";
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js";
 import { Connection, Controller, NetworkConnection } from "../../index.js";
-import { ProfileManager, socketServer } from "../../../index.js";
-import { Device as CoreDevice } from "@fuse-labs/types";
-import { DeviceNamespace, DeviceSocket } from "../../../socket-server.js";
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),

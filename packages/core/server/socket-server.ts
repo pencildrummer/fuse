@@ -1,10 +1,10 @@
 import express from "express";
-import { createServer, Server } from "http";
+import { createServer } from "http";
 import { Server as SocketServer, Socket } from "socket.io";
 import { ExtendedError, Namespace } from "socket.io/dist/namespace";
-import { DeviceManager } from "./managers";
-import { Device } from "./models";
-import { getDeviceIdFromSocket } from "./utils";
+import { DeviceManager } from "./managers/index.js";
+import { Device } from "./models/index.js";
+import { getDeviceIdFromSocket } from "./utils/index.js";
 
 // --  Move into separate d file
 

@@ -1,6 +1,5 @@
 // Utilities to retrieve deviceId
 
-import { Socket } from "socket.io";
 import { DeviceSocket } from "../socket-server";
 
 export function getDeviceIdFromSocket(socket: DeviceSocket) {

@@ -5,8 +5,7 @@
   "files": [
     "server"
   ],
-  "main": "./server/index.ts",
-  "types": "./server/index.ts",
+  "main": "./server/index.js",
   "type": "module",
   "scripts": {
     "build": "echo \"No build for @fuse-labs/core\" && exit 0",

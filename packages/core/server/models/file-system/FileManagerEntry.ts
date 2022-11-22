@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import signale from "signale";
 
 // TODO - Make abstract
 export default class FileManagerEntry {

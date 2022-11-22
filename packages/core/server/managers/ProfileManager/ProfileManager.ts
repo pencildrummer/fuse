@@ -1,13 +1,13 @@
-import signale from "signale";
+import { titleCase } from "@fuse-labs/shared-utils";
+import { Device } from "@fuse-labs/types";
+import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
-import chalk from "chalk";
+import signale from "signale";
 import { PROFILES_BASE_PATH, SYSTEM_BASE_PATH } from "../../constants.js";
-import { titleCase } from "@fuse-labs/shared-utils";
-import PrinterDeviceProfile from "../../models/profiles/DeviceProfile/PrinterDeviceProfile.js";
-import CNCDeviceProfile from "../../models/profiles/CNCDeviceProfile/CNCDeviceProfile.js";
-import { Device } from "@fuse-labs/types";
 import { DeviceProfile } from "../../models/index.js";
+import CNCDeviceProfile from "../../models/profiles/CNCDeviceProfile/CNCDeviceProfile.js";
+import PrinterDeviceProfile from "../../models/profiles/DeviceProfile/PrinterDeviceProfile.js";
 
 class ProfileManager {
   _initialized = false;

@@ -1,5 +1,5 @@
 import express from "express";
-import pluginsRoutes from "../http/routes/plugins";
+import pluginsRoutes from "../http/routes/plugins.js";
 
 export default function _init_HTTPServer() {
   const HOST_HTTP_PORT = 8898;

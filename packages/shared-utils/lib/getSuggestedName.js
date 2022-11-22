@@ -1,4 +1,4 @@
-import getProductInfo from "./getProductInfo";
+import getProductInfo from "./getProductInfo.js";
 
 export default function getSuggestedName(vendorId, productId) {
   if (vendorId) {
