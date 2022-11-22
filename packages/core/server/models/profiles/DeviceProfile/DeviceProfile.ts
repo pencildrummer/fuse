@@ -1,17 +1,20 @@
 import path from "path";
 import { SYSTEM_BASE_PATH } from "../../../constants.js";
 import { pathCase } from "@fuse-labs/shared-utils";
-import { object, string } from "yup";
+import { object, ObjectSchema, SchemaOf, string } from "yup";
 import { Connection, Device as CoreDevice } from "@fuse-labs/types";
+import { logger } from "../../../logger.js";
 
+// TODO: Make validation schema based on DeviceProfile class? Or some TS interface already in place
 export const DEVICE_PROFILE_SCHEMA = object({
   id: string().required(),
   type: string().required(), // Add validation for supported types
   brand: string().required(),
   model: string().required(),
+  path: string().required(),
 
   firmware: string().required(),
-  connection: string().required(), // Add validation for available types of connection
+  connectionType: string().required(), // Add validation for available types of connection
 });
 
 export default class DeviceProfile implements CoreDevice.Profile.BaseInterface {
@@ -47,10 +50,16 @@ export default class DeviceProfile implements CoreDevice.Profile.BaseInterface {
     // Manually set ID on creation
     data.id = [pathCase(data.brand), pathCase(data.model)].join(".");
     // Validate data and set on instance
-    let profileData = DEVICE_PROFILE_SCHEMA.validateSync(data, {
-      stripUnknown: true,
-    });
-    Object.assign(this, profileData);
+    try {
+      let profileData = DEVICE_PROFILE_SCHEMA.validateSync(data, {
+        stripUnknown: true,
+      });
+      Object.assign(this, profileData);
+    } catch (error) {
+      logger.error("Error creating DeviceProfile with data:");
+      logger.debug(data);
+      logger.error(error.message);
+    }
   }
 
   //

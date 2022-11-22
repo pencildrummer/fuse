@@ -4,7 +4,7 @@
   "brand": "Longer",
   "model": "LK4 Pro",
   "firmware": "marlin",
-  "connection": "serial",
+  "connectionType": "serial",
   "volume": {
     "width": 100000,
     "height": 600,

@@ -87,3 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# TS build file
+dist/**/*

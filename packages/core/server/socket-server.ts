@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server as SocketServer, Socket } from "socket.io";
 import { ExtendedError, Namespace } from "socket.io/dist/namespace";
+import { logger } from "./logger.js";
 import { DeviceManager } from "./managers/index.js";
 import { Device } from "./models/index.js";
 import { getDeviceIdFromSocket } from "./utils/index.js";
@@ -18,14 +19,14 @@ export interface InterServerEvents {}
 
 export interface SocketData {}
 
-export declare class CoreSocketServer extends SocketServer<
+export class CoreSocketServer extends SocketServer<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
   SocketData
 > {}
 
-export declare class CoreSocket extends Socket<
+export class CoreSocket extends Socket<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
@@ -48,7 +49,7 @@ export type DeviceNamespace = Namespace<
   DeviceSocketData
 >;
 
-export declare class DeviceSocket extends Socket<
+export class DeviceSocket extends Socket<
   ClientToServerDeviceEvents,
   ServerToClientDeviceEvents,
   InterServerDeviceEvents,
@@ -85,7 +86,7 @@ export async function _start_SocketServer() {
   let port = (process.env.SOCKET_PORT as unknown as number) || 8888;
 
   return httpServer.listen(port, () => {
-    console.log(`> Socket ready on PORT: ${port}`);
+    logger.ready(`> Socket ready on PORT: ${port}`);
   });
 }
 

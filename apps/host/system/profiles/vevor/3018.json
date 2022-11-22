@@ -4,7 +4,7 @@
   "model": "3018",
   "type": "cnc",
   "firmware": "grbl",
-  "connection": "serial",
+  "connectionType": "serial",
   "gCodeVersion": "grbl",
   "volume": {
     "width": 300,

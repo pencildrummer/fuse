@@ -61,7 +61,6 @@ class PluginManager {
 
     // Load installed plugins based on stored plugins.json config file
     let pluginsList = this.getPluginsListInfo();
-    logger.debug(pluginsList);
 
     // Init Plugin(s) based on names and add it to the plugin manager store
     this._plugins = await Object.keys(pluginsList).reduce(
