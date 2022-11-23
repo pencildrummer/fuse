@@ -10,7 +10,7 @@ import { Controller, NetworkConnection } from "../../index.js";
 export const DEVICE_SCHEMA = object({
     id: string().required(),
     name: string().defined().required(),
-    port: string().defined().required(),
+    portPath: string().defined().required(),
     baudrate: number().defined().required(),
     profileId: string().defined().required(),
     serialNumber: string().nullable().default(null),
@@ -70,10 +70,9 @@ export default class Device {
      */
     initDeviceFromPath(filePath) {
         signale.info("Init device from path", filePath);
-        let fileContent = fs.readFileSync(path.resolve(filePath), {
+        let json = fs.readJsonSync(path.resolve(filePath), {
             encoding: "utf-8",
         });
-        let json = JSON.parse(fileContent);
         // Set device data onto instance
         this.fillDeviceWithData(json);
     }
@@ -136,13 +135,14 @@ export default class Device {
      * Manually convert Device instance in storable JSON.
      * @returns JSON data to be stored in file.
      */
+    // TODO: Define a better type for returned JSON?
     toJSON() {
         return {
             id: this.id,
             name: this.name,
             profileId: this.profileId,
             profile: this.profile,
-            port: this.portPath,
+            portPath: this.portPath,
             baudrate: this.baudrate,
             serialNumber: this.serialNumber,
             vendorId: this.vendorId,

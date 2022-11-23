@@ -13,9 +13,11 @@ export default class SerialConnection extends Connection {
   private _serialPort: SerialPort;
   private get serialPort() {
     if (!this._serialPort) {
-      throw new Error(
+      let error = new Error(
         "Trying to access device missing serialPort. Probably the device is not connected and so the serial port is not present on the host. We should improved this error handling behaviour."
       );
+      this.emit("error", error);
+      throw error;
     }
     return this._serialPort;
   }
@@ -37,6 +39,7 @@ export default class SerialConnection extends Connection {
         )}`
       );
       signale.error(error);
+      this.emit("error", error);
     }
   }
 

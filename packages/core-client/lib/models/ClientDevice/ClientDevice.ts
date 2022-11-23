@@ -6,11 +6,11 @@ import { Device } from "@fuse-labs/types";
 import { Socket } from "socket.io-client";
 
 const SCHEMA: SchemaOf<Device.DataType> = object({
-  id: string().defined(),
-  name: string().defined(),
-  port: string().defined(),
-  baudrate: number().defined(),
-  profileId: string().defined(),
+  id: string().defined().required(),
+  name: string().defined().required(),
+  portPath: string().defined().required(),
+  baudrate: number().defined().required(),
+  profileId: string().defined().required(),
 
   serialNumber: string().optional().nullable().default(null),
   vendorId: string().optional().nullable().default(null),
@@ -20,7 +20,7 @@ const SCHEMA: SchemaOf<Device.DataType> = object({
 export default class ClientDevice implements Device.DeviceInterface {
   id: string;
   name: string;
-  port: string;
+  portPath: string;
   baudrate: number;
 
   profileId: string;

@@ -23,7 +23,7 @@ export interface PluginDataType {
   /** Returns if the plugin is a system plugin */
   readonly system: boolean;
   /** Returns allowed device type for this plugin */
-  readonly deviceTypes: Device.Type[];
+  readonly deviceTypes: Device.Profile.Type[];
 }
 
 export interface PluginInterface {
@@ -48,5 +48,5 @@ export interface PluginInterface {
   /** Returns if the plugin is a system plugin */
   readonly system: boolean;
   /** Returns allowed device type for this plugin */
-  readonly deviceTypes: Device.Type[] | null;
+  readonly deviceTypes: Device.Profile.Type[] | null;
 }

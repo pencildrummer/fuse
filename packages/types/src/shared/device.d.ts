@@ -4,7 +4,7 @@ export namespace Device {
   export interface DataType {
     readonly id: string;
     name: string;
-    port: string;
+    portPath: string;
     baudrate: number;
     profileId: string;
 

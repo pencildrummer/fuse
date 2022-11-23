@@ -3,6 +3,10 @@ import { Server as SocketServer, Socket } from "socket.io";
 import { ExtendedError, Namespace } from "socket.io/dist/namespace";
 import { Device } from "./models/index.js";
 export interface ServerToClientEvents {
+    error: (error?: {
+        message: string;
+        code: number;
+    }) => void;
 }
 export interface ClientToServerEvents {
 }
@@ -11,6 +15,7 @@ export interface InterServerEvents {
 export interface SocketData {
 }
 export declare class CoreSocketServer extends SocketServer<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> {
+    error(error: Error): void;
 }
 export declare class CoreSocket extends Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData> {
 }

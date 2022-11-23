@@ -3,8 +3,8 @@ export default async function _bootstrap_() {
     // Override default console to use Fuse logger
     console = logger;
     // Error logger
-    process.on("uncaughtException", (error) => console.error(error.stack));
-    process.on("unhandledRejection", (error) => console.error(error.stack));
+    process.on("uncaughtException", (error) => logger.error(error.stack));
+    process.on("unhandledRejection", (error) => logger.error(error.stack));
     // Initialize ConfigManager
     ConfigManager.shared;
     // Initialize PluginManagers

@@ -5,7 +5,9 @@ import Connection from "../Connection/Connection.js";
 export default class SerialConnection extends Connection {
     get serialPort() {
         if (!this._serialPort) {
-            throw new Error("Trying to access device missing serialPort. Probably the device is not connected and so the serial port is not present on the host. We should improved this error handling behaviour.");
+            let error = new Error("Trying to access device missing serialPort. Probably the device is not connected and so the serial port is not present on the host. We should improved this error handling behaviour.");
+            this.emit("error", error);
+            throw error;
         }
         return this._serialPort;
     }
@@ -19,6 +21,7 @@ export default class SerialConnection extends Connection {
         catch (error) {
             signale.error(`Error creating serial connection on port ${chalk.bold(`${portPath}@${baudRate}`)}`);
             signale.error(error);
+            this.emit("error", error);
         }
     }
     get isOpen() {

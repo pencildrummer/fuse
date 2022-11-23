@@ -13,9 +13,6 @@ export default class Plugin {
         return this.name;
         //return this._fuse.pagesUrl || this.name
     }
-    get hasTabs() {
-        return this._hasTabs;
-    }
     get tabsUrl() {
         // Check url is manually provided or generate one based on plugin name
         return this.name;
@@ -47,7 +44,6 @@ export default class Plugin {
     constructor(name, installPath) {
         this.version = "0.0.0";
         this._settings = false;
-        this._hasTabs = false;
         // Set name
         this.name = name;
         // Set default display name as plugin name
@@ -84,6 +80,7 @@ export default class Plugin {
         // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'index.js'))) {
         //   this._hasPages = true
         // }
+        // Deprecated
         // // Check has tab structure
         // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'tabs', 'index.js'))) {
         //   this._hasTabs = true
@@ -97,14 +94,17 @@ export default class Plugin {
     toJSON() {
         return {
             // ...this,
-            ...JSON.parse(JSON.stringify(this)),
+            name: this.name,
+            displayName: this.displayName,
+            path: this.path,
+            version: this.version,
+            libraryName: this.libraryName,
+            settings: this.settings,
             deviceTypes: this.deviceTypes,
             active: this.active,
             system: this.system,
             hasSocket: this.hasSocket,
             hasDeviceSocket: this.hasDeviceSocket,
-            // path: this.path,
-            // libraryName: this._libraryName,
         };
     }
     /**

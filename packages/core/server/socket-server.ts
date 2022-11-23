@@ -11,7 +11,9 @@ import { getDeviceIdFromSocket } from "./utils/index.js";
 
 // Core socket
 
-export interface ServerToClientEvents {}
+export interface ServerToClientEvents {
+  error: (error?: { message: string; code: number }) => void;
+}
 
 export interface ClientToServerEvents {}
 
@@ -24,7 +26,11 @@ export class CoreSocketServer extends SocketServer<
   ServerToClientEvents,
   InterServerEvents,
   SocketData
-> {}
+> {
+  error(error: Error) {
+    this.emit("error", { message: error.message, code: -1 });
+  }
+}
 
 export class CoreSocket extends Socket<
   ClientToServerEvents,

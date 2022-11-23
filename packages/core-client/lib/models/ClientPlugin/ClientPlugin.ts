@@ -2,24 +2,24 @@ import { Device, PluginInterface } from "@fuse-labs/types";
 import { QuestionMarkIcon } from "@radix-ui/react-icons";
 import lodash from "lodash";
 import React from "react";
-import { array, boolean, object, string } from "yup";
+import { array, boolean, object, SchemaOf, string } from "yup";
 import { ClientDevice } from "..";
 import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
 import { socket } from "../../socket";
 
 // TODO: Reverse yup schema from TS type?
-const CONSTRUCTOR_SCHEMA = object({
-  name: string().required(),
-  _version: string().required(),
-  _deviceTypes: array().required(),
-  _settings: boolean(),
-  _hasPages: boolean(),
-  _hasTabs: boolean(),
-  _hasSocket: boolean(),
-  _hasDeviceSocket: boolean(),
-  //_fuse: object().required(),
-  _active: boolean(),
-  _system: boolean(),
+const ClientPluginSchema: SchemaOf<PluginInterface> = object({
+  name: string().defined().required(),
+  displayName: string().defined().required(),
+  version: string().defined().required(),
+  path: string().defined().required(),
+  libraryName: string().defined().required(),
+  deviceTypes: array().defined().required(),
+  settings: boolean().defined().required(),
+  hasSocket: boolean().defined().required(),
+  hasDeviceSocket: boolean().defined().required(),
+  active: boolean().defined().required(),
+  system: boolean().defined().required(),
 });
 
 // TODO: Check type and improve
@@ -38,16 +38,16 @@ type ClientPluginDeviceComponentsType = {
 
 export default class ClientPlugin implements PluginInterface {
   /* PluginInterface implementation */
-  name: string;
-  version: string;
-  settings: any;
-  path: string;
-  libraryName: string;
-  hasSocket: boolean;
-  hasDeviceSocket: boolean;
-  active: boolean;
-  system: boolean;
-  deviceTypes: Device.Type[];
+  readonly name: string;
+  readonly version: string;
+  readonly settings: any;
+  readonly path: string;
+  readonly libraryName: string;
+  readonly hasSocket: boolean;
+  readonly hasDeviceSocket: boolean;
+  readonly active: boolean;
+  readonly system: boolean;
+  readonly deviceTypes: Device.Profile.Type[];
 
   get url() {
     // Check url is manually provided or generate one based on plugin name
@@ -79,17 +79,36 @@ export default class ClientPlugin implements PluginInterface {
       );
     }
 
-    // Set validated data on instance
-    let pluginData = CONSTRUCTOR_SCHEMA.validateSync(data);
-    Object.assign(this, pluginData);
+    try {
+      // Validate data
+      let pluginData = ClientPluginSchema.validateSync(data);
 
-    // Init plugin socket if needed
-    if (this.hasSocket) {
-      this.socket = socket(this.name);
+      // Set validated data on instance
+
+      this.name = pluginData.name;
+      this.version = pluginData.version;
+      this.settings = pluginData.settings;
+      this.path = pluginData.path;
+      this.libraryName = pluginData.libraryName;
+      this.hasSocket = pluginData.hasSocket;
+      this.hasDeviceSocket = pluginData.hasDeviceSocket;
+      this.active = pluginData.active;
+      this.system = pluginData.system;
+      this.deviceTypes = pluginData.deviceTypes;
+
+      // Init plugin socket if needed
+      if (this.hasSocket) {
+        this.socket = socket(this.name);
+      }
+
+      // Automatically provision plugin on initialization
+      //this.provision();
+    } catch (error) {
+      console.error("Validation error - " + error.message);
+      console.error("Error creating ClientPlugin with data:");
+      console.error(data);
+      console.error(error);
     }
-
-    // Automatically provision plugin on initialization
-    //this.provision();
   }
 
   /**

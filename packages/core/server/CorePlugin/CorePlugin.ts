@@ -88,7 +88,7 @@ export default class CorePlugin extends Plugin {
         let device = DeviceManager.shared.addDevice({
           name,
           profileId,
-          port,
+          portPath: port,
           baudrate,
           serialNumber,
           vendorId,

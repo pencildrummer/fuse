@@ -1,4 +1,4 @@
-import { Device, PluginInterface } from "@fuse-labs/types";
+import { Device, PluginDataType, PluginInterface } from "@fuse-labs/types";
 import fs from "fs-extra";
 import path from "path";
 import signale from "signale";
@@ -23,11 +23,6 @@ export default class Plugin implements PluginInterface {
     // Check url is manually provided or generate one based on plugin name
     return this.name;
     //return this._fuse.pagesUrl || this.name
-  }
-
-  _hasTabs = false;
-  get hasTabs() {
-    return this._hasTabs;
   }
 
   get tabsUrl() {
@@ -116,6 +111,7 @@ export default class Plugin implements PluginInterface {
     //   this._hasPages = true
     // }
 
+    // Deprecated
     // // Check has tab structure
     // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'tabs', 'index.js'))) {
     //   this._hasTabs = true
@@ -128,17 +124,22 @@ export default class Plugin implements PluginInterface {
   }
 
   // TODO: Set DeviceDataType as return type
-  toJSON() {
+  toJSON(): PluginDataType {
     return {
       // ...this,
-      ...JSON.parse(JSON.stringify(this)),
+      name: this.name,
+      displayName: this.displayName,
+      path: this.path,
+      version: this.version,
+
+      libraryName: this.libraryName,
+      settings: this.settings,
+
       deviceTypes: this.deviceTypes,
       active: this.active,
       system: this.system,
       hasSocket: this.hasSocket,
       hasDeviceSocket: this.hasDeviceSocket,
-      // path: this.path,
-      // libraryName: this._libraryName,
     };
   }
 

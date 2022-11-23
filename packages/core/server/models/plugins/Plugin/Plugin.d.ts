@@ -1,4 +1,4 @@
-import { Device, PluginInterface } from "@fuse-labs/types";
+import { Device, PluginDataType, PluginInterface } from "@fuse-labs/types";
 import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
 export default class Plugin implements PluginInterface {
     name: string;
@@ -9,8 +9,6 @@ export default class Plugin implements PluginInterface {
     _settings: boolean;
     get settings(): boolean;
     get url(): string;
-    _hasTabs: boolean;
-    get hasTabs(): boolean;
     get tabsUrl(): string;
     get hasSocket(): boolean;
     get hasDeviceSocket(): boolean;
@@ -18,7 +16,7 @@ export default class Plugin implements PluginInterface {
     get system(): boolean;
     get deviceTypes(): Device.Profile.Type[];
     constructor(name: string, installPath: string);
-    toJSON(): any;
+    toJSON(): PluginDataType;
     /**
      * Called after plugin initialization
      */

@@ -5,6 +5,9 @@ import { logger } from "./logger.js";
 import { DeviceManager } from "./managers/index.js";
 import { getDeviceIdFromSocket } from "./utils/index.js";
 export class CoreSocketServer extends SocketServer {
+    error(error) {
+        this.emit("error", { message: error.message, code: -1 });
+    }
 }
 export class CoreSocket extends Socket {
 }

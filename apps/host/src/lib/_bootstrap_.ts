@@ -5,10 +5,8 @@ export default async function _bootstrap_() {
   console = logger as unknown as Console;
 
   // Error logger
-  process.on("uncaughtException", (error: Error) => console.error(error.stack));
-  process.on("unhandledRejection", (error: Error) =>
-    console.error(error.stack)
-  );
+  process.on("uncaughtException", (error: Error) => logger.error(error.stack));
+  process.on("unhandledRejection", (error: Error) => logger.error(error.stack));
 
   // Initialize ConfigManager
   ConfigManager.shared;

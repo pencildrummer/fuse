@@ -4,7 +4,7 @@ import { Connection } from "../../index.js";
 export declare const DEVICE_SCHEMA: import("yup/lib/object.js").OptionalObjectSchema<{
     id: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     name: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
-    port: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
+    portPath: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     baudrate: import("yup/lib/number.js").RequiredNumberSchema<number, import("yup/lib/types.js").AnyObject>;
     profileId: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     serialNumber: import("yup").StringSchema<string, import("yup/lib/types.js").AnyObject, string>;
@@ -13,7 +13,7 @@ export declare const DEVICE_SCHEMA: import("yup/lib/object.js").OptionalObjectSc
 }, import("yup/lib/object.js").AnyObject, import("yup/lib/object.js").TypeOfShape<{
     id: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     name: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
-    port: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
+    portPath: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     baudrate: import("yup/lib/number.js").RequiredNumberSchema<number, import("yup/lib/types.js").AnyObject>;
     profileId: import("yup/lib/string.js").RequiredStringSchema<string, import("yup/lib/types.js").AnyObject>;
     serialNumber: import("yup").StringSchema<string, import("yup/lib/types.js").AnyObject, string>;
@@ -56,16 +56,6 @@ export default class Device implements CoreDevice.DeviceInterface {
      * Manually convert Device instance in storable JSON.
      * @returns JSON data to be stored in file.
      */
-    toJSON(): {
-        id: string;
-        name: string;
-        profileId: string;
-        profile: CoreDevice.Profile.BaseInterface;
-        port: string;
-        baudrate: number;
-        serialNumber: string;
-        vendorId: string;
-        productId: string;
-    };
+    toJSON(): CoreDevice.DeviceInterface;
 }
 //# sourceMappingURL=Device.d.ts.map
