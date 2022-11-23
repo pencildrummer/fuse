@@ -5,8 +5,8 @@ import {
   PluginManager,
   useDeviceMiddleware,
   logger,
+  CoreSocketServer,
 } from "@fuse-labs/core";
-import { CoreSocketServer } from "@fuse-labs/core/server/socket-server";
 
 export default async function _init_PluginsSocket() {
   // Get list of plugins
@@ -35,7 +35,7 @@ export default async function _init_PluginsSocket() {
         );
 
         // Add debug disconnect listener
-        socket.on("disconnect", (_) => {
+        socket.on("disconnect", () => {
           signale.complete(
             "Disconnected from plugin socket:",
             chalk.bold(socket.nsp.name)

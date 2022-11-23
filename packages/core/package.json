@@ -5,10 +5,11 @@
   "files": [
     "server"
   ],
-  "main": "./server/index.js",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "echo \"No build for @fuse-labs/core\" && exit 0",
+    "build": "yarn pnpify tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rm -rf node_modules"
   },
@@ -36,6 +37,7 @@
     "@types/serialport": "^8.0.2",
     "@types/signale": "^1.4.4",
     "@types/uuid": "^8.3.4",
+    "@yarnpkg/pnpify": "^4.0.0-rc.31",
     "typescript": "^4.9.3"
   }
 }

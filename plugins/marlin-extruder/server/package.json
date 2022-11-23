@@ -6,6 +6,7 @@
   "author": "Fabio Borella",
   "license": "ISC",
   "type": "module",
+  "exports": "./index.js",
   "dependencies": {
     "@fuse-labs/core": "workspace:^"
   }

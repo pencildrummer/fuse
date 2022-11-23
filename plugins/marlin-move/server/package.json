@@ -5,6 +5,7 @@
   "author": "Fabio Borella",
   "license": "ISC",
   "type": "module",
+  "exports": "./index.js",
   "fuse": {
     "title": "[Marlin] Movement and position",
     "icon": "MoveIcon",

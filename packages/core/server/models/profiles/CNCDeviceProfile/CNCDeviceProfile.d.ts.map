@@ -1,1 +1,0 @@
-{"version":3,"file":"CNCDeviceProfile.d.ts","sourceRoot":"","sources":["CNCDeviceProfile.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,kBAAkB,CAAC;AAC1C,OAAO,aAAa,MAAM,mCAAmC,CAAC;AAE9D,MAAM,CAAC,OAAO,OAAO,gBACnB,SAAQ,aACR,YAAW,MAAM,CAAC,OAAO,CAAC,YAAY;gBAE1B,IAAI,EAAE,MAAM,CAAC,OAAO,CAAC,WAAW;CAG7C"}

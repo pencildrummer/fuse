@@ -2934,6 +2934,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/serialport", "npm:8.0.2"],\
             ["@types/signale", "npm:1.4.4"],\
             ["@types/uuid", "npm:8.3.4"],\
+            ["@yarnpkg/pnpify", "npm:4.0.0-rc.31"],\
             ["chalk", "npm:5.1.2"],\
             ["express", "npm:4.18.2"],\
             ["fs-extra", "npm:10.1.0"],\

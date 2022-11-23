@@ -5,6 +5,7 @@
   "author": "Fabio Borella",
   "license": "MIT",
   "type": "module",
+  "exports": "./index.js",
   "dependencies": {
     "@fuse-labs/core": "workspace:^",
     "@fuse-labs/marlin-core-server": "workspace:^"

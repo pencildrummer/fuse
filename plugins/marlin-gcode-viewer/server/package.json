@@ -5,6 +5,7 @@
   "type": "module",
   "private": true,
   "author": "Fabio Borella",
+  "exports": "./index.js",
   "license": "ISC",
   "fuse": {
     "title": "[Marlin] GCode Viewer",

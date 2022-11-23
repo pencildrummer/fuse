@@ -4,14 +4,14 @@
   "version": "1.0.0",
   "description": "Fuse - host server",
   "private": true,
-  "main": "src/server.js",
+  "main": "./dist/server.js",
   "type": "module",
   "scripts": {
     "lint": "echo \"No linting configured\"",
-    "dev": "yarn pnpify tsc -b && yarn node --inspect src/server.js",
+    "dev": "yarn pnpify tsc -b && yarn node --inspect dist/server.js",
     "build": "yarn pnpify tsc -b",
     "clean": "yarn pnpify tsc -b --clean",
-    "start": "yarn node src/server.js"
+    "start": "yarn node dist/server.js"
   },
   "keywords": [],
   "author": {

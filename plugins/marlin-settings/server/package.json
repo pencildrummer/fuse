@@ -2,6 +2,8 @@
   "name": "@fuse-labs/marlin-settings-server",
   "type": "module",
   "private": true,
+  "version": "0.1",
+  "exports": "./index.js",
   "dependencies": {
     "@fuse-labs/core": "workspace:^"
   }

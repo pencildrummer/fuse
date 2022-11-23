@@ -36,12 +36,19 @@
       }
     },
     {
-      "name": "HOST - Launch",
+      "name": "HOST - Attach",
       "type": "node",
-      // "command": "yarn host:dev",
+      // "command": "yarn host:dev","
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
       "processId": "${command:PickProcess}"
+    },
+    {
+      "name": "HOST - Launch",
+      "type": "node-terminal",
+      "command": "yarn workspace host start",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

@@ -4,12 +4,9 @@
   "description": "Camera core plugin for FUSE",
   "private": true,
   "type": "module",
+  "exports": "./index.js",
   "author": "Fabio Borella",
   "license": "ISC",
-  "fuse": {
-    "title": "Camera",
-    "icon": "CameraIcon"
-  },
   "dependencies": {
     "@fuse-labs/core": "workspace:^"
   }
