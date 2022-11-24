@@ -25,7 +25,7 @@ export default async function _init_Socket() {
   io.of(devicePath)
     .use(useDeviceMiddleware)
     .on("connection", async (deviceSocket) => {
-      logger.start(
+      logger.ready(
         "Connected device socket:",
         chalk.blueBright(deviceSocket.nsp.name)
       );

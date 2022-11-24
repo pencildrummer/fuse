@@ -22,7 +22,7 @@ export default async function _init_PluginsSocket() {
       let path = `/${nsPluginName}`;
       // Create server namespace
       io.of(path).on("connection", (socket) => {
-        logger.start(
+        logger.ready(
           "Connected to plugin namespace:",
           chalk.bold(socket.nsp.name)
         );

@@ -49,7 +49,7 @@ class ConfigManager extends BaseManager {
 
     this._initialized = true;
 
-    logger.success("ConfigManager is now ready!");
+    logger.ready("ConfigManager is now ready!");
   }
 
   save() {

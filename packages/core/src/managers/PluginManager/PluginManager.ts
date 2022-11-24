@@ -96,7 +96,7 @@ class PluginManager extends BaseManager {
 
     this._initialized = true;
 
-    logger.success("PluginManager is now ready!");
+    logger.ready("PluginManager is now ready!");
   }
 
   async loadSystemPlugin(systemPluginInfo: PluginInfo) {

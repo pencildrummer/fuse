@@ -55,7 +55,7 @@ class ProfileManager extends BaseManager {
 
     this._initialized = true;
 
-    logger.success("ProfileManager is now ready!");
+    logger.ready("ProfileManager is now ready!");
   }
 
   getProfile(profileId: DeviceProfile["id"]) {

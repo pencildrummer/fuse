@@ -52,7 +52,7 @@ class DeviceManager extends BaseManager {
 
     this._initialized = true;
 
-    logger.success("DeviceManager is now ready!");
+    logger.ready("DeviceManager is now ready!");
   }
 
   getDevice(deviceId: Device["id"]) {
