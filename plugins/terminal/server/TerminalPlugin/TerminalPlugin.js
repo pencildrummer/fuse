@@ -234,7 +234,7 @@ export default class TerminalPlugin extends Plugin {
       );
     });
 
-    logger.star(
+    logger.start(
       "Added terminal to device ",
       chalk.bold(device.name),
       device.id

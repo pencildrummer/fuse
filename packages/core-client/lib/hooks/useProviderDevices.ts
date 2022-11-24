@@ -3,19 +3,22 @@ import { useEffect, useState } from "react";
 import ClientDeviceManager from "../managers/ClientDeviceManager/ClientDeviceManager";
 
 export default function useProviderDevices(data: Device.DataType[]) {
-  const [devices, setDevices] = useState(ClientDeviceManager.devices);
+  const [devices, setDevices] = useState(ClientDeviceManager.shared.devices);
 
   useEffect(() => {
     if (!data) return;
-    ClientDeviceManager.init(data);
-    setDevices(ClientDeviceManager.devices);
+    ClientDeviceManager.shared.init(data);
+    setDevices(ClientDeviceManager.shared.devices);
   }, [data]);
 
   useEffect(() => {
-    const updateState = (_) => setDevices(ClientDeviceManager.devices);
-    ClientDeviceManager.addEventListener("updatedDevices", updateState);
+    const updateState = (_) => setDevices(ClientDeviceManager.shared.devices);
+    ClientDeviceManager.shared.addEventListener("updatedDevices", updateState);
     return () => {
-      ClientDeviceManager.removeEventListener("updatedDevices", updateState);
+      ClientDeviceManager.shared.removeEventListener(
+        "updatedDevices",
+        updateState
+      );
     };
   }, []);
 

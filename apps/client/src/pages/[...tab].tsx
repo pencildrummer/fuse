@@ -34,7 +34,8 @@ export default function DynamicPage({ ...props }) {
   }, [router.isReady]);
 
   const plugin = useMemo(
-    () => (pluginName ? ClientPluginManager.getPlugin(pluginName) : false),
+    () =>
+      pluginName ? ClientPluginManager.shared.getPlugin(pluginName) : false,
     [pluginName]
   );
 

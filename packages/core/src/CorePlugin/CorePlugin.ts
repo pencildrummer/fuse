@@ -4,6 +4,8 @@ import {
   ProfileManager,
   DeviceManager,
   ConfigManager,
+  CoreSocket,
+  AppManager,
 } from "../index.js";
 import { SerialPort } from "serialport";
 import { DeviceType } from "../models/index.js";
@@ -18,19 +20,13 @@ export default class CorePlugin extends Plugin {
     ];
   }
 
-  initSocket(socket) {
+  initSocket(socket: CoreSocket): void {
     /**
      * Core data
      */
-    // TODO: Should be emit? emit from server an listen from client
-    socket.on("app:data", (fn) => {
-      let data = {
-        devices: DeviceManager.devices,
-        plugins: PluginManager.plugins,
-        profiles: ProfileManager.profiles,
-        config: ConfigManager.config,
-      };
-      fn?.(data);
+    // Respond with app data when requested
+    socket.on("app:data:get", (fn) => {
+      fn?.(AppManager.data);
     });
 
     /**
@@ -49,13 +45,13 @@ export default class CorePlugin extends Plugin {
      * Plugins
      */
 
-    socket.on("plugins:activate", async (pluginName, fn) => {
+    socket.on("plugins:activate", (pluginName, fn) => {
       PluginManager.activate(pluginName);
       socket.emit("plugins:activated", pluginName);
       fn?.(true);
     });
 
-    socket.on("plugins:deactivate", async (pluginName, fn) => {
+    socket.on("plugins:deactivate", (pluginName, fn) => {
       PluginManager.deactivate(pluginName);
       socket.emit("plugins:deactivated", pluginName);
       fn?.(true);
@@ -65,43 +61,18 @@ export default class CorePlugin extends Plugin {
      * Devices
      */
 
-    socket.on(
-      "devices:add",
-      async (
-        {
-          name,
-          profile,
-          profileId,
-          port,
-          baudrate,
-          serialNumber,
-          vendorId,
-          productId,
-        },
-        fn
-      ) => {
-        if (profile) {
-          // TODO - Add device profile on the go, for custom profiles while saving device
-          profileId = profile.id;
-        }
-        // Add device to the system
-        let device = DeviceManager.addDevice({
-          name,
-          profileId,
-          portPath: port,
-          baudrate,
-          serialNumber,
-          vendorId,
-          productId,
-        });
-        if (device) {
-          // Broadcast new device creation
-          socket.emit("devices:added", device);
-        }
-        // Return created device to callback function
-        fn(device);
+    socket.on("devices:add", async (data, fn) => {
+      // TODO - Add device profile on the go, for custom profiles while saving device
+      // if (profile) {  }
+      // Add device to the system
+      let device = DeviceManager.addDevice(data);
+      if (device) {
+        // Broadcast new device creation
+        socket.emit("devices:added", device);
       }
-    );
+      // Return created device to callback function
+      fn(device);
+    });
 
     // Update
 
@@ -124,9 +95,9 @@ export default class CorePlugin extends Plugin {
       if (device) {
         // Broadcast new device creation
         socket.emit("devices:removed", device);
+        // Return updated device to callback function
+        fn?.(device);
       }
-      // Return updated device to callback function
-      fn?.(device);
     });
 
     /**

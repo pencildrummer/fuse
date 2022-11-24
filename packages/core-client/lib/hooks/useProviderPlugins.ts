@@ -11,15 +11,15 @@ export default function useProviderPlugins(data: {
   useEffect(() => {
     if (!data) return;
 
-    setManagerReady(ClientPluginManager.ready);
+    setManagerReady(ClientPluginManager.shared.ready);
 
     let initializeClientManager = async () => {
-      if (!ClientPluginManager.ready) {
+      if (!ClientPluginManager.shared.ready) {
         console.log("Initializing ClietPluginManager with data", data);
-        await ClientPluginManager.init(data);
-        setPlugins(ClientPluginManager.plugins);
-        console.log("READY?", ClientPluginManager.ready);
-        setManagerReady(ClientPluginManager.ready);
+        await ClientPluginManager.shared.init(data);
+        setPlugins(ClientPluginManager.shared.plugins);
+        console.log("READY?", ClientPluginManager.shared.ready);
+        setManagerReady(ClientPluginManager.shared.ready);
       }
     };
 
@@ -28,7 +28,7 @@ export default function useProviderPlugins(data: {
 
   useEffect(() => {
     function handleActivation(pluginName) {
-      let plugin = ClientPluginManager.getPlugin(pluginName);
+      let plugin = ClientPluginManager.shared.getPlugin(pluginName);
       // TODO - Improve this? Tshi should throw, update from host instead
       plugin.active = true;
       // Trigger state update
@@ -36,7 +36,7 @@ export default function useProviderPlugins(data: {
     }
 
     function handleDeactivation(pluginName) {
-      let plugin = ClientPluginManager.getPlugin(pluginName);
+      let plugin = ClientPluginManager.shared.getPlugin(pluginName);
       // TODO - Improve this? Tshi should throw, update from host instead
       plugin.active = false;
       // Trigger state update
@@ -53,7 +53,7 @@ export default function useProviderPlugins(data: {
     };
   }, []);
 
-  const [plugins, setPlugins] = useState(ClientPluginManager.plugins);
+  const [plugins, setPlugins] = useState(ClientPluginManager.shared.plugins);
 
   return managerReady ? plugins : undefined;
 }

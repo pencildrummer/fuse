@@ -67,7 +67,7 @@ export default class ClientPlugin implements PluginInterface {
 
   // Retrieve device compatible with plugin
   get devices() {
-    return ClientDeviceManager.devices.filter((device) =>
+    return ClientDeviceManager.shared.devices.filter((device) =>
       this.deviceTypes.includes(device.profile.type)
     );
   }

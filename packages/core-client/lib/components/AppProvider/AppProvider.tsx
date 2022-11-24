@@ -26,8 +26,8 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
       setError(error);
     });
 
-    // TODO: Should be on? Emit from server listen on client
-    coreSocket.emit("app:data", (data) => {
+    // Request update app data
+    coreSocket.emit("app:data:get", (data) => {
       if (data) {
         // Set loaded app data on provider internal state
         setAppData(data);

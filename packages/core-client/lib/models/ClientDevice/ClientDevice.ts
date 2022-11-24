@@ -36,7 +36,7 @@ export default class ClientDevice implements Device.DeviceInterface {
    * Return active plugins compatible with this device
    */
   get plugins() {
-    return ClientPluginManager.activePlugins.filter((plugin) =>
+    return ClientPluginManager.shared.activePlugins.filter((plugin) =>
       plugin.deviceTypes.includes(this.profile.type)
     );
   }
@@ -45,7 +45,7 @@ export default class ClientDevice implements Device.DeviceInterface {
    * Return all compatible plugins with this device
    */
   get allPlugins(): ClientPlugin[] {
-    return ClientPluginManager.plugins.filter((plugin) =>
+    return ClientPluginManager.shared.plugins.filter((plugin) =>
       plugin.deviceTypes.includes(this.profile.type)
     );
   }

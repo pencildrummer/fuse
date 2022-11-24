@@ -1,3 +1,4 @@
+import { ConfigDataType } from "@fuse-labs/types";
 import fs from "fs-extra";
 import path from "path";
 import * as url from "url";
@@ -9,7 +10,7 @@ import getProxiedManager from "../getProxiedManager.js";
 let instance: ConfigManager;
 
 class ConfigManager extends BaseManager {
-  _config = {};
+  _config: ConfigDataType = {};
   get config() {
     return this._config;
   }

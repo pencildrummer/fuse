@@ -39,7 +39,7 @@ class ClientDeviceManager extends EventTarget {
     return this._devices.find((device) => device.id == deviceId);
   }
 
-  getDevicesForType(deviceType: Device.Type) {
+  getDevicesForType(deviceType: Device.Profile.Type) {
     return this._devices.filter((device) => device.profile.type == deviceType);
   }
 
@@ -78,11 +78,11 @@ class ClientDeviceManager extends EventTarget {
 }
 
 class Singleton {
-  static sharedInstance: ClientDeviceManager;
+  private static sharedInstance: ClientDeviceManager;
   constructor() {
     throw new Error("Use ClientDeviceManager instead");
   }
-  static get shared() {
+  public static get shared() {
     if (!Singleton.sharedInstance) {
       Singleton.sharedInstance = new ClientDeviceManager();
     }

@@ -1,3 +1,3 @@
 export interface ConfigDataType {
-  pluginsDirectory: string;
+  pluginsDirectory?: string;
 }

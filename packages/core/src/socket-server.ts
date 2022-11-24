@@ -1,3 +1,4 @@
+import { AppDataType } from "@fuse-labs/types";
 import express from "express";
 import { createServer } from "http";
 import { Server as SocketServer, Socket } from "socket.io";
@@ -5,6 +6,7 @@ import { ExtendedError, Namespace } from "socket.io/dist/namespace";
 import { logger } from "./logger.js";
 import { DeviceManager } from "./managers/index.js";
 import { Device } from "./models/index.js";
+import { Device as CoreDevice } from "@fuse-labs/types";
 import { getDeviceIdFromSocket } from "./utils/index.js";
 
 // --  Move into separate d file
@@ -12,10 +14,80 @@ import { getDeviceIdFromSocket } from "./utils/index.js";
 // Core socket
 
 export interface ServerToClientEvents {
+  // Broadcast app data
+  "app:data": (data: AppDataType) => void;
   error: (error?: { message: string; code: number }) => void;
+
+  // Plugins
+  "plugins:activated": (pluginName: string) => void;
+  "plugins:deactivated": (pluginName: string) => void;
+
+  // Devices
+  "devices:added": (device: CoreDevice.DataType) => void;
+  "devices:updated": (device: CoreDevice.DataType) => void;
+  "devices:removed": (device: CoreDevice.DataType) => void;
+
+  // Profiles
+  "profiles:added": (profile: CoreDevice.Profile.BaseDataType) => void;
+  "profiles:updated": (profile: CoreDevice.Profile.BaseDataType) => void;
+  "profiles:deleted": (
+    profileId: CoreDevice.Profile.BaseDataType["id"]
+  ) => void;
 }
 
-export interface ClientToServerEvents {}
+export interface ClientToServerEvents {
+  // Request updated app data
+  "app:data:get": (callback: (data: AppDataType) => void) => void;
+
+  // Serial
+  "serial:list": (callback: (list: any[]) => void) => void;
+
+  // Plugins
+  "plugins:activate": (
+    pluginName: string,
+    callback: (result: boolean) => void
+  ) => void;
+  "plugins:deactivate": (
+    pluginName: string,
+    callback: (result: boolean) => void
+  ) => void;
+
+  // Devices
+  "devices:add": (
+    data: CoreDevice.DataType,
+    callback: (device: CoreDevice.DataType) => void
+  ) => void;
+  "devices:update": (
+    deviceId: CoreDevice.DeviceInterface["id"],
+    data: CoreDevice.DataType,
+    callback: (device: CoreDevice.DataType) => void
+  ) => void;
+  "devices:remove": (
+    deviceId: CoreDevice.DeviceInterface["id"],
+    callback: (device: CoreDevice.DataType) => void
+  ) => void;
+
+  // Devices connection
+  "devices:connection:check": (
+    deviceId: string,
+    callback: (portInfo: any) => void
+  ) => void;
+
+  // Profiles
+  "profiles:add": (
+    profile: CoreDevice.Profile.BaseDataType,
+    callback: (profile: CoreDevice.Profile.BaseInterface) => void
+  ) => void;
+  "profiles:update": (
+    profileId: CoreDevice.Profile.BaseInterface["id"],
+    profileData: CoreDevice.Profile.BaseDataType,
+    callback: (profile: CoreDevice.Profile.BaseInterface) => void
+  ) => void;
+  "profiles:delete": (
+    profileId: CoreDevice.Profile.BaseInterface["id"],
+    callback: (result: boolean) => void
+  ) => void;
+}
 
 export interface InterServerEvents {}
 

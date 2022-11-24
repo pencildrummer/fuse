@@ -36,7 +36,7 @@ class ClientPluginManager extends EventTarget {
       console.log("Handling updatedDevices");
       this.provisionPlugins();
     };
-    ClientDeviceManager.addEventListener("updatedDevices", handler);
+    ClientDeviceManager.shared.addEventListener("updatedDevices", handler);
   }
 
   async init(installedPluginsData: { [key: string]: PluginDataType }) {
@@ -245,7 +245,7 @@ class Singleton {
     return Singleton.sharedInstance;
   }
 
-  // Frowarding static method to register plugin because we are exporting Singleton instance of ClientPluginManager
+  // Forwarding static method to register plugin because we are exporting Singleton instance of ClientPluginManager
   // Maybe found a cleaner way later on
   static registerPlugin = ClientPluginManager.registerPlugin;
 }

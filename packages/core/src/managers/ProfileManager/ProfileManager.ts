@@ -15,7 +15,7 @@ import getProxiedManager from "../getProxiedManager.js";
 let instance: ProfileManager;
 
 class ProfileManager extends BaseManager {
-  private _profiles: { [key: string]: DeviceProfile } = {};
+  private _profiles: { [profileId: string]: DeviceProfile } = {};
   get profiles() {
     return this._profiles;
   }
