@@ -32,7 +32,7 @@ class ClientConfigManager extends EventTarget {
 class Singleton {
   static sharedInstance: ClientConfigManager;
   constructor() {
-    throw new Error("Use ClientConfigManager.shared instead");
+    throw new Error("Use ClientConfigManager instead");
   }
   static get shared() {
     if (!Singleton.sharedInstance) {

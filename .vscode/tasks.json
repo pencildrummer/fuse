@@ -1,37 +1,45 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "npm",
-			"script": "lint",
-			"problemMatcher": [],
-			"label": "npm: lint",
-			"detail": "next lint"
-		},
-		{
-			"type": "npm",
-			"script": "start",
-			"path": "docs/",
-			"problemMatcher": [],
-			"label": "npm: start - docs",
-			"detail": "docusaurus start --port=3001"
-		},
-		{
-			"type": "npm",
-			"script": "dev-watch",
-			"path": "host-app/",
-			"group": "build",
-			"problemMatcher": [],
-			"label": "npm: dev-watch - host-app",
-			"detail": "nodemon src/server.mjs"
-		},
-		{
-			"type": "npm",
-			"script": "dev",
-			"path": "client-app/",
-			"problemMatcher": [],
-			"label": "npm: dev - client-app",
-			"detail": "node src/server.mjs"
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [],
+      "label": "npm: lint",
+      "detail": "next lint"
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "path": "docs/",
+      "problemMatcher": [],
+      "label": "npm: start - docs",
+      "detail": "docusaurus start --port=3001"
+    },
+    {
+      "type": "npm",
+      "script": "dev-watch",
+      "path": "host-app/",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: dev-watch - host-app",
+      "detail": "nodemon src/server.mjs"
+    },
+    {
+      "type": "npm",
+      "script": "dev",
+      "path": "client-app/",
+      "problemMatcher": [],
+      "label": "npm: dev - client-app",
+      "detail": "node src/server.mjs"
+    },
+    {
+      "type": "npm",
+      "script": "host:build",
+      "group": "build",
+      "problemMatcher": [],
+      "label": "npm: host:build",
+      "detail": "yarn workspace host build"
+    }
+  ]
 }

@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import { Request, Response } from "express";
 
 const getLogo = (req: Request, res: Response) => {
-  let plugin = PluginManager.shared.getPlugin(
+  let plugin = PluginManager.getPlugin(
     path.join(req.params.pluginScope, req.params.pluginName)
   );
 

@@ -25,10 +25,10 @@ export default class CorePlugin extends Plugin {
     // TODO: Should be emit? emit from server an listen from client
     socket.on("app:data", (fn) => {
       let data = {
-        devices: DeviceManager.shared.devices,
-        plugins: PluginManager.shared.plugins,
-        profiles: ProfileManager.shared.profiles,
-        config: ConfigManager.shared.config,
+        devices: DeviceManager.devices,
+        plugins: PluginManager.plugins,
+        profiles: ProfileManager.profiles,
+        config: ConfigManager.config,
       };
       fn?.(data);
     });
@@ -50,13 +50,13 @@ export default class CorePlugin extends Plugin {
      */
 
     socket.on("plugins:activate", async (pluginName, fn) => {
-      PluginManager.shared.activate(pluginName);
+      PluginManager.activate(pluginName);
       socket.emit("plugins:activated", pluginName);
       fn?.(true);
     });
 
     socket.on("plugins:deactivate", async (pluginName, fn) => {
-      PluginManager.shared.deactivate(pluginName);
+      PluginManager.deactivate(pluginName);
       socket.emit("plugins:deactivated", pluginName);
       fn?.(true);
     });
@@ -85,7 +85,7 @@ export default class CorePlugin extends Plugin {
           profileId = profile.id;
         }
         // Add device to the system
-        let device = DeviceManager.shared.addDevice({
+        let device = DeviceManager.addDevice({
           name,
           profileId,
           portPath: port,
@@ -107,7 +107,7 @@ export default class CorePlugin extends Plugin {
 
     socket.on("devices:update", async (deviceId, data, fn) => {
       // Add device to the system
-      let device = DeviceManager.shared.updateDevice(deviceId, data);
+      let device = DeviceManager.updateDevice(deviceId, data);
       if (device) {
         // Broadcast new device creation
         socket.emit("devices:updated", device);
@@ -120,7 +120,7 @@ export default class CorePlugin extends Plugin {
 
     socket.on("devices:remove", async (deviceId, fn) => {
       // Add device to the system
-      let device = DeviceManager.shared.removeDevice(deviceId);
+      let device = DeviceManager.removeDevice(deviceId);
       if (device) {
         // Broadcast new device creation
         socket.emit("devices:removed", device);
@@ -135,7 +135,7 @@ export default class CorePlugin extends Plugin {
 
     // Check if device is available by searching and comparing metadata of serial ports avaialble
     socket.on("devices:connection:check", async (deviceId, fn) => {
-      let device = DeviceManager.shared.getDevice(deviceId);
+      let device = DeviceManager.getDevice(deviceId);
       let list = await SerialPort.list();
       let devicePort = list.find((port) => port.path == device.portPath);
       return fn?.(devicePort);
@@ -145,7 +145,7 @@ export default class CorePlugin extends Plugin {
      * Profiles
      */
     socket.on("profiles:add", async (profileData, fn) => {
-      let profile = ProfileManager.shared.addProfile(profileData);
+      let profile = ProfileManager.addProfile(profileData);
       if (profile) {
         socket.emit("profiles:added", profile);
       }
@@ -153,7 +153,7 @@ export default class CorePlugin extends Plugin {
     });
 
     socket.on("profiles:update", async (id, profileData, fn) => {
-      let profile = ProfileManager.shared.updateProfile(id, profileData);
+      let profile = ProfileManager.updateProfile(id, profileData);
       if (profile) {
         socket.emit("profiles:updated", profile);
       }
@@ -161,7 +161,7 @@ export default class CorePlugin extends Plugin {
     });
 
     socket.on("profiles:delete", async (id, fn) => {
-      if (ProfileManager.shared.deleteProfile(id)) {
+      if (ProfileManager.deleteProfile(id)) {
         socket.emit("profiles:deleted", id);
         fn(true);
       }

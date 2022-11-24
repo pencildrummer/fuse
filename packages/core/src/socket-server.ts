@@ -107,7 +107,7 @@ export function useDeviceMiddleware(
   let deviceId = getDeviceIdFromSocket(socket);
   if (!deviceId)
     return next(new Error("Missing device ID in socket namespace"));
-  let device = DeviceManager.shared.getDevice(deviceId);
+  let device = DeviceManager.getDevice(deviceId);
   if (!device)
     return next(
       new Error(`Socket unavailable. Device not found with id "${deviceId}"`)

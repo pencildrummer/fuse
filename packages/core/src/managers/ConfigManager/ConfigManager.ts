@@ -1,29 +1,32 @@
-import signale from "signale";
-import path from "path";
 import fs from "fs-extra";
+import path from "path";
 import * as url from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
+import { logger } from "../../logger.js";
+import BaseManager from "../BaseManager.js";
+import getProxiedManager from "../getProxiedManager.js";
 
-class ConfigManager {
+let instance: ConfigManager;
+
+class ConfigManager extends BaseManager {
   _config = {};
   get config() {
     return this._config;
   }
 
-  _initialized = false;
-  get initialized() {
-    return this._initialized;
-  }
-
   constructor() {
-    this.init();
+    super();
+
+    if (instance)
+      throw new Error("Created new shared ConfigManager is not permitted");
+    instance = this;
   }
 
   init() {
     if (this._initialized)
       throw new Error("Trying to re-initialize ConfigManager");
 
-    signale.pending("Initializing ConfigManager");
+    logger.pending("ConfigManager is initializing...");
 
     // Retrieve default config to merge even if there is an existing config file in the app
     const __dirname = url.fileURLToPath(new URL("..", import.meta.url));
@@ -46,7 +49,7 @@ class ConfigManager {
 
     this._initialized = true;
 
-    signale.success("DeviceManager is now ready");
+    logger.success("ConfigManager is now ready!");
   }
 
   save() {
@@ -56,19 +59,6 @@ class ConfigManager {
     );
   }
 }
-// Export shared manager
-class Singleton {
-  private static sharedInstance: ConfigManager;
-  constructor() {
-    throw new Error("Use ConfigManager.shared instead");
-  }
 
-  static get shared() {
-    if (!Singleton.sharedInstance) {
-      signale.note("New shared instance of ConfigManager");
-      Singleton.sharedInstance = new ConfigManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-export default Singleton;
+const configManager = getProxiedManager(new ConfigManager());
+export default configManager;

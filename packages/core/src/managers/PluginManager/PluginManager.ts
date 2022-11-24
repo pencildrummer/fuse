@@ -1,7 +1,6 @@
 import chalk from "chalk";
 import fs from "fs-extra";
 import path from "path";
-import signale from "signale";
 import { pathToFileURL } from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
 import Plugin from "../../models/plugins/Plugin/Plugin.js";
@@ -19,8 +18,12 @@ const PLUGINS_LIST_FILE_PATH = path.resolve(
 import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };
 
 import { logger } from "../../logger.js";
+import BaseManager from "../BaseManager.js";
+import getProxiedManager from "../getProxiedManager.js";
 
-class PluginManager {
+let instance: PluginManager;
+
+class PluginManager extends BaseManager {
   get SYSTEM_PLUGIN_NAMES() {
     return Object.keys(__SYSTEM_PLUGINS__);
   }
@@ -44,17 +47,19 @@ class PluginManager {
     //return this._plugins.find((plugin) => plugin.name == name);
   }
 
-  private _initialized = false;
-
   constructor() {
-    //
+    super();
+
+    if (instance)
+      throw new Error("Created new shared ConfigManager is not permitted");
+    instance = this;
   }
 
   async init() {
     if (this._initialized)
       throw new Error("Trying to re-initialize PluginManager");
 
-    logger.pending("Initializing PluginManager");
+    logger.pending("PluginManager is initializing...");
 
     // Set system plugins as always active
     this._activePluginsNames = [...Object.keys(__SYSTEM_PLUGINS__)];
@@ -91,7 +96,7 @@ class PluginManager {
 
     this._initialized = true;
 
-    signale.success("PluginManager is now ready");
+    logger.success("PluginManager is now ready!");
   }
 
   async loadSystemPlugin(systemPluginInfo: PluginInfo) {
@@ -235,7 +240,7 @@ class PluginManager {
             )}`
           );
         }
-        signale.success(
+        logger.success(
           `${chalk.green(
             pluginName + "/server"
           )}: module found, using "${chalk.green.bold(
@@ -247,7 +252,7 @@ class PluginManager {
       .catch((err) => {
         switch (err.code) {
           case "ERR_PACKAGE_PATH_NOT_EXPORTED":
-            signale.warn(
+            logger.warn(
               `${chalk.yellow(
                 pluginName + "/server"
               )}: not loaded, "${chalk.bold.yellow(
@@ -258,8 +263,8 @@ class PluginManager {
           case "ERR_MODULE_NOT_FOUND":
           // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
           default:
-            signale.error(err);
-            signale.warn(
+            logger.error(err);
+            logger.warn(
               `${chalk.yellow(
                 pluginName + "/server"
               )}: module not found, using generic ${chalk.yellow(
@@ -298,7 +303,7 @@ class PluginManager {
   /** Get installed plugin info, without system plugins */
   getInstalledPluginsListInfo(): { [key: string]: PluginInfo } {
     if (!fs.existsSync(PLUGINS_LIST_FILE_PATH)) {
-      signale.warn(
+      logger.warn(
         "No plugins list path to load from. This should be an error, at least an empty configuration plugins.json file should exists."
       );
       return {};
@@ -362,7 +367,7 @@ class PluginManager {
       JSON.stringify(pluginsListInfo, null, 2)
     );
 
-    signale.success(
+    logger.success(
       `Changed plugin ${chalk.magenta(plugin.name)} active state to ${
         active ? chalk.greenBright("active") : chalk.redBright("not active")
       }`
@@ -370,20 +375,5 @@ class PluginManager {
   }
 }
 
-// Export shared manager
-class Singleton {
-  private static sharedInstance: PluginManager;
-  constructor() {
-    throw new Error("User PluginManager.shared instead");
-  }
-
-  static get shared() {
-    if (!Singleton.sharedInstance) {
-      signale.note("New shared instance of PluginManager");
-      Singleton.sharedInstance = new PluginManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-
-export default Singleton;
+const pluginManager = getProxiedManager(new PluginManager());
+export default pluginManager;

@@ -1,27 +1,35 @@
+import { Device as CoreDevice } from "@fuse-labs/types";
 import fs from "fs-extra";
 import path from "path";
-import signale from "signale";
 import { DEVICES_BASE_PATH } from "../../constants.js";
+import { logger } from "../../logger.js";
 import Device from "../../models/devices/Device/Device.js";
-import { Device as CoreDevice } from "@fuse-labs/types";
+import BaseManager from "../BaseManager.js";
+import getProxiedManager from "../getProxiedManager.js";
 
-class DeviceManager {
+let instance: DeviceManager;
+
+class DeviceManager extends BaseManager {
   private _devices: Device[] = [];
   get devices() {
     return this._devices;
   }
 
-  _initialized = false;
-
   constructor() {
-    this.init();
+    super();
+    if (instance)
+      throw new Error("Created new shared ConfigManager is not permitted");
+    instance = this;
+
+    // // Automatically init on creation
+    // this.init();
   }
 
   init() {
     if (this._initialized)
       throw new Error("Trying to re-initialize DeviceManager");
 
-    signale.pending("Initializing DeviceManager");
+    logger.pending("DeviceManager is initializing...");
 
     // Ensure directory exists, if dir has been removed it will be created
     fs.ensureDirSync(DEVICES_BASE_PATH);
@@ -44,7 +52,7 @@ class DeviceManager {
 
     this._initialized = true;
 
-    signale.success("DeviceManager is now ready");
+    logger.success("DeviceManager is now ready!");
   }
 
   getDevice(deviceId: Device["id"]) {
@@ -77,7 +85,7 @@ class DeviceManager {
   removeDevice(deviceId: Device["id"]) {
     let device = this.getDevice(deviceId);
     if (!device) {
-      return signale.error("Unable found device to remove -", deviceId);
+      return logger.error("Unable found device to remove -", deviceId);
     }
     // Remove device file from file system
     device.delete();
@@ -88,19 +96,5 @@ class DeviceManager {
   }
 }
 
-// Export shared manager
-class Singleton {
-  private static sharedInstance: DeviceManager;
-  constructor() {
-    throw new Error("User DeviceManager.shared instead");
-  }
-
-  static get shared() {
-    if (!Singleton.sharedInstance) {
-      signale.note("New shared instance of DeviceManager");
-      Singleton.sharedInstance = new DeviceManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-export default Singleton;
+const deviceManager = getProxiedManager(new DeviceManager());
+export default deviceManager;

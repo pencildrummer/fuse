@@ -44,11 +44,51 @@
       "processId": "${command:PickProcess}"
     },
     {
-      "name": "HOST - Launch",
+      "name": "HOST - Build",
       "type": "node-terminal",
-      "command": "yarn workspace host start",
       "request": "launch",
-      "skipFiles": ["<node_internals>/**"]
+      "command": "yarn host:build"
+    },
+    // {
+    //   "name": "HOST - Launch",
+    //   //"type": "node-terminal",
+    //   //"command": "yarn workspace host start",
+    //   "type": "node",
+    //   "runtimeExecutable": "yarn",
+    //   "runtimeArgs": ["workspace", "host", "node"],
+    //   "program": "./dist/server.js",
+    //   "request": "launch",
+    //   "preLaunchTask": "npm: host:build",
+    //   "cwd": "${workspaceFolder}/apps/host",
+    //   "skipFiles": ["<node_internals>/**"],
+    //   "outFiles": [
+    //     "${workspaceFolder}/apps/host/dist/**/*.js",
+    //     "${workspaceFolder}/packages/**/*.js",
+    //     "${workspaceFolder}/plugins/**/*.js",
+    //     "!**/node_modules/**"
+    //   ]
+    // },
+    {
+      "name": "HOST - Launch",
+      //"type": "node-terminal",
+      //"command": "yarn workspace host start",
+      "type": "node",
+      "runtimeExecutable": "yarn",
+      "runtimeArgs": ["workspace", "host", "node"],
+      "program": "./dist/server.js",
+      "request": "launch",
+      "preLaunchTask": "npm: host:build",
+      "cwd": "${workspaceFolder}/apps/host",
+      "skipFiles": ["<node_internals>/**"],
+      "outputCapture": "std", // Probably console not working because console is overriden by logger, check threadExit
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "outFiles": [
+        "${workspaceFolder}/apps/host/dist/**/*.js",
+        "${workspaceFolder}/packages/**/*.js",
+        "${workspaceFolder}/plugins/**/*.js",
+        "!**/node_modules/**"
+      ]
     }
   ]
 }

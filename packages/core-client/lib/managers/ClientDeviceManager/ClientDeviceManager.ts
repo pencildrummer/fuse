@@ -80,7 +80,7 @@ class ClientDeviceManager extends EventTarget {
 class Singleton {
   static sharedInstance: ClientDeviceManager;
   constructor() {
-    throw new Error("Use ClientDeviceManager.shared instead");
+    throw new Error("Use ClientDeviceManager instead");
   }
   static get shared() {
     if (!Singleton.sharedInstance) {

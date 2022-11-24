@@ -3,6 +3,7 @@ import fs from "fs-extra";
 import path from "path";
 import signale from "signale";
 import { camelcase } from "varname";
+import { logger } from "../../../logger.js";
 import PluginManager from "../../../managers/PluginManager/PluginManager.js";
 import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
 import { DeviceType } from "../../devices/index.js";
@@ -47,11 +48,11 @@ export default class Plugin implements PluginInterface {
   }
 
   get active() {
-    return PluginManager.shared.activePluginsNames.includes(this.name);
+    return PluginManager.activePluginsNames.includes(this.name);
   }
 
   get system() {
-    return PluginManager.shared.SYSTEM_PLUGIN_NAMES.includes(this.name);
+    return PluginManager.SYSTEM_PLUGIN_NAMES.includes(this.name);
   }
 
   // TODO - Improve this method, like default values, value for all devices, etc.
@@ -77,15 +78,15 @@ export default class Plugin implements PluginInterface {
     if (fs.existsSync(packagePath)) {
       let packageInfo = fs.readJsonSync(packagePath);
 
-      signale.info(`Setting plugin info from package.json for ${name}`);
+      logger.info(`Setting plugin info from package.json for ${name}`);
 
       // Set version from package if not manually set
       this.version = packageInfo.version;
     } else {
-      signale.warn(
+      logger.warn(
         `No package.json found for ${name}. Skipping retrieving info such as version from package.json.`
       );
-      signale.warn("    Searched at", packagePath);
+      logger.warn("    Searched at", packagePath);
     }
 
     // // Add fuse key to safely add custom settings if not provided by package.json

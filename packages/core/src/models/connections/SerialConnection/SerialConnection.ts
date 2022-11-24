@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import { SerialPort } from "serialport";
 import signale from "signale";
+import { logger } from "../../../logger.js";
 import Connection from "../Connection/Connection.js";
 
 // SerialPort doe not export ErrorCallback error workaround
@@ -33,12 +34,12 @@ export default class SerialConnection extends Connection {
       this.opts = opts;
       this.initSerialPort(portPath, callback);
     } catch (error) {
-      signale.error(
+      logger.error(
         `Error creating serial connection on port ${chalk.bold(
           `${portPath}@${baudRate}`
         )}`
       );
-      signale.error(error);
+      logger.error(error);
       this.emit("error", error);
     }
   }
@@ -114,12 +115,12 @@ export default class SerialConnection extends Connection {
       signale
         .scope(this.constructor.name)
         .error("Error on port path", portPath, "@", this.baudRate);
-      signale.scope(this.constructor.name).error(err);
+      logger.child({ scope: this.constructor.name }).error(err);
       this.emit("error", err);
     });
 
     this._serialPort.on("data", (rawData) => {
-      //signale.scope(this.constructor.name).info('Received data on SerialConnection:', rawData)
+      //logger.scope(this.constructor.name).info('Received data on SerialConnection:', rawData)
       this.emit("data", rawData);
     });
   }

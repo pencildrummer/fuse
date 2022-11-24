@@ -5,7 +5,7 @@ import signale from "signale";
 import { v4 as uuid } from "uuid";
 import { number, object, string } from "yup";
 import { DEVICES_BASE_PATH } from "../../../constants.js";
-import { ProfileManager, socketServer } from "../../../index.js";
+import { logger, ProfileManager, socketServer } from "../../../index.js";
 import { DeviceNamespace } from "../../../socket-server.js";
 import SerialConnection from "../../connections/SerialConnection/SerialConnection.js";
 import { Connection, Controller, NetworkConnection } from "../../index.js";
@@ -72,7 +72,7 @@ export default class Device implements CoreDevice.DeviceInterface {
       // Store device data
       fs.writeFileSync(this.path, JSON.stringify(deviceData, null, 2));
     } catch (err) {
-      signale.error("Unable to store new device", err);
+      logger.error("Unable to store new device", err);
     }
   }
 
@@ -86,7 +86,7 @@ export default class Device implements CoreDevice.DeviceInterface {
       // Remove stored file
       fs.unlinkSync(this.path);
     } catch (err) {
-      return signale.error("Unable to remove device", err);
+      return logger.error("Unable to remove device", err);
     }
   }
 
@@ -95,7 +95,7 @@ export default class Device implements CoreDevice.DeviceInterface {
    */
 
   initDeviceFromPath(filePath: string) {
-    signale.info("Init device from path", filePath);
+    logger.info("Init device from path", filePath);
     let json = fs.readJsonSync(path.resolve(filePath), {
       encoding: "utf-8",
     });
@@ -127,7 +127,7 @@ export default class Device implements CoreDevice.DeviceInterface {
    */
   private configureDevice() {
     // Expand profile with id
-    this.profile = ProfileManager.shared.getProfile(this.profileId);
+    this.profile = ProfileManager.getProfile(this.profileId);
     // Set connection
 
     switch (this.profile.connectionType) {

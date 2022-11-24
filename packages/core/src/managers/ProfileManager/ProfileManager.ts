@@ -5,27 +5,37 @@ import fs from "fs-extra";
 import path from "path";
 import signale from "signale";
 import { PROFILES_BASE_PATH, SYSTEM_BASE_PATH } from "../../constants.js";
+import { logger } from "../../logger.js";
 import { DeviceProfile } from "../../models/index.js";
 import CNCDeviceProfile from "../../models/profiles/CNCDeviceProfile/CNCDeviceProfile.js";
 import PrinterDeviceProfile from "../../models/profiles/DeviceProfile/PrinterDeviceProfile.js";
+import BaseManager from "../BaseManager.js";
+import getProxiedManager from "../getProxiedManager.js";
 
-class ProfileManager {
-  _initialized = false;
+let instance: ProfileManager;
 
+class ProfileManager extends BaseManager {
   private _profiles: { [key: string]: DeviceProfile } = {};
   get profiles() {
     return this._profiles;
   }
 
   constructor() {
-    this.init();
+    super();
+
+    if (instance)
+      throw new Error("Created new shared ConfigManager is not permitted");
+    instance = this;
+
+    // Automatically init
+    // this.init();
   }
 
   init() {
     if (this._initialized)
       throw new Error("Trying to re-initialize ProfileManager");
 
-    signale.pending("Initializing ProfileManager");
+    logger.pending("ProfileManager is initializing.. ");
 
     let brandDirectories = fs
       .readdirSync(PROFILES_BASE_PATH, { withFileTypes: true })
@@ -45,7 +55,7 @@ class ProfileManager {
 
     this._initialized = true;
 
-    signale.success("ProfileManager is now ready");
+    logger.success("ProfileManager is now ready!");
   }
 
   getProfile(profileId: DeviceProfile["id"]) {
@@ -79,7 +89,7 @@ class ProfileManager {
     id: DeviceProfile["id"],
     profileData: Device.Profile.BaseDataType
   ) {
-    signale.info("Updating profile", id);
+    logger.info("Updating profile", id);
     if (!id) {
       throw new Error("Profile ID to update not provided");
     }
@@ -185,20 +195,5 @@ class ProfileManager {
   }
 }
 
-// Export shared manager
-class Singleton {
-  private static sharedInstance: ProfileManager;
-  constructor() {
-    throw new Error("User ProfileManager.shared instead");
-  }
-
-  static get shared() {
-    if (!Singleton.sharedInstance) {
-      signale.note("New shared instance of ProfileManager");
-      Singleton.sharedInstance = new ProfileManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-
-export default Singleton;
+const profileManager = getProxiedManager(new ProfileManager());
+export default profileManager;

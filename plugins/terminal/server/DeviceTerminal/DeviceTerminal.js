@@ -1,33 +1,36 @@
-import chalk from 'chalk'
-import signale from 'signale'
-import { EventEmitter } from 'events'
+import chalk from "chalk";
+import signale from "signale";
+import { EventEmitter } from "events";
+import { logger } from "@fuse-labs/core";
 
 export default class DeviceTerminal extends EventEmitter {
-
   // _serialPort;
   // get serialPort() { return this._serialPort }
-  get isOpen() { return this._device.connection?.isOpen || false }
+  get isOpen() {
+    return this._device.connection?.isOpen || false;
+  }
 
   // Device
   _device;
 
   constructor(device) {
-    super()
+    super();
     try {
-      if (!device.connection)
-        throw new Error('No connection on device')
-      if (!device.controller) 
-        throw new Error('No controller on device')
+      if (!device.connection) throw new Error("No connection on device");
+      if (!device.controller) throw new Error("No controller on device");
       // Add reference to device
-      this._device = device
+      this._device = device;
       // Add listener to controller
-      this._device.controller.on('open', _ => this.emit('open'))
-      this._device.controller.on('close', _ => this.emit('close'))
-      this._device.controller.on('write', data => this.emit('write', data))
-      this._device.controller.on('data', data => this.emit('data', data))
-      this._device.controller.on('error', err => this.emit('error', err))
-    } catch(error) {
-      signale.error('Error creating terminal for device '+chalk.redBright(device.id), error)
+      this._device.controller.on("open", (_) => this.emit("open"));
+      this._device.controller.on("close", (_) => this.emit("close"));
+      this._device.controller.on("write", (data) => this.emit("write", data));
+      this._device.controller.on("data", (data) => this.emit("data", data));
+      this._device.controller.on("error", (err) => this.emit("error", err));
+    } catch (error) {
+      logger.error(
+        "Error creating terminal for device " + chalk.redBright(device.id),
+        error
+      );
     }
   }
 
@@ -35,7 +38,7 @@ export default class DeviceTerminal extends EventEmitter {
    * Request serial port connection to open (through device controller)
    */
   open(callback) {
-    this._device.controller.openConnection(callback)
+    this._device.controller.openConnection(callback);
     //this._device.connection.open(callback)
     //this._serialPort.open(callback)
   }
@@ -44,15 +47,15 @@ export default class DeviceTerminal extends EventEmitter {
    * Request serial port connection to close (through device controller)
    */
   close(callback) {
-    signale.info('Requesting closing connection for device ')
-    this._device.controller.closeConnection(callback)
+    logger.info("Requesting closing connection for device ");
+    this._device.controller.closeConnection(callback);
     //this._device.connection.close(callback)
   }
 
   // /**
   //  * Add event listener to serial port connection
-  //  * @param {string} eventName 
-  //  * @param {*} listener 
+  //  * @param {string} eventName
+  //  * @param {*} listener
   //  */
   // on(eventName, listener) {
   //   switch (eventName) {
@@ -68,8 +71,8 @@ export default class DeviceTerminal extends EventEmitter {
 
   // /**
   //  * Remove event listener from serial port connection
-  //  * @param {string} eventName 
-  //  * @param {*} listener 
+  //  * @param {string} eventName
+  //  * @param {*} listener
   //  */
   // off(eventName, listener) {
   //   switch (eventName) {
@@ -83,16 +86,19 @@ export default class DeviceTerminal extends EventEmitter {
 
   /**
    * Send message on device serial port
-   * @param {string | Buffer} message 
-   * @returns 
+   * @param {string | Buffer} message
+   * @returns
    */
   send(message, encoding, callback, wait = false) {
     if (!this.isOpen) {
-      return this.emit('error', new Error('Unable to send message. Port is not open.'))
+      return this.emit(
+        "error",
+        new Error("Unable to send message. Port is not open.")
+      );
     }
-    signale.info('Sending message', message)
-    
-    this._device.controller.write(message)
+    logger.info("Sending message", message);
+
+    this._device.controller.write(message);
     //this._serialPort.write(message, encoding)
 
     // let shouldDrain = this._serialPort.write(message, encoding, wait ? undefined : callback)

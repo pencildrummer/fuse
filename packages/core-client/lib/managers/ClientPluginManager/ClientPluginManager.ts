@@ -36,7 +36,7 @@ class ClientPluginManager extends EventTarget {
       console.log("Handling updatedDevices");
       this.provisionPlugins();
     };
-    ClientDeviceManager.shared.addEventListener("updatedDevices", handler);
+    ClientDeviceManager.addEventListener("updatedDevices", handler);
   }
 
   async init(installedPluginsData: { [key: string]: PluginDataType }) {
@@ -236,7 +236,7 @@ class ClientPluginManager extends EventTarget {
 class Singleton {
   private static sharedInstance: ClientPluginManager;
   constructor() {
-    throw new Error("Use ClienPluginManager.shared instead");
+    throw new Error("Use ClienPluginManager instead");
   }
   public static get shared(): ClientPluginManager {
     if (!Singleton.sharedInstance) {
