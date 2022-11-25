@@ -26,20 +26,28 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
       setError(error);
     });
 
-    // Request update app data
-    coreSocket.emit("app:data:get", (data) => {
-      if (data) {
-        // Set loaded app data on provider internal state
-        setAppData(data);
-        setError(null);
-        console.log("Updated app data", data);
-      } else {
-        let error = new Error("Error retrieving app data. No data received!");
-        console.error(error);
-        setError(error);
-      }
-    });
+    reloadAppData();
   }, []);
+
+  function reloadAppData() {
+    // Request update app data
+    return new Promise((resolve, reject) => {
+      coreSocket.emit("app:data:get", (data) => {
+        if (data) {
+          // Set loaded app data on provider internal state
+          setAppData(data);
+          setError(null);
+          console.log("Updated app data", data);
+          resolve(data);
+        } else {
+          let error = new Error("Error retrieving app data. No data received!");
+          console.error(error);
+          setError(error);
+          reject(error);
+        }
+      });
+    });
+  }
 
   const profiles = useProviderProfiles(appData?.devices);
   const plugins = useProviderPlugins(appData?.plugins);
@@ -79,7 +87,7 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
   }, [config, plugins, devices, profiles]);
 
   if (error) {
-    return <AppErrorView error={error} />;
+    return <AppErrorView error={error} onRefresh={reloadAppData} />;
   }
 
   if (isReady) {

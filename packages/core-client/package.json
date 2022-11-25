@@ -17,6 +17,7 @@
     "yup": "^0.32.11"
   },
   "peerDependencies": {
+    "@fuse-labs/core-ui": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
     "is-electron": "*",
     "react": "^18.2.0",
@@ -24,6 +25,7 @@
     "react-intl": "^6.1.1"
   },
   "devDependencies": {
+    "@fuse-labs/core-ui": "workspace:^",
     "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/types": "workspace:^",
     "@types/node": "^18.11.9",

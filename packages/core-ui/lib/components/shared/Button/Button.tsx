@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React, { useMemo } from "react";
+import Loader from "../Loader/Loader";
 import styles from "./Button.module.scss";
 
 interface Props extends React.ComponentPropsWithoutRef<"button"> {
@@ -9,11 +10,21 @@ interface Props extends React.ComponentPropsWithoutRef<"button"> {
   size?: "xs" | "sm";
   mode?: "normal" | "ghost";
   type?: null | "submit";
+  loading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLElement, Props>(
   (
-    { as = "button", squared, rounded, size, mode = "normal", type, ...props },
+    {
+      as = "button",
+      squared,
+      rounded,
+      size,
+      mode = "normal",
+      type,
+      loading = false,
+      ...props
+    },
     ref
   ) => {
     let ButtonComponent = as;
@@ -48,7 +59,9 @@ const Button = React.forwardRef<HTMLElement, Props>(
           props.className
         )}
         {...props}
-      />
+      >
+        {loading ? <Loader /> : props.children}
+      </ButtonComponent>
     );
   }
 );
