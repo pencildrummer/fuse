@@ -138,7 +138,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@fuse-labs/camera-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/camera/client", "workspace:plugins/camera/client"]],\
       ["@fuse-labs/camera-server", ["workspace:plugins/camera/server"]],\
       ["@fuse-labs/core", ["workspace:packages/core"]],\
-      ["@fuse-labs/core-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client", "workspace:packages/core-client"]],\
+      ["@fuse-labs/core-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client", "virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client", "workspace:packages/core-client"]],\
       ["@fuse-labs/core-ui", ["virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#workspace:packages/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui", "workspace:packages/core-ui"]],\
       ["@fuse-labs/file-manager-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/file-manager/client", "workspace:plugins/file-manager/client"]],\
       ["@fuse-labs/file-manager-server", ["workspace:plugins/file-manager/server"]],\
@@ -2991,6 +2991,42 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-client-virtual-0a0b92a3b9/1/packages/core-client/",\
+          "packageDependencies": [\
+            ["@fuse-labs/core-client", "virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "workspace:packages/core-ui"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@fuse-labs/types", "workspace:packages/types"],\
+            ["@radix-ui/react-icons", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#npm:1.1.1"],\
+            ["@types/fuse-labs__core-ui", null],\
+            ["@types/fuse-labs__shared-utils", null],\
+            ["@types/is-electron", null],\
+            ["@types/node", "npm:18.11.9"],\
+            ["@types/react", "npm:18.0.25"],\
+            ["@types/react-dom", "npm:18.0.9"],\
+            ["@types/react-intl", null],\
+            ["is-electron", "npm:2.2.1"],\
+            ["lodash", "npm:4.17.21"],\
+            ["react", null],\
+            ["react-dom", null],\
+            ["react-intl", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#npm:6.2.1"],\
+            ["socket.io-client", "npm:4.5.3"],\
+            ["yup", "npm:0.32.11"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-ui",\
+            "@types/fuse-labs__core-ui",\
+            "@types/fuse-labs__shared-utils",\
+            "@types/is-electron",\
+            "@types/react-dom",\
+            "@types/react-intl",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["workspace:packages/core-client", {\
           "packageLocation": "./packages/core-client/",\
           "packageDependencies": [\
@@ -3146,6 +3182,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/core-ui/",\
           "packageDependencies": [\
             ["@fuse-labs/core-ui", "workspace:packages/core-ui"],\
+            ["@fuse-labs/core-client", "virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client"],\
             ["@fuse-labs/types", "workspace:packages/types"],\
             ["@radix-ui/react-alert-dialog", "virtual:14bb851eae48e9c4aaab09db33668df8ee087686105d93873f13ca330744c9da1fd2ec3e3759e0047af3b45a4ea0851e28cd2f52c8f7bb28404b6dd78f968ae5#npm:1.0.2"],\
             ["@radix-ui/react-aspect-ratio", "virtual:14bb851eae48e9c4aaab09db33668df8ee087686105d93873f13ca330744c9da1fd2ec3e3759e0047af3b45a4ea0851e28cd2f52c8f7bb28404b6dd78f968ae5#npm:1.0.1"],\

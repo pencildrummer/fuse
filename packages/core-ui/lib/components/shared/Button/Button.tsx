@@ -11,6 +11,7 @@ interface Props extends React.ComponentPropsWithoutRef<"button"> {
   mode?: "normal" | "ghost";
   type?: null | "submit";
   loading?: boolean;
+  hideChildrenOnLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLElement, Props>(
@@ -23,6 +24,7 @@ const Button = React.forwardRef<HTMLElement, Props>(
       mode = "normal",
       type,
       loading = false,
+      hideChildrenOnLoading = false,
       ...props
     },
     ref
@@ -36,7 +38,7 @@ const Button = React.forwardRef<HTMLElement, Props>(
       <ButtonComponent
         ref={ref}
         className={classNames(
-          "inline-flex select-none items-center justify-center text-sm font-medium",
+          "inline-flex select-none items-center justify-center text-sm font-medium space-x-2",
           styles.btn,
           {
             "btn-xs": size == "xs",
@@ -60,7 +62,10 @@ const Button = React.forwardRef<HTMLElement, Props>(
         )}
         {...props}
       >
-        {loading ? <Loader /> : props.children}
+        {loading && <Loader />}
+        {((loading && !hideChildrenOnLoading) || !loading) && (
+          <span>{props.children}</span>
+        )}
       </ButtonComponent>
     );
   }

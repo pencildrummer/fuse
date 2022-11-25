@@ -3,23 +3,26 @@ import {
   QuestionMarkCircledIcon,
 } from "@radix-ui/react-icons";
 import { Button } from "@fuse-labs/core-ui";
-import { useState } from "react";
+import useAppContext from "../../hooks/useAppContext";
+import AppError from "../../errors/AppError";
+import AppConnectionError from "../../errors/AppConnectionError";
+import AppDataError from "../../errors/AppDataError";
 
 type Props = {
-  error: Error;
-  onRefresh: () => Promise<any>;
+  error: AppError;
 };
 
-export default function AppErrorView({ error, onRefresh }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
+export default function AppErrorView({ error }: Props) {
+  const { connect, requestAppData, connecting, loading } = useAppContext();
 
-  function handleRetry() {
-    setIsLoading(true);
-    console.log("Retrying");
-    onRefresh()
-      .then((res) => console.log("RES", res))
-      .catch((err) => console.log("Error"))
-      .finally(() => setIsLoading(false));
+  function handleRetryConnect() {
+    console.log("Retrying connecting...");
+    connect();
+  }
+
+  function handleRetryRequestAppData() {
+    console.log("Retrying requetsing app data...");
+    requestAppData();
   }
 
   return (
@@ -35,12 +38,25 @@ export default function AppErrorView({ error, onRefresh }: Props) {
           </div>
 
           <div>
-            <Button
-              onClick={onRefresh ? handleRetry : undefined}
-              loading={isLoading}
-            >
-              Retry
-            </Button>
+            {error instanceof AppConnectionError && (
+              <Button
+                onClick={handleRetryConnect}
+                loading={connecting}
+                disabled={connecting}
+              >
+                {connecting ? "Reconneting..." : "Reconnect"}
+              </Button>
+            )}
+
+            {error instanceof AppDataError && (
+              <Button
+                onClick={handleRetryRequestAppData}
+                loading={loading}
+                disabled={loading}
+              >
+                {loading ? "Retrying..." : "Retry"}
+              </Button>
+            )}
           </div>
         </div>
       </div>

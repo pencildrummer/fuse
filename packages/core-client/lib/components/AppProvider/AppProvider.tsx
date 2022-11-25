@@ -9,30 +9,58 @@ import AppLoadingView from "./AppLoadingView/AppLoadingView";
 import isElectron from "is-electron";
 import { coreSocket } from "../../socket";
 import AppErrorView from "./AppErrorView";
+import { AppDataType } from "@fuse-labs/types";
+import AppError from "../../errors/AppError";
+import AppConnectionError from "../../errors/AppConnectionError";
+import AppConnectingView from "./AppConnectingView";
 
 const cache = createIntlCache();
 
 export default function AppProvider({ locale = "en", messages, ...props }) {
   const [appData, setAppData] = useState(null);
-  const [error, setError] = useState(null);
+
+  // Use mirror of coreSocket?
+  const [connected, setConnected] = useState<boolean>(false);
+  const [connecting, setConnecting] = useState<boolean>(false);
+  const [error, setError] = useState<AppError | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Main startup function
   useEffect(() => {
-    coreSocket.connect();
+    // Init socket base listeners
+    coreSocket.on("connect", () => {
+      setConnecting(false);
+      setError(null);
+      setConnected(true);
+      // Once connected request app data
+      requestAppData();
+    });
 
     coreSocket.on("connect_error", (err) => {
-      let error = new Error("Error connecting to coreSocket", { cause: err });
+      let error = new AppConnectionError(err);
       console.error(error);
+      setConnected(false);
+      setConnecting(false);
       setError(error);
     });
 
-    reloadAppData();
+    // Connect to core socket
+    connect();
   }, []);
 
-  function reloadAppData() {
+  function connect() {
+    console.log("Connecting");
+    // TODO: Prevent calling connect() on already connected or connecting states?
+    setConnecting(true);
+    coreSocket.connect();
+  }
+
+  function requestAppData(): Promise<AppDataType | Error> {
     // Request update app data
     return new Promise((resolve, reject) => {
+      setLoading(true);
       coreSocket.emit("app:data:get", (data) => {
+        setLoading(false);
         if (data) {
           // Set loaded app data on provider internal state
           setAppData(data);
@@ -77,7 +105,7 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     [locale, messages]
   );
 
-  const isReady = useMemo(() => {
+  const ready = useMemo(() => {
     return (
       Boolean(config) &&
       Boolean(plugins) &&
@@ -86,28 +114,34 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     );
   }, [config, plugins, devices, profiles]);
 
-  if (error) {
-    return <AppErrorView error={error} onRefresh={reloadAppData} />;
-  }
+  return (
+    <AppContext.Provider
+      value={{
+        connected,
+        connecting,
+        loading,
+        ready,
+        isElectron,
+        config,
+        devices,
+        profiles,
+        plugins,
+        activePlugins,
+        intl,
 
-  if (isReady) {
-    return (
-      <AppContext.Provider
-        value={{
-          isReady,
-          isElectron,
-          config,
-          devices,
-          profiles,
-          plugins,
-          activePlugins,
-          intl,
-        }}
-      >
+        connect,
+        requestAppData,
+      }}
+    >
+      {connecting ? (
+        <AppConnectingView />
+      ) : error ? (
+        <AppErrorView error={error} />
+      ) : ready ? (
         <RawIntlProvider value={intl}>{props.children}</RawIntlProvider>
-      </AppContext.Provider>
-    );
-  } else {
-    return <AppLoadingView />;
-  }
+      ) : (
+        <AppLoadingView />
+      )}
+    </AppContext.Provider>
+  );
 }

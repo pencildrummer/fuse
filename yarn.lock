@@ -1634,6 +1634,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@fuse-labs/core-ui@workspace:packages/core-ui"
   dependencies:
+    "@fuse-labs/core-client": "workspace:^"
     "@fuse-labs/types": "workspace:^"
     "@radix-ui/react-alert-dialog": ^1.0.0
     "@radix-ui/react-aspect-ratio": ^1.0.0

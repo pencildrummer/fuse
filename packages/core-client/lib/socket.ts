@@ -9,9 +9,11 @@ const SOCKET_HOST = "http://localhost:8888";
  */
 function socket(namespace) {
   let ns = [SOCKET_HOST, namespace].join("/").replace("@", "scope:");
-  let socket = io(ns);
+  let socket = io(ns, {
+    autoConnect: false,
+  });
   socket.on("connect", () => {
-    // console.log('Connected to socket namespace: ', namespace || '/')
+    console.log("Connected to socket namespace: ", namespace || "/");
   });
   return socket;
 }

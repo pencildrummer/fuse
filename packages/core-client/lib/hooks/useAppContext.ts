@@ -1,10 +1,18 @@
-import { ClientDeviceProfile, ConfigDataType } from "@fuse-labs/types";
+import {
+  AppDataType,
+  ClientDeviceProfile,
+  ConfigDataType,
+} from "@fuse-labs/types";
 import React, { useContext } from "react";
 import { IntlShape } from "react-intl";
+import AppError from "../errors/AppError";
 import { ClientDevice, ClientPlugin } from "../models";
 
 interface AppContextInterface {
-  isReady: boolean;
+  connected: boolean;
+  connecting: boolean;
+  loading: boolean;
+  ready: boolean;
   isElectron: () => boolean;
   devices?: ClientDevice[];
   plugins?: ClientPlugin[];
@@ -12,6 +20,9 @@ interface AppContextInterface {
   profiles?: { [x: string]: ClientDeviceProfile[] };
   config?: ConfigDataType;
   intl: IntlShape;
+
+  connect: () => void;
+  requestAppData: () => Promise<AppDataType | AppError>;
 }
 
 export const AppContext = React.createContext<AppContextInterface | null>(null);
