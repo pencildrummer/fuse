@@ -1,6 +1,9 @@
+import { Device } from "@fuse-labs/types";
 import React, { useContext } from "react";
 
-interface DeviceContextInterface {}
+interface DeviceContextInterface {
+  device: Device.DeviceInterface;
+}
 
 export const DeviceContext = React.createContext<DeviceContextInterface | null>(
   null

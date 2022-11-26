@@ -12,10 +12,6 @@
     "react": "^18",
     "react-dom": "^18"
   },
-  "fuse": {
-    "title": "Camera",
-    "icon": "CameraIcon"
-  },
   "dependencies": {
     "@radix-ui/react-aspect-ratio": "^1.0.0"
   }

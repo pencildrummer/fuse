@@ -3,7 +3,7 @@
   "description": "CoreUI plugin for FUSE",
   "private": true,
   "version": "1.0.0",
-  "main": "./lib/index.js",
+  "main": "./lib/index.ts",
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.0.0",
     "@radix-ui/react-aspect-ratio": "^1.0.0",
@@ -39,11 +39,13 @@
   },
   "devDependencies": {
     "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
     "@fuse-labs/types": "workspace:^",
     "@svgr/webpack": "^6.3.1",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
-    "@types/react-dom": "^18.0.9"
+    "@types/react-dom": "^18.0.9",
+    "next": "^12.1.0"
   },
   "fuse": {
     "title": "Core UI"

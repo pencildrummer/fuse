@@ -17,12 +17,14 @@
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
+    // "outDir": "dist",
     "emitDeclarationOnly": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.jsx", "**/*.js"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"],
+  "references": [{ "path": "../core-ui" }, { "path": "../shared-utils" }]
 }

@@ -32,7 +32,7 @@ type Props = React.PropsWithChildren<{
   title?: React.ReactNode;
   version?: string;
   full?: boolean;
-  className: string;
+  className?: string;
 }>;
 let asd: Props["title"];
 

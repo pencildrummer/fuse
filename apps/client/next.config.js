@@ -1,5 +1,4 @@
 const withTM = require("next-transpile-modules")([
-  // TODO - Make dynamic? Or leave it hardcode because plugins will be loaded runtime later?
   "@fuse-labs/core-ui",
   "@fuse-labs/core-client",
   "@fuse-labs/shared-utils",
@@ -49,46 +48,45 @@ const config = {
       config.externals = [...config.externals, "utf-8-validate", "bufferutil"];
     }
 
-    if (!options.isServer) {
-      config.module.rules.push({
-        test: require.resolve("react"),
-        loader: "expose-loader",
-        options: {
-          exposes: "React",
-        },
-      });
+    // if (!options.isServer) {
+    //   config.module.rules.push({
+    //     test: require.resolve("react"),
+    //     loader: "expose-loader",
+    //     options: {
+    //       exposes: "React",
+    //     },
+    //   });
 
-      config.module.rules.push({
-        test: require.resolve("react-dom"),
-        loader: "expose-loader",
-        options: {
-          exposes: "ReactDOM",
-        },
-      });
+    //   config.module.rules.push({
+    //     test: require.resolve("react-dom"),
+    //     loader: "expose-loader",
+    //     options: {
+    //       exposes: "ReactDOM",
+    //     },
+    //   });
 
-      config.module.rules.push({
-        test: require.resolve("@fuse-labs/core-client"),
-        loader: "expose-loader",
-        options: {
-          exposes: "CoreClient",
-        },
-      });
+    //   config.module.rules.push({
+    //     test: require.resolve("@fuse-labs/core-client"),
+    //     loader: "expose-loader",
+    //     options: {
+    //       exposes: "CoreClient",
+    //     },
+    //   });
 
-      config.module.rules.push({
-        test: require.resolve("@fuse-labs/core-ui"),
-        loader: "expose-loader",
-        options: {
-          exposes: "CoreUi",
-        },
-      });
-    }
+    //   config.module.rules.push({
+    //     test: require.resolve("@fuse-labs/core-ui"),
+    //     loader: "expose-loader",
+    //     options: {
+    //       exposes: "CoreUi",
+    //     },
+    //   });
+    // }
 
     //console.log('Adding loader - ', options.isServer ? 'SERVER' : 'CLIENT')
 
     // SVG Loader for @fuse-labs/core-ui package
     config.module.rules.push({
       test: /\.svg$/i,
-      // issuer: { and: [/\.(js|ts)x?$/] },
       use: ["@svgr/webpack"],
     });
 

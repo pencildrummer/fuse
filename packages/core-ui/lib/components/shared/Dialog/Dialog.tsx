@@ -5,7 +5,7 @@ import classNames from "classnames";
 import Widget from "../Widget/Widget";
 import Button from "../Button/Button";
 
-type Props = React.ComponentProps<"div"> &
+type Props = React.ComponentPropsWithoutRef<"div"> &
   React.PropsWithChildren<{ content: React.ReactNode }>;
 
 function Dialog({ content, ...props }: Props) {

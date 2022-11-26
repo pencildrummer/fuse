@@ -1,4 +1,5 @@
-import { Loader, CubeIcon } from "@fuse-labs/core-ui";
+import { CubeIcon } from "@fuse-labs/core-ui";
+
 export default function AppLoadingView() {
   return (
     <div className="w-full h-full flex items-center justify-center">
