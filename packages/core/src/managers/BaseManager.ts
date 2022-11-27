@@ -4,9 +4,23 @@ interface ManagerInterface {
 }
 
 export default class BaseManager implements ManagerInterface {
-  protected _initialized: boolean = false;
+  private _initialized: boolean = false;
   get initialized() {
     return this._initialized;
+  }
+
+  constructor() {
+    this.init = new Proxy(this.init, {
+      apply(target, thisArg, argArray) {
+        if (this._initialized)
+          throw new Error(`Trying to re-initialize ${this.constructor.name}`);
+
+        // Calling original init
+        target.apply(thisArg, argArray);
+
+        thisArg._initialized = true;
+      },
+    });
   }
 
   init(): void {

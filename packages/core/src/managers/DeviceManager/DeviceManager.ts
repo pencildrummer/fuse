@@ -26,9 +26,6 @@ class DeviceManager extends BaseManager {
   }
 
   init() {
-    if (this._initialized)
-      throw new Error("Trying to re-initialize DeviceManager");
-
     logger.pending("DeviceManager is initializing...");
 
     // Ensure directory exists, if dir has been removed it will be created
@@ -49,8 +46,6 @@ class DeviceManager extends BaseManager {
       }
       return entries;
     }, []);
-
-    this._initialized = true;
 
     logger.ready("DeviceManager is now ready!");
   }

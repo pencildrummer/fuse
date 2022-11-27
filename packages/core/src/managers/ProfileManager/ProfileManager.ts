@@ -32,9 +32,6 @@ class ProfileManager extends BaseManager {
   }
 
   init() {
-    if (this._initialized)
-      throw new Error("Trying to re-initialize ProfileManager");
-
     logger.pending("ProfileManager is initializing.. ");
 
     let brandDirectories = fs
@@ -52,8 +49,6 @@ class ProfileManager extends BaseManager {
         });
       return res;
     }, {});
-
-    this._initialized = true;
 
     logger.ready("ProfileManager is now ready!");
   }

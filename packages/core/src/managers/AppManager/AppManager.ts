@@ -20,6 +20,10 @@ class AppManager extends BaseManager {
     instance = this;
   }
 
+  init(): void {
+    //
+  }
+
   get data(): AppDataType {
     return {
       devices: DeviceManager.devices,

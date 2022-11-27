@@ -7,29 +7,21 @@ function getProxiedManager<T extends BaseManager>(manager: T): T {
     get(target, prop, receiver) {
       let value = target[prop];
       if (prop === "init") {
-        // Forward original init to avoid warning of accessing method and props during intialization
-        return function (...args) {
-          return (value as Function).apply(target, args);
-        };
-      } else {
-        if (!target.initialized) {
-          if (value instanceof Function) {
-            logger.warn(
-              `Trying calling '${prop.toString()}' method on ${chalk.bold.yellow(
-                "non-initialized"
-              )} ${typeof manager}`
-            );
-          } else {
-            logger.warn(
-              `Trying accessing '${prop.toString()}' property on ${chalk.bold.yellow(
-                "non-initialized"
-              )} ${typeof manager}`
-            );
-          }
-        }
+        // Return init fn binding to target
+        return (value as Function).bind(target);
+      } else if (target.initialized) {
+        return value;
       }
-      // Normally forward
-      return value;
+
+      let error = new Error(
+        `Trying accessing '${prop.toString()}' ${
+          value instanceof Function ? "function" : "attribute"
+        } on ${chalk.bold.yellow("non-initialized")} "${
+          manager.constructor.name
+        }"`
+      );
+      logger.error(error);
+      throw error;
     },
   });
 }

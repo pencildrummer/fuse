@@ -56,9 +56,6 @@ class PluginManager extends BaseManager {
   }
 
   async init() {
-    if (this._initialized)
-      throw new Error("Trying to re-initialize PluginManager");
-
     logger.pending("PluginManager is initializing...");
 
     // Set system plugins as always active
@@ -93,8 +90,6 @@ class PluginManager extends BaseManager {
       },
       Promise.resolve(this._plugins)
     );
-
-    this._initialized = true;
 
     logger.ready("PluginManager is now ready!");
   }

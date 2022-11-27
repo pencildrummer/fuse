@@ -4,6 +4,7 @@ import {
   ConfigManager,
   ProfileManager,
   DeviceManager,
+  AppManager,
 } from "@fuse-labs/core";
 
 export default async function _bootstrap_() {
@@ -11,12 +12,13 @@ export default async function _bootstrap_() {
   process.on("uncaughtException", (error: Error) => logger.error(error.stack));
   process.on("unhandledRejection", (error: Error) => logger.error(error.stack));
 
-  // Initialize ConfigManager
+  // Initialize managers
   ConfigManager.init();
   ProfileManager.init();
+  DeviceManager.init();
 
   // Initialize PluginManagers
   await PluginManager.init();
 
-  DeviceManager.init();
+  AppManager.init();
 }

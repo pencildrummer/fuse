@@ -10,7 +10,7 @@ import getProxiedManager from "../getProxiedManager.js";
 let instance: ConfigManager;
 
 class ConfigManager extends BaseManager {
-  _config: ConfigDataType = {};
+  private _config: ConfigDataType = {};
   get config() {
     return this._config;
   }
@@ -24,9 +24,6 @@ class ConfigManager extends BaseManager {
   }
 
   init() {
-    if (this._initialized)
-      throw new Error("Trying to re-initialize ConfigManager");
-
     logger.pending("ConfigManager is initializing...");
 
     // Retrieve default config to merge even if there is an existing config file in the app
@@ -47,8 +44,6 @@ class ConfigManager extends BaseManager {
     }
     // And store it in app system path
     this.save();
-
-    this._initialized = true;
 
     logger.ready("ConfigManager is now ready!");
   }
