@@ -146,9 +146,10 @@ const httpServer = createServer(expressApp);
 export const socketServer = new CoreSocketServer(httpServer, {
   cors: {
     origin: [
-      // TODO: Allow for configurable hosts, or truste client in some different ways
+      // TODO: Allow for configurable hosts, or trust client in some different ways
       "http://localhost:3000",
       "http://localhost:3001",
+      "http://localhost:3002",
       "https://admin.socket.io",
       "http://localhost:5000",
       "null",

@@ -13,12 +13,10 @@ export default async function _bootstrap_() {
   process.on("unhandledRejection", (error: Error) => logger.error(error.stack));
 
   // Initialize managers
-  ConfigManager.init();
-  ProfileManager.init();
-  DeviceManager.init();
-
-  // Initialize PluginManagers
+  await ConfigManager.init();
+  await ProfileManager.init();
+  await DeviceManager.init();
   await PluginManager.init();
 
-  AppManager.init();
+  await AppManager.init();
 }

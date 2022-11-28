@@ -1,6 +1,8 @@
+import { logger } from "../logger.js";
+
 interface ManagerInterface {
   readonly initialized: boolean;
-  init(): void;
+  init(): Promise<void>;
 }
 
 export default class BaseManager implements ManagerInterface {
@@ -11,19 +13,28 @@ export default class BaseManager implements ManagerInterface {
 
   constructor() {
     this.init = new Proxy(this.init, {
-      apply(target, thisArg, argArray) {
+      async apply(target, thisArg, argArray) {
         if (this._initialized)
-          throw new Error(`Trying to re-initialize ${this.constructor.name}`);
+          throw new Error(
+            `Trying to re-initialize ${thisArg.constructor.name}`
+          );
+
+        logger.pending(`${thisArg.constructor.name} is initializing...`);
 
         // Calling original init
-        target.apply(thisArg, argArray);
+        if (target.constructor.name === "AsyncFunction") {
+          await target.apply(thisArg, argArray);
+        } else {
+          target.apply(thisArg, argArray);
+        }
 
         thisArg._initialized = true;
+        logger.ready(`${thisArg.constructor.name} is now ready!`);
       },
     });
   }
 
-  init(): void {
+  async init(): Promise<void> {
     throw new Error(
       "BaseManager cannot be instantiated, must be as base class for managers"
     );

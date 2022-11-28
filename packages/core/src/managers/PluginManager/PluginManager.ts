@@ -4,6 +4,17 @@ import path from "path";
 import { pathToFileURL } from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
 import Plugin from "../../models/plugins/Plugin/Plugin.js";
+import { logger } from "../../logger.js";
+import BaseManager from "../BaseManager.js";
+import getProxiedManager from "../getProxiedManager.js";
+import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    logger.info(`Sleeping for ${ms / 1000} seconds`);
+    setTimeout(resolve, ms);
+  });
+}
 
 type PluginInfo = {
   name: string;
@@ -14,12 +25,6 @@ type PluginInfo = {
 const PLUGINS_LIST_FILE_PATH = path.resolve(
   path.join(SYSTEM_BASE_PATH, "plugins.json")
 );
-
-import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };
-
-import { logger } from "../../logger.js";
-import BaseManager from "../BaseManager.js";
-import getProxiedManager from "../getProxiedManager.js";
 
 let instance: PluginManager;
 
@@ -56,8 +61,6 @@ class PluginManager extends BaseManager {
   }
 
   async init() {
-    logger.pending("PluginManager is initializing...");
-
     // Set system plugins as always active
     this._activePluginsNames = [...Object.keys(__SYSTEM_PLUGINS__)];
 
@@ -65,33 +68,52 @@ class PluginManager extends BaseManager {
     let pluginsList = this.getPluginsListInfo();
 
     // Init Plugin(s) based on names and add it to the plugin manager store
-    this._plugins = await Object.keys(pluginsList).reduce(
-      async (prev, pluginName) => {
-        // Wait for previous plugin load process
-        const plugins = await prev;
+    for (const index in Object.keys(pluginsList)) {
+      let pluginName = Object.keys(pluginsList)[index];
+      console.log("Loading", pluginName);
 
-        const pluginInfo = pluginsList[pluginName];
+      const pluginInfo = pluginsList[pluginName];
 
-        let plugin;
-        // Check if system plugin
-        if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
-          plugin = await this.loadSystemPlugin(pluginInfo);
-        } else {
-          plugin = await this.loadInstalledPlugin(pluginInfo);
-        }
+      let plugin;
+      // Check if system plugin
+      if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
+        plugin = await this.loadSystemPlugin(pluginInfo);
+      } else {
+        plugin = await this.loadInstalledPlugin(pluginInfo);
+      }
 
-        if (plugin) {
-          // Add plugin
-          plugins[pluginName] = plugin;
-          //plugins.push(plugin);
-          logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
-        }
-        return plugins;
-      },
-      Promise.resolve(this._plugins)
-    );
+      if (plugin) {
+        // Add plugin
+        this._plugins[pluginName] = plugin;
+        //plugins.push(plugin);
+        logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
+      }
+    }
+    // this._plugins = await Object.keys(pluginsList).reduce(
+    //   async (prev, pluginName) => {
+    //     // Wait for previous plugin load process
+    //     const plugins = await prev;
 
-    logger.ready("PluginManager is now ready!");
+    //     const pluginInfo = pluginsList[pluginName];
+
+    //     let plugin;
+    //     // Check if system plugin
+    //     if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
+    //       plugin = await this.loadSystemPlugin(pluginInfo);
+    //     } else {
+    //       plugin = await this.loadInstalledPlugin(pluginInfo);
+    //     }
+
+    //     if (plugin) {
+    //       // Add plugin
+    //       plugins[pluginName] = plugin;
+    //       //plugins.push(plugin);
+    //       logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
+    //     }
+    //     return plugins;
+    //   },
+    //   Promise.resolve(this._plugins)
+    // );
   }
 
   async loadSystemPlugin(systemPluginInfo: PluginInfo) {
@@ -154,7 +176,14 @@ class PluginManager extends BaseManager {
 
     // TODO: Check import path has index or not or let node do its thing?
     //const pluginModule = await import(`${path.join(importPath, "index.js")}`);
-    const pluginModule = await import(`${importPath}`);
+    const pluginModule = await (async () => {
+      let module = await import(`${importPath}`).then((module) => {
+        console.log("Imported module");
+        return module;
+      });
+      console.log("Loaded after await import");
+      return module;
+    })();
 
     let PluginClass = pluginModule.default;
 

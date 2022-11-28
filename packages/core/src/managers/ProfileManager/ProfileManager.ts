@@ -31,9 +31,7 @@ class ProfileManager extends BaseManager {
     // this.init();
   }
 
-  init() {
-    logger.pending("ProfileManager is initializing.. ");
-
+  async init() {
     let brandDirectories = fs
       .readdirSync(PROFILES_BASE_PATH, { withFileTypes: true })
       .filter((d) => d.isDirectory());
@@ -49,8 +47,6 @@ class ProfileManager extends BaseManager {
         });
       return res;
     }, {});
-
-    logger.ready("ProfileManager is now ready!");
   }
 
   getProfile(profileId: DeviceProfile["id"]) {

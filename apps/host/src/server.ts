@@ -7,12 +7,12 @@ import { AppManager, socketServer } from "@fuse-labs/core";
 (async () => {
   // Boostrap server
   await _bootstrap_();
-  // Init main socket
-  await _init_Socket();
   // Init plugins sockets
   await _init_PluginsSocket();
+  // Init main socket
+  await _init_Socket();
   // Start http server
   await _init_HTTPServer();
-  // Boradcast initialized data
+  // Broadcast initialized data
   socketServer.emit("app:data", AppManager.data);
 })();

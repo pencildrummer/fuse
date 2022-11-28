@@ -23,9 +23,7 @@ class ConfigManager extends BaseManager {
     instance = this;
   }
 
-  init() {
-    logger.pending("ConfigManager is initializing...");
-
+  async init() {
     // Retrieve default config to merge even if there is an existing config file in the app
     const __dirname = url.fileURLToPath(new URL("..", import.meta.url));
     this._config = fs.readJsonSync(
@@ -44,8 +42,6 @@ class ConfigManager extends BaseManager {
     }
     // And store it in app system path
     this.save();
-
-    logger.ready("ConfigManager is now ready!");
   }
 
   save() {

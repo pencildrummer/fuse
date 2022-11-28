@@ -9,6 +9,7 @@ const SOCKET_HOST = "http://localhost:8888";
  */
 function socket(namespace) {
   let ns = [SOCKET_HOST, namespace].join("/").replace("@", "scope:");
+  console.log("New socket with namespace:" + ns);
   let socket = io(ns, {
     autoConnect: false,
   });

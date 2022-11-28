@@ -1,7 +1,6 @@
-import { Device, Plugin, DeviceProfile } from "../../models/index.js";
+import { AppDataType } from "@fuse-labs/types";
 import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
-import { ConfigDataType, AppDataType } from "@fuse-labs/types";
 import {
   ConfigManager,
   DeviceManager,
@@ -20,9 +19,7 @@ class AppManager extends BaseManager {
     instance = this;
   }
 
-  init(): void {
-    //
-  }
+  async init() {}
 
   get data(): AppDataType {
     return {

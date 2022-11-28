@@ -37,6 +37,7 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     });
 
     coreSocket.on("connect_error", (err) => {
+      console.error(err);
       let error = new AppConnectionError(err);
       console.error(error);
       setConnected(false);

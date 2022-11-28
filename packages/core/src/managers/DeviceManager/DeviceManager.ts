@@ -25,9 +25,7 @@ class DeviceManager extends BaseManager {
     // this.init();
   }
 
-  init() {
-    logger.pending("DeviceManager is initializing...");
-
+  async init() {
     // Ensure directory exists, if dir has been removed it will be created
     fs.ensureDirSync(DEVICES_BASE_PATH);
     let entries = fs.readdirSync(DEVICES_BASE_PATH, { withFileTypes: true });
@@ -46,8 +44,6 @@ class DeviceManager extends BaseManager {
       }
       return entries;
     }, []);
-
-    logger.ready("DeviceManager is now ready!");
   }
 
   getDevice(deviceId: Device["id"]) {
