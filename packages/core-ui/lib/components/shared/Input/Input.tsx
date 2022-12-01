@@ -1,7 +1,7 @@
 import { Label } from "@radix-ui/react-label";
 import classNames from "classnames";
 import { useField } from "formik";
-import { ComponentPropsWithoutRef } from "react";
+import React, { ComponentPropsWithoutRef } from "react";
 
 export default function Input(props) {
   const [field, meta, helpers] = useField(props);
@@ -28,6 +28,36 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
   // Add hidden attribute, to allow Tailwindcss to work also
   if (props.type == "hidden") {
     return <input {...props} hidden />;
+  }
+
+  function validatePasteValue(e: React.ClipboardEvent<HTMLInputElement>) {
+    // Validate pasted data when using input as numeric input
+    if (props.type == "number") {
+      // Get data from clipboard
+      let data = e.clipboardData.getData("text");
+      // Try parse it as int (TODO: Validate for float?), if NaN prevent
+      if (isNaN(parseInt(data))) {
+        console.warn(`Pasted text is not a number. Text: "${data}"`);
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }
+  }
+
+  function validateKeyDownValue(e: React.KeyboardEvent<HTMLInputElement>) {
+    // Validate key pressed when using input as numeric input
+    if (props.type == "number") {
+      // TODO: Validate minus sign, and check at which position will be inserted and validate
+      // Return early if backspace or combination of ctrl or meta key (command on Mac)
+      if (e.key == "Backspace" || e.ctrlKey || e.metaKey) return true;
+      // If key pressed is not a number prevent
+      if (isNaN(parseInt(e.key))) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    }
   }
 
   return (
@@ -59,6 +89,8 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
         style={{
           textAlign: "inherit",
         }}
+        onPaste={validatePasteValue}
+        onKeyDown={validateKeyDownValue}
       />
       {detailContent && (
         <Label

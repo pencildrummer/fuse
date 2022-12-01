@@ -34,6 +34,7 @@
     "next": "^12.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-intl": "^6.2.4",
     "sass": "*",
     "tailwindcss": "*",
     "tailwindcss-radix": "*"
@@ -46,7 +47,8 @@
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "next": "^12.1.0"
+    "next": "^12.1.0",
+    "react-intl": "^6.2.4"
   },
   "fuse": {
     "title": "Core UI"

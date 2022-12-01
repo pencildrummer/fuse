@@ -1,6 +1,7 @@
 import { useDeviceContext } from "@fuse-labs/core-client";
 import { Widget, FormItem, Form, Button } from "@fuse-labs/core-ui";
-import { useEffect, useMemo } from "react";
+import type { FormItemSpec } from "@fuse-labs/core-ui";
+import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
 
 const expectedSettings: FormItemSpec[] = [
@@ -14,24 +15,39 @@ const expectedSettings: FormItemSpec[] = [
   },
   {
     name: "marlin.settings.extruderStepsPerUnit",
-    type: "input",
+    type: "number",
   },
   {
     name: "marlin.settings.xStepsPerUnit",
-    type: "input",
+    type: "number",
   },
   {
     name: "marlin.settings.yStepsPerUnit",
-    type: "input",
+    type: "number",
   },
   {
     name: "marlin.settings.zStepsPerUnit",
-    type: "input",
+    type: "number",
   },
+  {
+    name: "marlin.settings.temperatureUnits",
+    type: "select",
+    options: [
+      { value: "c", label: "Celsius" },
+      { value: "f", label: "Fahrenheit" },
+      { value: "k", label: "Kelvin" },
+    ],
+  },
+  { name: "marlin.settings.xMaxFeedrate", type: "number" },
+  { name: "marlin.settings.yMaxFeedrate", type: "number" },
+  { name: "marlin.settings.zMaxFeedrate", type: "number" },
+  { name: "marlin.settings.targetExtruderMaxFeedrate", type: "number" },
 ];
 
 export default function MarlinSettingsWidget() {
   const { device } = useDeviceContext();
+
+  const [saving, isSaving] = useState(false);
 
   useEffect(
     (_) => {
@@ -54,7 +70,7 @@ export default function MarlinSettingsWidget() {
   //   console.log("Changed value", name, "in", value);
   // }
 
-  function handleSubmit(values) {
+  async function handleSubmit(values) {
     console.log("Submit", values);
   }
 
@@ -68,6 +84,7 @@ export default function MarlinSettingsWidget() {
   return (
     <Widget title="Marlin settings">
       <Form
+        disabled={saving}
         onSubmit={handleSubmit}
         initialValues={initialValues}
         // onValueChange={handleValueChange}
