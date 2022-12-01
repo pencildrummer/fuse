@@ -154,7 +154,7 @@ export const socketServer = new CoreSocketServer(httpServer, {
       "http://localhost:5000",
       "null",
     ],
-    credentials: true,
+    // credentials: true,
   },
 });
 

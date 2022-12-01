@@ -31,6 +31,9 @@ export default class ClientDevice implements Device.DeviceInterface {
   productId: string;
 
   socket?: Socket; // TODO: Set socket type
+  pluginSockets: {
+    [scopeOrName: string]: { [name: string]: Socket };
+  } = {};
 
   /**
    * Return active plugins compatible with this device

@@ -23,7 +23,7 @@ export default function DevicePluginPage() {
   const pluginUrl = Array.isArray(devicePlugin)
     ? devicePlugin?.join("/")
     : devicePlugin;
-  const plugin = useDevicePlugin(deviceID, pluginUrl);
+  const plugin = useDevicePlugin(deviceID as string, pluginUrl);
   const PluginComponent = useDevicePluginComponents(
     device,
     plugin,

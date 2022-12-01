@@ -8,8 +8,9 @@ type Props = ComponentPropsWithoutRef<"div"> & {
 export default function Group({ orientation = "horizontal", ...props }: Props) {
   return (
     <div
+      {...props}
       className={classNames(
-        "flex",
+        "flex flex-none",
         {
           "flex-row space-x-2 items-center justify-between":
             orientation == "horizontal",
@@ -17,7 +18,6 @@ export default function Group({ orientation = "horizontal", ...props }: Props) {
         },
         props.className
       )}
-      {...props}
     />
   );
 }

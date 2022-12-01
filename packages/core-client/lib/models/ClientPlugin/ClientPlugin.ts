@@ -31,9 +31,9 @@ type ClientPluginComponentsType = {
 // TODO: Check type and improve
 type ClientPluginDeviceComponentsType = {
   page?: {
-    plugin: React.Component;
+    plugin: JSX.Element;
   };
-  settings?: React.Component;
+  settings?: JSX.Element;
 };
 
 export default class ClientPlugin implements PluginInterface {
@@ -147,9 +147,9 @@ export default class ClientPlugin implements PluginInterface {
           .split("/")
           .map((key) => lodash.camelCase(key))
           .join(".");
-        if (!lodash.get(device, "sockets." + keyPath)) {
+        if (!lodash.get(device.pluginSockets, keyPath)) {
           let pluginDeviceSocket = socket(`device:${device.id}/${this.name}`);
-          lodash.set(device, "sockets." + keyPath, pluginDeviceSocket);
+          lodash.set(device.pluginSockets, keyPath, pluginDeviceSocket);
         }
       });
     } else {

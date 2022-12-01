@@ -5,7 +5,7 @@ type Props = {
   size?: "sm" | "md" | "base" | "lg" | "xl";
 };
 
-export default function Loader({ size = "base", ...props }: Props) {
+export default function Loader({ size = "base" }: Props) {
   return (
     <div
       className={classNames({

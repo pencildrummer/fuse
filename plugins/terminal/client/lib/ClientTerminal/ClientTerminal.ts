@@ -1,11 +1,11 @@
 import { generateUniqueID } from "@fuse-labs/shared-utils";
+import { ClientDevice } from "@fuse-labs/core-client";
 
-const LineEnding = Object.freeze({
-  None: 0,
-  CarriageReturn: 1,
-  NewLine: 2,
-  CarriageReturnAndNewLine: 3,
-});
+type LineEnding =
+  | "none"
+  | "carriageReturn"
+  | "newLine"
+  | "carriageReturnAndNewLine";
 
 export default class ClientTerminal {
   /**
@@ -20,7 +20,7 @@ export default class ClientTerminal {
 
   deviceId;
 
-  lineEnding = LineEnding.NewLine;
+  lineEnding: LineEnding = "newLine";
   useCarriageReturn = false;
 
   /**
@@ -31,13 +31,13 @@ export default class ClientTerminal {
     return this._log;
   }
 
-  constructor(device, { autoConnect = true } = {}) {
+  constructor(device: ClientDevice, { autoConnect = true } = {}) {
     console.log("Creating terminal for device ID", device.id);
 
     this.deviceId = device.id;
 
     // Init socket to pass messages to backend
-    this._socket = device.sockets?.fuseLabs?.terminal;
+    this._socket = device.pluginSockets?.fuseLabs?.terminal;
 
     if (!this._socket) {
       console.log(device);
@@ -57,7 +57,7 @@ export default class ClientTerminal {
     }
   }
 
-  connect(onConnect) {
+  connect(onConnect?) {
     this._socket.emit("open", this.deviceId, (open) => {
       console.log("Callback on connect, result:", open);
       this._isOpen = open;
@@ -101,13 +101,13 @@ export default class ClientTerminal {
 
   _formatMessage(message) {
     switch (this.lineEnding) {
-      case LineEnding.NewLine:
+      case "newLine":
         return message.trim() + "\n";
-      case LineEnding.CarriageReturn:
+      case "carriageReturn":
         return message.trim() + "\r";
-      case LineEnding.CarriageReturnAndNewLine:
+      case "carriageReturnAndNewLine":
         return message.trim() + "\r\n";
-      case LineEnding.None:
+      case "none":
       default:
         return message.trim();
     }

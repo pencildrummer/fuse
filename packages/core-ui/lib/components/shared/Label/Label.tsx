@@ -5,8 +5,7 @@ export default function Label({ ...props }) {
   return (
     <LabelPrimitive.Root
       className={classNames(
-        "font-semibold",
-        //'text-xs',
+        "font-semibold truncate",
         "select-none cursor-default",
         "text-gray-800 dark:text-gray-300",
         props.className

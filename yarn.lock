@@ -1648,6 +1648,7 @@ __metadata:
     "@radix-ui/react-popover": ^1.0.0
     "@radix-ui/react-progress": ^1.0.0
     "@radix-ui/react-scroll-area": ^1.0.0
+    "@radix-ui/react-select": ^1.1.2
     "@radix-ui/react-separator": ^1.0.0
     "@radix-ui/react-slider": ^1.0.0
     "@radix-ui/react-switch": ^1.0.0
@@ -1897,7 +1898,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@fuse-labs/marlin-settings-client@workspace:plugins/marlin-settings/client"
   dependencies:
+    "@fuse-labs/core-client": "workspace:^"
+    "@fuse-labs/core-ui": "workspace:^"
+    "@fuse-labs/shared-utils": "workspace:^"
     filesize: ^9.0.11
+    react: ^18
+    react-dom: ^18
   peerDependencies:
     "@fuse-labs/core-client": "workspace:^"
     "@fuse-labs/core-ui": "workspace:^"
@@ -1954,9 +1960,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@fuse-labs/terminal-client@workspace:plugins/terminal/client"
   dependencies:
+    "@fuse-labs/core-client": "workspace:^"
+    "@fuse-labs/core-ui": "workspace:^"
+    "@fuse-labs/shared-utils": "workspace:^"
     "@radix-ui/react-icons": ^1.1.1
     "@vitejs/plugin-react": ^2.1.0
     classnames: ^2.3.2
+    react: ^18
+    react-dom: ^18
+    typescript: ^4.9.3
     uuid: ^8.3.2
     vite: ^3.1.3
   peerDependencies:
@@ -2922,6 +2934,38 @@ __metadata:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
   checksum: c59062c3321fb92b526f2b63be2636569c4a33fa81bd5c5109b13516932cebaf680a5cd318263d37e7e6e4ca62aa45521c34447478fd2acde3b2639ae53252d7
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-select@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@radix-ui/react-select@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/number": 1.0.0
+    "@radix-ui/primitive": 1.0.0
+    "@radix-ui/react-collection": 1.0.1
+    "@radix-ui/react-compose-refs": 1.0.0
+    "@radix-ui/react-context": 1.0.0
+    "@radix-ui/react-direction": 1.0.0
+    "@radix-ui/react-dismissable-layer": 1.0.2
+    "@radix-ui/react-focus-guards": 1.0.0
+    "@radix-ui/react-focus-scope": 1.0.1
+    "@radix-ui/react-id": 1.0.0
+    "@radix-ui/react-portal": 1.0.1
+    "@radix-ui/react-primitive": 1.0.1
+    "@radix-ui/react-slot": 1.0.1
+    "@radix-ui/react-use-callback-ref": 1.0.0
+    "@radix-ui/react-use-controllable-state": 1.0.0
+    "@radix-ui/react-use-layout-effect": 1.0.0
+    "@radix-ui/react-use-previous": 1.0.0
+    "@radix-ui/react-visually-hidden": 1.0.1
+    aria-hidden: ^1.1.1
+    react-remove-scroll: 2.5.5
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: fc94e08bea0c41f4ef2d2bb1bb9824a321c334fb7dd88f3ea2c8ec4c5f1ebf3bf5e6f75dd1d4227f795987d153707fdb160f0ca83386b868a47609ecf341213a
   languageName: node
   linkType: hard
 

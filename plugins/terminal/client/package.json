@@ -26,7 +26,13 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@fuse-labs/core-client": "workspace:^",
+    "@fuse-labs/core-ui": "workspace:^",
+    "@fuse-labs/shared-utils": "workspace:^",
     "@vitejs/plugin-react": "^2.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^4.9.3",
     "vite": "^3.1.3"
   },
   "fuse": {

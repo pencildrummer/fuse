@@ -22,11 +22,11 @@ export default function MarlinJobQueueHandler() {
 
   useEffect(
     (_) => {
-      if (!device.sockets.fuseLabs.marlinCore) {
+      if (!device.pluginSockets.fuseLabs.marlinCore) {
         return console.warn("Unexpected missing fuseLabs.marlinCore socket");
       }
       // Retrieve jobs
-      device.sockets.fuseLabs.marlinCore.emit("queue:jobs", (jobs) => {
+      device.pluginSockets.fuseLabs.marlinCore.emit("queue:jobs", (jobs) => {
         console.log("List of jobs", jobs);
         setJobs(jobs);
       });
@@ -145,29 +145,37 @@ function JobListItem({ job }) {
   const { device } = useDeviceContext();
 
   function handleStart() {
-    if (!device.sockets.fuseLabs.marlinCore) {
+    if (!device.pluginSockets.fuseLabs.marlinCore) {
       return console.warn("Unexpected missing fuseLabs.marlinCore socket");
     }
     // Handle start or resume on backend
-    device.sockets.fuseLabs.marlinCore.emit("job:start", job.id, (res) => {
-      console.log("Handle start res:", res);
-    });
+    device.pluginSockets.fuseLabs.marlinCore.emit(
+      "job:start",
+      job.id,
+      (res) => {
+        console.log("Handle start res:", res);
+      }
+    );
   }
 
   function handlePause() {
-    if (!device.sockets.fuseLabs.marlinCore) {
+    if (!device.pluginSockets.fuseLabs.marlinCore) {
       return console.warn("Unexpected missing fuseLabs.marlinCore socket");
     }
-    device.sockets.fuseLabs.marlinCore.emit("job:pause", job.id, (res) => {
-      console.log("Handle pause res:", res);
-    });
+    device.pluginSockets.fuseLabs.marlinCore.emit(
+      "job:pause",
+      job.id,
+      (res) => {
+        console.log("Handle pause res:", res);
+      }
+    );
   }
 
   function handleStop() {
-    if (!device.sockets.fuseLabs.marlinCore) {
+    if (!device.pluginSockets.fuseLabs.marlinCore) {
       return console.warn("Unexpected missing fuseLabs.marlinCore socket");
     }
-    device.sockets.fuseLabs.marlinCore.emit("job:stop", job.id, (res) => {
+    device.pluginSockets.fuseLabs.marlinCore.emit("job:stop", job.id, (res) => {
       console.log("Handle stop res:", res);
     });
   }

@@ -20,6 +20,8 @@
   "references": [
     { "path": "../../packages/core-client" },
     { "path": "../../packages/core-ui" },
-    { "path": "../../packages/shared-utils" }
+    { "path": "../../packages/shared-utils" },
+    { "path": "../../plugins/terminal/client" },
+    { "path": "../../plugins/marlin-settings/client" }
   ]
 }
