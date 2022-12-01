@@ -48,7 +48,7 @@ export default function FormItem({ item, orientation, ...props }: Props) {
     <Group orientation={orientation}>
       <Label htmlFor={fieldProps.name}>{fieldProps.label}</Label>
       <Group orientation="horizontal">
-        <Loader size="base" />
+        {/* <Loader size="base" /> */}
         <ControlComponent {...fieldProps} />
       </Group>
     </Group>

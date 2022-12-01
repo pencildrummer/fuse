@@ -3831,6 +3831,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:18.0.9"],\
             ["classnames", "npm:2.3.2"],\
             ["filesize", "npm:9.0.11"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:18.2.0"]\
           ],\
@@ -3860,6 +3861,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fuse-labs/core-ui", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-ui"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
             ["filesize", "npm:9.0.11"],\
+            ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#npm:18.2.0"]\
           ],\

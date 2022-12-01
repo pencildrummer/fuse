@@ -6,7 +6,8 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
-    "filesize": "^9.0.11"
+    "filesize": "^9.0.11",
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@fuse-labs/core-client": "workspace:^",

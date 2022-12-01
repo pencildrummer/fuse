@@ -1,12 +1,12 @@
-import * as SelectPrimitive from "@radix-ui/react-select";
 import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
+import * as SelectPrimitive from "@radix-ui/react-select";
 import classNames from "classnames";
 import { useField } from "formik";
-import React, { useEffect, useRef, useMemo, useState } from "react";
+import React from "react";
 
 interface SelectItemProps extends SelectPrimitive.SelectItemProps {}
 
@@ -46,33 +46,24 @@ export type SelectOption = {
   value: string;
 };
 
-type SelectRawProps = React.PropsWithChildren<{
+type SelectRawProps = {
   options: SelectOption[] | string[];
   placeholder?: React.ReactNode;
-  // trigger: React.ReactNode;
   error?: string;
-  // className;
-  defaultValue?;
-  onChange?;
-  onBlur?;
-  onOpenChange?;
-  disabled?: boolean;
-}>;
+  dirty?: boolean;
+} & SelectPrimitive.SelectProps;
 
 export function SelectRaw({
   placeholder,
-  // trigger: TriggerComponent,
   error,
+  dirty,
   options,
   defaultValue,
-  onChange,
-  onBlur,
-  onOpenChange,
   ...props
 }: SelectRawProps) {
   return (
     <div>
-      <SelectPrimitive.Root>
+      <SelectPrimitive.Root onValueChange={props.onValueChange}>
         <SelectPrimitive.Trigger
           className={classNames(
             "w-full min-w-[180px]",
@@ -88,6 +79,7 @@ export function SelectRaw({
             "disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800",
             {
               "border-red-600 ring-1 ring-red-600": error,
+              "border-yellow-500 ring-1 ring-yellow-500": !error && dirty,
             }
           )}
         >
@@ -133,19 +125,25 @@ export function SelectRaw({
   );
 }
 
-export default function Select(props) {
+export default function Select(props: SelectRawProps) {
   const [field, meta, helpers] = useField(props.name);
   const { initialValue } = meta;
   const { setValue, setTouched } = helpers;
 
   return (
     <SelectRaw
-      error={meta.touched && meta.error}
-      defaultValue={initialValue}
-      onChange={setValue}
-      onOpenChange={(open) => open && setTouched(true)}
-      onBlur={(_) => field.onBlur(field.name)}
       {...props}
+      error={meta.touched && meta.error}
+      dirty={meta.touched && !meta.error && meta.value != meta.initialValue}
+      value={meta.value}
+      defaultValue={initialValue}
+      onValueChange={(val) => {
+        setValue(val);
+        setTouched(true);
+        props.onValueChange?.(val);
+      }}
+      onOpenChange={(open) => open && setTouched(true)}
+      // onBlur={(_) => field.onBlur(field.name)}
     />
   );
 }

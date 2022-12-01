@@ -1902,6 +1902,7 @@ __metadata:
     "@fuse-labs/core-ui": "workspace:^"
     "@fuse-labs/shared-utils": "workspace:^"
     filesize: ^9.0.11
+    lodash: ^4.17.21
     react: ^18
     react-dom: ^18
   peerDependencies:
