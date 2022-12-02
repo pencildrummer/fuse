@@ -1,6 +1,9 @@
 import { EventEmitter } from "events";
 import { Connection as CoreConnection } from "@fuse-labs/types";
 
+// SerialPort doe not export ErrorCallback error workaround
+export type ErrorCallback = (err: Error | null) => void;
+
 /**
  * Base class to be subclassed by different device connection types.
  * It extends the EventEmitter and every subclass must implement data, read, write, open and close handlers
@@ -19,21 +22,21 @@ export default class Connection
   /**
    * Open connection to device
    */
-  open(callback) {
+  open(callback: ErrorCallback) {
     throw new Error("open() not implemented on " + this.constructor.name);
   }
 
   /**
    * Close connection to device
    */
-  close(callback) {
+  close(callback: ErrorCallback) {
     throw new Error("close() not implemented on " + this.constructor.name);
   }
 
   /**
    * Write data to device
    */
-  write(data, opts) {
+  write(data: any, opts?: any) {
     throw new Error("write() not implemented on " + this.constructor.name);
   }
 
@@ -41,7 +44,7 @@ export default class Connection
    * Add parser to the connection to parse incoming data
    * @param {Parser} parser
    */
-  addParser(parser) {
+  addParser(parser: any): any {
     throw new Error("addParser() not implemented on" + this.constructor.name);
   }
 }

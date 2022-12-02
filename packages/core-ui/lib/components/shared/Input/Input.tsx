@@ -2,6 +2,7 @@ import { Label } from "@radix-ui/react-label";
 import classNames from "classnames";
 import { useField } from "formik";
 import React, { ComponentPropsWithoutRef } from "react";
+import styles from "./Input.module.scss";
 
 export default function Input(props) {
   const [field, meta, helpers] = useField(props);
@@ -73,6 +74,9 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
           "border-red-600 ring-1 ring-red-600": error,
           "border-yellow-500 ring-1 ring-yellow-500": !error && dirty,
         },
+        {
+          [styles.inputNumberFix]: props.type == "number",
+        },
         props.className
       )}
     >
@@ -91,6 +95,10 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
         }}
         onPaste={validatePasteValue}
         onKeyDown={validateKeyDownValue}
+        onWheel={(e) =>
+          // To disabled wheel inc/dec when number typs
+          props.type == "number" && (e.target as HTMLInputElement).blur()
+        }
       />
       {detailContent && (
         <Label

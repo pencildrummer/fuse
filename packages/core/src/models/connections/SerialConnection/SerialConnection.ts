@@ -1,11 +1,8 @@
 import chalk from "chalk";
 import { SerialPort } from "serialport";
 import signale from "signale";
-import { logger } from "../../../logger.js";
-import Connection from "../Connection/Connection.js";
-
-// SerialPort doe not export ErrorCallback error workaround
-type ErrorCallback = (err: Error | null) => void;
+import { logger } from "../../../logger";
+import Connection, { ErrorCallback } from "../Connection/Connection";
 
 export default class SerialConnection extends Connection {
   private baudRate: number;
@@ -115,7 +112,7 @@ export default class SerialConnection extends Connection {
       signale
         .scope(this.constructor.name)
         .error("Error on port path", portPath, "@", this.baudRate);
-      logger.child({ scope: this.constructor.name }).error(err);
+      logger.scope(this.constructor.name).error(err);
       this.emit("error", err);
     });
 

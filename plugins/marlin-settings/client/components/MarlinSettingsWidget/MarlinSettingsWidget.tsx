@@ -1,48 +1,9 @@
 import { useDeviceContext } from "@fuse-labs/core-client";
-import { Widget, FormItem, Form, Button } from "@fuse-labs/core-ui";
+import { Widget, FormItem, Form, Button, Separator } from "@fuse-labs/core-ui";
 import type { FormItemSpec } from "@fuse-labs/core-ui";
 import { useEffect, useMemo, useState } from "react";
 import lodash from "lodash";
-
-const expectedSettings: FormItemSpec[] = [
-  {
-    name: "marlin.settings.units",
-    type: "select",
-    options: [
-      { value: "in", label: "Inches" },
-      { value: "mm", label: "Millimeters" },
-    ],
-  },
-  {
-    name: "marlin.settings.extruderStepsPerUnit",
-    type: "number",
-  },
-  {
-    name: "marlin.settings.xStepsPerUnit",
-    type: "number",
-  },
-  {
-    name: "marlin.settings.yStepsPerUnit",
-    type: "number",
-  },
-  {
-    name: "marlin.settings.zStepsPerUnit",
-    type: "number",
-  },
-  {
-    name: "marlin.settings.temperatureUnits",
-    type: "select",
-    options: [
-      { value: "c", label: "Celsius" },
-      { value: "f", label: "Fahrenheit" },
-      { value: "k", label: "Kelvin" },
-    ],
-  },
-  { name: "marlin.settings.xMaxFeedrate", type: "number" },
-  { name: "marlin.settings.yMaxFeedrate", type: "number" },
-  { name: "marlin.settings.zMaxFeedrate", type: "number" },
-  { name: "marlin.settings.targetExtruderMaxFeedrate", type: "number" },
-];
+import settings from "./settings";
 
 export default function MarlinSettingsWidget() {
   const { device } = useDeviceContext();
@@ -75,11 +36,46 @@ export default function MarlinSettingsWidget() {
   }
 
   const initialValues = useMemo(() => {
-    return expectedSettings.reduce((prev, spec) => {
+    return settings.reduce((prev, spec) => {
       lodash.set(prev, spec.name, spec.defaultValue ?? null);
       return prev;
     }, {});
-  }, [expectedSettings]);
+  }, [settings]);
+
+  function renderItems(items: FormItemSpec[]) {
+    return items.map((item) => {
+      if (item.type == "group") {
+        return (
+          <>
+            {item.label && (
+              <div className="col-span-full">
+                <div className="text-lg font-medium">{item.label}</div>
+              </div>
+            )}
+            <Separator className="col-span-full my-0" />
+            {item.description && (
+              <div className="col-span-full text-xs font-normal text-gray-400">
+                {item.description}
+              </div>
+            )}
+            <div className="col-span-full grid grid-cols-2 md:grid-cols-3 gap-3">
+              {renderItems(item.fields)}
+            </div>
+            {item.notes && (
+              <div className="col-span-full text-xs font-normal py-1.5 px-2 bg-gray-800 text-gray-500 rounded-md">
+                {item.notes}
+              </div>
+            )}
+            <Separator className="col-span-full my-0 mb-5" />
+          </>
+        );
+      } else {
+        return (
+          <FormItem key={item.name} item={item} orientation="horizontal" />
+        );
+      }
+    });
+  }
 
   return (
     <Widget title="Marlin settings">
@@ -90,10 +86,8 @@ export default function MarlinSettingsWidget() {
         // onValueChange={handleValueChange}
         // onValuesChange={handleValuesChange}
       >
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {expectedSettings.map((item) => (
-            <FormItem key={item.name} item={item} orientation="horizontal" />
-          ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 py-3">
+          {renderItems(settings)}
         </div>
         <div>
           <Button type="submit">Save settings</Button>

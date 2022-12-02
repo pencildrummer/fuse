@@ -1,4 +1,9 @@
-export default class DataParser {
+export interface DataParseInterface<T = any> {
+  match: (data: any) => boolean;
+  parse: (data: any) => T;
+}
+
+export default class DataParser<T> implements DataParseInterface<T> {
   protected eventName: string;
 
   constructor() {
@@ -17,11 +22,11 @@ export default class DataParser {
     }
   }
 
-  match(data) {
+  match(data): boolean {
     throw new Error("Missing match(data) implementation");
   }
 
-  parse(data) {
+  parse(data): T {
     throw new Error("Missing parse(data) implementation");
   }
 }

@@ -1,40 +1,60 @@
-import { Checkbox, Input, Select, Group, Label, Loader } from "../shared";
+import {
+  Checkbox,
+  Input,
+  Select,
+  Group,
+  Label,
+  Loader,
+  Tooltip,
+  Button,
+} from "../shared";
 import { SelectOption } from "../shared/Select/Select";
 import { useIntl } from "react-intl";
+import {
+  QuestionMarkCircledIcon,
+  QuestionMarkIcon,
+} from "@radix-ui/react-icons";
 
-type CommonFormItemSpec = {
+type FormItemControlSpec = {
   name: string;
   label?: string;
+  defaultValue?: string;
+  value?: string;
+  fields?: never;
+  hint?: string;
 };
 
-type OptionablesFormItemSpec =
-  | {
+type FormItemGroupSpec = {
+  type: "group";
+  name?: never;
+  label?: string;
+  fields: FormItemSpec[];
+  options?: never;
+  defaultValue?: never;
+  value?: never;
+  description?: string;
+  notes?: string;
+};
+
+export type FormItemSpec =
+  | ({
       type: "select" | "radio";
       options: SelectOption[];
-      defaultValue?: string;
-      value?: string;
-    }
-  | {
+    } & FormItemControlSpec)
+  | ({
       type: "text";
-      options: never;
-      defaultValue?: string;
-      value?: string;
-    }
-  | {
+      options?: never;
+    } & FormItemControlSpec)
+  | ({
       type: "checkbox";
       style: "checkbox" | "switch";
       options?: never;
-      defaultValue?: boolean;
-      value?: boolean;
-    }
-  | {
+    } & FormItemControlSpec)
+  | ({
       type: "number";
       options?: never;
-      defaultValue?: number;
-      value?: number;
-    };
-
-export type FormItemSpec = CommonFormItemSpec & OptionablesFormItemSpec;
+    } & FormItemControlSpec)
+  | FormItemGroupSpec;
 
 // -
 
@@ -76,9 +96,16 @@ export default function FormItem({ item, orientation, ...props }: Props) {
 
   return (
     <Group orientation={orientation}>
-      <Label htmlFor={fieldProps.name}>
-        {formatMessage({ id: fieldProps.label })}
-      </Label>
+      <div className="flex flex-row space-x-1 items-center truncate">
+        <Label htmlFor={fieldProps.name}>
+          {formatMessage({ id: fieldProps.label })}
+        </Label>
+        {item.hint && (
+          <Tooltip size="hint" content={item.hint}>
+            <QuestionMarkCircledIcon className="w-3.5 h-3.5 opacity-50" />
+          </Tooltip>
+        )}
+      </div>
       <Group orientation="horizontal">
         {/* <Loader size="base" /> */}
         <ControlComponent {...fieldProps} />

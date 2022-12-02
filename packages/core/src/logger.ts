@@ -1,7 +1,28 @@
-import pino from "pino";
+import pino, { DestinationStream } from "pino";
 import pretty from "pino-pretty";
+import type { Logger as PinoLogger, LoggerOptions } from "pino";
 
-export const logger = pino(
+type Logger<Options extends LoggerOptions> = PinoLogger<Options> & {
+  scope(scopeName: string): Logger<Options>;
+};
+
+function loggerFactory<Options extends LoggerOptions>(
+  options: Options,
+  stream: DestinationStream
+): Logger<Options> {
+  let instance = pino(options, stream);
+  // Add scope custom helper
+  Object.defineProperties(instance, {
+    scope: {
+      value: function (scopeName: string) {
+        return this.child({ scope: scopeName });
+      },
+    },
+  });
+  return instance as Logger<Options>;
+}
+
+const logger = loggerFactory(
   {
     level: "debug",
     customLevels: {
@@ -38,3 +59,5 @@ export const logger = pino(
       })
     : process.stdout
 );
+
+export { logger };
