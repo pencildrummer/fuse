@@ -37,7 +37,7 @@ export default class Device implements CoreDevice.DeviceInterface {
 
   connection: Connection;
 
-  private controller: Controller;
+  protected controller: Controller;
 
   /**
    * The Socket.io namespace corresponding to this device

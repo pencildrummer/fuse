@@ -1,12 +1,18 @@
 import path from "path";
-import { Controller, logger } from "@fuse-labs/core";
+import { Controller, Device, logger } from "@fuse-labs/core";
+import { Device as CoreDevice } from "@fuse-labs/types";
 import MarlinReadyParser from "./MarlinReadyParser.js";
 import MarlinLineParser from "./MarlinLineParser.js";
-import parser from "gcode-parser";
+import GCodeParser from "gcode-parser";
 import MarlinGCodeJob from "./MarlinGCodeJob.js";
 import TemperatureParser from "./data-parser/TemperatureParser.js";
 import OkParser from "./data-parser/OkParser.js";
 import MarlinJobQueue from "./MarlinJobQueue.js";
+
+export type GCodeParsedLine = {
+  line: string;
+  words: string[] | any[][];
+};
 
 // Keep here in case we need it later
 // const LineEnding = Object.freeze({
@@ -16,7 +22,13 @@ import MarlinJobQueue from "./MarlinJobQueue.js";
 //   CarriageReturnAndNewLine: 3
 // })
 
-export default class MarlinController extends Controller {
+export interface MarlinControllableDevice {
+  controller: MarlinController;
+}
+
+export default class MarlinController extends Controller<
+  Device & MarlinControllableDevice
+> {
   private _isReady = false;
 
   // TODO - Create queue?
@@ -27,11 +39,11 @@ export default class MarlinController extends Controller {
   // TODO - Check if should we use serialport parser, or leave this as a Fuse internal parser thing or even for MarlinController
   private _parsers = [new OkParser(), new TemperatureParser()];
 
-  constructor(device) {
+  constructor(device: Device & MarlinControllableDevice) {
     super(device);
 
     // Create job queue
-    this.#initQueue();
+    this.initQueue();
 
     // Attach readyParser and then pipe readline parser to readyParser
     let readyParser = this.device.connection.addParser(new MarlinReadyParser());
@@ -111,7 +123,8 @@ export default class MarlinController extends Controller {
   sendGCodeFile(filePath: string) {
     // Parse GCODE
     logger.pending("Parsing file", filePath);
-    let lines = parser.parseFileSync(filePath);
+    // TODO: Fork or simply create type def
+    let lines = GCodeParser.parseFileSync(filePath) as [GCodeParsedLine];
     // TODO - Validate result
     logger.complete("Parsing completed - tot lines:", lines.length);
 
@@ -137,11 +150,11 @@ export default class MarlinController extends Controller {
     // Check and perform parsers
     this._parsers.forEach((parser) => {
       if (parser.match(data)) {
-        let parsedData = parser.parse(data, this);
+        let parsedData = parser.parse(data);
         // Controller emit a data:* event with the parsed data
         this.emit("data:" + parser.eventName, parsedData);
         // TODO - Check if there is a better place
-        this.device.namespace.emit("data:" + parser.eventName, parsedData);
+        this.device.namespace.emit(`data:${parser.eventName}`, parsedData);
       }
     });
   }

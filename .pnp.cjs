@@ -3686,6 +3686,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@fuse-labs/marlin-core-server", "workspace:plugins/marlin-core/server"],\
             ["@fuse-labs/core", "workspace:packages/core"],\
             ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@fuse-labs/types", "workspace:packages/types"],\
+            ["@types/chalk", "npm:2.2.0"],\
             ["chalk", "npm:4.1.2"],\
             ["fs-extra", "npm:10.1.0"],\
             ["gcode-parser", "npm:1.3.7"],\
@@ -8793,6 +8795,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/keyv", "npm:3.1.4"],\
             ["@types/node", "npm:18.11.9"],\
             ["@types/responselike", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/chalk", [\
+        ["npm:2.2.0", {\
+          "packageLocation": "./.yarn/cache/@types-chalk-npm-2.2.0-aa14c60d4f-846437590d.zip/node_modules/@types/chalk/",\
+          "packageDependencies": [\
+            ["@types/chalk", "npm:2.2.0"],\
+            ["chalk", "npm:5.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -11,9 +11,9 @@ import { DeviceType } from "../../devices/index.js";
 export default class Plugin implements PluginInterface {
   name: string;
   displayName: string;
-  path;
+  path: string;
   version = "0.0.0";
-  libraryName;
+  libraryName: string;
 
   _settings = false;
   get settings() {

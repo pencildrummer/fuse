@@ -3,7 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server as SocketServer, Socket } from "socket.io";
 import { ExtendedError, Namespace } from "socket.io/dist/namespace";
-import { logger } from "./logger.js";
+import { logger } from "./logger";
 import { DeviceManager } from "./managers/index.js";
 import { Device } from "./models/index.js";
 import { Device as CoreDevice } from "@fuse-labs/types";
@@ -127,13 +127,12 @@ export type DeviceNamespace = Namespace<
   DeviceSocketData
 >;
 
-export class DeviceSocket extends Socket<
-  ClientToServerDeviceEvents,
-  ServerToClientDeviceEvents,
-  InterServerDeviceEvents,
-  DeviceSocketData
-> {
-  device?: Device;
+export class DeviceSocket<
+  CTS = ClientToServerDeviceEvents,
+  STC = ServerToClientDeviceEvents,
+  IS = InterServerDeviceEvents
+> extends Socket<CTS, STC, IS, DeviceSocketData> {
+  device: Device;
 }
 
 // --

@@ -4,7 +4,7 @@ export interface DataParseInterface<T = any> {
 }
 
 export default class DataParser<T> implements DataParseInterface<T> {
-  protected eventName: string;
+  readonly eventName: string;
 
   constructor() {
     if (this.constructor === DataParser)

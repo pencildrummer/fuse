@@ -8,7 +8,7 @@ import { Device as CoreDevice } from "@fuse-labs/types";
  *
  * This class should not be used as it is, it is meant to be subclassed by relative controller types (Marlin, GRBL, etc...)
  */
-export default class Controller
+export default class Controller<T extends Device = Device>
   extends EventEmitter
   implements CoreDevice.ControllerInterface
 {
@@ -16,12 +16,12 @@ export default class Controller
    * Reference to the device that this instance is controlling
    * @type {Device}
    */
-  protected _device: Device;
+  protected _device: T;
   get device() {
     return this._device;
   }
 
-  constructor(device) {
+  constructor(device: T) {
     super();
     this._device = device;
     // Add listener to connection to pass it through
@@ -48,13 +48,20 @@ export default class Controller
 
   /** STATIC */
 
-  static _registeredContollers = {};
+  static _registeredContollers: {
+    [firmware: string]: typeof Controller;
+  } = {};
 
-  static registerControllerClass(deviceFirmware, ControllerClass) {
+  static registerControllerClass(
+    deviceFirmware: CoreDevice.FirmwareType,
+    ControllerClass: typeof Controller
+  ) {
     this._registeredContollers[deviceFirmware] = ControllerClass;
   }
 
-  static getControllerClass(deviceFirmware) {
+  static getControllerClass(
+    deviceFirmware: CoreDevice.FirmwareType
+  ): typeof Controller {
     return this._registeredContollers[deviceFirmware];
   }
 }

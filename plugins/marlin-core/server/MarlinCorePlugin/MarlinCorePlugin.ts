@@ -1,15 +1,24 @@
-import { Plugin, Controller } from "@fuse-labs/core";
+import {
+  Plugin,
+  Controller,
+  DeviceSocket,
+  ClientToServerDeviceEvents,
+} from "@fuse-labs/core";
 import MarlinController from "../lib/MarlinController/MarlinController.js";
 import fs from "fs-extra";
 import chalk from "chalk";
 
+interface QueueClientToServerDeviceEvents extends ClientToServerDeviceEvents {
+  "queue:jobs";
+}
+
 export default class MarlinCorePlugin extends Plugin {
-  provision() {
+  provision(): void {
     super.provision();
     Controller.registerControllerClass("marlin", MarlinController);
   }
 
-  initDeviceSocket(socket) {
+  initDeviceSocket(socket: DeviceSocket): void {
     /**
      * List queue jobs
      */

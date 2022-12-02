@@ -1,4 +1,5 @@
 import {
+  DeviceSocket,
   logger,
   PluginManager,
   socketServer as io,
@@ -63,7 +64,7 @@ export default async function _init_PluginsSocket() {
           );
 
           // Actually register socket listeners for plugin
-          plugin.initDeviceSocket(socket);
+          plugin.initDeviceSocket(socket as DeviceSocket);
           logger.info(
             `Registered listeners for device plugin socket for plugin ${chalk.bold(
               plugin.name

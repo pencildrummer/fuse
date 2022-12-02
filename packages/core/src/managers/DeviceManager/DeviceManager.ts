@@ -2,7 +2,7 @@ import { Device as CoreDevice } from "@fuse-labs/types";
 import fs from "fs-extra";
 import path from "path";
 import { DEVICES_BASE_PATH } from "../../constants.js";
-import { logger } from "../../logger.js";
+import { logger } from "../../logger";
 import Device from "../../models/devices/Device/Device.js";
 import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
