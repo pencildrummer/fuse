@@ -1,5 +1,12 @@
 import path from "path";
-import { Controller, Device, logger } from "@fuse-labs/core";
+import {
+  ClientToServerDeviceEvents,
+  Controller,
+  Device,
+  DeviceNamespace,
+  logger,
+  ServerToClientDeviceEvents,
+} from "@fuse-labs/core";
 import { Device as CoreDevice } from "@fuse-labs/types";
 import MarlinReadyParser from "./MarlinReadyParser.js";
 import MarlinLineParser from "./MarlinLineParser.js";
@@ -14,6 +21,22 @@ export type GCodeParsedLine = {
   words: string[] | any[][];
 };
 
+interface MarlinControllerClientToServerDeviceEvents
+  extends ClientToServerDeviceEvents {
+  // TODO
+}
+
+interface MarlinControllerServerToClientDeviceEvents
+  extends ServerToClientDeviceEvents {
+  "job:start": (job: MarlinGCodeJob) => void;
+  "job:progress": (job: MarlinGCodeJob) => void;
+  "job:pause": (job: MarlinGCodeJob) => void;
+  "job:resume": (job: MarlinGCodeJob) => void;
+  "job:finish": (job: MarlinGCodeJob) => void;
+  "job:added": (job: MarlinGCodeJob) => void;
+  "job:removed": (job: MarlinGCodeJob) => void;
+}
+
 // Keep here in case we need it later
 // const LineEnding = Object.freeze({
 //   None: 0,
@@ -22,8 +45,13 @@ export type GCodeParsedLine = {
 //   CarriageReturnAndNewLine: 3
 // })
 
+// TODO: Check if better method to implement interface. Extends doesn't work because controller is protected.
 export interface MarlinControllableDevice {
   controller: MarlinController;
+  namespace: DeviceNamespace<
+    MarlinControllerClientToServerDeviceEvents,
+    MarlinControllerServerToClientDeviceEvents
+  >;
 }
 
 export default class MarlinController extends Controller<
@@ -154,7 +182,7 @@ export default class MarlinController extends Controller<
         // Controller emit a data:* event with the parsed data
         this.emit("data:" + parser.eventName, parsedData);
         // TODO - Check if there is a better place
-        this.device.namespace.emit(`data:${parser.eventName}`, parsedData);
+        this.device.namespace.emit<any>(`data:${parser.eventName}`, parsedData);
       }
     });
   }

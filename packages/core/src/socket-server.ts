@@ -120,12 +120,11 @@ export interface ClientToServerDeviceEvents {}
 export interface InterServerDeviceEvents {}
 export interface DeviceSocketData {}
 
-export type DeviceNamespace = Namespace<
-  ClientToServerDeviceEvents,
-  ServerToClientDeviceEvents,
-  InterServerDeviceEvents,
-  DeviceSocketData
->;
+export type DeviceNamespace<
+  CTS = ClientToServerDeviceEvents,
+  STC = ServerToClientDeviceEvents,
+  IS = InterServerDeviceEvents
+> = Namespace<CTS, STC, IS, DeviceSocketData>;
 
 export class DeviceSocket<
   CTS = ClientToServerDeviceEvents,
