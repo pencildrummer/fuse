@@ -25,7 +25,7 @@ import List from "./List/List";
 import CompactList from "./List/CompactList/CompactList";
 import ScrollArea from "./ScrollArea/ScrollArea";
 
-import Popover from "./Popover/Popover";
+import * as Popover from "./Popover/Popover";
 import DropdownMenu from "./DropdownMenu/DropdownMenu";
 
 import Badge from "./Badge/Badge";

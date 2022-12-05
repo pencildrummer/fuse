@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "esnext.intl",
+      "es2017.intl",
+      "es2018.intl"
+    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+    "jsx": "preserve" /* Specify what JSX code is generated. */,
+
+    /* Modules */
+    "module": "ESNext" /* Specify what module code is generated. */,
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "isolatedModules": true,
+
+    /* Type Checking */
+    "strict": false /* Enable all strict type-checking options. */,
+    "skipLibCheck": true
+  },
+  "references": [
+    { "path": "../../../packages/core-client" },
+    { "path": "../../../packages/core-ui" },
+    { "path": "../../../packages/shared-utils" }
+  ]
+}

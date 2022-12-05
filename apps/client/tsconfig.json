@@ -1,27 +1,41 @@
 {
+  "extends": "../../tsconfig.client.json",
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "incremental": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve"
+    "composite": true,
+    // "target": "es5",
+    // "lib": ["dom", "dom.iterable", "esnext"],
+    // "allowJs": true,
+    // "skipLibCheck": true,
+    // "strict": false,
+    // "forceConsistentCasingInFileNames": true,
+    // "noEmit": true,
+    // "incremental": true,
+    // "esModuleInterop": true,
+    // "module": "esnext",
+    // "moduleResolution": "node",
+    // "resolveJsonModule": true,
+    // "isolatedModules": true,
+    // "jsx": "preserve"
+    "allowJs": false,
+    "noEmit": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "package.json"],
   "exclude": ["node_modules"],
   "references": [
-    { "path": "../../packages/core-client" },
-    { "path": "../../packages/core-ui" },
-    { "path": "../../packages/shared-utils" },
-    { "path": "../../plugins/terminal/client" },
-    { "path": "../../plugins/marlin-settings/client" }
+    {
+      "path": "../../packages/core-client"
+    },
+    {
+      "path": "../../packages/core-ui"
+    },
+    {
+      "path": "../../packages/shared-utils"
+    },
+    {
+      "path": "../../plugins/terminal/client"
+    },
+    {
+      "path": "../../plugins/marlin-settings/client"
+    }
   ]
 }

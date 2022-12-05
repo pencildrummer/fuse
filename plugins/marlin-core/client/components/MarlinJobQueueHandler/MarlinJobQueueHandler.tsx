@@ -20,96 +20,90 @@ export default function MarlinJobQueueHandler() {
   const { addStatus, removeStatus } = useDeviceStatusListContext();
   const [jobs, setJobs] = useState([]);
 
-  useEffect(
-    (_) => {
-      if (!device.pluginSockets.fuseLabs.marlinCore) {
-        return console.warn("Unexpected missing fuseLabs.marlinCore socket");
-      }
-      // Retrieve jobs
-      device.pluginSockets.fuseLabs.marlinCore.emit("queue:jobs", (jobs) => {
-        console.log("List of jobs", jobs);
-        setJobs(jobs);
-      });
-    },
-    [device]
-  );
+  useEffect(() => {
+    if (!device.pluginSockets.fuseLabs.marlinCore) {
+      return console.warn("Unexpected missing fuseLabs.marlinCore socket");
+    }
+    // Retrieve jobs
+    device.pluginSockets.fuseLabs.marlinCore.emit("queue:jobs", (jobs) => {
+      console.log("List of jobs", jobs);
+      setJobs(jobs);
+    });
+  }, [device]);
 
-  useEffect(
-    (_) => {
-      const handleJobAdded = (job) => {
-        setJobs((jobs) => [...jobs, job]);
-        addStatus(`Added job "${job.name}"`);
-      };
+  useEffect(() => {
+    const handleJobAdded = (job) => {
+      setJobs((jobs) => [...jobs, job]);
+      addStatus(`Added job "${job.name}"`);
+    };
 
-      const handleJobRemoved = (job) => {
-        setJobs((jobs) => jobs.filter((j) => j.id != job.id));
-        addStatus(`Removed job "${job.name}"`);
-      };
+    const handleJobRemoved = (job) => {
+      setJobs((jobs) => jobs.filter((j) => j.id != job.id));
+      addStatus(`Removed job "${job.name}"`);
+    };
 
-      const handleJobStart = (job) => {
-        addStatus(`Started job "${job.name}"`);
-      };
+    const handleJobStart = (job) => {
+      addStatus(`Started job "${job.name}"`);
+    };
 
-      const handleJobPause = (job) => {
-        addStatus(`Paused job "${job.name}"`, { type: "warning" });
-      };
+    const handleJobPause = (job) => {
+      addStatus(`Paused job "${job.name}"`, { type: "warning" });
+    };
 
-      const handleJobResume = (job) => {
-        addStatus(`Resumed job "${job.name}"`);
-      };
+    const handleJobResume = (job) => {
+      addStatus(`Resumed job "${job.name}"`);
+    };
 
-      const handleJobProgress = (job) => {
-        setJobs((jobs) => {
-          let newJobs = [...jobs];
-          let jobIndex = newJobs.findIndex((j) => j.id === job.id);
-          if (jobIndex > -1) {
-            newJobs.splice(jobIndex, 1, job);
-          } else {
-            console.warn("Received progress update for a job not in the queue");
-          }
-          return newJobs;
-        });
-      };
-
-      const handleJobFinish = (job) => {
-        setJobs((jobs) => jobs.filter((j) => j.id !== job.id));
-
-        let status = addStatus(`Finished job "${job.name}"`, {
-          type: "success",
-        });
-        setTimeout((_) => removeStatus(status.id), 1500);
-
-        if (isElectron()) {
-          let notification = new Notification(device.name, {
-            body: `${job.name} has been completed`,
-          });
-          notification.onclick = (_) => console.log("Clicked notification");
+    const handleJobProgress = (job) => {
+      setJobs((jobs) => {
+        let newJobs = [...jobs];
+        let jobIndex = newJobs.findIndex((j) => j.id === job.id);
+        if (jobIndex > -1) {
+          newJobs.splice(jobIndex, 1, job);
+        } else {
+          console.warn("Received progress update for a job not in the queue");
         }
-      };
+        return newJobs;
+      });
+    };
 
-      device.socket.on("job:added", handleJobAdded);
-      device.socket.on("job:removed", handleJobRemoved);
-      device.socket.on("job:start", handleJobStart);
-      device.socket.on("job:pause", handleJobPause);
-      device.socket.on("job:resume", handleJobResume);
-      device.socket.on("job:progress", handleJobProgress);
-      device.socket.on("job:finish", handleJobFinish);
-      return (_) => {
-        device.socket.off("job:added", handleJobAdded);
-        device.socket.off("job:removed", handleJobRemoved);
-        device.socket.off("job:start", handleJobStart);
-        device.socket.off("job:pause", handleJobPause);
-        device.socket.off("job:resume", handleJobResume);
-        device.socket.off("job:progress", handleJobProgress);
-        device.socket.off("job:finish", handleJobFinish);
-      };
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },
-    [device]
-  );
+    const handleJobFinish = (job) => {
+      setJobs((jobs) => jobs.filter((j) => j.id !== job.id));
+
+      let status = addStatus(`Finished job "${job.name}"`, {
+        type: "success",
+      });
+      setTimeout((_) => removeStatus(status.id), 1500);
+
+      if (isElectron()) {
+        let notification = new Notification(device.name, {
+          body: `${job.name} has been completed`,
+        });
+        notification.onclick = (_) => console.log("Clicked notification");
+      }
+    };
+
+    device.socket.on("job:added", handleJobAdded);
+    device.socket.on("job:removed", handleJobRemoved);
+    device.socket.on("job:start", handleJobStart);
+    device.socket.on("job:pause", handleJobPause);
+    device.socket.on("job:resume", handleJobResume);
+    device.socket.on("job:progress", handleJobProgress);
+    device.socket.on("job:finish", handleJobFinish);
+    return () => {
+      device.socket.off("job:added", handleJobAdded);
+      device.socket.off("job:removed", handleJobRemoved);
+      device.socket.off("job:start", handleJobStart);
+      device.socket.off("job:pause", handleJobPause);
+      device.socket.off("job:resume", handleJobResume);
+      device.socket.off("job:progress", handleJobProgress);
+      device.socket.off("job:finish", handleJobFinish);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [device]);
 
   return (
-    <Popover>
+    <Popover.Root>
       <Popover.Trigger>
         <Button size="sm" mode="ghost" squared>
           <LayersIcon />
@@ -118,7 +112,7 @@ export default function MarlinJobQueueHandler() {
       <Popover.Content align="end">
         <JobList jobs={jobs} />
       </Popover.Content>
-    </Popover>
+    </Popover.Root>
   );
 }
 

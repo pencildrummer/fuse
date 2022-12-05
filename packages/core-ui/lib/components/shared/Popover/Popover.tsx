@@ -1,27 +1,27 @@
-import * as PopoverPrimitive from '@radix-ui/react-popover'
-import classNames from 'classnames'
+import * as PopoverPrimitive from "@radix-ui/react-popover";
+import classNames from "classnames";
 
-const Popover = PopoverPrimitive.Root
+const Root = PopoverPrimitive.Root;
+const Trigger = PopoverPrimitive.Trigger;
 
-Popover.Trigger = PopoverPrimitive.Trigger
+type ContentProps = React.ComponentPropsWithRef<
+  typeof PopoverPrimitive.Content
+>;
 
-function PopoverContent({
-  className,
-  ...props
-}) {
+const Content = function ({ ...props }: ContentProps) {
   return (
-    <PopoverPrimitive.Content 
+    <PopoverPrimitive.Content
       sideOffset={3}
       {...props}
       className={classNames(
-      'rounded-lg text-gray-300 bg-gray-700',
-      'shadow-md',
-      'min-w-[180px]',
-      'p-1',
-      className,
-    )}/>
-  )
-}
-Popover.Content = PopoverContent
+        "rounded-lg text-gray-300 bg-gray-700",
+        "shadow-md",
+        "min-w-[180px]",
+        "p-1",
+        props.className
+      )}
+    />
+  );
+};
 
-export default Popover
+export { Root, Trigger, Content };

@@ -31,7 +31,8 @@ type ClientPluginComponentsType = {
 // TODO: Check type and improve
 type ClientPluginDeviceComponentsType = {
   page?: {
-    plugin: JSX.Element;
+    plugin?: JSX.Element;
+    topBar?: React.ComponentType;
   };
   settings?: JSX.Element;
 };
