@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { SerialPort } from "serialport";
 import signale from "signale";
-import { logger } from "../../../logger";
-import Connection, { ErrorCallback } from "../Connection/Connection";
+import { logger } from "../../../logger.js";
+import Connection, { ErrorCallback } from "../Connection/Connection.js";
 
 export default class SerialConnection extends Connection {
   private baudRate: number;

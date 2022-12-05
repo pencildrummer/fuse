@@ -11,8 +11,5 @@
       "@fuse-labs/terminal/client": ["plugins/terminal/client"]
     }
   },
-  "ts-node": {
-    "esm": true
-  },
   "exclude": ["node_modules", "electron", "docs", "dev"]
 }

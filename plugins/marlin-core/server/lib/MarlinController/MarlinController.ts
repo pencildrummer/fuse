@@ -1,21 +1,13 @@
-import path from "path";
-import {
-  ClientToServerDeviceEvents,
-  Controller,
-  Device,
-  DeviceNamespace,
-  logger,
-  ServerToClientDeviceEvents,
-} from "@fuse-labs/core";
-import { Device as CoreDevice } from "@fuse-labs/types";
-import MarlinReadyParser from "./MarlinReadyParser.js";
-import MarlinLineParser from "./MarlinLineParser.js";
+import { Controller, Device, logger } from "@fuse-labs/core";
 import GCodeParser from "gcode-parser";
-import MarlinGCodeJob from "./MarlinGCodeJob.js";
-import TemperatureParser from "./data-parser/TemperatureParser.js";
-import OkParser from "./data-parser/OkParser.js";
-import MarlinJobQueue from "./MarlinJobQueue.js";
+import path from "path";
 import { MarlinCoreDeviceNamespace } from "../../MarlinCorePlugin/MarlinCorePlugin.js";
+import OkParser from "./data-parser/OkParser.js";
+import TemperatureParser from "./data-parser/TemperatureParser.js";
+import MarlinGCodeJob from "./MarlinGCodeJob.js";
+import MarlinJobQueue from "./MarlinJobQueue.js";
+import MarlinLineParser from "./MarlinLineParser.js";
+import MarlinReadyParser from "./MarlinReadyParser.js";
 
 export type GCodeParsedLine = {
   line: string;

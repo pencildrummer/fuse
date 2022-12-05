@@ -2,9 +2,9 @@
   "extends": "../../tsconfig.host.json",
   "compilerOptions": {
     "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */,
-    "rootDir": "./src/" /* Specify the root folder within your source files. */,
-    "resolveJsonModule": true /* Enable importing .json files. */,
-    "outDir": "dist" /* Specify an output folder for all emitted files. */
+    "outDir": "dist" /* Specify an output folder for all emitted files. */,
+    "rootDir": "src",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo"
   },
   "include": [
     "src/**/*.ts",

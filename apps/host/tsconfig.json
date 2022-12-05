@@ -1,7 +1,10 @@
 {
   "extends": "../../tsconfig.host.json",
   "compilerOptions": {
-    "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */
+    "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */,
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
+    "rootDir": "src"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["dist/**/*"],

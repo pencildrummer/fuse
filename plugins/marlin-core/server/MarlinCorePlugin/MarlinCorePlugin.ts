@@ -1,18 +1,17 @@
 import {
-  Plugin,
-  Controller,
-  DeviceSocket,
   ClientToServerDeviceEvents,
-  DeviceManager,
-  ServerToClientDeviceEvents,
+  ControllerManager,
   DeviceNamespace,
+  DeviceSocket,
+  Plugin,
+  ServerToClientDeviceEvents,
 } from "@fuse-labs/core";
+import chalk from "chalk";
+import fs from "fs-extra";
 import MarlinController, {
   MarlinControllableDevice,
-} from "../lib/MarlinController/MarlinController";
-import fs from "fs-extra";
-import chalk from "chalk";
-import MarlinGCodeJob from "../lib/MarlinController/MarlinGCodeJob";
+} from "../lib/MarlinController/MarlinController.js";
+import MarlinGCodeJob from "../lib/MarlinController/MarlinGCodeJob.js";
 
 interface MarlinCoreClientToServerDeviceEvents
   extends ClientToServerDeviceEvents {
@@ -52,7 +51,7 @@ export interface MarlinCoreDeviceNamespace
 export default class MarlinCorePlugin extends Plugin<MarlinCoreDeviceSocket> {
   provision(): void {
     super.provision();
-    DeviceManager.registerControllerClass("marlin", MarlinController);
+    ControllerManager.registerControllerClass("marlin", MarlinController);
   }
 
   initDeviceSocket(socket: MarlinCoreDeviceSocket): void {

@@ -3,7 +3,6 @@ import fs from "fs-extra";
 import path from "path";
 import * as url from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
-import { logger } from "../../logger";
 import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
 

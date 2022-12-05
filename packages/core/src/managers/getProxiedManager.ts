@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import { logger } from "../logger";
+import { logger } from "../logger.js";
 import BaseManager from "./BaseManager";
 
 function getProxiedManager<T extends BaseManager>(manager: T): T {

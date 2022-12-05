@@ -1,7 +1,7 @@
 import { Controller, logger } from "@fuse-labs/core";
 import { generateUniqueID } from "@fuse-labs/shared-utils";
 import { EventEmitter } from "events";
-import MarlinController, { GCodeParsedLine } from "./MarlinController";
+import MarlinController, { GCodeParsedLine } from "./MarlinController.js";
 
 /**
  * MarlingGCodeJob

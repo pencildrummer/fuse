@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import { number, object, string } from "yup";
 import { DEVICES_BASE_PATH } from "../../../constants.js";
 import {
+  ControllerManager,
   DeviceManager,
   logger,
   ProfileManager,
@@ -177,7 +178,7 @@ export default class Device implements CoreDevice.DeviceInterface {
     firmware: CoreDevice.FirmwareType
   ): Controller {
     // Set controller
-    let ControllerClass = DeviceManager.getControllerClass(firmware);
+    let ControllerClass = ControllerManager.getControllerClass(firmware);
     if (!ControllerClass) {
       //throw new Error(`No controller class found for device firmware '${this.profile.firmware}'`)
       console.error(

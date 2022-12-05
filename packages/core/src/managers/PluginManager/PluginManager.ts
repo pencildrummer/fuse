@@ -4,7 +4,7 @@ import path from "path";
 import { pathToFileURL } from "url";
 import { SYSTEM_BASE_PATH } from "../../constants.js";
 import Plugin from "../../models/plugins/Plugin/Plugin.js";
-import { logger } from "../../logger";
+import { logger } from "../../logger.js";
 import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
 import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };

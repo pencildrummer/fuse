@@ -3,7 +3,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server as SocketServer, Socket } from "socket.io";
 import { ExtendedError, Namespace } from "socket.io/dist/namespace";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import { DeviceManager } from "./managers/index.js";
 import { Device } from "./models/index.js";
 import { Device as CoreDevice } from "@fuse-labs/types";

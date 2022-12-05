@@ -3,6 +3,7 @@ import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
 import {
   ConfigManager,
+  ControllerManager,
   DeviceManager,
   PluginManager,
   ProfileManager,
@@ -19,7 +20,13 @@ class AppManager extends BaseManager {
     instance = this;
   }
 
-  async init() {}
+  async init() {
+    await ConfigManager.init();
+    await ProfileManager.init();
+    await ControllerManager.init();
+    await DeviceManager.init();
+    await PluginManager.init();
+  }
 
   get data(): AppDataType {
     return {
