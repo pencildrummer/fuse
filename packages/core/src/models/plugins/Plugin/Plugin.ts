@@ -8,7 +8,9 @@ import PluginManager from "../../../managers/PluginManager/PluginManager.js";
 import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
 import { DeviceType } from "../../devices/index.js";
 
-export default class Plugin implements PluginInterface {
+export default class Plugin<DS extends DeviceSocket = DeviceSocket>
+  implements PluginInterface
+{
   name: string;
   displayName: string;
   path: string;
@@ -160,7 +162,7 @@ export default class Plugin implements PluginInterface {
     console.warn("initSocket did nothing on", this.constructor.name);
   }
 
-  initDeviceSocket(socket: DeviceSocket) {
+  initDeviceSocket(socket: DS) {
     // To be implemented by subsclass
     console.warn("initDeviceSocket did nothing on", this.constructor.name);
   }

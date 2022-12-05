@@ -3,22 +3,59 @@ import {
   Controller,
   DeviceSocket,
   ClientToServerDeviceEvents,
+  DeviceManager,
+  ServerToClientDeviceEvents,
+  DeviceNamespace,
 } from "@fuse-labs/core";
-import MarlinController from "../lib/MarlinController/MarlinController.js";
+import MarlinController, {
+  MarlinControllableDevice,
+} from "../lib/MarlinController/MarlinController";
 import fs from "fs-extra";
 import chalk from "chalk";
+import MarlinGCodeJob from "../lib/MarlinController/MarlinGCodeJob";
 
-interface QueueClientToServerDeviceEvents extends ClientToServerDeviceEvents {
+interface MarlinCoreClientToServerDeviceEvents
+  extends ClientToServerDeviceEvents {
   "queue:jobs";
+  "job:start";
+  "job:pause";
+  "job:resume";
+  "job:stop";
+  "print:file";
 }
 
-export default class MarlinCorePlugin extends Plugin {
+interface MarlinCoreServerToClientDeviceEvents
+  extends ServerToClientDeviceEvents {
+  "job:start": (job: MarlinGCodeJob) => void;
+  "job:progress": (job: MarlinGCodeJob) => void;
+  "job:pause": (job: MarlinGCodeJob) => void;
+  "job:resume": (job: MarlinGCodeJob) => void;
+  "job:finish": (job: MarlinGCodeJob) => void;
+  "job:added": (job: MarlinGCodeJob) => void;
+  "job:removed": (job: MarlinGCodeJob) => void;
+}
+
+interface MarlinCoreDeviceSocket
+  extends DeviceSocket<
+    MarlinCoreClientToServerDeviceEvents,
+    MarlinCoreServerToClientDeviceEvents
+  > {
+  device: MarlinControllableDevice;
+}
+
+export interface MarlinCoreDeviceNamespace
+  extends DeviceNamespace<
+    MarlinCoreClientToServerDeviceEvents,
+    MarlinCoreServerToClientDeviceEvents
+  > {}
+
+export default class MarlinCorePlugin extends Plugin<MarlinCoreDeviceSocket> {
   provision(): void {
     super.provision();
-    Controller.registerControllerClass("marlin", MarlinController);
+    DeviceManager.registerControllerClass("marlin", MarlinController);
   }
 
-  initDeviceSocket(socket: DeviceSocket): void {
+  initDeviceSocket(socket: MarlinCoreDeviceSocket): void {
     /**
      * List queue jobs
      */

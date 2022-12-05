@@ -4,6 +4,7 @@ import path from "path";
 import { DEVICES_BASE_PATH } from "../../constants.js";
 import { logger } from "../../logger";
 import Device from "../../models/devices/Device/Device.js";
+import { Controller } from "../../models/index.js";
 import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
 
@@ -14,6 +15,10 @@ class DeviceManager extends BaseManager {
   get devices() {
     return this._devices;
   }
+
+  private _registeredContollers: {
+    [firmware: string]: new (device) => Controller;
+  } = {};
 
   constructor() {
     super();
@@ -84,6 +89,21 @@ class DeviceManager extends BaseManager {
     this._devices = this._devices.filter((d) => d.id !== deviceId);
     // Return the remove device
     return device;
+  }
+
+  // Device controllers
+
+  registerControllerClass<T extends Controller>(
+    deviceFirmware: CoreDevice.FirmwareType,
+    ControllerClass: new (device) => T
+  ) {
+    this._registeredContollers[deviceFirmware] = ControllerClass;
+  }
+
+  getControllerClass(
+    deviceFirmware: CoreDevice.FirmwareType
+  ): new (device) => Controller {
+    return this._registeredContollers[deviceFirmware];
   }
 }
 

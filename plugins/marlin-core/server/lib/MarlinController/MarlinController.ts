@@ -15,27 +15,12 @@ import MarlinGCodeJob from "./MarlinGCodeJob.js";
 import TemperatureParser from "./data-parser/TemperatureParser.js";
 import OkParser from "./data-parser/OkParser.js";
 import MarlinJobQueue from "./MarlinJobQueue.js";
+import { MarlinCoreDeviceNamespace } from "../../MarlinCorePlugin/MarlinCorePlugin.js";
 
 export type GCodeParsedLine = {
   line: string;
   words: string[] | any[][];
 };
-
-interface MarlinControllerClientToServerDeviceEvents
-  extends ClientToServerDeviceEvents {
-  // TODO
-}
-
-interface MarlinControllerServerToClientDeviceEvents
-  extends ServerToClientDeviceEvents {
-  "job:start": (job: MarlinGCodeJob) => void;
-  "job:progress": (job: MarlinGCodeJob) => void;
-  "job:pause": (job: MarlinGCodeJob) => void;
-  "job:resume": (job: MarlinGCodeJob) => void;
-  "job:finish": (job: MarlinGCodeJob) => void;
-  "job:added": (job: MarlinGCodeJob) => void;
-  "job:removed": (job: MarlinGCodeJob) => void;
-}
 
 // Keep here in case we need it later
 // const LineEnding = Object.freeze({
@@ -45,29 +30,20 @@ interface MarlinControllerServerToClientDeviceEvents
 //   CarriageReturnAndNewLine: 3
 // })
 
-// TODO: Check if better method to implement interface. Extends doesn't work because controller is protected.
-export interface MarlinControllableDevice {
+export interface MarlinControllableDevice extends Device {
   controller: MarlinController;
-  namespace: DeviceNamespace<
-    MarlinControllerClientToServerDeviceEvents,
-    MarlinControllerServerToClientDeviceEvents
-  >;
+  namespace: MarlinCoreDeviceNamespace;
 }
 
-export default class MarlinController extends Controller<
-  Device & MarlinControllableDevice
-> {
+export default class MarlinController extends Controller<MarlinControllableDevice> {
   private _isReady = false;
-
-  // TODO - Create queue?
-  private _job = null;
 
   private queue: MarlinJobQueue;
 
   // TODO - Check if should we use serialport parser, or leave this as a Fuse internal parser thing or even for MarlinController
   private _parsers = [new OkParser(), new TemperatureParser()];
 
-  constructor(device: Device & MarlinControllableDevice) {
+  constructor(device: MarlinControllableDevice) {
     super(device);
 
     // Create job queue

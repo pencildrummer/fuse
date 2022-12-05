@@ -45,23 +45,4 @@ export default class Controller<T extends Device = Device>
   closeConnection(callback) {
     this._device.connection.close(callback);
   }
-
-  /** STATIC */
-
-  static _registeredContollers: {
-    [firmware: string]: typeof Controller;
-  } = {};
-
-  static registerControllerClass(
-    deviceFirmware: CoreDevice.FirmwareType,
-    ControllerClass: typeof Controller
-  ) {
-    this._registeredContollers[deviceFirmware] = ControllerClass;
-  }
-
-  static getControllerClass(
-    deviceFirmware: CoreDevice.FirmwareType
-  ): typeof Controller {
-    return this._registeredContollers[deviceFirmware];
-  }
 }

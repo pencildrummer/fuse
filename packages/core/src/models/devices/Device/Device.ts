@@ -1,14 +1,26 @@
-import { Device as CoreDevice } from "@fuse-labs/types";
+import {
+  Device as CoreDevice,
+  Connection as CoreConnection,
+} from "@fuse-labs/types";
 import fs from "fs-extra";
 import path from "path";
 import signale from "signale";
 import { v4 as uuid } from "uuid";
 import { number, object, string } from "yup";
 import { DEVICES_BASE_PATH } from "../../../constants.js";
-import { logger, ProfileManager, socketServer } from "../../../index.js";
+import {
+  DeviceManager,
+  logger,
+  ProfileManager,
+  socketServer,
+} from "../../../index.js";
 import { DeviceNamespace } from "../../../socket-server.js";
-import SerialConnection from "../../connections/SerialConnection/SerialConnection.js";
-import { Connection, Controller, NetworkConnection } from "../../index.js";
+import {
+  Controller,
+  NetworkConnection,
+  Connection,
+  SerialConnection,
+} from "../../index.js";
 
 export const DEVICE_SCHEMA = object({
   id: string().required(),
@@ -27,38 +39,59 @@ export default class Device implements CoreDevice.DeviceInterface {
   name: string;
   portPath: string;
   baudrate: number;
-
   profileId: string;
-  profile: CoreDevice.Profile.BaseInterface;
 
-  serialNumber: string;
-  vendorId: string;
-  productId: string;
+  readonly profile: CoreDevice.Profile.BaseInterface;
 
-  connection: Connection;
+  readonly serialNumber: string;
+  readonly vendorId: string;
+  readonly productId: string;
 
-  protected controller: Controller;
+  readonly connection: Connection;
+
+  readonly controller: Controller;
 
   /**
    * The Socket.io namespace corresponding to this device
    */
-  get namespace() {
-    return this._namespace;
-  }
-  private _namespace: DeviceNamespace;
+  readonly namespace: DeviceNamespace;
 
   get path() {
     return path.resolve(path.join(DEVICES_BASE_PATH, this.id + ".json"));
   }
 
   constructor(filePathOrData: string | Omit<CoreDevice.DataType, "id">) {
+    let deviceData: CoreDevice.DataType;
     if (typeof filePathOrData === "string") {
       // Retrieve file from path
-      this.initDeviceFromPath(filePathOrData);
+      deviceData = this.getDeviceDataFromFilePath(filePathOrData);
     } else if (typeof filePathOrData === "object") {
       // Create new object instance with data, without storing on system yet
-      this.initDeviceFromData(filePathOrData);
+      deviceData = this.getDeviceDataFromData(filePathOrData);
     }
+
+    // Set data from device data on this instance
+    this.id = deviceData.id;
+    this.name = deviceData.name;
+    this.portPath = deviceData.portPath;
+    this.baudrate = deviceData.baudrate;
+    this.profileId = deviceData.profileId;
+    this.serialNumber = deviceData.serialNumber;
+    this.vendorId = deviceData.vendorId;
+    this.productId = deviceData.productId;
+
+    // Expand profile with id
+
+    this.profile = ProfileManager.getProfile(this.profileId);
+
+    // Set connection
+    this.connection = this.createDeviceConnection(this.profile.connectionType);
+
+    // Set controller
+    this.controller = this.createDeviceController(this.profile.firmware);
+
+    // Create namespace
+    this.namespace = this.createDeviceNamespace(this.id);
   }
 
   save() {
@@ -76,8 +109,15 @@ export default class Device implements CoreDevice.DeviceInterface {
     }
   }
 
-  update(data) {
-    this.fillDeviceWithData(data);
+  update(data: any) {
+    let deviceData = this.validateAsDeviceData(data);
+
+    this.id = deviceData.id;
+    this.name = deviceData.name;
+    this.portPath = deviceData.portPath;
+    this.baudrate = deviceData.baudrate;
+    this.profileId = deviceData.profileId;
+
     this.save();
   }
 
@@ -94,76 +134,77 @@ export default class Device implements CoreDevice.DeviceInterface {
    * PRIVATE
    */
 
-  initDeviceFromPath(filePath: string) {
+  private getDeviceDataFromFilePath(filePath: string): CoreDevice.DataType {
     logger.info("Init device from path", filePath);
     let json = fs.readJsonSync(path.resolve(filePath), {
       encoding: "utf-8",
     });
-    // Set device data onto instance
-    this.fillDeviceWithData(json);
+    return this.validateAsDeviceData(json);
   }
 
-  private initDeviceFromData(data: Omit<CoreDevice.DataType, "id">) {
-    // Fill data
-    this.fillDeviceWithData({
+  private getDeviceDataFromData(data: any): CoreDevice.DataType {
+    return this.validateAsDeviceData({
       ...data,
       // Generate new random id for device
       id: uuid(),
     });
   }
 
-  private fillDeviceWithData(data: CoreDevice.DataType) {
-    // Set data
+  private validateAsDeviceData(data: any): CoreDevice.DataType {
+    // Validate device data
     let deviceData = DEVICE_SCHEMA.validateSync(data, {
       stripUnknown: true,
     });
-    Object.assign(this, deviceData);
-    // Expand data and configure device
-    this.configureDevice();
+    return deviceData;
   }
 
-  /**
-   * Configure device with necessary properties
-   */
-  private configureDevice() {
-    // Expand profile with id
-    this.profile = ProfileManager.getProfile(this.profileId);
-    // Set connection
-
+  private createDeviceConnection(
+    connectionType: CoreConnection.Type
+  ): Connection {
     switch (this.profile.connectionType) {
       case "serial":
-        this.connection = new SerialConnection(this.portPath, this.baudrate);
+        return new SerialConnection(this.portPath, this.baudrate);
         break;
       case "network":
-        this.connection = new NetworkConnection();
+        return new NetworkConnection();
         break;
       default:
         throw new Error("No connection specified on device profile");
     }
+  }
 
+  private createDeviceController(
+    firmware: CoreDevice.FirmwareType
+  ): Controller {
     // Set controller
-    let ControllerClass = Controller.getControllerClass(this.profile.firmware);
+    let ControllerClass = DeviceManager.getControllerClass(firmware);
     if (!ControllerClass) {
       //throw new Error(`No controller class found for device firmware '${this.profile.firmware}'`)
       console.error(
-        `No controller class found for device firmware '${this.profile.firmware}'`
+        `No controller class found for device firmware '${firmware}'`
       );
     } else {
-      this.controller = new ControllerClass(this);
-    }
+      let controller = new ControllerClass(this);
 
+      // Add error listeners
+      controller?.on("error", (err) => {
+        console.error("Error handled by Device from controller", err);
+        this.namespace.emit("error", {
+          message: err.message,
+          code: err.code,
+        });
+      });
+
+      return controller;
+    }
+  }
+
+  private createDeviceNamespace(
+    id: CoreDevice.DataType["id"]
+  ): DeviceNamespace {
     // Set socket namespace
     // Add listener to this on data:* events to be broadcasted on device namespace socket
-    this._namespace = socketServer.of("/device:" + this.id);
-
-    // Add listeners
-    this.controller?.on("error", (err) => {
-      console.error("Error handled by Device from controller", err);
-      this.namespace.emit("error", {
-        message: err.message,
-        code: err.code,
-      });
-    });
+    return socketServer.of("/device:" + id);
   }
 
   /**
