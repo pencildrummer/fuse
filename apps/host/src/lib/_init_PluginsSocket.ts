@@ -72,7 +72,7 @@ export default async function _init_PluginsSocket() {
           );
 
           // Add debug disconnect listener
-          socket.on("disconnect", (_) => {
+          socket.on("disconnect", () => {
             logger.complete(
               `Disconnected from device plugin socket ${chalk.bold(
                 socket.nsp.name

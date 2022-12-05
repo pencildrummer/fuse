@@ -43,7 +43,7 @@ export default class MarlinController extends Controller<MarlinControllableDevic
 
     // Attach readyParser and then pipe readline parser to readyParser
     let readyParser = this.device.connection.addParser(new MarlinReadyParser());
-    readyParser.on("ready", (_) => {
+    readyParser.on("ready", () => {
       this._isReady = true;
       logger
         .child({ scope: this.constructor.name })
@@ -56,7 +56,7 @@ export default class MarlinController extends Controller<MarlinControllableDevic
     lineParser.on("data", (data) => this.handleParsedData(data));
 
     // On close connection
-    let closeHandler = (_) => {
+    let closeHandler = () => {
       // Clear pending job
       this.queue.clear();
       this.device.connection.off("close", closeHandler);
@@ -157,8 +157,8 @@ export default class MarlinController extends Controller<MarlinControllableDevic
 
   private initQueue() {
     this.queue = new MarlinJobQueue();
-    this.queue.on("start", (_) => logger.start("Queue started"));
-    this.queue.on("finish", (_) => logger.complete("Queue finished"));
+    this.queue.on("start", () => logger.start("Queue started"));
+    this.queue.on("finish", () => logger.complete("Queue finished"));
     this.queue.on("job:start", (job) => {
       this.device.namespace.emit("job:start", job);
     });

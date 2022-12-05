@@ -47,7 +47,7 @@ export type SelectOption = {
 };
 
 type SelectRawProps = {
-  options: SelectOption[] | string[];
+  options: (SelectOption | string)[];
   placeholder?: React.ReactNode;
   error?: string;
   dirty?: boolean;
@@ -143,7 +143,7 @@ export default function Select(props: SelectRawProps) {
         props.onValueChange?.(val);
       }}
       onOpenChange={(open) => open && setTouched(true)}
-      // onBlur={(_) => field.onBlur(field.name)}
+      // onBlur={() => field.onBlur(field.name)}
     />
   );
 }

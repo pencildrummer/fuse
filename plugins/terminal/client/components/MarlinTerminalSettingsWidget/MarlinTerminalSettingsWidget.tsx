@@ -21,7 +21,7 @@ export default function MarlinTerminalSettingsWidget({ ...props }) {
     let status = addStatus("Prova messaggio di testo dello stato device", {
       type: "warning",
     });
-    setTimeout((_) => removeStatus(status.id), 1500);
+    setTimeout(() => removeStatus(status.id), 1500);
   }
 
   function handleDisconnectClick() {

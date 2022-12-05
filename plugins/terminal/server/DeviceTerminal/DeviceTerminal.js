@@ -21,8 +21,8 @@ export default class DeviceTerminal extends EventEmitter {
       // Add reference to device
       this._device = device;
       // Add listener to controller
-      this._device.controller.on("open", (_) => this.emit("open"));
-      this._device.controller.on("close", (_) => this.emit("close"));
+      this._device.controller.on("open", () => this.emit("open"));
+      this._device.controller.on("close", () => this.emit("close"));
       this._device.controller.on("write", (data) => this.emit("write", data));
       this._device.controller.on("data", (data) => this.emit("data", data));
       this._device.controller.on("error", (err) => this.emit("error", err));

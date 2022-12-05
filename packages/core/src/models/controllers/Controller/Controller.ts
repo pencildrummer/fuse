@@ -28,8 +28,8 @@ export default class Controller<T extends Device = Device>
     // TODO - Validate? Connection must exists
     this._device.connection.on("error", (err) => this.emit("error", err));
 
-    this._device.connection.on("open", (_) => this.emit("open"));
-    this._device.connection.on("close", (_) => this.emit("close"));
+    this._device.connection.on("open", () => this.emit("open"));
+    this._device.connection.on("close", () => this.emit("close"));
   }
 
   /**

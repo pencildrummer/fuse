@@ -121,14 +121,14 @@ export default function MoveWidget() {
         <div className="grid grid-cols-3 grid-rows-3 gap-2">
           <div />
           <div>
-            <MoveButton onClick={(_) => handleMove("decY")} disabled={disabled}>
+            <MoveButton onClick={() => handleMove("decY")} disabled={disabled}>
               <ThickArrowUpIcon />
             </MoveButton>
           </div>
           <div />
 
           <div>
-            <MoveButton onClick={(_) => handleMove("decX")} disabled={disabled}>
+            <MoveButton onClick={() => handleMove("decX")} disabled={disabled}>
               <ThickArrowLeftIcon />
             </MoveButton>
           </div>
@@ -146,14 +146,14 @@ export default function MoveWidget() {
             </div>
           </div>
           <div>
-            <MoveButton onClick={(_) => handleMove("incX")} disabled={disabled}>
+            <MoveButton onClick={() => handleMove("incX")} disabled={disabled}>
               <ThickArrowRightIcon />
             </MoveButton>
           </div>
 
           <div />
           <div>
-            <MoveButton onClick={(_) => handleMove("incY")} disabled={disabled}>
+            <MoveButton onClick={() => handleMove("incY")} disabled={disabled}>
               <ThickArrowDownIcon />
             </MoveButton>
           </div>
@@ -162,7 +162,7 @@ export default function MoveWidget() {
 
         <div className="grid grid-cols-1 grid-rows-3 gap-2">
           <div>
-            <MoveButton disabled={disabled} onClick={(_) => handleMove("incZ")}>
+            <MoveButton disabled={disabled} onClick={() => handleMove("incZ")}>
               <ThickArrowUpIcon />
             </MoveButton>
           </div>
@@ -174,7 +174,7 @@ export default function MoveWidget() {
             </div>
           </div>
           <div>
-            <MoveButton disabled={disabled} onClick={(_) => handleMove("decZ")}>
+            <MoveButton disabled={disabled} onClick={() => handleMove("decZ")}>
               <ThickArrowDownIcon />
             </MoveButton>
           </div>
@@ -197,32 +197,32 @@ export default function MoveWidget() {
       <Separator />
 
       <Group>
-        <Button onClick={(_) => handleHome("x")} disabled={disabled}>
+        <Button onClick={() => handleHome("x")} disabled={disabled}>
           <HomeIcon className="mr-1" />X
         </Button>
-        <Button onClick={(_) => handleHome("y")} disabled={disabled}>
+        <Button onClick={() => handleHome("y")} disabled={disabled}>
           <HomeIcon className="mr-1" />Y
         </Button>
-        <Button onClick={(_) => handleHome("z")} disabled={disabled}>
+        <Button onClick={() => handleHome("z")} disabled={disabled}>
           <HomeIcon className="mr-1" />Z
         </Button>
       </Group>
 
-      <Button onClick={(_) => handleHome()} disabled={disabled}>
+      <Button onClick={() => handleHome()} disabled={disabled}>
         <HomeIcon />
       </Button>
 
       <Separator />
       <Button
         className="w-full"
-        onClick={(_) => device.terminal.sendMessage("M410")}
+        onClick={() => device.terminal.sendMessage("M410")}
       >
         <Cross2Icon className="mr-1" /> Quick stop
       </Button>
 
       <Button
         className="w-full"
-        onClick={(_) => device.terminal.sendMessage("M112")}
+        onClick={() => device.terminal.sendMessage("M112")}
       >
         <ExclamationTriangleIcon className="mr-1" /> Emergency stop
       </Button>

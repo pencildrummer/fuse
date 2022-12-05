@@ -1,15 +1,15 @@
-import { coreSocket } from "../socket"
-import { useEffect, useState } from "react"
+import { coreSocket } from "../socket";
+import { useEffect, useState } from "react";
 
 export default function useSerialPorts() {
-  const [ports, setPorts] = useState([])
+  const [ports, setPorts] = useState([]);
 
-  useEffect(_ => {
+  useEffect(() => {
     // Make socket request to list serial ports
-    coreSocket.emit('serial:list', data => {
-      setPorts(data)
-    })
-  }, [])
+    coreSocket.emit("serial:list", (data) => {
+      setPorts(data);
+    });
+  }, []);
 
-  return ports
+  return ports;
 }

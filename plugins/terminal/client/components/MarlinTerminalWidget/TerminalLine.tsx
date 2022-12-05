@@ -6,12 +6,12 @@ function TerminalSpinner() {
 
   const [frame, setFrame] = useState(0);
 
-  useEffect((_) => {
+  useEffect(() => {
     let timer = setInterval(
-      (_) => setFrame((frame) => (frame >= frames.length - 1 ? 0 : frame + 1)),
+      () => setFrame((frame) => (frame >= frames.length - 1 ? 0 : frame + 1)),
       80
     );
-    return (_) => clearInterval(timer);
+    return () => clearInterval(timer);
   });
 
   return <>frames[frame]</>;

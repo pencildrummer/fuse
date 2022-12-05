@@ -36,7 +36,7 @@ export default class MarlinJobQueue extends EventEmitter {
   constructor() {
     super();
     // Add listeners
-    this.on("job:finish", (_) => {
+    this.on("job:finish", () => {
       // If wait between jobs, then do not automatically start next job
       if (this.waitBetweenJobs) return;
       // Start next job
@@ -98,21 +98,21 @@ export default class MarlinJobQueue extends EventEmitter {
 
       let jobStartHandler = (j) => {
         console.log("Queue job start handler", j);
-        process.nextTick((_) => this.emit("job:start", j));
+        process.nextTick(() => this.emit("job:start", j));
       };
 
       let jobNextHandler = (j) => {
-        process.nextTick((_) => this.emit("job:progress", j));
+        process.nextTick(() => this.emit("job:progress", j));
       };
 
       let jobPauseHandler = (j) => {
         console.log("Queue PAUSE job handler", j);
-        process.nextTick((_) => this.emit("job:pause", j));
+        process.nextTick(() => this.emit("job:pause", j));
       };
 
       let jobResumeHandler = (j) => {
         console.log("Queue RESUME job handler", j);
-        process.nextTick((_) => this.emit("job:resume", j));
+        process.nextTick(() => this.emit("job:resume", j));
       };
 
       let jobFinishHandler = (j) => {
@@ -123,7 +123,7 @@ export default class MarlinJobQueue extends EventEmitter {
         this._currentJob.on("next", jobNextHandler);
         this._currentJob.on("finish", jobFinishHandler);
         // Send queue job:finish event
-        process.nextTick((_) => this.emit("job:finish", j));
+        process.nextTick(() => this.emit("job:finish", j));
         // TODO - Remove job? instead of clearing current job?
         this._currentJob = null;
       };
@@ -137,7 +137,7 @@ export default class MarlinJobQueue extends EventEmitter {
       // Start job
       this._currentJob.start();
       let eventJob = this.currentJob;
-      process.nextTick((_) => this.emit("job:start", eventJob));
+      process.nextTick(() => this.emit("job:start", eventJob));
 
       // Return started job
       return job;

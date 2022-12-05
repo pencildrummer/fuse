@@ -25,33 +25,27 @@ export default function TerminalWindow() {
     }
   }
 
-  useEffect(
-    (_) => {
-      // Scroll automatically to bottom of terminal window
-      if (autoscroll) {
-        setTimeout((_) => {
-          scrollToBottom();
-          setAutoscroll(true);
-        }, 50);
-      }
-    },
-    [autoscroll, data, setAutoscroll]
-  );
+  useEffect(() => {
+    // Scroll automatically to bottom of terminal window
+    if (autoscroll) {
+      setTimeout(() => {
+        scrollToBottom();
+        setAutoscroll(true);
+      }, 50);
+    }
+  }, [autoscroll, data, setAutoscroll]);
 
   /**
    * Attach listener for incoming messages to be displayed
    */
-  useEffect(
-    (_) => {
-      if (!terminal) return;
-      // Configure listeners for socket terminal communication
-      let listener = (data) => appendData(data);
-      terminal.onMessageReceived(listener);
-      // Return cleanup to remove listener on unmount
-      return (_) => terminal.offMessageReceived(listener);
-    },
-    [appendData, terminal]
-  );
+  useEffect(() => {
+    if (!terminal) return;
+    // Configure listeners for socket terminal communication
+    let listener = (data) => appendData(data);
+    terminal.onMessageReceived(listener);
+    // Return cleanup to remove listener on unmount
+    return () => terminal.offMessageReceived(listener);
+  }, [appendData, terminal]);
 
   function handleScroll(e) {
     if (autoscroll) {

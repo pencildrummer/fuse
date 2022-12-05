@@ -76,28 +76,28 @@ export default class MarlinGCodeJob extends EventEmitter {
     this._startedAt = new Date();
 
     // Add listener on controller
-    let okHandler = (_) => {
+    let okHandler = () => {
       if (!this.running) return;
       // 'ok' has been received from latest command (can we have a ref to the command sent?)
-      process.nextTick((_) => this.emit("next", this));
+      process.nextTick(() => this.emit("next", this));
     };
     this.controller.on("data:ok", okHandler);
-    this.on("finish", (_) => {
+    this.on("finish", () => {
       this.controller.off("data:ok", okHandler);
     });
 
-    let errorHandler = (_) => {
+    let errorHandler = () => {
       console.log("Controller error received on MarlinGCodeJob");
       // Pause job automatically
       this.pause();
     };
     this.controller.on("error", errorHandler);
-    this.on("finish", (_) => {
+    this.on("finish", () => {
       this.controller.off("error", errorHandler);
     });
 
     // Start job
-    process.nextTick((_) => {
+    process.nextTick(() => {
       // Send start event
       this.emit("start", this);
 
@@ -115,7 +115,7 @@ export default class MarlinGCodeJob extends EventEmitter {
 
     this._running = false;
 
-    process.nextTick((_) => this.emit("pause", this));
+    process.nextTick(() => this.emit("pause", this));
   }
 
   resume() {
@@ -132,7 +132,7 @@ export default class MarlinGCodeJob extends EventEmitter {
     this._running = true;
 
     // Resume job
-    process.nextTick((_) => {
+    process.nextTick(() => {
       this.emit("resume", this);
       this.emit("next", this);
     });
@@ -144,7 +144,7 @@ export default class MarlinGCodeJob extends EventEmitter {
     this._running = false;
 
     // Send finish event (in the next tick to allow running flag to be set)
-    process.nextTick((_) => this.emit("finish", this));
+    process.nextTick(() => this.emit("finish", this));
   }
 
   /**
@@ -167,7 +167,7 @@ export default class MarlinGCodeJob extends EventEmitter {
       // Check if comment
       if (command.trim().startsWith(";")) {
         // Send next event to process next command
-        process.nextTick((_) => this.emit("next", this));
+        process.nextTick(() => this.emit("next", this));
       } else {
         // Send command
         this.controller.sendCommand(command);

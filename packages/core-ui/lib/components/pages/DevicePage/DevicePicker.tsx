@@ -58,13 +58,10 @@ export default function DevicePicker({ devices }) {
 
   const triggerEl = useRef();
   const [width, setWidth] = useState("auto");
-  useEffect(
-    (_) => {
-      // Add pl - ml size tweak and ring size
-      setWidth(triggerEl.current.offsetWidth + 3 + 3);
-    },
-    [open]
-  );
+  useEffect(() => {
+    // Add pl - ml size tweak and ring size
+    setWidth(triggerEl.current.offsetWidth + 3 + 3);
+  }, [open]);
 
   function handleDeviceClick(device) {
     setOpen(false);
@@ -110,7 +107,7 @@ export default function DevicePicker({ devices }) {
                 "group",
                 "flex-nowrap truncate"
               )}
-              onClick={(_) => handleDeviceClick(device)}
+              onClick={() => handleDeviceClick(device)}
             >
               <DeviceTypeIcon device={device} />
               <span>{device.name}</span>

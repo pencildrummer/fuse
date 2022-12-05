@@ -73,13 +73,13 @@ export default function MarlinJobQueueHandler() {
       let status = addStatus(`Finished job "${job.name}"`, {
         type: "success",
       });
-      setTimeout((_) => removeStatus(status.id), 1500);
+      setTimeout(() => removeStatus(status.id), 1500);
 
       if (isElectron()) {
         let notification = new Notification(device.name, {
           body: `${job.name} has been completed`,
         });
-        notification.onclick = (_) => console.log("Clicked notification");
+        notification.onclick = () => console.log("Clicked notification");
       }
     };
 

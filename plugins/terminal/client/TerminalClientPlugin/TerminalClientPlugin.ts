@@ -44,7 +44,7 @@ export default class TerminalClientPlugin extends ClientPlugin {
     });
 
     // NOT YET IMPLEMENTED - Cleanup method when deactivating plugin
-    return (_) => {
+    return () => {
       (this.devices as TerminalCapableClientDevice[]).forEach((device) => {
         if (device.terminal instanceof ClientTerminal) {
           delete device.terminal;

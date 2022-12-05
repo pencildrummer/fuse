@@ -13,7 +13,7 @@ export default function DeviceProfilePickerTypeFilter({
 }) {
   const [type, setType] = useState(defaultValue);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect((_) => onChange?.(type), [type]);
+  useEffect(() => onChange?.(type), [type]);
 
   return (
     <ToggleGroup

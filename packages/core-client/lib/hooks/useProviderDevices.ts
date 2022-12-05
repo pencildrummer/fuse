@@ -12,7 +12,7 @@ export default function useProviderDevices(data: Device.DataType[]) {
   }, [data]);
 
   useEffect(() => {
-    const updateState = (_) => setDevices(ClientDeviceManager.shared.devices);
+    const updateState = () => setDevices(ClientDeviceManager.shared.devices);
     ClientDeviceManager.shared.addEventListener("updatedDevices", updateState);
     return () => {
       ClientDeviceManager.shared.removeEventListener(

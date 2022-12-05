@@ -4,6 +4,16 @@ import { useField } from "formik";
 import React, { ComponentPropsWithoutRef } from "react";
 import styles from "./Input.module.scss";
 
+export type FormControlProps<T = {}> = {
+  error?: any;
+  dirty?: boolean;
+} & T;
+
+type Props = FormControlProps<{
+  detailContent?: any;
+}> &
+  ComponentPropsWithoutRef<"input">;
+
 export default function Input(props) {
   const [field, meta, helpers] = useField(props);
 
@@ -16,12 +26,6 @@ export default function Input(props) {
     />
   );
 }
-
-type Props = {
-  error?: any;
-  dirty?: boolean;
-  detailContent?: any;
-} & ComponentPropsWithoutRef<"input">;
 
 // Raw input to be use outside Formik forms
 export function InputRaw({ error, dirty, detailContent, ...props }: Props) {

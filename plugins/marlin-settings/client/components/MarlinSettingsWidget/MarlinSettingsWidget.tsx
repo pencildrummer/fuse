@@ -10,18 +10,15 @@ export default function MarlinSettingsWidget() {
 
   const [saving, isSaving] = useState(false);
 
-  useEffect(
-    (_) => {
-      device.pluginSockets.fuseLabs.marlinSettings.emit(
-        "settings:read",
-        device.id,
-        (sent) => {
-          console.log("NEW SYSTEM - Sent request for Marlin settings", sent);
-        }
-      );
-    },
-    [device.id, device.pluginSockets.fuseLabs.marlinSettings]
-  );
+  useEffect(() => {
+    device.pluginSockets.fuseLabs.marlinSettings.emit(
+      "settings:read",
+      device.id,
+      (sent) => {
+        console.log("NEW SYSTEM - Sent request for Marlin settings", sent);
+      }
+    );
+  }, [device.id, device.pluginSockets.fuseLabs.marlinSettings]);
 
   // function handleValuesChange(values) {
   //   console.log("Values", values);

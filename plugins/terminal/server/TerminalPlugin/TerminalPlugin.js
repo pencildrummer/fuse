@@ -96,7 +96,7 @@ export default class TerminalPlugin extends Plugin {
     /**
      * Received disconnection event from client socket
      */
-    socket.on("disconnect", (_) => {
+    socket.on("disconnect", () => {
       // logger.warn('Should close terminal connection')
       // // We need to know which device, or get every device and close all terminals
       // let device = DeviceManager.getDevice(deviceId)
@@ -140,7 +140,7 @@ export default class TerminalPlugin extends Plugin {
     });
 
     // Add DeviceTerminal listeners
-    device.terminal.on("open", (_) => {
+    device.terminal.on("open", () => {
       logger.success(
         "Terminal connected to device",
         chalk.greenBright(device.name)

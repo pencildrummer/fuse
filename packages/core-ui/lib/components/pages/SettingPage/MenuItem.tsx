@@ -7,7 +7,7 @@ import classNames from "classnames";
 export default function MenuItem({ href, strict = false, ...props }) {
   const router = useRouter();
   const active = useMemo(
-    (_) => (strict ? router.asPath == href : router.asPath.startsWith(href)),
+    () => (strict ? router.asPath == href : router.asPath.startsWith(href)),
     [href, router.asPath]
   );
 

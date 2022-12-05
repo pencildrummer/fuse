@@ -32,7 +32,7 @@ class ClientPluginManager extends EventTarget {
     super();
 
     // Add listener to provision plugins on each ClientDeviceManager updateDevices event
-    const handler = (_) => {
+    const handler = () => {
       console.log("Handling updatedDevices");
       this.provisionPlugins();
     };
@@ -151,7 +151,7 @@ class ClientPluginManager extends EventTarget {
                 console.log(`Importing from ${moduleImportPath}`);
                 return import(
                   /* webpackIgnore: true */ `${moduleImportPath}`
-                ).then((_) => {
+                ).then(() => {
                   console.log(`Imported ${data.name} as ${data.libraryName}`);
                   console.log(window[data.libraryName]);
                   // Access loaded plugin from window because we are loading from UMD

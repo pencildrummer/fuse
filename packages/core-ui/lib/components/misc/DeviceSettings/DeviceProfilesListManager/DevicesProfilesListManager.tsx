@@ -30,43 +30,37 @@ export default function DeviceProfilesListManager({ ...props }) {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState({});
 
-  const groupedProfiles = useMemo(
-    (_) => {
-      return Object.keys(profiles).reduce((grouped, profileId) => {
-        let profile = profiles[profileId];
-        let brand = profile.brand || "Generic";
-        if (!grouped[brand]) grouped[brand] = [];
-        grouped[brand].push(profile);
-        return grouped;
-      }, {});
-    },
-    [profiles]
-  );
+  const groupedProfiles = useMemo(() => {
+    return Object.keys(profiles).reduce((grouped, profileId) => {
+      let profile = profiles[profileId];
+      let brand = profile.brand || "Generic";
+      if (!grouped[brand]) grouped[brand] = [];
+      grouped[brand].push(profile);
+      return grouped;
+    }, {});
+  }, [profiles]);
 
-  const filteredProfiles = useMemo(
-    (_) => {
-      let filtered = { ...groupedProfiles }; // Make copy - TODO: Freeze app context profiles var
-      // Filter by type
-      if (filters.type) {
-        Object.keys(filtered).map((brand) => {
-          filtered[brand] = filtered[brand].filter(
-            (device) => device.type == filters.type
-          );
-        });
-      }
-      // Filter by query
-      if (query?.length) {
-        let regex = new RegExp(`.?(${query}).?`, "i");
-        Object.keys(filtered).map((brand) => {
-          filtered[brand] = filtered[brand].filter((device) =>
-            regex.test(device.model)
-          );
-        });
-      }
-      return filtered;
-    },
-    [groupedProfiles, filters, query]
-  );
+  const filteredProfiles = useMemo(() => {
+    let filtered = { ...groupedProfiles }; // Make copy - TODO: Freeze app context profiles var
+    // Filter by type
+    if (filters.type) {
+      Object.keys(filtered).map((brand) => {
+        filtered[brand] = filtered[brand].filter(
+          (device) => device.type == filters.type
+        );
+      });
+    }
+    // Filter by query
+    if (query?.length) {
+      let regex = new RegExp(`.?(${query}).?`, "i");
+      Object.keys(filtered).map((brand) => {
+        filtered[brand] = filtered[brand].filter((device) =>
+          regex.test(device.model)
+        );
+      });
+    }
+    return filtered;
+  }, [groupedProfiles, filters, query]);
 
   const itemsCount = useMemo(
     (_) =>
@@ -131,7 +125,7 @@ export default function DeviceProfilesListManager({ ...props }) {
               <div className="absolute right-0 inset-y-0 px-1 flex items-center">
                 <div
                   className=" bg-gray-600 rounded-full cursor-pointer hover:bg-gray-500 transition-colors duration-150"
-                  onClick={(_) => setQuery("")}
+                  onClick={() => setQuery("")}
                 >
                   <Cross2Icon className="scale-75" />
                 </div>
@@ -145,7 +139,7 @@ export default function DeviceProfilesListManager({ ...props }) {
             <Button
               squared
               size="sm"
-              onClick={(_) => {
+              onClick={() => {
                 setEditingProfile(undefined);
                 setShowForm(true);
               }}
@@ -215,7 +209,7 @@ function DeviceProfileListItem({ item, onEdit, onDelete, ...props }) {
             <Tooltip content="Edit" size="hint">
               <Pencil2Icon
                 className="invisible group-hover:visible"
-                onClick={(_) => onEdit?.(item)}
+                onClick={() => onEdit?.(item)}
               />
             </Tooltip>
 

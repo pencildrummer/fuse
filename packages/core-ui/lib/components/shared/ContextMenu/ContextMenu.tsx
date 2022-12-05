@@ -60,7 +60,7 @@ export default function ContextMenu({
                       asChild
                       key={`menu-item-${i}`}
                       disabled={!item.action}
-                      onSelect={(_) => item.action?.()}
+                      onSelect={() => item.action?.()}
                     >
                       <MenuItem item={item} />
                     </ContextMenuPrimitive.Item>

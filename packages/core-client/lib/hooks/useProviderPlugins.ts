@@ -28,25 +28,21 @@ export default function useProviderPlugins(data: {
 
   useEffect(() => {
     function handleActivation(pluginName) {
-      let plugin = ClientPluginManager.shared.getPlugin(pluginName);
-      // TODO - Improve this? Tshi should throw, update from host instead
-      plugin.active = true;
-      // Trigger state update
-      setPlugins((data) => [...data]);
+      throw new Error(
+        "TODO: Implement updated status from plugin manager broadcast event"
+      );
     }
 
     function handleDeactivation(pluginName) {
-      let plugin = ClientPluginManager.shared.getPlugin(pluginName);
-      // TODO - Improve this? Tshi should throw, update from host instead
-      plugin.active = false;
-      // Trigger state update
-      setPlugins((data) => [...data]);
+      throw new Error(
+        "TODO: Implement updated status from plugin manager broadcast event"
+      );
     }
 
     // Add listener to coreSocket for plugin events
     coreSocket.on("plugins:activated", handleActivation);
     coreSocket.on("plugins:deactivated", handleDeactivation);
-    (_) => {
+    () => {
       // Remove listeners
       coreSocket.off("plugins:activated", handleActivation);
       coreSocket.off("plugins:deactivated", handleDeactivation);

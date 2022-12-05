@@ -75,40 +75,36 @@ export default function TemperatureWidget() {
   const [temperature, setTemperature] = useState({});
   const [userTargetTemperature, setUserTargetTemperature] = useState({});
 
-  useEffect(
-    (_) => {
-      let handleTemperatureData = (temperature) => {
-        // Updated latest temperature state
-        setTemperature((prevTemperature) =>
-          merge({ ...prevTemperature }, temperature)
-        );
-        // Updated graph data
-        setData((prevData) => {
-          let data = { ...prevData };
-          Object.keys(temperature).forEach((key) => {
-            // Get dataset with key if any
-            let dataset = data.datasets.find((d) => d.key == key);
-            if (dataset) {
-              // Add new current temperature to data
-              if (temperature[key].current) {
-                dataset.data.push({
-                  x: new Date().getTime(),
-                  y: temperature[key].current,
-                });
-              }
-            } else {
-              console.log("No dataset found for key:", key);
+  useEffect(() => {
+    let handleTemperatureData = (temperature) => {
+      // Updated latest temperature state
+      setTemperature((prevTemperature) =>
+        merge({ ...prevTemperature }, temperature)
+      );
+      // Updated graph data
+      setData((prevData) => {
+        let data = { ...prevData };
+        Object.keys(temperature).forEach((key) => {
+          // Get dataset with key if any
+          let dataset = data.datasets.find((d) => d.key == key);
+          if (dataset) {
+            // Add new current temperature to data
+            if (temperature[key].current) {
+              dataset.data.push({
+                x: new Date().getTime(),
+                y: temperature[key].current,
+              });
             }
-          });
-          return data;
+          } else {
+            console.log("No dataset found for key:", key);
+          }
         });
-      };
-      device.socket.on("data:temperature", handleTemperatureData);
-      return (_) =>
-        device.socket.off("data:temperature", handleTemperatureData);
-    },
-    [device]
-  );
+        return data;
+      });
+    };
+    device.socket.on("data:temperature", handleTemperatureData);
+    return (_) => device.socket.off("data:temperature", handleTemperatureData);
+  }, [device]);
 
   function requestTargetHotend() {
     if (userTargetTemperature.hotend)
@@ -124,7 +120,7 @@ export default function TemperatureWidget() {
     setUserTargetTemperature((t) => ({ ...t, [key]: value }));
   }
 
-  let minDate = ((_) => {
+  let minDate = (() => {
     let date = new Date();
     date.setMinutes(date.getMinutes() - 1);
     return date.getTime();

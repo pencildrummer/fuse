@@ -16,7 +16,7 @@ export default function ExtruderWidget() {
   const [motor, setMotor] = useState();
   const [disabled, setDisabled] = useState();
 
-  useEffect((_) => setDisabled(!motor), [motor]);
+  useEffect(() => setDisabled(!motor), [motor]);
 
   return (
     <Widget title="Extruder" version="0.1">
