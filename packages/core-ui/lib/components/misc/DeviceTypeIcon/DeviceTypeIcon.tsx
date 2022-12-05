@@ -1,26 +1,28 @@
-import { ClientDeviceType } from '@fuse-labs/core-client'
-import { QuestionMarkCircledIcon } from '@radix-ui/react-icons'
-import { CNCIcon, FDMPrinterIcon, LaserIcon, MSLAPrinterIcon } from '../../icons'
-import { useMemo } from 'react'
+import { ClientDeviceType } from "@fuse-labs/core-client";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import {
+  CNCIcon,
+  FDMPrinterIcon,
+  LaserIcon,
+  MSLAPrinterIcon,
+} from "../../icons";
+import { useMemo } from "react";
 
-export default function DeviceTypeIcon({
-  device,
-  ...props
-}) {
-  const IconComponent = useMemo(_ => {
+export default function DeviceTypeIcon({ device, ...props }) {
+  const IconComponent = useMemo(() => {
     switch (device.profile.type) {
       case ClientDeviceType.FDMPrinter:
-        return FDMPrinterIcon
+        return FDMPrinterIcon;
       case ClientDeviceType.MSLAPrinter:
-        return MSLAPrinterIcon
+        return MSLAPrinterIcon;
       case ClientDeviceType.CNC:
-        return CNCIcon
+        return CNCIcon;
       case ClientDeviceType.Laser:
-        return LaserIcon
+        return LaserIcon;
       default:
-        return QuestionMarkCircledIcon
+        return QuestionMarkCircledIcon;
     }
-  }, [device?.profile.type])
+  }, [device?.profile.type]);
 
-  return <IconComponent {...props} />
+  return <IconComponent {...props} />;
 }

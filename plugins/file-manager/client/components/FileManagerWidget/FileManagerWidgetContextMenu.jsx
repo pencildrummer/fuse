@@ -1,99 +1,97 @@
-import React, { useMemo } from 'react'
+import React, { useMemo } from "react";
 import { DownloadIcon, Share2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { ContextMenu } from "@fuse-labs/core-ui";
 import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider.jsx";
 
-export default function FileManagerWidgetContextMenu({
-  onAction,
-  ...props
-}) {
-
+export default function FileManagerWidgetContextMenu({ onAction, ...props }) {
   // TODO - Move handling of focus item in list, instead of here
-  const { focusItemPath, setFocusItemPath } = useFileManagerContext()
+  const { focusItemPath, setFocusItemPath } = useFileManagerContext();
 
   function handlePointerDown(e) {
-    e.preventDefault()
-    e.stopPropagation()
-    let itemPath = e.target.dataset?.path
+    e.preventDefault();
+    e.stopPropagation();
+    let itemPath = e.target.dataset?.path;
     if (!itemPath)
-      return console.warn('Unable to get path for context clicked item')
+      return console.warn("Unable to get path for context clicked item");
     // Set the focused item
-    setFocusItemPath(itemPath)
-
+    setFocusItemPath(itemPath);
   }
 
   function handlePointerDownOutside(e) {
-    setFocusItemPath()
+    setFocusItemPath();
   }
 
   // Default actions
-  
+
   function handleSave() {
-    console.log('Handle save', focusItemPath)
-    onAction?.('save', { path: focusItemPath })
+    console.log("Handle save", focusItemPath);
+    onAction?.("save", { path: focusItemPath });
   }
 
   function handleDelete() {
-    console.log('Handle delete', focusItemPath)
-    onAction?.('delete', { path: focusItemPath })
+    console.log("Handle delete", focusItemPath);
+    onAction?.("delete", { path: focusItemPath });
   }
 
   // TODO - Same principle as other calls, move somehwere more scoped, to be added as a plugin feature
   function handlePrintGCode() {
-    onAction?.('print', { path: focusItemPath })
-  } 
+    onAction?.("print", { path: focusItemPath });
+  }
 
   const defaultItems = [
     {
-      label: 'Save',
+      label: "Save",
       icon: DownloadIcon,
-      action: handleSave
+      action: handleSave,
     },
     {
-      label: 'Delete',
+      label: "Delete",
       icon: TrashIcon,
-      detail: '⌫',
-      action: handleDelete
+      detail: "⌫",
+      action: handleDelete,
     },
     {
-      label: 'Share',
+      label: "Share",
       icon: Share2Icon,
       items: [
         {
-          label: 'Copy'
+          label: "Copy",
         },
         {
-          label: 'Move'
-        }
-      ]
+          label: "Move",
+        },
+      ],
     },
-  ]
+  ];
 
-  let items = useMemo(_ => {
+  let items = useMemo(() => {
+    let items = [...defaultItems];
 
-    let items = [...defaultItems]
-
-    let actions = []
+    let actions = [];
     // TODO - Make it dynamic ?
-    if (focusItemPath?.split('.').pop() == 'gcode') {
+    if (focusItemPath?.split(".").pop() == "gcode") {
       actions.push({
-        label: 'Print',
-        action: handlePrintGCode
-      })
+        label: "Print",
+        action: handlePrintGCode,
+      });
     }
 
     if (actions.length) {
-      items = items.concat('-', actions)
+      items = items.concat("-", actions);
     }
 
-    return items
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusItemPath])
+    return items;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusItemPath]);
 
   return (
-    <ContextMenu modal={false} items={items} onPointerDown={handlePointerDown}
-      onPointerDownOutside={handlePointerDownOutside} >
+    <ContextMenu
+      modal={false}
+      items={items}
+      onPointerDown={handlePointerDown}
+      onPointerDownOutside={handlePointerDownOutside}
+    >
       {props.children}
     </ContextMenu>
-  )
+  );
 }

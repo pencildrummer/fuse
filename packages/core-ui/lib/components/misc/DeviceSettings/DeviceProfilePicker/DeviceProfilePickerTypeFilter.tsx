@@ -1,3 +1,4 @@
+import { Device } from "@fuse-labs/types";
 import { useEffect, useState } from "react";
 import {
   CNCIcon,
@@ -7,10 +8,15 @@ import {
 } from "../../../icons";
 import { ToggleGroup } from "../../../shared";
 
+type DeviceProfilePickerTypeFilterProps = {
+  onChange: (value: Device.Profile.Type) => void;
+  defaultValue?: Device.Profile.Type;
+};
+
 export default function DeviceProfilePickerTypeFilter({
   defaultValue,
   onChange,
-}) {
+}: DeviceProfilePickerTypeFilterProps) {
   const [type, setType] = useState(defaultValue);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => onChange?.(type), [type]);

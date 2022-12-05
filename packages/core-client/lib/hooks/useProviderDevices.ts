@@ -22,14 +22,14 @@ export default function useProviderDevices(data: Device.DataType[]) {
     };
   }, []);
 
-  // useEffect(_ => {
+  // useEffect(() => {
   // 	// Add socket listener for newly created device
   // 	coreSocket.on('devices:added', addDevice)
   //   // Add socket listener for updated device
   //   coreSocket.on('devices:updated', updateDevice)
   //   // Add socket listener for removed device
   //   coreSocket.on('devices:removed', removeDevice)
-  //   return _ => {
+  //   return () => {
   //     coreSocket.off('devices:added', addDevice)
   //     coreSocket.off('devices:updated', updateDevice)
   //     coreSocket.off('devices:removed', removeDevice)

@@ -78,7 +78,7 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     });
   }
 
-  const profiles = useProviderProfiles(appData?.devices);
+  const profiles = useProviderProfiles(appData?.profiles);
   const plugins = useProviderPlugins(appData?.plugins);
   const devices = useProviderDevices(appData?.devices);
   const config = useProviderConfig(appData?.config);

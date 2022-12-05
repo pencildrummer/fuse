@@ -1,36 +1,33 @@
-import classNames from 'classnames'
-import { useMemo } from 'react'
-import Badge from '../../react-daisyui/Badge/Badge'
+import classNames from "classnames";
+import { useMemo } from "react";
+import Badge from "../../react-daisyui/Badge/Badge";
 
-export default function PrinterTypeBadge({
-  printer
-}) {
-
-  const humanType = useMemo(_ => {
+export default function PrinterTypeBadge({ printer }) {
+  const humanType = useMemo(() => {
     switch (printer.type) {
-      case 'fdm':
-        return 'Fuse deposit'
-      case 'sla':
-        return 'Resin'
+      case "fdm":
+        return "Fuse deposit";
+      case "sla":
+        return "Resin";
       default:
-        return 'Unknown'
+        return "Unknown";
     }
-  }, [printer])
+  }, [printer]);
 
-  const bgColorClassName = useMemo(_ => {
+  const bgColorClassName = useMemo(() => {
     switch (printer.type) {
-      case 'fdm': return 'bg-lime-600'
-      case 'sla': return 'bg-teal-400'
-      default:    return 'bg-base-100'
+      case "fdm":
+        return "bg-lime-600";
+      case "sla":
+        return "bg-teal-400";
+      default:
+        return "bg-base-100";
     }
-  }, [printer.type])
+  }, [printer.type]);
 
   return (
-    <Badge className={classNames(
-      'text-xs',
-      bgColorClassName
-    )}>
+    <Badge className={classNames("text-xs", bgColorClassName)}>
       {humanType}
     </Badge>
-  )
+  );
 }

@@ -14,7 +14,7 @@ export default class MarlinTemperaturePlugin extends Plugin {
     let nozzleTarget = null;
     let heatbedTarget = null;
 
-    // setInterval(_ => {
+    // setInterval(() => {
     //   console.log('Sending demo temperature', socket.device.namespace.name)
     //   socket.device.namespace.emit('data:temperature', {
     //     bed: {

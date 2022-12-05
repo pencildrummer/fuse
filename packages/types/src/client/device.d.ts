@@ -1,3 +1,3 @@
 import { Device } from "../shared";
 
-export type ClientDeviceProfile = Device.ProfileInterface & {};
+export type ClientDeviceProfile = Device.Profile.BaseInterface & {};

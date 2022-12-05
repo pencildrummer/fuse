@@ -89,7 +89,7 @@ export function SelectRaw({
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
 
-        <SelectPrimitive.Portal>
+        <SelectPrimitive.Portal className="z-50">
           <SelectPrimitive.Content
             className={classNames(
               "w-full",

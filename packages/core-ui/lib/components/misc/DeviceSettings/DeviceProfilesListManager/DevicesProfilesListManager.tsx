@@ -23,12 +23,13 @@ import classNames from "classnames";
 import DeviceProfileList from "../DeviceProfileList/DeviceProfileList";
 import DeviceProfileForm from "../DeviceProfileForm/DeviceProfileForm";
 import { useAppContext, coreSocket } from "@fuse-labs/core-client";
+import { ClientDeviceProfile, Device } from "@fuse-labs/types";
 
 export default function DeviceProfilesListManager({ ...props }) {
   const { profiles } = useAppContext();
 
   const [query, setQuery] = useState("");
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<{ type?: Device.Profile.Type }>({});
 
   const groupedProfiles = useMemo(() => {
     return Object.keys(profiles).reduce((grouped, profileId) => {
@@ -63,7 +64,7 @@ export default function DeviceProfilesListManager({ ...props }) {
   }, [groupedProfiles, filters, query]);
 
   const itemsCount = useMemo(
-    (_) =>
+    () =>
       Object.keys(filteredProfiles).reduce(
         (count, brand) => count + filteredProfiles[brand].length,
         0
@@ -73,10 +74,12 @@ export default function DeviceProfilesListManager({ ...props }) {
 
   // Item action handlers
 
-  const [showForm, setShowForm] = useState();
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState();
-  const [editingProfile, setEditingProfile] = useState();
-  const [deletingProfile, setDeletingProfile] = useState();
+  const [showForm, setShowForm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [editingProfile, setEditingProfile] =
+    useState<ClientDeviceProfile | null>(null);
+  const [deletingProfile, setDeletingProfile] =
+    useState<ClientDeviceProfile | null>(null);
 
   function handleEditItem(item) {
     console.log("Edit", item);

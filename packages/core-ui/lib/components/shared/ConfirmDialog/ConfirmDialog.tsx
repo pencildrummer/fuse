@@ -4,7 +4,19 @@ import Widget from "../Widget/Widget";
 import Button from "../Button/Button";
 import Group from "../Group/Group";
 
-function ConfirmDialog({ children, content, open, onOpenChange, ...props }) {
+type ConfirmDialogProps = ConfirmDialogRootProps &
+  ConfirmDialogTriggerProps &
+  ConfirmDialogContentProps & {
+    content: React.ReactNode;
+  };
+
+function ConfirmDialog({
+  children,
+  content,
+  open,
+  onOpenChange,
+  ...props
+}: ConfirmDialogProps) {
   return (
     <ConfirmDialogRoot open={open} onOpenChange={onOpenChange}>
       <ConfirmDialogTrigger>{children}</ConfirmDialogTrigger>
@@ -13,13 +25,23 @@ function ConfirmDialog({ children, content, open, onOpenChange, ...props }) {
   );
 }
 
-function ConfirmDialogRoot(props) {
+type ConfirmDialogRootProps = React.ComponentPropsWithRef<
+  typeof AlertDialogPrimitive.Root
+>;
+function ConfirmDialogRoot(props: ConfirmDialogRootProps) {
   return <AlertDialogPrimitive.Root {...props} />;
 }
-function ConfirmDialogTrigger(props) {
+
+type ConfirmDialogTriggerProps = React.ComponentPropsWithRef<
+  typeof AlertDialogPrimitive.Trigger
+>;
+function ConfirmDialogTrigger(props: ConfirmDialogTriggerProps) {
   return <AlertDialogPrimitive.Trigger {...props} />;
 }
 
+type ConfirmDialogContentProps = React.ComponentPropsWithRef<
+  typeof AlertDialogPrimitive.Content
+> & { description?: string; confirmText?: string; onConfirm: () => void };
 function ConfirmDialogContent({
   title,
   description,
@@ -27,7 +49,7 @@ function ConfirmDialogContent({
   onConfirm,
   className,
   ...props
-}) {
+}: ConfirmDialogContentProps) {
   return (
     <AlertDialogPrimitive.Portal>
       <AlertDialogPrimitive.Overlay className="fixed inset-0 bg-black/70 backdrop-blur-sm" />

@@ -17,7 +17,7 @@ interface AppContextInterface {
   devices?: ClientDevice[];
   plugins?: ClientPlugin[];
   activePlugins?: ClientPlugin[];
-  profiles?: { [x: string]: ClientDeviceProfile[] };
+  profiles?: { [x: string]: ClientDeviceProfile };
   config?: ConfigDataType;
   intl: IntlShape;
 
