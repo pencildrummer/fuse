@@ -63,7 +63,10 @@ export function SelectRaw({
 }: SelectRawProps) {
   return (
     <div>
-      <SelectPrimitive.Root onValueChange={props.onValueChange}>
+      <SelectPrimitive.Root
+        defaultValue={defaultValue}
+        onValueChange={props.onValueChange}
+      >
         <SelectPrimitive.Trigger
           className={classNames(
             "w-full min-w-[180px]",
@@ -104,14 +107,14 @@ export function SelectRaw({
               <ChevronUpIcon />
             </SelectPrimitive.ScrollUpButton>
             <SelectPrimitive.Viewport className="w-full">
-              {options?.map((option: string | SelectOption, i: number) => (
+              {options?.map((value, index) => (
                 <SelectItem
-                  key={`option-${i}`}
-                  value={(option as SelectOption).value || (option as string)}
+                  key={`option-${index}`}
+                  value={(value as SelectOption).value || (value as string)}
                 >
-                  {(option as SelectOption).label ??
-                    (option as SelectOption).value ??
-                    (option as string)}
+                  {(value as SelectOption).label ??
+                    (value as SelectOption).value ??
+                    (value as string)}
                 </SelectItem>
               ))}
             </SelectPrimitive.Viewport>
@@ -136,7 +139,7 @@ export default function Select(props: SelectRawProps) {
       error={meta.touched && meta.error}
       dirty={meta.touched && !meta.error && meta.value != meta.initialValue}
       value={meta.value}
-      defaultValue={initialValue}
+      defaultValue={initialValue !== undefined && initialValue.toString()} // Convert to string because RadixUI Select accepts only string value types
       onValueChange={(val) => {
         setValue(val);
         setTouched(true);

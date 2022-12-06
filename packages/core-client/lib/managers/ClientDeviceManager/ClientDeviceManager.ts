@@ -25,11 +25,11 @@ class ClientDeviceManager extends EventTarget {
     this.dispatchEvent(new Event("updatedDevices"));
 
     // Add socket listener for newly created device on server
-    coreSocket.on("devices:added", this._handleDeviceAdded);
+    coreSocket.on("devices:added", this._handleDeviceAdded.bind(this));
     // Add socket listener for updated device on server
-    coreSocket.on("devices:updated", this._handleDeviceUpdated);
+    coreSocket.on("devices:updated", this._handleDeviceUpdated.bind(this));
     // Add socket listener for removed device on server
-    coreSocket.on("devices:removed", this._handleDeviceRemoved);
+    coreSocket.on("devices:removed", this._handleDeviceRemoved.bind(this));
 
     console.log("INITED MANAGER Devices", this._devices);
     this._initialized = true;

@@ -1,0 +1,10 @@
+{
+  "id": "bffe1d01-bf28-4f3f-9927-5f4b946f1da9",
+  "name": "Alfa",
+  "profileId": "alfawise.u30",
+  "portPath": "/dev/tty.Bluetooth-Incoming-Port",
+  "baudrate": 0,
+  "serialNumber": null,
+  "vendorId": null,
+  "productId": null
+}

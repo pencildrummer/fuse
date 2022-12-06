@@ -1,0 +1,10 @@
+{
+  "id": "f0ab38fb-e894-46d9-ae43-65324217533b",
+  "name": "asd",
+  "profileId": "alfawise.u30_pro",
+  "portPath": "/dev/tty.Bluetooth-Incoming-Port",
+  "baudrate": 0,
+  "serialNumber": null,
+  "vendorId": null,
+  "productId": null
+}

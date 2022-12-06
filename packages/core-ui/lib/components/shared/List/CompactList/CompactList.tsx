@@ -8,13 +8,15 @@ function isPrimitive(val) {
   return !(typeof val == "object" || typeof val == "function");
 }
 
+type CompactListItemProps = React.ComponentPropsWithRef<typeof List.Item>;
+
 function CompactListItem({
   item,
   selected,
   selectable = true,
   className,
   ...props
-}) {
+}: CompactListItemProps) {
   const content = useMemo(() => {
     if (props.children) return props.children;
     if (typeof item == "object") {

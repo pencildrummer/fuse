@@ -1,0 +1,10 @@
+{
+  "id": "5d3138aa-a06c-40b5-b6eb-d63c75c4d5da",
+  "name": "Stampante",
+  "profileId": "creality.ender_3",
+  "portPath": "/dev/tty.Bluetooth-Incoming-Port",
+  "baudrate": 0,
+  "serialNumber": null,
+  "vendorId": null,
+  "productId": null
+}

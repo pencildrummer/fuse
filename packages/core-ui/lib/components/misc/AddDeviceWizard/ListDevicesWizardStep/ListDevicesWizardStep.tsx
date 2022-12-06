@@ -1,19 +1,23 @@
 import { CaretRightIcon } from "@radix-ui/react-icons";
-import { useSerialPorts } from "@fuse-labs/core-client";
+import { useSerialPorts, ClientDevice } from "@fuse-labs/core-client";
 import { Table } from "../../../shared";
 import { useMemo } from "react";
 import { getProductInfo } from "@fuse-labs/shared-utils";
+import { Device as CoreDevice } from "@fuse-labs/types";
 
-export default function ListDeviceWizardStep({ onSelectDevice }) {
+type Props = {
+  onSelectDevice: (device: CoreDevice.DataType) => void;
+};
+export default function ListDeviceWizardStep({ onSelectDevice }: Props) {
   const ports = useSerialPorts();
 
   function handleSelectPort(port) {
     // Convert port to device
-    let device = port.device || {};
-    // Attach port to device
-    device.port = port.path;
-    device.vendorId = port.vendorId;
-    device.productId = port.productId;
+    let device: CoreDevice.DataType = port.device ?? {
+      portPath: port.path,
+      vendorId: port.vendorId,
+      productId: port.productId,
+    };
     // Pass it up
     onSelectDevice?.(device);
   }

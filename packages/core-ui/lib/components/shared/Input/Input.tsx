@@ -12,7 +12,8 @@ export type FormControlProps<T = {}> = {
 type Props = FormControlProps<{
   detailContent?: any;
 }> &
-  ComponentPropsWithoutRef<"input">;
+  ComponentPropsWithoutRef<"input"> &
+  Required<{ name: string }>;
 
 export default function Input(props) {
   const [field, meta, helpers] = useField(props);

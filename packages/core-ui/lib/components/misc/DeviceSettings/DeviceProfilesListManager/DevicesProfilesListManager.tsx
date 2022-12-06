@@ -121,6 +121,7 @@ export default function DeviceProfilesListManager({ ...props }) {
                 "!pr-[22px]": query?.length,
               })}
               placeholder="Search model..."
+              name="query"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />

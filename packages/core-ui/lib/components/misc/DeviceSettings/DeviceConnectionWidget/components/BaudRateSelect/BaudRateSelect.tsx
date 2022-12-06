@@ -2,7 +2,7 @@ import { Select } from "../../../../../shared";
 
 export default function BaudRateSelect({ ...props }) {
   const rates = [
-    { label: "Auto", value: "auto" },
+    { label: "Auto", value: "0" },
     "4800",
     "9600",
     "14400",
