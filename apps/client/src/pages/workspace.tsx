@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,16 +12,25 @@ export default function Home() {
   return (
     <Page>
       <PageTopBar>
-        <Dialog
-          title="Add device"
-          content={<AddDeviceWizard />}
-          className="max-w-[400px]"
-        >
-          <Button size="sm">Add new device</Button>
-        </Dialog>
+        <AddDeviceWizardButton />
       </PageTopBar>
 
       <DevicesGrid />
     </Page>
+  );
+}
+
+function AddDeviceWizardButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={setOpen}
+      title="Add device"
+      content={<AddDeviceWizard onComplete={() => setOpen(false)} />}
+      className="max-w-[400px]"
+    >
+      <Button size="sm">Add new device</Button>
+    </Dialog>
   );
 }

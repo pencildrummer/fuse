@@ -91,3 +91,7 @@ out/
 # TS build file
 dist
 dist/**/*
+
+# Devices added
+# TODO - Ignore all systemd irectory after creating default value sin package "@fuse-labs/core"
+system/devices/**/*

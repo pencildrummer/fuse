@@ -1,18 +1,25 @@
 import { PluginDataType } from "@fuse-labs/types";
 import { ClientPlugin } from "../../models";
+import ClientBaseManager from "../ClientBaseManager";
 import ClientDeviceManager from "../ClientDeviceManager/ClientDeviceManager";
+import getProxiedManager from "../getProxiedManager";
 
-class ClientPluginManager extends EventTarget {
-  protected _initialized: boolean = false;
-  get initialized() {
-    return this._initialized;
-  }
+const _registeredPlugins: { [key: string]: typeof ClientPlugin } = {};
 
-  protected _ready: boolean = false;
-  get ready() {
-    return this._ready;
-  }
+/**
+ * Use this method to register client plugins, call it before initializing the plugin manager
+ * @param {} pluginInstance
+ */
+function registerPlugin(pluginName: string, pluginClass: typeof ClientPlugin) {
+  if (!pluginClass)
+    throw new Error(
+      `Undefined pluginClass provided to register plugin "${pluginName}"`
+    );
+  _registeredPlugins[pluginName] = pluginClass;
+  console.log(`Registered ${pluginName}`);
+}
 
+class ClientPluginManager extends ClientBaseManager {
   protected _plugins: ClientPlugin[] = undefined;
   get plugins() {
     return this._plugins;
@@ -28,22 +35,20 @@ class ClientPluginManager extends EventTarget {
     return this.plugins?.find((plugin) => plugin.name == name);
   }
 
-  constructor() {
-    super();
-
+  async init() {
     // Add listener to provision plugins on each ClientDeviceManager updateDevices event
     const handler = () => {
       console.log("Handling updatedDevices");
       this.provisionPlugins();
     };
-    ClientDeviceManager.shared.addEventListener("updatedDevices", handler);
+    ClientDeviceManager.addEventListener("updatedDevices", handler);
   }
 
-  async init(installedPluginsData: { [key: string]: PluginDataType }) {
-    this._ready = false;
-
+  async configurePluginsFromData(installedPluginsData: {
+    [key: string]: PluginDataType;
+  }) {
     console.log("Plugins data:", installedPluginsData);
-    console.log("Already registered:", ClientPluginManager._registeredPlugins);
+    console.log("Already registered:", _registeredPlugins);
 
     // Map fetched data to generic client plugin
     // While mapping should match if a plugin with a certain pattern to be decided i matched
@@ -57,38 +62,6 @@ class ClientPluginManager extends EventTarget {
 
     // Provision loaded plugins
     this.provisionPlugins();
-
-    // // Now when all the plugin has been mapped, we can call the provision method on it
-    // console.log("INIT MANAGER Plugins", this._plugins);
-    this._initialized = true;
-    this._ready = true;
-
-    this.dispatchEvent(new Event("initialized"));
-
-    console.info("ClientPluginManager is ready");
-  }
-
-  // TODO: Mark as private
-  private static _registeredPlugins: { [key: string]: typeof ClientPlugin } =
-    {};
-
-  /**
-   * Use this method to register client plugins, call it before initializing the plugin manager
-   * @param {} pluginInstance
-   */
-  static registerPlugin(pluginName: string, pluginClass: typeof ClientPlugin) {
-    // Check if already initialized an throw a wranign for now, later on fix this beahviour if needed
-    if (Singleton.shared.initialized) {
-      return console.warn(
-        `Trying to register a plugin '${pluginName}' on already intialized ClientPluginManager`
-      );
-    }
-    if (!pluginClass)
-      throw new Error(
-        `Undefined pluginClass provided to register plugin "${pluginName}"`
-      );
-    ClientPluginManager._registeredPlugins[pluginName] = pluginClass;
-    console.log(`Registered ${pluginName}`);
   }
 
   /** Private */
@@ -168,7 +141,7 @@ class ClientPluginManager extends EventTarget {
               // Get the default implementation
               const { default: pluginClass } = pluginImported;
               // Register plugin class
-              ClientPluginManager.registerPlugin(data.name, pluginClass);
+              registerPlugin(data.name, pluginClass);
               return true;
             } else {
               console.error(`Error importing ${data.name} from ${importPath}`);
@@ -199,22 +172,19 @@ class ClientPluginManager extends EventTarget {
     [key: string]: PluginDataType;
   }) {
     console.log("Start loading registered plugins...");
-    this._plugins = Object.keys(ClientPluginManager._registeredPlugins).map(
-      (name) => {
-        let PluginClass: typeof ClientPlugin =
-          ClientPluginManager._registeredPlugins[name];
-        if (!PluginClass) {
-          throw new Error(`Missing constructor for register plugin '${name}'`);
-        }
-
-        console.log(`Loading '${name}'...`);
-        console.log(installedPluginsData);
-
-        let pluginData = installedPluginsData[name];
-
-        return new PluginClass(pluginData);
+    this._plugins = Object.keys(_registeredPlugins).map((name) => {
+      let PluginClass: typeof ClientPlugin = _registeredPlugins[name];
+      if (!PluginClass) {
+        throw new Error(`Missing constructor for register plugin '${name}'`);
       }
-    );
+
+      console.log(`Loading '${name}'...`);
+      console.log(installedPluginsData);
+
+      let pluginData = installedPluginsData[name];
+
+      return new PluginClass(pluginData);
+    });
     console.log("Loaded plugins", this._plugins);
   }
 
@@ -233,20 +203,7 @@ class ClientPluginManager extends EventTarget {
   }
 }
 
-class Singleton {
-  private static sharedInstance: ClientPluginManager;
-  constructor() {
-    throw new Error("Use ClienPluginManager instead");
-  }
-  public static get shared(): ClientPluginManager {
-    if (!Singleton.sharedInstance) {
-      Singleton.sharedInstance = new ClientPluginManager();
-    }
-    return Singleton.sharedInstance;
-  }
+const clientPluginManager = getProxiedManager(new ClientPluginManager());
 
-  // Forwarding static method to register plugin because we are exporting Singleton instance of ClientPluginManager
-  // Maybe found a cleaner way later on
-  static registerPlugin = ClientPluginManager.registerPlugin;
-}
-export default Singleton;
+export default clientPluginManager;
+export { registerPlugin };

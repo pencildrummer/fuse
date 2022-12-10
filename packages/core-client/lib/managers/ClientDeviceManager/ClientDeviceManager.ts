@@ -1,38 +1,41 @@
 import { Device } from "@fuse-labs/types";
 import ClientDevice from "../../models/ClientDevice/ClientDevice";
 import { coreSocket } from "../../socket";
+import ClientBaseManager from "../ClientBaseManager";
+import getProxiedManager from "../getProxiedManager";
 
-class ClientDeviceManager extends EventTarget {
-  private _initialized = false;
-  get initialized() {
-    return this._initialized;
-  }
+function sleep(ms) {
+  return new Promise((resolve) => {
+    console.info(`Sleeping for ${ms / 1000} seconds`);
+    setTimeout(() => {
+      console.log("Timeout finished");
+      resolve();
+    }, ms);
+  });
+}
 
+class ClientDeviceManager extends ClientBaseManager {
   private _devices: ClientDevice[] = [];
   get devices() {
     return this._devices;
   }
 
-  constructor() {
-    super();
-  }
-
-  init(fetchedDevicesData: Device.DataType[]) {
-    this._devices =
-      fetchedDevicesData?.map((deviceData) => new ClientDevice(deviceData)) ||
-      [];
-    // Notify we updated (creating the manager) the list of devices
-    this.dispatchEvent(new Event("updatedDevices"));
-
+  async init() {
+    console.log("Adding listener on ClientDeviceManager");
     // Add socket listener for newly created device on server
     coreSocket.on("devices:added", this._handleDeviceAdded.bind(this));
     // Add socket listener for updated device on server
     coreSocket.on("devices:updated", this._handleDeviceUpdated.bind(this));
     // Add socket listener for removed device on server
     coreSocket.on("devices:removed", this._handleDeviceRemoved.bind(this));
+  }
 
-    console.log("INITED MANAGER Devices", this._devices);
-    this._initialized = true;
+  configureWithData(fetchedDevicesData: Device.DataType[]) {
+    this._devices =
+      fetchedDevicesData?.map((deviceData) => new ClientDevice(deviceData)) ||
+      [];
+    // Notify we updated (creating the manager) the list of devices
+    this.dispatchEvent(new Event("updatedDevices"));
   }
 
   getDevice(deviceId: string) {
@@ -48,6 +51,7 @@ class ClientDeviceManager extends EventTarget {
    */
 
   _handleDeviceAdded(deviceData: Device.DataType) {
+    console.log("Device added handler");
     let device = new ClientDevice(deviceData);
     this._devices = [...this._devices, device];
     // Notify
@@ -77,16 +81,5 @@ class ClientDeviceManager extends EventTarget {
   }
 }
 
-class Singleton {
-  private static sharedInstance: ClientDeviceManager;
-  constructor() {
-    throw new Error("Use ClientDeviceManager instead");
-  }
-  public static get shared() {
-    if (!Singleton.sharedInstance) {
-      Singleton.sharedInstance = new ClientDeviceManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-export default Singleton;
+const manager = getProxiedManager(new ClientDeviceManager());
+export default manager;

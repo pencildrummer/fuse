@@ -65,6 +65,7 @@ export default class CorePlugin extends Plugin {
       // TODO - Add device profile on the go, for custom profiles while saving device
       // if (profile) {  }
       // Add device to the system
+      console.log("Socket device:add handler in CorePlugin - fn:", fn);
       let device = DeviceManager.addDevice(data);
       if (device) {
         // Broadcast new device creation

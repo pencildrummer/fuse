@@ -50,13 +50,12 @@ class DeviceManager extends BaseManager {
     return this._devices?.find((device) => device.id == deviceId);
   }
 
-  addDevice(data: Omit<CoreDevice.DataType, "id">) {
-    // TODO - Validate device parameter
-    // TODO - Use Device class when able to import ESM
+  addDevice(data: CoreDevice.DataType) {
     let device = new Device(data);
-    console.log("Adding", device);
     // Save device on file system
     device.save();
+
+    logger.complete(`Added new device - id: ${device.id}`);
 
     // Push new device on current system devices
     this._devices.push(device);

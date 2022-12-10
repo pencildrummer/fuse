@@ -1,29 +1,25 @@
 import { PluginDataType } from "@fuse-labs/types";
 import { useEffect, useState } from "react";
 import ClientPluginManager from "../managers/ClientPluginManager/ClientPluginManager";
+import { ClientPlugin } from "../models/index.js";
 import { coreSocket } from "../socket";
 
 export default function useProviderPlugins(data: {
   [key: string]: PluginDataType;
 }) {
-  const [managerReady, setManagerReady] = useState(false);
+  const [plugins, setPlugins] = useState<ClientPlugin[] | null>();
 
   useEffect(() => {
     if (!data) return;
-
-    setManagerReady(ClientPluginManager.shared.ready);
-
-    let initializeClientManager = async () => {
-      if (!ClientPluginManager.shared.ready) {
-        console.log("Initializing ClietPluginManager with data", data);
-        await ClientPluginManager.shared.init(data);
-        setPlugins(ClientPluginManager.shared.plugins);
-        console.log("READY?", ClientPluginManager.shared.ready);
-        setManagerReady(ClientPluginManager.shared.ready);
-      }
-    };
-
-    initializeClientManager().catch((err) => console.error(err));
+    (async () => {
+      console.log("plugins data", data);
+      await ClientPluginManager.configurePluginsFromData(data);
+      console.log(
+        "Updated plugins with new data:",
+        ClientPluginManager.plugins
+      );
+      setPlugins(ClientPluginManager.plugins);
+    })();
   }, [data]);
 
   useEffect(() => {
@@ -49,7 +45,5 @@ export default function useProviderPlugins(data: {
     };
   }, []);
 
-  const [plugins, setPlugins] = useState(ClientPluginManager.shared.plugins);
-
-  return managerReady ? plugins : undefined;
+  return plugins;
 }

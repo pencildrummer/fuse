@@ -197,7 +197,13 @@ export default function DeviceProfilesListManager({ ...props }) {
   );
 }
 
-function DeviceProfileListItem({ item, onEdit, onDelete, ...props }) {
+function DeviceProfileListItem({
+  item,
+  editable = false,
+  onEdit,
+  onDelete,
+  ...props
+}) {
   function handleDeleteClick(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -209,21 +215,23 @@ function DeviceProfileListItem({ item, onEdit, onDelete, ...props }) {
       <Group orientation="vertical" className="flex-1">
         <Group className="flex-1">
           <span className="mr-auto">{item.model}</span>
-          <div className="flex flex-row items-center space-x-1 text-gray-500 hover:text-gray-300 transition-colors duration-150">
-            <Tooltip content="Edit" size="hint">
-              <Pencil2Icon
-                className="invisible group-hover:visible"
-                onClick={() => onEdit?.(item)}
-              />
-            </Tooltip>
+          {editable && (
+            <div className="flex flex-row items-center space-x-1 text-gray-500 hover:text-gray-300 transition-colors duration-150">
+              <Tooltip content="Edit" size="hint">
+                <Pencil2Icon
+                  className="invisible group-hover:visible"
+                  onClick={() => onEdit?.(item)}
+                />
+              </Tooltip>
 
-            <Tooltip content="Delete" size="hint">
-              <TrashIcon
-                className="invisible group-hover:visible"
-                onClick={handleDeleteClick}
-              />
-            </Tooltip>
-          </div>
+              <Tooltip content="Delete" size="hint">
+                <TrashIcon
+                  className="invisible group-hover:visible"
+                  onClick={handleDeleteClick}
+                />
+              </Tooltip>
+            </div>
+          )}
         </Group>
       </Group>
     </CompactList.Item>

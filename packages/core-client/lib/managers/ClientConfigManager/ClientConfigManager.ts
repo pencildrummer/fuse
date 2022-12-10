@@ -1,25 +1,18 @@
 import { ConfigDataType } from "@fuse-labs/types";
+import ClientBaseManager from "../ClientBaseManager";
+import getProxiedManager from "../getProxiedManager";
 
-class ClientConfigManager extends EventTarget {
-  private _initialized: boolean = false;
-  get initialized() {
-    return this._initialized;
-  }
-
+class ClientConfigManager extends ClientBaseManager {
   private _config: ConfigDataType;
   get config() {
     return this._config;
   }
 
-  constructor() {
-    super();
-  }
+  async init() {}
 
-  init(fetchedConfigData: ConfigDataType) {
+  configureWithData(fetchedConfigData: ConfigDataType) {
     // TODO - Parse and validate fetched data
     this._config = fetchedConfigData;
-
-    this._initialized = true;
   }
 
   /* Accessor */
@@ -29,16 +22,5 @@ class ClientConfigManager extends EventTarget {
   }
 }
 
-class Singleton {
-  static sharedInstance: ClientConfigManager;
-  constructor() {
-    throw new Error("Use ClientConfigManager instead");
-  }
-  static get shared() {
-    if (!Singleton.sharedInstance) {
-      Singleton.sharedInstance = new ClientConfigManager();
-    }
-    return Singleton.sharedInstance;
-  }
-}
-export default Singleton;
+const manager = getProxiedManager(new ClientConfigManager());
+export default manager;

@@ -5,23 +5,19 @@ import classNames from "classnames";
 import Widget from "../Widget/Widget";
 import Button from "../Button/Button";
 
-type Props = React.ComponentPropsWithoutRef<"div"> &
-  React.PropsWithChildren<{ content: React.ReactNode }>;
+type Props = DialogPrimitive.DialogProps &
+  React.PropsWithChildren<{ content: React.ReactNode; className: string }> &
+  DialogContentProps;
 
 function Dialog({ content, ...props }: Props) {
   return (
-    <DialogRoot {...props}>
-      <DialogTrigger asChild>{props.children}</DialogTrigger>
-      <DialogContent className={props.className}>{content}</DialogContent>
-    </DialogRoot>
+    <Dialog.Root {...props}>
+      <Dialog.Trigger asChild>{props.children}</Dialog.Trigger>
+      <DialogContent title={props.title} className={props.className}>
+        {content}
+      </DialogContent>
+    </Dialog.Root>
   );
-}
-
-function DialogRoot(props) {
-  return <DialogPrimitive.Root {...props} />;
-}
-function DialogTrigger(props) {
-  return <DialogPrimitive.Trigger {...props} />;
 }
 
 type DialogContentProps = React.ComponentPropsWithoutRef<"div"> &
@@ -72,7 +68,7 @@ function DialogContent({
   );
 }
 
-Dialog.Root = DialogRoot;
-Dialog.Trigger = DialogTrigger;
+Dialog.Root = DialogPrimitive.Root;
+Dialog.Trigger = DialogPrimitive.Trigger;
 Dialog.Content = DialogContent;
 export default Dialog;

@@ -20,13 +20,19 @@ import {
 } from "@fuse-labs/core-client";
 import { getSuggestedName } from "@fuse-labs/shared-utils";
 import { Device as CoreDevice } from "@fuse-labs/types";
+import { useState } from "react";
 
 export default function DeviceForm({
   device,
+  onDeviceCreated,
+  onDeviceUpdated,
 }: {
   device: CoreDevice.DataType | ClientDevice;
+  onDeviceCreated?: (device: CoreDevice.DataType) => void;
+  onDeviceUpdated?: (device: CoreDevice.DataType) => void;
 }) {
   const ports = useSerialPorts();
+  const [isSaving, setIsSaving] = useState(false);
 
   const initialValues: CoreDevice.DataType = {
     id: device.id,
@@ -53,12 +59,20 @@ export default function DeviceForm({
   function handleSubmit(values, options) {
     console.log("Submit", values);
     if (!device.id) {
+      // TODO: Check is submitting of Formik?
+      setIsSaving(true);
       coreSocket.emit("devices:add", values, (deviceData) => {
         console.log("Created device");
+        setIsSaving(false);
+        onDeviceCreated?.(deviceData);
       });
     } else {
+      // TODO: Check is submitting of Formik?
+      setIsSaving(true);
       coreSocket.emit("devices:update", device.id, values, (deviceData) => {
         console.log("Updated device");
+        setIsSaving(false);
+        onDeviceUpdated?.(deviceData);
       });
     }
   }
@@ -66,6 +80,7 @@ export default function DeviceForm({
   return (
     <Form<CoreDevice.DataType>
       enableReinitialize
+      disabled={isSaving}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}

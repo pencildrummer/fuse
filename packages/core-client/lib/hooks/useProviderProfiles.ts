@@ -9,7 +9,7 @@ type ClientDeviceProfilesMap = {
 };
 
 export default function useProviderProfiles(data: ClientDeviceProfilesMap) {
-  const [profiles, setProfiles] = useState<ClientDeviceProfilesMap>(data ?? {});
+  const [profiles, setProfiles] = useState<ClientDeviceProfilesMap | null>();
 
   useEffect(() => {
     setProfiles(data);

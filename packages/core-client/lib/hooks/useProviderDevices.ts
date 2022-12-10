@@ -1,24 +1,22 @@
 import { Device } from "@fuse-labs/types";
 import { useEffect, useState } from "react";
 import ClientDeviceManager from "../managers/ClientDeviceManager/ClientDeviceManager";
+import { ClientDevice } from "../models/index.js";
 
 export default function useProviderDevices(data: Device.DataType[]) {
-  const [devices, setDevices] = useState(ClientDeviceManager.shared.devices);
+  const [devices, setDevices] = useState<ClientDevice[] | null>();
 
   useEffect(() => {
     if (!data) return;
-    ClientDeviceManager.shared.init(data);
-    setDevices(ClientDeviceManager.shared.devices);
+    ClientDeviceManager.configureWithData(data);
+    setDevices(ClientDeviceManager.devices);
   }, [data]);
 
   useEffect(() => {
-    const updateState = () => setDevices(ClientDeviceManager.shared.devices);
-    ClientDeviceManager.shared.addEventListener("updatedDevices", updateState);
+    const updateState = () => setDevices(ClientDeviceManager.devices);
+    ClientDeviceManager.addEventListener("updatedDevices", updateState);
     return () => {
-      ClientDeviceManager.shared.removeEventListener(
-        "updatedDevices",
-        updateState
-      );
+      ClientDeviceManager.removeEventListener("updatedDevices", updateState);
     };
   }, []);
 
