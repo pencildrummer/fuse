@@ -12,7 +12,6 @@ export default function useProviderPlugins(data: {
   useEffect(() => {
     if (!data) return;
     (async () => {
-      console.log("plugins data", data);
       await ClientPluginManager.configurePluginsFromData(data);
       console.log(
         "Updated plugins with new data:",
@@ -24,15 +23,16 @@ export default function useProviderPlugins(data: {
 
   useEffect(() => {
     function handleActivation(pluginName) {
-      throw new Error(
-        "TODO: Implement updated status from plugin manager broadcast event"
-      );
+      // console.log("Activated event handler from useProviderPlugins");
+      // throw new Error(
+      //   "TODO: Implement updated status from plugin manager broadcast event"
+      // );
     }
 
     function handleDeactivation(pluginName) {
-      throw new Error(
-        "TODO: Implement updated status from plugin manager broadcast event"
-      );
+      // throw new Error(
+      //   "TODO: Implement updated status from plugin manager broadcast event"
+      // );
     }
 
     // Add listener to coreSocket for plugin events

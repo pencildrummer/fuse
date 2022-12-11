@@ -1,9 +1,5 @@
 import { Device, PluginDataType, PluginInterface } from "@fuse-labs/types";
-import fs from "fs-extra";
-import path from "path";
-import signale from "signale";
 import { camelcase } from "varname";
-import { logger } from "../../../logger.js";
 import PluginManager from "../../../managers/PluginManager/PluginManager.js";
 import { CoreSocket, DeviceSocket } from "../../../socket-server.js";
 import { DeviceType } from "../../devices/index.js";
@@ -75,58 +71,12 @@ export default class Plugin<DS extends DeviceSocket = DeviceSocket>
     // Set default library name
     this.libraryName = camelcase(this.name);
 
-    let packagePath = path.join(this.path, "package.json");
-
-    if (fs.existsSync(packagePath)) {
-      let packageInfo = fs.readJsonSync(packagePath);
-
-      logger.info(`Setting plugin info from package.json for ${name}`);
-
-      // Set version from package if not manually set
-      this.version = packageInfo.version;
-    } else {
-      logger.warn(
-        `No package.json found for ${name}. Skipping retrieving info such as version from package.json.`
-      );
-      logger.warn("    Searched at", packagePath);
-    }
-
-    // // Add fuse key to safely add custom settings if not provided by package.json
-    // info._fuse = { ...info.fuse }
-
-    // // Validate package
-    // let pluginData = PLUGIN_SCHEMA.validateSync(info)
-
-    // // TODO - Improve this
-    // // Clear .fuse to be set onto ._fuse
-    // delete pluginData.fuse
-
-    // // Apply info to Plugin instance
-    // Object.assign(this, pluginData)
-
-    // Check has setting page
-    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'settings.js'))) {
-    //   this._settings = true
-    // }
-
-    // // Check has pages
-    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'pages', 'index.js'))) {
-    //   this._hasPages = true
-    // }
-
-    // Deprecated
-    // // Check has tab structure
-    // if (fs.existsSync(path.join(PLUGINS_BASE_PATH, this.name, 'tabs', 'index.js'))) {
-    //   this._hasTabs = true
-    // }
-
     // Call provision if any
     if (typeof this.provision == "function") {
       this.provision();
     }
   }
 
-  // TODO: Set DeviceDataType as return type
   toJSON(): PluginDataType {
     return {
       // ...this,

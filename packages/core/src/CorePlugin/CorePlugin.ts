@@ -48,12 +48,14 @@ export default class CorePlugin extends Plugin {
     socket.on("plugins:activate", (pluginName, fn) => {
       PluginManager.activate(pluginName);
       socket.emit("plugins:activated", pluginName);
+      // socket.emit("plugins:activated:" + pluginName);
       fn?.(true);
     });
 
     socket.on("plugins:deactivate", (pluginName, fn) => {
       PluginManager.deactivate(pluginName);
       socket.emit("plugins:deactivated", pluginName);
+      // socket.emit("plugins:deactivated:" + pluginName);
       fn?.(true);
     });
 

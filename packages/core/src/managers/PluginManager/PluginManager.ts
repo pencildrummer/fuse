@@ -9,12 +9,14 @@ import BaseManager from "../BaseManager.js";
 import getProxiedManager from "../getProxiedManager.js";
 import __SYSTEM_PLUGINS__ from "../../defaults/plugins.json" assert { type: "json" };
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    logger.info(`Sleeping for ${ms / 1000} seconds`);
-    setTimeout(resolve, ms);
-  });
-}
+export type FuseJSONSchema = {
+  host?: string;
+  /**
+   * @deprecated Should not be used. Use 'host' instead
+   */
+  server?: string;
+  client?: string;
+};
 
 type PluginInfo = {
   name: string;
@@ -49,7 +51,6 @@ class PluginManager extends BaseManager {
 
   getPlugin(name: Plugin["name"]) {
     return this._plugins[name];
-    //return this._plugins.find((plugin) => plugin.name == name);
   }
 
   constructor() {
@@ -65,22 +66,20 @@ class PluginManager extends BaseManager {
     this._activePluginsNames = [...Object.keys(__SYSTEM_PLUGINS__)];
 
     // Load installed plugins based on stored plugins.json config file
-    let pluginsList = this.getPluginsListInfo();
+    let pluginsList = this.pluginsListInfo;
 
     // Init Plugin(s) based on names and add it to the plugin manager store
     for (const index in Object.keys(pluginsList)) {
       let pluginName = Object.keys(pluginsList)[index];
-      console.log("Loading", pluginName);
-
       const pluginInfo = pluginsList[pluginName];
 
-      let plugin;
-      // Check if system plugin
-      if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
-        plugin = await this.loadSystemPlugin(pluginInfo);
-      } else {
-        plugin = await this.loadInstalledPlugin(pluginInfo);
-      }
+      let plugin = await this.loadPluginWithInfo(pluginInfo);
+      // // Check if system plugin
+      // if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
+      //   plugin = await this.loadSystemPlugin(pluginInfo);
+      // } else {
+      //   plugin = await this.loadInstalledPlugin(pluginInfo);
+      // }
 
       if (plugin) {
         // Add plugin
@@ -89,84 +88,66 @@ class PluginManager extends BaseManager {
         logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
       }
     }
-    // this._plugins = await Object.keys(pluginsList).reduce(
-    //   async (prev, pluginName) => {
-    //     // Wait for previous plugin load process
-    //     const plugins = await prev;
-
-    //     const pluginInfo = pluginsList[pluginName];
-
-    //     let plugin;
-    //     // Check if system plugin
-    //     if (this.SYSTEM_PLUGIN_NAMES.includes(pluginName)) {
-    //       plugin = await this.loadSystemPlugin(pluginInfo);
-    //     } else {
-    //       plugin = await this.loadInstalledPlugin(pluginInfo);
-    //     }
-
-    //     if (plugin) {
-    //       // Add plugin
-    //       plugins[pluginName] = plugin;
-    //       //plugins.push(plugin);
-    //       logger.success(`Loaded plugin ${chalk.bold.green(pluginName)}`);
-    //     }
-    //     return plugins;
-    //   },
-    //   Promise.resolve(this._plugins)
-    // );
   }
 
-  async loadSystemPlugin(systemPluginInfo: PluginInfo) {
-    // TODO: Merge client and server in one pacakge with internal workspaces and allow package json to export correct ones?
+  async loadPluginWithInfo(pluginInfo: PluginInfo) {
+    let pluginName = pluginInfo.name;
+    logger.info(`Loading ${pluginName}`);
 
-    let systemPluginPath = path.resolve(
-      path.join(process.cwd(), "../../", systemPluginInfo.path)
-    );
+    // Prepare import path
+    let pluginBasePath;
+    let packageBasePath;
 
-    // Check pakcage.json exists
-    let pkgPath = path.join(systemPluginPath, "package.json");
-    if (!fs.existsSync(pkgPath)) {
-      // If root package.json does not exists, check for /server subdir package.json
-      // TODO: Decide if merge everything into one main package.json, that sounds better
-      if (
-        fs.existsSync(path.join(systemPluginPath, "server", "package.json"))
-      ) {
-        systemPluginPath = path.join(systemPluginPath, "server");
-        pkgPath = path.join(systemPluginPath, "package.json");
-        // TODO: Allow "main" field if in subdir?
+    // Check if system plugin
+    const isSystem = this.SYSTEM_PLUGIN_NAMES.includes(pluginName);
+
+    // Prepare base path based on the fact that is system or not
+    if (isSystem) {
+      pluginBasePath = path.resolve(
+        path.join(process.cwd(), "../../", pluginInfo.path)
+      );
+    } else {
+      pluginBasePath = path.resolve(path.join(process.cwd(), pluginInfo.path));
+    }
+
+    // Search for fuse.json
+    let fuseJsonPath = path.join(pluginBasePath, "fuse.json");
+    if (fs.existsSync(fuseJsonPath)) {
+      // Read fuse.json
+      const fuseJson: FuseJSONSchema = fs.readJsonSync(fuseJsonPath);
+
+      // Check for server directory, otherwise assume the code to be imported in the root
+
+      if (fuseJson.host) {
+        packageBasePath = path.join(pluginBasePath, fuseJson.host);
+      } else if (fuseJson.server) {
+        // Support for server will be removed
         logger.warn(
-          `Loading plugin ${chalk.bold.yellow(
-            systemPluginInfo.name
-          )} from "/server" subdir in main package due to missing root package.json. This is discouraged and will be removed. Fix it.`
+          `Reading import path for ${pluginName} from 'server' config. Use 'host' instead.`
         );
+        packageBasePath = path.join(pluginBasePath, fuseJson.server);
       } else {
-        throw new Error(
-          `Missing package.json for plugin ${systemPluginInfo.name} at path "${systemPluginInfo.path}"`
+        throw Error(
+          `Trying to load system plugin from fuse.json at path ${chalk.bold(
+            path.join(pluginBasePath, "fuse.json")
+          )}. No host or server fields found.`
         );
+      }
+    } else {
+      // Check if old server directory exists, notify to changed it but use it to load module anyway
+      if (fs.pathExistsSync(path.join(pluginBasePath, "server"))) {
+        logger.warn(`Using depreacted server dir to load ${pluginName}`);
+        packageBasePath = path.join(pluginBasePath, "server");
+      } else {
+        // If root fuse.json does not exists, assume to be imported from /host subdir
+        packageBasePath = path.join(pluginBasePath, "host");
       }
     }
 
-    // Read package.json
-    const pkg = fs.readJsonSync(pkgPath);
-
-    // TODO: Validate fields in pkg JSON
-
-    // Check for server directory, otherwise assume the code to be imported in the root
-    let importPath;
-    // TODO: Decide if /host or /server
-    if (pkg.exports?.["./host"]) {
-      importPath = path.join(systemPluginPath, pkg.exports?.["./host"]);
-    } else if (pkg.exports?.["./server"]) {
-      importPath = path.join(systemPluginPath, pkg.exports?.["./server"]);
-    } else if (typeof pkg.exports === "string") {
-      importPath = path.join(systemPluginPath, pkg.exports);
-    } else {
-      throw Error(
-        `Trying to load system plugin from package.json at path ${chalk.bold(
-          pkgPath
-        )}. No import fields found. Allowed fields for host plugins are "exports", "exports.host", "exports.server" (discouraged). "main" field is not supported because can conflict with host and client plugins in same directory.`
-      );
-    }
+    // Append package.json to importPath
+    const importPath = this.getImportPathFromPackage(
+      path.join(packageBasePath, "package.json")
+    );
 
     if (!fs.existsSync(importPath)) {
       throw new Error(
@@ -174,75 +155,9 @@ class PluginManager extends BaseManager {
       );
     }
 
-    // TODO: Check import path has index or not or let node do its thing?
-    //const pluginModule = await import(`${path.join(importPath, "index.js")}`);
-    const pluginModule = await (async () => {
-      let module = await import(`${importPath}`).then((module) => {
-        console.log("Imported module");
-        return module;
-      });
-      console.log("Loaded after await import");
-      return module;
-    })();
-
-    let PluginClass = pluginModule.default;
-
-    // Check import default is a class
-
-    let systemPlugin;
-    try {
-      systemPlugin = new PluginClass(systemPluginInfo.name, systemPluginPath);
-    } catch (e) {
-      console.error(
-        `${chalk.bold.red(
-          systemPluginInfo.name
-        )} default export is not a class. Imported from ${importPath}`
-      );
-      return null;
-    }
-
-    // System plugins are always active
-    this._activePluginsNames = [
-      ...this._activePluginsNames,
-      systemPluginInfo.name,
-    ];
-    return systemPlugin;
-  }
-
-  async loadInstalledPlugin(pluginInfo: PluginInfo) {
-    const pluginName = pluginInfo.name;
-    const pluginPath = path.resolve(pluginInfo.path);
-    const pluginPkgPath = path.resolve(pluginPath, "package.json");
-
-    // Find package.json
-    if (!fs.existsSync(pluginPkgPath)) {
-      return console.error(
-        "Unable to find package.json for plugin",
-        pluginName
-      );
-    }
-
-    // Read package.json
-    let pluginPkg;
-    try {
-      pluginPkg = fs.readJsonSync(pluginPkgPath);
-    } catch (err) {
-      return console.error(
-        "Error reading package.json from plugin",
-        pluginName
-      );
-    }
-
-    // Check if supports server side (should export server)
-    if (pluginPkg.exports?.["./server"] == undefined) {
-      return console.warn(
-        `${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`
-      );
-    }
-
-    // Build final import path
-    const importPath = path.join(pluginPath, pluginPkg.exports["./server"]);
-    console.debug(importPath);
+    //
+    // Start importing plugin module
+    //
     const pluginModule = await import(pathToFileURL(importPath).toString())
       .then((res) => {
         if (!res.default) {
@@ -252,7 +167,7 @@ class PluginManager extends BaseManager {
         }
         if (typeof res.default !== "function") {
           throw new Error(
-            `Default export of ${pluginName}/server is not a class`
+            `Default export of ${pluginName}/host is not a class`
           );
         }
         if (!(res.default.prototype instanceof Plugin)) {
@@ -264,24 +179,22 @@ class PluginManager extends BaseManager {
             )}`
           );
         }
+
         logger.success(
-          `${chalk.green(
-            pluginName + "/server"
-          )}: module found, using "${chalk.green.bold(
+          `${chalk.green(pluginName)}: module found, using "${chalk.green.bold(
             res.default.name
           )}" to initialize plugin`
         );
+
         return res;
       })
       .catch((err) => {
         switch (err.code) {
           case "ERR_PACKAGE_PATH_NOT_EXPORTED":
             logger.warn(
-              `${chalk.yellow(
-                pluginName + "/server"
-              )}: not loaded, "${chalk.bold.yellow(
+              `${chalk.yellow(pluginName)}: not loaded, "${chalk.bold.yellow(
                 pluginName
-              )}" do not support server side. If unexpected check "${pluginName}" exports ./server`
+              )}" do not support host side. If unexpected check "${pluginName}" exports ./host`
             );
             break;
           case "ERR_MODULE_NOT_FOUND":
@@ -290,7 +203,7 @@ class PluginManager extends BaseManager {
             logger.error(err);
             logger.warn(
               `${chalk.yellow(
-                pluginName + "/server"
+                pluginName + "/host"
               )}: module not found, using generic ${chalk.yellow(
                 Plugin.name
               )} class to initialize "${chalk.bold(pluginName)}"`
@@ -299,33 +212,261 @@ class PluginManager extends BaseManager {
         return null;
       });
 
-    let PluginClass = Plugin;
-    if (pluginModule?.default) PluginClass = pluginModule.default;
+    // Getting default export, is the Plugin subclass class
+    let PluginClass: new (name: string, installPath: string) => Plugin =
+      pluginModule.default;
 
     // Create Plugin instance for required pluginName
-    let plugin = new PluginClass(pluginName, pluginPath);
+    let plugin = new PluginClass(pluginName, pluginBasePath);
     if (plugin) {
-      // Configure plugin activation status
-      if (pluginInfo.active === true) {
+      // Configure plugin activation status (system plugins are always active)
+      if (pluginInfo.active === true || isSystem) {
         this._activePluginsNames = [...this._activePluginsNames, pluginName];
       }
       return plugin;
     } else {
-      console.error(`Error initializing plugin instance for ${pluginName}`);
+      logger.error(`Error initializing plugin instance for ${pluginName}`);
       return null;
     }
   }
 
+  private getImportPathFromPackage(packagePath: string) {
+    // Read package.json
+    const pkg = fs.readJsonSync(packagePath);
+
+    // TODO: Validate fields in pkg JSON
+
+    // Check for server directory, otherwise assume the code to be imported in the root
+    let packageBasePath = path.dirname(packagePath);
+    let importPath;
+    // TODO: Decide if /host or /server
+    if (pkg.exports?.["./host"]) {
+      importPath = path.join(packageBasePath, pkg.exports?.["./host"]);
+    } else if (pkg.exports?.["./server"]) {
+      importPath = path.join(packageBasePath, pkg.exports?.["./server"]);
+    } else if (typeof pkg.exports === "string") {
+      importPath = path.join(packageBasePath, pkg.exports);
+    } else {
+      throw Error(
+        `Trying to load system plugin from package.json at path ${chalk.bold(
+          packagePath
+        )}. No import fields found. Allowed fields for host plugins are "exports", "exports.host", "exports.server" (discouraged). "main" field is not supported because can conflict with host and client plugins in same directory.`
+      );
+    }
+    return importPath;
+  }
+
+  // async loadSystemPlugin(systemPluginInfo: PluginInfo) {
+  //   // TODO: Merge client and server in one pacakge with internal workspaces and allow package json to export correct ones?
+
+  //   let systemPluginPath = path.resolve(
+  //     path.join(process.cwd(), "../../", systemPluginInfo.path)
+  //   );
+
+  //   // TODO: We can create a different file in source plugin like "plugin.json" instead of package.sjon that may conflict
+  //   // Check pakcage.json exists
+  //   let pkgPath = path.join(systemPluginPath, "package.json");
+  //   if (!fs.existsSync(pkgPath)) {
+  //     // If root package.json does not exists, check for /server subdir package.json
+  //     // TODO: Decide if merge everything into one main package.json, that sounds better
+  //     if (
+  //       fs.existsSync(path.join(systemPluginPath, "server", "package.json"))
+  //     ) {
+  //       systemPluginPath = path.join(systemPluginPath, "server");
+  //       pkgPath = path.join(systemPluginPath, "package.json");
+  //       // TODO: Allow "main" field if in subdir?
+  //       logger.warn(
+  //         `Loading plugin ${chalk.bold.yellow(
+  //           systemPluginInfo.name
+  //         )} from "/server" subdir in main package due to missing root package.json. This is discouraged and will be removed. Fix it.`
+  //       );
+  //     } else {
+  //       throw new Error(
+  //         `Missing package.json for plugin ${systemPluginInfo.name} at path "${systemPluginInfo.path}"`
+  //       );
+  //     }
+  //   }
+
+  //   // Read package.json
+  //   const pkg = fs.readJsonSync(pkgPath);
+
+  //   // TODO: Validate fields in pkg JSON
+
+  //   // Check for server directory, otherwise assume the code to be imported in the root
+  //   let importPath;
+  //   // TODO: Decide if /host or /server
+  //   if (pkg.exports?.["./host"]) {
+  //     importPath = path.join(systemPluginPath, pkg.exports?.["./host"]);
+  //   } else if (pkg.exports?.["./server"]) {
+  //     importPath = path.join(systemPluginPath, pkg.exports?.["./server"]);
+  //   } else if (typeof pkg.exports === "string") {
+  //     importPath = path.join(systemPluginPath, pkg.exports);
+  //   } else {
+  //     throw Error(
+  //       `Trying to load system plugin from package.json at path ${chalk.bold(
+  //         pkgPath
+  //       )}. No import fields found. Allowed fields for host plugins are "exports", "exports.host", "exports.server" (discouraged). "main" field is not supported because can conflict with host and client plugins in same directory.`
+  //     );
+  //   }
+
+  //   if (!fs.existsSync(importPath)) {
+  //     throw new Error(
+  //       `Trying to load system plugin from path ${importPath}. Path does not exists.`
+  //     );
+  //   }
+
+  //   // TODO: Check import path has index or not or let node do its thing?
+  //   //const pluginModule = await import(`${path.join(importPath, "index.js")}`);
+  //   const pluginModule = await (async () => {
+  //     let module = await import(`${importPath}`).then((module) => {
+  //       console.log("Imported module");
+  //       return module;
+  //     });
+  //     console.log("Loaded after await import");
+  //     return module;
+  //   })();
+
+  //   let PluginClass = pluginModule.default;
+
+  //   // Check import default is a class
+
+  //   let systemPlugin;
+  //   try {
+  //     systemPlugin = new PluginClass(systemPluginInfo.name, systemPluginPath);
+  //   } catch (e) {
+  //     console.error(
+  //       `${chalk.bold.red(
+  //         systemPluginInfo.name
+  //       )} default export is not a class. Imported from ${importPath}`
+  //     );
+  //     return null;
+  //   }
+
+  //   // System plugins are always active
+  //   this._activePluginsNames = [
+  //     ...this._activePluginsNames,
+  //     systemPluginInfo.name,
+  //   ];
+  //   return systemPlugin;
+  // }
+
+  // async loadInstalledPlugin(pluginInfo: PluginInfo) {
+  //   const pluginName = pluginInfo.name;
+  //   const pluginPath = path.resolve(pluginInfo.path);
+  //   const pluginPkgPath = path.resolve(pluginPath, "package.json");
+
+  //   // Find package.json
+  //   if (!fs.existsSync(pluginPkgPath)) {
+  //     return logger.error(
+  //       `Unable to find package.json for plugin ${chalk.bold(
+  //         pluginName
+  //       )} at path ${pluginPkgPath}`
+  //     );
+  //   }
+
+  //   // Read package.json
+  //   let pluginPkg;
+  //   try {
+  //     pluginPkg = fs.readJsonSync(pluginPkgPath);
+  //   } catch (err) {
+  //     return logger.error(
+  //       `Error reading package.json from plugin ${pluginName}`
+  //     );
+  //   }
+
+  //   // Check if supports server side (should export server)
+  //   if (pluginPkg.exports?.["./server"] == undefined) {
+  //     return logger.warn(
+  //       `${chalk.yellow(pluginName)}: does not export a host plugin, skipping.`
+  //     );
+  //   }
+
+  //   // Build final import path
+  //   const importPath = path.join(pluginPath, pluginPkg.exports["./server"]);
+  //   logger.debug(importPath);
+  //   const pluginModule = await import(pathToFileURL(importPath).toString())
+  //     .then((res) => {
+  //       if (!res.default) {
+  //         throw new Error(
+  //           "Found module but no default export is found. Should export the plugin class."
+  //         );
+  //       }
+  //       if (typeof res.default !== "function") {
+  //         throw new Error(
+  //           `Default export of ${pluginName}/server is not a class`
+  //         );
+  //       }
+  //       if (!(res.default.prototype instanceof Plugin)) {
+  //         throw new Error(
+  //           `Plugin class "${chalk.red(
+  //             res.default.name
+  //           )}" must extend "${chalk.bold(Plugin.name)}" from ${chalk.underline(
+  //             "@fuse-labs/core"
+  //           )}`
+  //         );
+  //       }
+  //       logger.success(
+  //         `${chalk.green(
+  //           pluginName + "/server"
+  //         )}: module found, using "${chalk.green.bold(
+  //           res.default.name
+  //         )}" to initialize plugin`
+  //       );
+  //       return res;
+  //     })
+  //     .catch((err) => {
+  //       switch (err.code) {
+  //         case "ERR_PACKAGE_PATH_NOT_EXPORTED":
+  //           logger.warn(
+  //             `${chalk.yellow(
+  //               pluginName + "/server"
+  //             )}: not loaded, "${chalk.bold.yellow(
+  //               pluginName
+  //             )}" do not support server side. If unexpected check "${pluginName}" exports ./server`
+  //           );
+  //           break;
+  //         case "ERR_MODULE_NOT_FOUND":
+  //         // Check code, because if simply the module does not export ./server subpath, is not an error, the plugin does not support server plugin
+  //         default:
+  //           logger.error(err);
+  //           logger.warn(
+  //             `${chalk.yellow(
+  //               pluginName + "/server"
+  //             )}: module not found, using generic ${chalk.yellow(
+  //               Plugin.name
+  //             )} class to initialize "${chalk.bold(pluginName)}"`
+  //           );
+  //       }
+  //       return null;
+  //     });
+
+  //   let PluginClass = Plugin;
+  //   if (pluginModule?.default) PluginClass = pluginModule.default;
+
+  //   // Create Plugin instance for required pluginName
+  //   let plugin = new PluginClass(pluginName, pluginPath);
+  //   if (plugin) {
+  //     // Configure plugin activation status
+  //     if (pluginInfo.active === true) {
+  //       this._activePluginsNames = [...this._activePluginsNames, pluginName];
+  //     }
+  //     return plugin;
+  //   } else {
+  //     console.error(`Error initializing plugin instance for ${pluginName}`);
+  //     return null;
+  //   }
+  // }
+
   /** Get all plugins info, including system plugins */
-  getPluginsListInfo(): { [key: string]: PluginInfo } {
+  private get pluginsListInfo(): { [key: string]: PluginInfo } {
     return {
       ...__SYSTEM_PLUGINS__,
-      ...this.getInstalledPluginsListInfo(),
+      ...this.installedPluginsListInfo,
     };
   }
 
   /** Get installed plugin info, without system plugins */
-  getInstalledPluginsListInfo(): { [key: string]: PluginInfo } {
+  private get installedPluginsListInfo(): { [key: string]: PluginInfo } {
     if (!fs.existsSync(PLUGINS_LIST_FILE_PATH)) {
       logger.warn(
         "No plugins list path to load from. This should be an error, at least an empty configuration plugins.json file should exists."
@@ -374,7 +515,7 @@ class PluginManager extends BaseManager {
 
     // Updated installed plugin database
 
-    let pluginsListInfo = this.getInstalledPluginsListInfo();
+    let pluginsListInfo = this.installedPluginsListInfo;
 
     if (!pluginsListInfo[name]) {
       throw new Error(

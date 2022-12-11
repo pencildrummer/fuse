@@ -1,5 +1,6 @@
 import { PluginDataType } from "@fuse-labs/types";
 import { ClientPlugin } from "../../models";
+import { coreSocket } from "../../socket.js";
 import ClientBaseManager from "../ClientBaseManager";
 import ClientDeviceManager from "../ClientDeviceManager/ClientDeviceManager";
 import getProxiedManager from "../getProxiedManager";
@@ -24,8 +25,6 @@ class ClientPluginManager extends ClientBaseManager {
   get plugins() {
     return this._plugins;
   }
-
-  readonly activePluginsNames: string[] = [];
 
   get activePlugins() {
     return this.plugins?.filter((plugin) => plugin.active);

@@ -5,7 +5,7 @@ import React from "react";
 import { array, boolean, object, SchemaOf, string } from "yup";
 import { ClientDevice } from "..";
 import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
-import { socket } from "../../socket";
+import { coreSocket, socket } from "../../socket";
 
 // TODO: Reverse yup schema from TS type?
 const ClientPluginSchema: SchemaOf<PluginInterface> = object({
@@ -24,17 +24,17 @@ const ClientPluginSchema: SchemaOf<PluginInterface> = object({
 
 // TODO: Check type and improve
 type ClientPluginComponentsType = {
-  page?: React.Component;
-  tab?: React.Component;
+  page?: React.ComponentType;
+  tab?: React.ComponentType;
 };
 
 // TODO: Check type and improve
 type ClientPluginDeviceComponentsType = {
   page?: {
-    plugin?: JSX.Element;
+    plugin?: React.ComponentType;
     topBar?: React.ComponentType;
   };
-  settings?: JSX.Element;
+  settings?: React.ComponentType;
 };
 
 export default class ClientPlugin implements PluginInterface {
@@ -46,7 +46,10 @@ export default class ClientPlugin implements PluginInterface {
   readonly libraryName: string;
   readonly hasSocket: boolean;
   readonly hasDeviceSocket: boolean;
-  readonly active: boolean;
+  private _active: boolean;
+  get active() {
+    return this._active;
+  }
   readonly system: boolean;
   readonly deviceTypes: Device.Profile.Type[];
 
@@ -93,7 +96,7 @@ export default class ClientPlugin implements PluginInterface {
       this.libraryName = pluginData.libraryName;
       this.hasSocket = pluginData.hasSocket;
       this.hasDeviceSocket = pluginData.hasDeviceSocket;
-      this.active = pluginData.active;
+      this._active = pluginData.active;
       this.system = pluginData.system;
       this.deviceTypes = pluginData.deviceTypes;
 
@@ -101,6 +104,19 @@ export default class ClientPlugin implements PluginInterface {
       if (this.hasSocket) {
         this.socket = socket(this.name);
       }
+
+      // Add listener for activation/deactivation
+      coreSocket.on("plugins:activated", (pluginName) => {
+        if (pluginName != this.name) return;
+        console.info("Activated plugin");
+        this._active = true;
+        this.provision();
+      });
+      coreSocket.on("plugins:deactivated", (pluginName) => {
+        if (pluginName != this.name) return;
+        console.info("Deactivated plugin");
+        this._active = false;
+      });
 
       // Automatically provision plugin on initialization
       //this.provision();
