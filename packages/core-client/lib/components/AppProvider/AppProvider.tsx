@@ -88,11 +88,6 @@ export default function AppProvider({ locale = "en", messages, ...props }) {
     [plugins]
   );
 
-  // Debug
-  useEffect(() => {
-    console.log("Changed plugins in AppContext", plugins);
-  }, [plugins]);
-
   const intl = useMemo(
     () =>
       createIntl(

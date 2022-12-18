@@ -1,4 +1,9 @@
-import React from "react";
+import React, {
+  ComponentPropsWithRef,
+  ComponentType,
+  PropsWithChildren,
+  useEffect,
+} from "react";
 import * as icons from "@radix-ui/react-icons";
 import classNames from "classnames";
 import Link from "next/link";
@@ -51,7 +56,12 @@ function SidebarMenu(props) {
   );
 }
 
-const SidebarMenuItem = React.forwardRef(
+type SidebarMenuItemProps = ComponentPropsWithRef<"li"> & {
+  icon?: ComponentType<{ className: string }>;
+  iconClassName?: string;
+  href?: string;
+};
+const SidebarMenuItem = React.forwardRef<HTMLLIElement, SidebarMenuItemProps>(
   ({ icon: Icon, iconClassName, href, ...props }, ref) => {
     const contents = (
       <>

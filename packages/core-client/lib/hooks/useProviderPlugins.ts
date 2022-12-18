@@ -22,6 +22,15 @@ export default function useProviderPlugins(data: {
   }, [data]);
 
   useEffect(() => {
+    let pluginStateChangedHandler = (e: CustomEvent) => {
+      // Trigger plugins state update, maybe use something like a reducer later on?
+      setPlugins([...ClientPluginManager.plugins]);
+    };
+    ClientPluginManager.addEventListener(
+      "pluginstatechanged",
+      pluginStateChangedHandler
+    );
+
     function handleActivation(pluginName) {
       // console.log("Activated event handler from useProviderPlugins");
       // throw new Error(
@@ -42,6 +51,10 @@ export default function useProviderPlugins(data: {
       // Remove listeners
       coreSocket.off("plugins:activated", handleActivation);
       coreSocket.off("plugins:deactivated", handleDeactivation);
+      ClientPluginManager.removeEventListener(
+        "pluginstatechanged",
+        pluginStateChangedHandler
+      );
     };
   }, []);
 

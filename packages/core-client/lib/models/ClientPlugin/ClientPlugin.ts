@@ -5,6 +5,7 @@ import React from "react";
 import { array, boolean, object, SchemaOf, string } from "yup";
 import { ClientDevice } from "..";
 import ClientDeviceManager from "../../managers/ClientDeviceManager/ClientDeviceManager";
+import ClientPluginManager from "../../managers/ClientPluginManager/ClientPluginManager";
 import { coreSocket, socket } from "../../socket";
 
 // TODO: Reverse yup schema from TS type?
@@ -46,9 +47,9 @@ export default class ClientPlugin implements PluginInterface {
   readonly libraryName: string;
   readonly hasSocket: boolean;
   readonly hasDeviceSocket: boolean;
-  private _active: boolean;
+  // private _active: boolean;
   get active() {
-    return this._active;
+    return ClientPluginManager.isPluginActive(this.name);
   }
   readonly system: boolean;
   readonly deviceTypes: Device.Profile.Type[];
@@ -96,9 +97,10 @@ export default class ClientPlugin implements PluginInterface {
       this.libraryName = pluginData.libraryName;
       this.hasSocket = pluginData.hasSocket;
       this.hasDeviceSocket = pluginData.hasDeviceSocket;
-      this._active = pluginData.active;
       this.system = pluginData.system;
       this.deviceTypes = pluginData.deviceTypes;
+
+      // this._active = pluginData.active;
 
       // Init plugin socket if needed
       if (this.hasSocket) {
@@ -106,17 +108,17 @@ export default class ClientPlugin implements PluginInterface {
       }
 
       // Add listener for activation/deactivation
-      coreSocket.on("plugins:activated", (pluginName) => {
-        if (pluginName != this.name) return;
-        console.info("Activated plugin");
-        this._active = true;
-        this.provision();
-      });
-      coreSocket.on("plugins:deactivated", (pluginName) => {
-        if (pluginName != this.name) return;
-        console.info("Deactivated plugin");
-        this._active = false;
-      });
+      // coreSocket.on("plugins:activated", (pluginName) => {
+      //   if (pluginName != this.name) return;
+      //   console.info("Activated plugin");
+      //   this._active = true;
+      //   this.provision();
+      // });
+      // coreSocket.on("plugins:deactivated", (pluginName) => {
+      //   if (pluginName != this.name) return;
+      //   console.info("Deactivated plugin");
+      //   this._active = false;
+      // });
 
       // Automatically provision plugin on initialization
       //this.provision();

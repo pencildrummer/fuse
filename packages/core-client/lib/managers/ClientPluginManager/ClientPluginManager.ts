@@ -1,9 +1,12 @@
 import { PluginDataType } from "@fuse-labs/types";
+import AppError from "../../errors/AppError";
 import { ClientPlugin } from "../../models";
-import { coreSocket } from "../../socket.js";
+import { coreSocket } from "../../socket";
 import ClientBaseManager from "../ClientBaseManager";
 import ClientDeviceManager from "../ClientDeviceManager/ClientDeviceManager";
 import getProxiedManager from "../getProxiedManager";
+
+type ClientPluginInternalState = "active" | "inactive" | "unknown";
 
 const _registeredPlugins: { [key: string]: typeof ClientPlugin } = {};
 
@@ -26,6 +29,10 @@ class ClientPluginManager extends ClientBaseManager {
     return this._plugins;
   }
 
+  private _pluginsStates: {
+    [key: ClientPlugin["name"]]: ClientPluginInternalState;
+  } = {};
+
   get activePlugins() {
     return this.plugins?.filter((plugin) => plugin.active);
   }
@@ -41,6 +48,13 @@ class ClientPluginManager extends ClientBaseManager {
       this.provisionPlugins();
     };
     ClientDeviceManager.addEventListener("updatedDevices", handler);
+
+    coreSocket.on("plugins:activated", (pluginName) => {
+      this.setPluginActive(pluginName, true);
+    });
+    coreSocket.on("plugins:deactivated", (pluginName) => {
+      this.setPluginActive(pluginName, false);
+    });
   }
 
   async configurePluginsFromData(installedPluginsData: {
@@ -61,6 +75,48 @@ class ClientPluginManager extends ClientBaseManager {
 
     // Provision loaded plugins
     this.provisionPlugins();
+  }
+
+  public setPluginActive(pluginName: string, targetActive: boolean) {
+    // TODO
+    let plugin = this.getPlugin(pluginName);
+    if (!plugin) {
+      throw new AppError(
+        `Trying changing activation status on unknown plugin "${pluginName}"`
+      );
+    }
+
+    switch (this.getInternalPluginState(pluginName)) {
+      case "active":
+      case "inactive":
+        if (targetActive) {
+          this.setInternalPluginState(pluginName, "active");
+          plugin.provision();
+        } else {
+          this.setInternalPluginState(pluginName, "inactive");
+          //plugin.unprovision() // TODO: Add maybe this method to ClientPlugin class?
+        }
+
+        this.dispatchEvent(
+          new CustomEvent("pluginstatechanged", {
+            detail: {
+              plugin: plugin,
+              state: this._pluginsStates[pluginName],
+            },
+          })
+        );
+
+        break;
+      case "unknown":
+        console.warn(
+          "Trying to change activation status for plugin with unknown state. This should not happen, something is wrong."
+        );
+        break;
+    }
+  }
+
+  public isPluginActive(pluginName: string): boolean {
+    return this.getInternalPluginState(pluginName) === "active";
   }
 
   /** Private */
@@ -180,9 +236,22 @@ class ClientPluginManager extends ClientBaseManager {
       console.log(`Loading '${name}'...`);
       console.log(installedPluginsData);
 
+      // Get plugin configuration data from host
       let pluginData = installedPluginsData[name];
 
-      return new PluginClass(pluginData);
+      // Create plugin instance
+      let plugin = new PluginClass(pluginData);
+
+      // Configure plugin state based on provided installedPluginsData
+      let state: ClientPluginInternalState = "unknown";
+      if (pluginData.active === true) {
+        state = "active";
+      } else if (pluginData.active === false) {
+        state = "inactive";
+      }
+      this.setInternalPluginState(plugin.name, state);
+
+      return plugin;
     });
     console.log("Loaded plugins", this._plugins);
   }
@@ -191,7 +260,7 @@ class ClientPluginManager extends ClientBaseManager {
    * These method call the provision() method on all the installed and active plugins.
    * Plugin are already provisioned after first initialization of ClientPluginManager
    */
-  provisionPlugins() {
+  private provisionPlugins() {
     console.log("Provisioning active plugins...");
     console.log(this.activePlugins);
     if (!this.activePlugins) {
@@ -199,6 +268,19 @@ class ClientPluginManager extends ClientBaseManager {
     } else {
       this.activePlugins?.forEach((plugin) => plugin.provision());
     }
+  }
+
+  private getInternalPluginState(
+    pluginName: string
+  ): ClientPluginInternalState {
+    return this._pluginsStates[pluginName] ?? "unknown";
+  }
+
+  private setInternalPluginState(
+    pluginName: string,
+    state: ClientPluginInternalState
+  ) {
+    this._pluginsStates[pluginName] = state;
   }
 }
 
