@@ -40,6 +40,7 @@ export default function MarlinSettingsWidget() {
         disabled={!settingsValues || saving}
         onSubmit={handleSubmit}
         initialValues={initialValues}
+        initialStatus="disabled"
         items={settings}
         submitTitle={"Save settings"}
         // onValueChange={handleValueChange}

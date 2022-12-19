@@ -77,6 +77,7 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
         "font-mono font-medium",
         "bg-gray-900 border border-gray-600 text-gray-300",
         "focus-within:border-blue-600 focus-within:outline-none focus-within:ring-1 focus-within:ring-blue-600",
+        "aria-disabled:bg-gray-800 aria-disabled:opacity-60",
         {
           "border-red-600 ring-1 ring-red-600": error,
           "border-yellow-500 ring-1 ring-yellow-500": !error && dirty,
@@ -86,15 +87,16 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
         },
         props.className
       )}
+      aria-disabled={props.disabled}
     >
       <input
         {...props}
         className={classNames(
           "text-xs px-1.5",
-          "h-full min-w-0 w-full",
+          "h-full min-w-0 w-auto",
           "ring-0 outline-none",
-          "bg-gray-900 text-gray-300",
-          "disabled:select-none disabled:touch-none disabled:opacity-60 disabled:bg-gray-800",
+          "bg-transparent text-gray-300",
+          "disabled:select-none disabled:touch-none",
           "transition-colors duration-150"
         )}
         style={{

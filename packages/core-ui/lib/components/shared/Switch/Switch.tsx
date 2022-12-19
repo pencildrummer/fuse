@@ -1,10 +1,11 @@
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 import classNames from "classnames";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import { ComponentPropsWithRef, useEffect, useState } from "react";
 import { FormControlProps } from "../Input/Input.jsx";
 
 export default function Switch(props) {
+  const { isSubmitting, status } = useFormikContext();
   const [field, meta, helpers] = useField(props.name);
 
   const { value, initialValue, error, touched } = meta;
@@ -21,6 +22,7 @@ export default function Switch(props) {
       {...props}
       checked={Boolean(value)}
       onCheckedChange={handleChange}
+      disabled={props.disabled || isSubmitting || status == "disabled"}
       error={field.name && error && touched}
       dirty={touched && !error && value != initialValue}
     />

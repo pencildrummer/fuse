@@ -1,7 +1,7 @@
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
 import classNames from "classnames";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 
 type Props = React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> & {
   error?: string;
@@ -34,13 +34,16 @@ export function CheckboxRaw({ error, ...props }: Props) {
 }
 
 export default function Checkbox(props) {
+  const { isSubmitting, status } = useFormikContext();
   const [field, meta, helpers] = useField(props);
 
   return (
     <CheckboxRaw
       {...field}
       {...props}
+      disabled={props.disabled || isSubmitting || status == "disabled"}
       error={field.name && meta.error && meta.touched}
+      dirty={meta.touched && !meta.error && meta.value != meta.initialValue}
     />
   );
 }

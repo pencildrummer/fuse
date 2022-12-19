@@ -35,21 +35,25 @@ const settings: FormItemSpec[] = [
         name: "marlin.settings.extruderStepsPerUnit",
         type: "number",
         hint: "Extruder steps per unit",
+        detail: "steps/unit",
       },
       {
         name: "marlin.settings.xStepsPerUnit",
         type: "number",
         hint: "X steps per unit",
+        detail: "steps/unit",
       },
       {
         name: "marlin.settings.yStepsPerUnit",
         type: "number",
         hint: "Y steps per unit",
+        detail: "steps/unit",
       },
       {
         name: "marlin.settings.zStepsPerUnit",
         type: "number",
         hint: "Z steps per unit",
+        detail: "steps/unit",
       },
     ],
   },
@@ -63,26 +67,32 @@ const settings: FormItemSpec[] = [
       {
         name: "marlin.settings.extruderMaxAcceleration",
         type: "number",
+        detail: "units/s",
       },
       {
         name: "marlin.settings.plannerFrequencyLimit",
         type: "number",
+        detail: "units/s",
       },
       {
         name: "marlin.settings.plannerXYFrequencyMinimumSpeedPercentage",
         type: "number",
+        detail: "units/s",
       },
       {
         name: "marlin.settings.xMaxAcceleration",
         type: "number",
+        detail: "units/s",
       },
       {
         name: "marlin.settings.yMaxAcceleration",
         type: "number",
+        detail: "units/s",
       },
       {
         name: "marlin.settings.zMaxAcceleration",
         type: "number",
+        detail: "units/s",
       },
     ],
   },
@@ -92,10 +102,26 @@ const settings: FormItemSpec[] = [
     description:
       "Set the max feedrate for one or more axes (in current units-per-second).",
     fields: [
-      { name: "marlin.settings.xMaxFeedrate", type: "number" },
-      { name: "marlin.settings.yMaxFeedrate", type: "number" },
-      { name: "marlin.settings.zMaxFeedrate", type: "number" },
-      { name: "marlin.settings.targetExtruderMaxFeedrate", type: "number" },
+      {
+        name: "marlin.settings.xMaxFeedrate",
+        type: "number",
+        detail: "units/s",
+      },
+      {
+        name: "marlin.settings.yMaxFeedrate",
+        type: "number",
+        detail: "units/s",
+      },
+      {
+        name: "marlin.settings.zMaxFeedrate",
+        type: "number",
+        detail: "units/s",
+      },
+      {
+        name: "marlin.settings.targetExtruderMaxFeedrate",
+        type: "number",
+        detail: "units/s",
+      },
     ],
   },
   {
@@ -108,21 +134,25 @@ const settings: FormItemSpec[] = [
         name: "marlin.settings.printingAcceleration",
         type: "number",
         hint: "Printing acceleration. Used for moves that include extrusion (i.e., which employ the current tool).",
+        detail: "units/s^2",
       },
       {
         name: "marlin.settings.retractAcceleration",
         type: "number",
         hint: "Retract acceleration. Used for extruder retraction moves.",
+        detail: "units/s^2",
       },
       {
         name: "marlin.settings.legacyPrintingAndRetracingAcceleration",
         type: "number",
         hint: "Legacy parameter for move acceleration. Set both printing and travel acceleration.",
+        detail: "units/s^2",
       },
       {
         name: "marlin.settings.travelAcceleration",
         type: "number",
         hint: "Travel acceleration. Used for moves that include no extrusion.",
+        detail: "units/s^2",
       },
     ],
   },
@@ -132,13 +162,17 @@ const settings: FormItemSpec[] = [
     description: "Set various motion settings. See parameters for details.",
     fields: [
       { name: "marlin.settings.minimumSegmentTime", type: "number" },
-      { name: "marlin.settings.extruderMaxJerk", type: "number" },
       { name: "marlin.settings.junctionDeviation", type: "number" },
       { name: "marlin.settings.minFeedratePrintMoves", type: "number" },
       { name: "marlin.settings.minFeedrateTravelMoves", type: "number" },
-      { name: "marlin.settings.xMaxJerk", type: "number" },
-      { name: "marlin.settings.yMaxJerk", type: "number" },
-      { name: "marlin.settings.zMaxJerk", type: "number" },
+      { name: "marlin.settings.xMaxJerk", type: "number", detail: "units/s^3" },
+      { name: "marlin.settings.yMaxJerk", type: "number", detail: "units/s^3" },
+      { name: "marlin.settings.zMaxJerk", type: "number", detail: "units/s^3" },
+      {
+        name: "marlin.settings.extruderMaxJerk",
+        type: "number",
+        detail: "units/s^3",
+      },
     ],
   },
 ];

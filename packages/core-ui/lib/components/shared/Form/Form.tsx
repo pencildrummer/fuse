@@ -34,7 +34,7 @@ export default function Form<FormValues extends FormikValues>(
         }, [props.disabled]);
 
         return (
-          <FormikForm aria-disabled={props.disabled}>
+          <FormikForm>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 py-3">
               {props.items?.length && renderItems(props.items)}
             </div>

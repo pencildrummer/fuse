@@ -5,7 +5,7 @@ import {
 } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import classNames from "classnames";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import React from "react";
 
 interface SelectItemProps extends SelectPrimitive.SelectItemProps {}
@@ -66,6 +66,7 @@ export function SelectRaw({
       <SelectPrimitive.Root
         defaultValue={defaultValue}
         onValueChange={props.onValueChange}
+        disabled={props.disabled}
       >
         <SelectPrimitive.Trigger
           className={classNames(
@@ -130,12 +131,14 @@ export function SelectRaw({
 
 export default function Select(props: SelectRawProps) {
   const [field, meta, helpers] = useField(props.name);
+  const { isSubmitting, status } = useFormikContext();
   const { initialValue } = meta;
   const { setValue, setTouched } = helpers;
 
   return (
     <SelectRaw
       {...props}
+      disabled={props.disabled || isSubmitting || status == "disabled"}
       error={meta.touched && meta.error}
       dirty={meta.touched && !meta.error && meta.value != meta.initialValue}
       value={meta.value}
