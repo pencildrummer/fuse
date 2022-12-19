@@ -24,8 +24,8 @@ export default function SerialPortListItem({ port }) {
       </div>
 
       <div className="flex items-center">
-        <Popover>
-          <Popover.Trigger>
+        <Popover.Root>
+          <Popover.Trigger asChild>
             <Button squared>
               <InfoCircledIcon />
             </Button>
@@ -80,7 +80,7 @@ export default function SerialPortListItem({ port }) {
               </List.Item>
             </List>
           </Popover.Content>
-        </Popover>
+        </Popover.Root>
       </div>
     </List.Item>
   );

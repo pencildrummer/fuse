@@ -3,14 +3,15 @@ import { List, Widget } from "../../shared";
 import SerialPortListItem from "./SerialPortListItem";
 
 export default function SerialPortListWidget() {
+  const ports = useSerialPorts();
 
-  const ports = useSerialPorts()
-
-  return <Widget title="Connected devices">
-    <List>
-      {ports?.map(port => (
-        <SerialPortListItem key={port.path} port={port} />
-      ))}
-    </List>
-  </Widget>
+  return (
+    <Widget title="Connected devices">
+      <List>
+        {ports?.map((port) => (
+          <SerialPortListItem key={port.path} port={port} />
+        ))}
+      </List>
+    </Widget>
+  );
 }

@@ -1,5 +1,9 @@
 import classNames from "classnames";
-import React, { PropsWithChildren, useContext } from "react";
+import React, {
+  ComponentPropsWithoutRef,
+  PropsWithChildren,
+  useContext,
+} from "react";
 
 type ListContextType = {
   size?: ListProps["size"];
@@ -35,7 +39,7 @@ function List({ size = "normal", divide = true, ...props }: ListProps) {
   );
 }
 
-function Item({ className, ...props }) {
+function Item({ className, ...props }: ComponentPropsWithoutRef<"li">) {
   const { size } = useContext(ListContext);
 
   return (
