@@ -1,0 +1,12 @@
+{
+  "extends": "../../../tsconfig.client.json",
+  "compilerOptions": {
+    "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "references": [
+    { "path": "../../../packages/core-client" },
+    { "path": "../../../packages/core-ui" },
+    { "path": "../../../packages/shared-utils" }
+  ]
+}

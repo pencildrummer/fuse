@@ -7,11 +7,14 @@ import {
   LineElement,
   Tooltip,
 } from "chart.js";
-// import "date-fns";
-// import "chartjs-adapter-date-fns";
+import "date-fns";
+import "chartjs-adapter-date-fns";
 import { Line } from "react-chartjs-2";
 import { useState, useEffect } from "react";
-import { useDeviceContext } from "@fuse-labs/core-client";
+import {
+  useDeviceContext,
+  ClientPrinterDeviceProfile,
+} from "@fuse-labs/core-client";
 import {
   Button,
   Group,
@@ -70,12 +73,49 @@ const DEFAULT_DATA = {
 export default function TemperatureWidget() {
   const { device } = useDeviceContext();
 
-  const [data, setData] = useState(DEFAULT_DATA);
+  const [data, setData] = useState({ datasets: [] });
 
   const [temperature, setTemperature] = useState({});
   const [userTargetTemperature, setUserTargetTemperature] = useState({});
 
   useEffect(() => {
+    // Prepare default data
+    // TODO - Check if bed is heated
+    // TODO - Dynamic list of extruders
+    // TODO - Check if can get ambient temperature?
+    // TODO - Check if can get chamber temperature?
+    if (device.profile instanceof ClientPrinterDeviceProfile) {
+      // TODO: Use generics instead
+
+      let printerProfile = device.profile as ClientPrinterDeviceProfile;
+
+      let deviceTemperatureDatasets = [];
+
+      // Populate extruders datasets
+      printerProfile.extruders.forEach((extruder, i) => {
+        deviceTemperatureDatasets.push({
+          key: `extruder-${i}`,
+          label: `Extruder ${i}`,
+          data: [],
+          borderColor: "#ff0000",
+        });
+      });
+
+      if (printerProfile.bed.heated) {
+        deviceTemperatureDatasets.push({
+          key: "bed",
+          label: "Bed",
+          data: [],
+          borderColor: "#ff5500",
+        });
+      }
+
+      setData({
+        datasets: deviceTemperatureDatasets,
+      });
+    }
+
+    // Attach listeners
     let handleTemperatureData = (temperature) => {
       // Updated latest temperature state
       setTemperature((prevTemperature) =>
@@ -151,7 +191,7 @@ export default function TemperatureWidget() {
           scales: {
             x: {
               type: "time",
-              parsing: false,
+              // parsing: false,
               time: {
                 unit: "second",
               },
@@ -178,31 +218,33 @@ export default function TemperatureWidget() {
           value={userTargetTemperature.hotend}
           onChange={(value) => setKeyTargetTemperature("extruder-0", value)}
           onSend={requestTargetHotend}
-          currentValue={temperature?.["extruder-0"]?.current}
+          currentActualValue={temperature?.["extruder-0"]?.current}
           currentTargetValue={temperature?.["extruder-0"]?.target}
         />
 
-        <TemperatureField
-          valueKey="bed"
-          label="Bed"
-          value={userTargetTemperature.bed}
-          onChange={(value) => setKeyTargetTemperature("bed", value)}
-          onSend={requestTargetBed}
-          currentValue={temperature?.bed?.current}
-          currentTargetValue={temperature?.bed?.target}
-        />
+        {device.profile.bed.heated && (
+          <TemperatureField
+            valueKey="bed"
+            label="Bed"
+            value={userTargetTemperature.bed}
+            onChange={(value) => setKeyTargetTemperature("bed", value)}
+            onSend={requestTargetBed}
+            currentActualValue={temperature?.bed?.current}
+            currentTargetValue={temperature?.bed?.target}
+          />
+        )}
 
         <TemperatureField
           valueKey="ambient"
           label="Ambient"
-          currentValue={temperature?.ambient?.current}
+          value={temperature?.ambient?.current}
           editable={false}
         />
 
         <TemperatureField
           valueKey="chamber"
           label="Chamber"
-          currentValue={temperature?.chamber?.current}
+          value={temperature?.chamber?.current}
           editable={false}
         />
       </div>
@@ -212,11 +254,12 @@ export default function TemperatureWidget() {
 
 function TemperatureField({
   valueKey,
-  label,
+  label = null,
   value,
-  currentTargetValue,
-  onChange,
-  onSend,
+  currentActualValue = null,
+  currentTargetValue = null,
+  onChange = null,
+  onSend = null,
   editable = true,
   ...props
 }) {
@@ -247,6 +290,7 @@ function TemperatureField({
         </>
       )}
       <InputRaw
+        name={valueKey}
         disabled
         value={currentTargetValue}
         className="w-[60px] text-right"

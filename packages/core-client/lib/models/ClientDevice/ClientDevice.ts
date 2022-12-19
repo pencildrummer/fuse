@@ -4,6 +4,7 @@ import ClientPluginManager from "../../managers/ClientPluginManager/ClientPlugin
 import ClientPlugin from "../ClientPlugin/ClientPlugin";
 import { Device } from "@fuse-labs/types";
 import { Socket } from "socket.io-client";
+import ClientDeviceProfile from "../ClientDeviceProfile/ClientDeviceProfile";
 
 const SCHEMA: SchemaOf<Device.DataType> = object({
   id: string().defined().required(),
@@ -24,7 +25,7 @@ export default class ClientDevice implements Device.DeviceInterface {
   baudrate: number;
 
   profileId: string;
-  profile: any; // TODO: Create ClientDeviceProfile type
+  profile: ClientDeviceProfile;
 
   serialNumber: string;
   vendorId: string;

@@ -138,14 +138,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@fuse-labs/camera-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/camera/client", "workspace:plugins/camera/client"]],\
       ["@fuse-labs/camera-server", ["workspace:plugins/camera/server"]],\
       ["@fuse-labs/core", ["workspace:packages/core"]],\
-      ["@fuse-labs/core-client", ["virtual:3157876f5fcef3481327caaaf3e36a1c294b528f06a44154c1262e83a44aac439d54eddc22e26c9e0d7f8582e1e0b8b98c408a0ba1a8b9a3e7110df034902335#workspace:packages/core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client", "virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-client", "virtual:f9c0f10270ae55675943900586e22889089d9b36fe2b97d2b0d8301eb4d95c772fef031b85a43356ff0b893ede22366bc44c6c21aaa41470485975931eb02761#workspace:packages/core-client", "workspace:packages/core-client"]],\
-      ["@fuse-labs/core-ui", ["virtual:3157876f5fcef3481327caaaf3e36a1c294b528f06a44154c1262e83a44aac439d54eddc22e26c9e0d7f8582e1e0b8b98c408a0ba1a8b9a3e7110df034902335#workspace:packages/core-ui", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#workspace:packages/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-ui", "virtual:f9c0f10270ae55675943900586e22889089d9b36fe2b97d2b0d8301eb4d95c772fef031b85a43356ff0b893ede22366bc44c6c21aaa41470485975931eb02761#workspace:packages/core-ui", "workspace:packages/core-ui"]],\
+      ["@fuse-labs/core-client", ["virtual:3157876f5fcef3481327caaaf3e36a1c294b528f06a44154c1262e83a44aac439d54eddc22e26c9e0d7f8582e1e0b8b98c408a0ba1a8b9a3e7110df034902335#workspace:packages/core-client", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-client", "virtual:c6e09da7a96505848712095b2aaf4d2d520b71f0ed3f1bac0d6dc321bae4b606ded3d1526dffa5a310e6c1c5639d3c6d47147da7cd0fa02309a481117ccea7d0#workspace:packages/core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-client", "virtual:f9c0f10270ae55675943900586e22889089d9b36fe2b97d2b0d8301eb4d95c772fef031b85a43356ff0b893ede22366bc44c6c21aaa41470485975931eb02761#workspace:packages/core-client", "workspace:packages/core-client"]],\
+      ["@fuse-labs/core-ui", ["virtual:3157876f5fcef3481327caaaf3e36a1c294b528f06a44154c1262e83a44aac439d54eddc22e26c9e0d7f8582e1e0b8b98c408a0ba1a8b9a3e7110df034902335#workspace:packages/core-ui", "virtual:a4a82a11c811779e2361a021b1d2c02329fe5a3ae24715e395ac0dad98c3e89990c8ede2eb63d9ebf7e66e6207dd2c1c10ae590a65f914f308c13aedff69ac02#workspace:packages/core-ui", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:packages/core-ui", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-ui", "virtual:f9c0f10270ae55675943900586e22889089d9b36fe2b97d2b0d8301eb4d95c772fef031b85a43356ff0b893ede22366bc44c6c21aaa41470485975931eb02761#workspace:packages/core-ui", "workspace:packages/core-ui"]],\
       ["@fuse-labs/file-manager-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/file-manager/client", "workspace:plugins/file-manager/client"]],\
       ["@fuse-labs/file-manager-server", ["workspace:plugins/file-manager/server"]],\
       ["@fuse-labs/fuse-monorepo", ["workspace:."]],\
       ["@fuse-labs/grbl-move", ["workspace:plugins/grbl-move"]],\
       ["@fuse-labs/grbl-settings", ["workspace:plugins/grbl-settings"]],\
-      ["@fuse-labs/marlin-core-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-core/client", "workspace:plugins/marlin-core/client"]],\
+      ["@fuse-labs/marlin-core-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-core/client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:plugins/marlin-core/client", "workspace:plugins/marlin-core/client"]],\
       ["@fuse-labs/marlin-core-server", ["workspace:plugins/marlin-core/server"]],\
       ["@fuse-labs/marlin-extra-client", ["virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#workspace:plugins/marlin-extra/client", "workspace:plugins/marlin-extra/client"]],\
       ["@fuse-labs/marlin-extra-server", ["virtual:bd957f31c3206f4171783fe1b17474a7d490559df1f4fd5715413cd661a9dbc408bcb908c965a24da2b0bb8e873098b355a0c4cae3c8806271370c3c281787b5#workspace:plugins/marlin-extra/server", "workspace:plugins/marlin-extra/server"]],\
@@ -3151,6 +3151,40 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-client-virtual-a1aa8367d4/1/packages/core-client/",\
+          "packageDependencies": [\
+            ["@fuse-labs/core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@fuse-labs/types", "workspace:packages/types"],\
+            ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
+            ["@types/fuse-labs__core-ui", null],\
+            ["@types/fuse-labs__shared-utils", null],\
+            ["@types/is-electron", null],\
+            ["@types/node", "npm:18.11.9"],\
+            ["@types/react", "npm:18.0.25"],\
+            ["@types/react-dom", "npm:18.0.9"],\
+            ["@types/react-intl", null],\
+            ["is-electron", "npm:2.2.1"],\
+            ["lodash", "npm:4.17.21"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#npm:18.2.0"],\
+            ["react-intl", "virtual:c4f351ab2b1dcd4ee1949542bd6ac537ba0389893871341eb51c4329d30ceaecf91d3d5c1633f78a8310e4afb6d9f015b3a9212460cf7d828450fb824104303b#npm:6.2.1"],\
+            ["socket.io-client", "npm:4.5.3"],\
+            ["yup", "npm:0.32.11"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-ui",\
+            "@types/fuse-labs__core-ui",\
+            "@types/fuse-labs__shared-utils",\
+            "@types/is-electron",\
+            "@types/react-intl",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-client", {\
           "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-client-virtual-5254aca18a/1/packages/core-client/",\
           "packageDependencies": [\
@@ -3449,6 +3483,71 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-ui-virtual-af89b62d86/1/packages/core-ui/",\
+          "packageDependencies": [\
+            ["@fuse-labs/core-ui", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui"],\
+            ["@fuse-labs/core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@fuse-labs/types", "workspace:packages/types"],\
+            ["@radix-ui/react-alert-dialog", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.2"],\
+            ["@radix-ui/react-aspect-ratio", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-checkbox", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-context-menu", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.0"],\
+            ["@radix-ui/react-dialog", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.2"],\
+            ["@radix-ui/react-dropdown-menu", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.0"],\
+            ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
+            ["@radix-ui/react-label", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.0"],\
+            ["@radix-ui/react-popover", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.2"],\
+            ["@radix-ui/react-progress", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-scroll-area", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.2"],\
+            ["@radix-ui/react-select", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.1.2"],\
+            ["@radix-ui/react-separator", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-slider", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.1.0"],\
+            ["@radix-ui/react-switch", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-toggle-group", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-toolbar", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.1"],\
+            ["@radix-ui/react-tooltip", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:1.0.2"],\
+            ["@svgr/webpack", "npm:6.5.1"],\
+            ["@types/fuse-labs__core-client", null],\
+            ["@types/fuse-labs__shared-utils", null],\
+            ["@types/next", null],\
+            ["@types/node", "npm:18.11.9"],\
+            ["@types/react", "npm:18.0.25"],\
+            ["@types/react-dom", "npm:18.0.9"],\
+            ["@types/react-intl", null],\
+            ["@types/sass", null],\
+            ["@types/tailwindcss", null],\
+            ["@types/tailwindcss-radix", null],\
+            ["classnames", "npm:2.3.2"],\
+            ["formik", "virtual:cb1b87534c70557b7780f46b8f677bb92f3c3f8d45df81f3d97150f1479176923b55e6d9185ba0d36717ace64d8023a8fdd64dc489cd2e5566d2150ada477b19#npm:2.2.9"],\
+            ["lodash-es", "npm:4.17.21"],\
+            ["next", "virtual:2548b61e7cfef618b5b81aceb19621899265d0d95779cb55ae33e5fd50cd2c162488616e7592e60253d29442e94822851fb56ca21f17be5f7b120d4d7e269909#npm:12.3.4"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#npm:18.2.0"],\
+            ["react-intl", "virtual:0cb2da9001879c28934b10055b7d55c4889d4a70aeb38532fe44cc6a2006d7556646408e0d092f1fb9e85a592c92f2b9b7560008b51a0761a32eb38e5dec5553#npm:6.2.4"],\
+            ["sass", null],\
+            ["tailwindcss", null],\
+            ["tailwindcss-radix", null],\
+            ["yup", "npm:0.32.11"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-client",\
+            "@types/fuse-labs__core-client",\
+            "@types/fuse-labs__shared-utils",\
+            "@types/next",\
+            "@types/react-intl",\
+            "@types/sass",\
+            "@types/tailwindcss-radix",\
+            "@types/tailwindcss",\
+            "react-dom",\
+            "react",\
+            "sass",\
+            "tailwindcss-radix",\
+            "tailwindcss"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#workspace:packages/core-ui", {\
           "packageLocation": "./.yarn/__virtual__/@fuse-labs-core-ui-virtual-2548b61e7c/1/packages/core-ui/",\
           "packageDependencies": [\
@@ -3735,6 +3834,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "@fuse-labs/core-client",\
             "@fuse-labs/core-ui",\
             "@fuse-labs/shared-utils",\
+            "@types/fuse-labs__core-client",\
+            "@types/fuse-labs__core-ui",\
+            "@types/fuse-labs__shared-utils"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:plugins/marlin-core/client", {\
+          "packageLocation": "./.yarn/__virtual__/@fuse-labs-marlin-core-client-virtual-36f8d25118/1/plugins/marlin-core/client/",\
+          "packageDependencies": [\
+            ["@fuse-labs/marlin-core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:plugins/marlin-core/client"],\
+            ["@fuse-labs/core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui"],\
+            ["@fuse-labs/shared-utils", "workspace:packages/shared-utils"],\
+            ["@radix-ui/react-icons", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:1.1.1"],\
+            ["@types/fuse-labs__core-client", null],\
+            ["@types/fuse-labs__core-ui", null],\
+            ["@types/fuse-labs__shared-utils", null],\
+            ["@types/react", "npm:18.0.25"],\
+            ["@types/react-dom", "npm:18.0.9"],\
+            ["classnames", "npm:2.3.2"],\
+            ["filesize", "npm:9.0.11"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:18.2.0"],\
+            ["varname", "npm:4.1.2"]\
+          ],\
+          "packagePeers": [\
+            "@fuse-labs/core-client",\
+            "@fuse-labs/core-ui",\
             "@types/fuse-labs__core-client",\
             "@types/fuse-labs__core-ui",\
             "@types/fuse-labs__shared-utils"\
@@ -4065,12 +4192,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/fuse-labs__marlin-core-client", null],\
             ["@types/react", "npm:18.0.25"],\
             ["@types/react-dom", "npm:18.0.9"],\
-            ["chart.js", "npm:3.9.1"],\
-            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.1"],\
+            ["chart.js", "npm:4.1.1"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:3.0.0"],\
             ["date-fns", "npm:2.29.3"],\
             ["lodash", "npm:4.17.21"],\
             ["react", "npm:18.2.0"],\
-            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1"],\
+            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:5.0.1"],\
             ["react-dom", "virtual:a90340927533309496736c06e16f93af4607445ef274a79bec384f328851d1ec0a2812cd5e8e5b7ee7a61f7f3518522bf588f16a2df5adf5e299aa3fcd6dccd7#npm:18.2.0"]\
           ],\
           "packagePeers": [\
@@ -4091,11 +4218,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./plugins/marlin-temperature/client/",\
           "packageDependencies": [\
             ["@fuse-labs/marlin-temperature-client", "workspace:plugins/marlin-temperature/client"],\
-            ["chart.js", "npm:3.9.1"],\
-            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.1"],\
+            ["@fuse-labs/core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-client"],\
+            ["@fuse-labs/core-ui", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:packages/core-ui"],\
+            ["@fuse-labs/marlin-core-client", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#workspace:plugins/marlin-core/client"],\
+            ["chart.js", "npm:4.1.1"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:3.0.0"],\
             ["date-fns", "npm:2.29.3"],\
             ["lodash", "npm:4.17.21"],\
-            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1"]\
+            ["react", "npm:18.2.0"],\
+            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:5.0.1"],\
+            ["react-dom", "virtual:ee01a23355875de8940f60cfdcbcb02174c034b90197af92f5a77752b2f7dfb378ff1d8b918f5989d792ef8153c430fa0932a116fd4d9fd756df5f5d5aeb28bb#npm:18.2.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -4309,6 +4441,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@jridgewell/trace-mapping", "npm:0.3.9"],\
             ["@jridgewell/resolve-uri", "npm:3.1.0"],\
             ["@jridgewell/sourcemap-codec", "npm:1.4.14"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@kurkle/color", [\
+        ["npm:0.3.1", {\
+          "packageLocation": "./.yarn/cache/@kurkle-color-npm-0.3.1-174f3d038c-e6be5c081b.zip/node_modules/@kurkle/color/",\
+          "packageDependencies": [\
+            ["@kurkle/color", "npm:0.3.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10174,32 +10315,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["chart.js", [\
-        ["npm:3.9.1", {\
-          "packageLocation": "./.yarn/cache/chart.js-npm-3.9.1-931bfaba91-9ab0c0ac01.zip/node_modules/chart.js/",\
+        ["npm:4.1.1", {\
+          "packageLocation": "./.yarn/cache/chart.js-npm-4.1.1-4027272d4d-e195abc7b1.zip/node_modules/chart.js/",\
           "packageDependencies": [\
-            ["chart.js", "npm:3.9.1"]\
+            ["chart.js", "npm:4.1.1"],\
+            ["@kurkle/color", "npm:0.3.1"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["chartjs-adapter-date-fns", [\
-        ["npm:2.0.1", {\
-          "packageLocation": "./.yarn/cache/chartjs-adapter-date-fns-npm-2.0.1-ab0f898eb1-e13fd5357e.zip/node_modules/chartjs-adapter-date-fns/",\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/chartjs-adapter-date-fns-npm-3.0.0-42916eb5be-c39bfdf490.zip/node_modules/chartjs-adapter-date-fns/",\
           "packageDependencies": [\
-            ["chartjs-adapter-date-fns", "npm:2.0.1"]\
+            ["chartjs-adapter-date-fns", "npm:3.0.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.1", {\
-          "packageLocation": "./.yarn/__virtual__/chartjs-adapter-date-fns-virtual-b7a7803c05/0/cache/chartjs-adapter-date-fns-npm-2.0.1-ab0f898eb1-e13fd5357e.zip/node_modules/chartjs-adapter-date-fns/",\
+        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:3.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/chartjs-adapter-date-fns-virtual-185d36d805/0/cache/chartjs-adapter-date-fns-npm-3.0.0-42916eb5be-c39bfdf490.zip/node_modules/chartjs-adapter-date-fns/",\
           "packageDependencies": [\
-            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:2.0.1"],\
+            ["chartjs-adapter-date-fns", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:3.0.0"],\
             ["@types/chart.js", null],\
-            ["chart.js", "npm:3.9.1"]\
+            ["@types/date-fns", null],\
+            ["chart.js", "npm:4.1.1"],\
+            ["date-fns", "npm:2.29.3"]\
           ],\
           "packagePeers": [\
             "@types/chart.js",\
-            "chart.js"\
+            "@types/date-fns",\
+            "chart.js",\
+            "date-fns"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14828,20 +14974,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["react-chartjs-2", [\
-        ["npm:4.3.1", {\
-          "packageLocation": "./.yarn/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
+        ["npm:5.0.1", {\
+          "packageLocation": "./.yarn/cache/react-chartjs-2-npm-5.0.1-1cf2ecb0ab-b6f20cf68e.zip/node_modules/react-chartjs-2/",\
           "packageDependencies": [\
-            ["react-chartjs-2", "npm:4.3.1"]\
+            ["react-chartjs-2", "npm:5.0.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1", {\
-          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-394bdaf88a/0/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
+        ["virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:5.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-c1b5d15870/0/cache/react-chartjs-2-npm-5.0.1-1cf2ecb0ab-b6f20cf68e.zip/node_modules/react-chartjs-2/",\
           "packageDependencies": [\
-            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:4.3.1"],\
+            ["react-chartjs-2", "virtual:1fac7a539ab1e78fee9244be2f881776b415caf5242d17e44c56154c5a7677b4a79e059d9489b7b878b8465484dc8de8d5f235fc17a465bf841b3ebef47ec09c#npm:5.0.1"],\
             ["@types/chart.js", null],\
             ["@types/react", "npm:18.0.25"],\
-            ["chart.js", "npm:3.9.1"],\
+            ["chart.js", "npm:4.1.1"],\
             ["react", "npm:18.2.0"]\
           ],\
           "packagePeers": [\
@@ -14852,14 +14998,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1", {\
-          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-469b4865d9/0/cache/react-chartjs-2-npm-4.3.1-467e2ad798-574d12cc43.zip/node_modules/react-chartjs-2/",\
+        ["virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:5.0.1", {\
+          "packageLocation": "./.yarn/__virtual__/react-chartjs-2-virtual-67345b6f6d/0/cache/react-chartjs-2-npm-5.0.1-1cf2ecb0ab-b6f20cf68e.zip/node_modules/react-chartjs-2/",\
           "packageDependencies": [\
-            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:4.3.1"],\
+            ["react-chartjs-2", "virtual:cfdd4451a7c30fc7042ff4b38e552aa7c1e8d52d8b498031af46f00bb22f6e02c3baf4cbc6c22d92a25f1ed9992a56fcda5114d552f3f379b64cff4c0e2a1ca1#npm:5.0.1"],\
             ["@types/chart.js", null],\
             ["@types/react", null],\
-            ["chart.js", "npm:3.9.1"],\
-            ["react", null]\
+            ["chart.js", "npm:4.1.1"],\
+            ["react", "npm:18.2.0"]\
           ],\
           "packagePeers": [\
             "@types/chart.js",\
