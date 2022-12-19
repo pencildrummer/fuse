@@ -14,6 +14,7 @@ import { useState, useEffect } from "react";
 import {
   useDeviceContext,
   ClientPrinterDeviceProfile,
+  ClientPrinterDevice,
 } from "@fuse-labs/core-client";
 import {
   Button,
@@ -71,7 +72,7 @@ const DEFAULT_DATA = {
 };
 
 export default function TemperatureWidget() {
-  const { device } = useDeviceContext();
+  const { device } = useDeviceContext<ClientPrinterDevice>();
 
   const [data, setData] = useState({ datasets: [] });
 

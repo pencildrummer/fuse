@@ -5,6 +5,8 @@ import ClientPlugin from "../ClientPlugin/ClientPlugin";
 import { Device } from "@fuse-labs/types";
 import { Socket } from "socket.io-client";
 import ClientDeviceProfile from "../ClientDeviceProfile/ClientDeviceProfile";
+import ClientPrinterDeviceProfile from "../ClientDeviceProfile/ClientPrinterDeviceProfile";
+import ClientCNCDeviceProfile from "../ClientDeviceProfile/ClientCNCDeviceProfile";
 
 const SCHEMA: SchemaOf<Device.DataType> = object({
   id: string().defined().required(),
@@ -18,14 +20,21 @@ const SCHEMA: SchemaOf<Device.DataType> = object({
   productId: string().optional().nullable().default(null),
 });
 
-export default class ClientDevice implements Device.DeviceInterface {
+export type ClientPrinterDevice = ClientDevice<ClientPrinterDeviceProfile>;
+export type ClientCNCDevice = ClientDevice<ClientCNCDeviceProfile>;
+export type ClientLaserCNCDevice = ClientDevice<ClientLaserDeviceProfile>;
+
+export default class ClientDevice<
+  P extends ClientDeviceProfile = ClientDeviceProfile
+> implements Device.DeviceInterface
+{
   id: string;
   name: string;
   portPath: string;
   baudrate: number;
 
   profileId: string;
-  profile: ClientDeviceProfile;
+  profile: P;
 
   serialNumber: string;
   vendorId: string;

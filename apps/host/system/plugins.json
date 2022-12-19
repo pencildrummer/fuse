@@ -2,6 +2,6 @@
   "@fuse-labs/terminal": {
     "name": "@fuse-labs/terminal",
     "path": "../../plugins/terminal",
-    "active": false
+    "active": true
   }
 }
