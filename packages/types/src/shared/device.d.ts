@@ -131,6 +131,11 @@ export namespace Device {
     export type CNCDataType = BaseDataType & {};
     namespace CNC {}
     export interface CNCInterface extends CNCDataType {}
+
+    // Laser profile
+    export type LaserDataType = BaseDataType & {};
+    namespace Laser {}
+    export interface LaserInterface extends LaserDataType {}
   }
 
   // Controller

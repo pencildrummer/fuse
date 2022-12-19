@@ -7,6 +7,7 @@ import { Socket } from "socket.io-client";
 import ClientDeviceProfile from "../ClientDeviceProfile/ClientDeviceProfile";
 import ClientPrinterDeviceProfile from "../ClientDeviceProfile/ClientPrinterDeviceProfile";
 import ClientCNCDeviceProfile from "../ClientDeviceProfile/ClientCNCDeviceProfile";
+import ClientLaserDeviceProfile from "../ClientDeviceProfile/ClientLaserDeviceProfile.js";
 
 const SCHEMA: SchemaOf<Device.DataType> = object({
   id: string().defined().required(),
