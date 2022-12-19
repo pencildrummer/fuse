@@ -98,11 +98,14 @@ export default function FormItem({ item, orientation, ...props }: Props) {
     <Group orientation={orientation}>
       <div className="flex flex-row space-x-1 items-center truncate">
         <Label htmlFor={fieldProps.name}>
-          {formatMessage({ id: fieldProps.label })}
+          {formatMessage({
+            id: fieldProps.label,
+            defaultMessage: fieldProps.label,
+          })}
         </Label>
         {item.hint && (
           <Tooltip size="hint" content={item.hint}>
-            <QuestionMarkCircledIcon className="w-3.5 h-3.5 opacity-50" />
+            <QuestionMarkCircledIcon className="w-3.5 h-3.5 opacity-50 flex-none" />
           </Tooltip>
         )}
       </div>

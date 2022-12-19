@@ -64,7 +64,7 @@ const Button = React.forwardRef<HTMLElement, Props>(
       >
         {loading && <Loader />}
         {((loading && !hideChildrenOnLoading) || !loading) && (
-          <span>{props.children}</span>
+          <span>{props.children ?? props.title}</span>
         )}
       </ButtonComponent>
     );

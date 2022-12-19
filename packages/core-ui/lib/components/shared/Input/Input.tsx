@@ -1,6 +1,6 @@
 import { Label } from "@radix-ui/react-label";
 import classNames from "classnames";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 import React, { ComponentPropsWithoutRef } from "react";
 import styles from "./Input.module.scss";
 
@@ -16,12 +16,14 @@ type Props = FormControlProps<{
   Required<{ name: string }>;
 
 export default function Input(props) {
+  const { isSubmitting, status } = useFormikContext();
   const [field, meta, helpers] = useField(props);
 
   return (
     <InputRaw
       {...field}
       {...props}
+      disabled={props.disabled || isSubmitting || status == "disabled"}
       error={field.name && meta.error && meta.touched}
       dirty={meta.touched && !meta.error && meta.value != meta.initialValue}
     />
