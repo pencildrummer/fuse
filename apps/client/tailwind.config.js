@@ -26,5 +26,8 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("tailwindcss-radix")()],
+  plugins: [
+    require("tailwindcss-radix")(),
+    require("@fuse-labs/core-ui/tailwindcss"),
+  ],
 };

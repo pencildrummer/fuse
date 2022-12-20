@@ -4,7 +4,7 @@ import Button from "./Button/Button";
 import Slider from "./Slider/Slider";
 import Switch, { SwitchRaw } from "./Switch/Switch";
 import Dialog from "./Dialog/Dialog";
-import ConfirmDialog from "./ConfirmDialog/ConfirmDialog";
+import AlertDialog from "./AlertDialog/AlertDialog";
 
 import Form from "./Form/Form";
 import Group from "./Group/Group";
@@ -38,7 +38,7 @@ export {
   Switch,
   SwitchRaw,
   Dialog,
-  ConfirmDialog,
+  AlertDialog,
   Form,
   Group,
   Label,

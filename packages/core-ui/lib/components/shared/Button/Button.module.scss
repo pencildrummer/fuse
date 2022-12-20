@@ -14,12 +14,15 @@
   &:global(.btn-ghost) {
     @apply bg-transparent hover:bg-gray-900/30 dark:hover:bg-gray-50/10;
   }
+  &:global(.btn-danger) {
+    @apply bg-red-500;
+  }
 
   &:global(.btn-xs) {
     @apply min-w-[20px] h-[20px];
     @apply text-xxs;
     @apply p-0.5;
-    &>svg {
+    & > svg {
       @apply scale-75;
     }
   }
@@ -27,7 +30,7 @@
   &:global(.btn-sm) {
     @apply h-[1.625rem];
     @apply text-xs;
-    &>svg {
+    & > svg {
       @apply scale-90;
     }
   }

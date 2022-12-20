@@ -1,6 +1,4 @@
-// import { Button, ConfirmDialog, Dialog, DropdownMenu, DeviceForm } from "../../../index";
-import { Button, ConfirmDialog, Dialog, DropdownMenu } from "../../shared";
-import { DeviceForm } from "../../misc";
+import { coreSocket, useDeviceContext } from "@fuse-labs/core-client";
 import {
   DotsHorizontalIcon,
   LinkBreak2Icon,
@@ -8,12 +6,13 @@ import {
   TrashIcon,
 } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { useDeviceContext, coreSocket } from "@fuse-labs/core-client";
+import { DeviceForm } from "../../misc";
+import { Button, AlertDialog, Dialog, DropdownMenu } from "../../shared";
 
 export default function DevicePageTopBarMenu() {
   const { device } = useDeviceContext();
-  const [editDevice, setEditDevice] = useState();
-  const [removeDevice, setRemoveDevice] = useState();
+  const [editDevice, setEditDevice] = useState(false);
+  const [removeDevice, setRemoveDevice] = useState(false);
 
   function handleDisconnect() {}
 
@@ -58,12 +57,13 @@ export default function DevicePageTopBarMenu() {
       </DropdownMenu>
 
       <Dialog
+        title="Edit device"
         content={<DeviceForm device={device} />}
         open={editDevice}
         onOpenChange={setEditDevice}
       />
 
-      <ConfirmDialog
+      <AlertDialog
         open={removeDevice}
         onOpenChange={setRemoveDevice}
         title="Remove device?"
@@ -73,6 +73,7 @@ export default function DevicePageTopBarMenu() {
           </span>
         }
         onConfirm={handleDeleteConfirm}
+        confirmMode="danger"
       />
     </>
   );

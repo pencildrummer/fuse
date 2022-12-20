@@ -6,7 +6,7 @@ import Widget from "../Widget/Widget";
 import Button from "../Button/Button";
 
 type Props = DialogPrimitive.DialogProps &
-  React.PropsWithChildren<{ content: React.ReactNode; className: string }> &
+  React.PropsWithChildren<{ content: React.ReactNode; className?: string }> &
   DialogContentProps;
 
 function Dialog({ content, ...props }: Props) {
@@ -30,16 +30,16 @@ type DialogContentProps = React.ComponentPropsWithoutRef<"div"> &
 function DialogContent({
   title,
   description,
-  showClose = false,
+  showClose = true,
   ...props
 }: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 bg-black/70 z-40" />
-      <DialogPrimitive.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+      <DialogPrimitive.Overlay className="fixed inset-0 bg-black/70 data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out" />
+      <DialogPrimitive.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 data-[state=open]:animate-show data-[state=closed]:animate-hide transform-gpu">
         <Widget
           className={classNames(
-            "w-[90vw] max-h-[85vh]",
+            "w-[90vw] sm:max-w-lg max-h-[85vh]",
             "ring-1 ring-white/20",
             props.className
           )}

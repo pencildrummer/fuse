@@ -7,7 +7,7 @@ import {
 } from "@radix-ui/react-icons";
 import {
   Button,
-  ConfirmDialog,
+  AlertDialog,
   Dialog,
   Group,
   ScrollArea,
@@ -176,11 +176,11 @@ export default function DeviceProfilesListManager({ ...props }) {
         </Dialog.Content>
       </Dialog.Root>
 
-      <ConfirmDialog.Root
+      <AlertDialog.Root
         open={showDeleteConfirm}
         onOpenChange={setShowDeleteConfirm}
       >
-        <ConfirmDialog.Content
+        <AlertDialog.Content
           title="Delete profile"
           onConfirm={handleConfirmDelete}
         >
@@ -191,8 +191,8 @@ export default function DeviceProfilesListManager({ ...props }) {
             </span>{" "}
             profile?
           </span>
-        </ConfirmDialog.Content>
-      </ConfirmDialog.Root>
+        </AlertDialog.Content>
+      </AlertDialog.Root>
     </>
   );
 }

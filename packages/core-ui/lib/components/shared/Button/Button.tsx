@@ -8,7 +8,7 @@ interface Props extends React.ComponentPropsWithoutRef<"button"> {
   squared?: boolean;
   rounded?: boolean;
   size?: "xs" | "sm";
-  mode?: "normal" | "ghost";
+  mode?: "normal" | "ghost" | "danger";
   type?: null | "submit";
   loading?: boolean;
   hideChildrenOnLoading?: boolean;
@@ -47,6 +47,7 @@ const Button = React.forwardRef<HTMLElement, Props>(
           {
             "btn-normal": mode == "normal",
             "btn-ghost": mode == "ghost",
+            "btn-danger": mode == "danger",
           },
           {
             squared: squared,

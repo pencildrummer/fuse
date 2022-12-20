@@ -1,3 +1,9 @@
+/* Normalize z-index for main app content */
+#__next {
+  z-index: 0;
+  position: relative;
+}
+
 /* Full height page */
 html,
 body,
