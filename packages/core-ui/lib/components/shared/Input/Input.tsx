@@ -93,7 +93,7 @@ export function InputRaw({ error, dirty, detailContent, ...props }: Props) {
         {...props}
         className={classNames(
           "text-xs px-1.5",
-          "h-full min-w-0 w-auto",
+          "h-full min-w-0 w-full",
           "ring-0 outline-none",
           "bg-transparent text-gray-300",
           "disabled:select-none disabled:touch-none",
