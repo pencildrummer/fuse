@@ -1,9 +1,14 @@
+import { useEffect } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button, Group, Progress } from "@fuse-labs/core-ui";
 import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider.jsx";
 
 export default function PendingFilesList() {
   const { pendingFiles } = useFileManagerContext();
+
+  useEffect(() => {
+    console.log("Updated files", pendingFiles);
+  }, [pendingFiles]);
 
   return (
     <div className="flex flex-col space-y-1 p-1">

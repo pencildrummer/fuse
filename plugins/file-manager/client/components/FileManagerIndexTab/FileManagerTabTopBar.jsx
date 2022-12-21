@@ -18,17 +18,20 @@ export default function FileManagerTabTopBar() {
   }
 
   function handleChangedFile(e) {
+    // Append file to list of pending transfer
     setPendingFiles((files) => [...files, ...e.target.files]);
     // Request add file
-    let filesArray = [...e.target.files];
-    filesArray.forEach((file, i) => {
+    [...e.target.files].forEach((file, i) => {
       // Request file add
       plugin.socket.emit(
         "file:add",
         { filename: file.name, data: file },
         (file) => {
           // Remove file from pending list
-          setPendingFiles((files) => files.splice(i, 1));
+          setPendingFiles((files) => {
+            files.splice(i, 1);
+            return [...files];
+          });
         }
       );
     });

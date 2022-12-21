@@ -13,7 +13,6 @@ export default class FileManagerPlugin extends Plugin {
         socket.on("file:add", ({ filename, data }, fn) => {
             // TODO - Check file exists already
             logger.info("Requested save of file " + filename);
-            logger.debug(data);
             let filePath = path.join(process.cwd(), "storage", filename);
             // Create new file and write it to disk
             let file = new File(filePath);
