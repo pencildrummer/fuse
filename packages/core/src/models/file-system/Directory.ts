@@ -10,11 +10,6 @@ export default class Directory extends FileManagerEntry {
 
   constructor(dirPath: string, meta?: any) {
     super(dirPath, meta);
-    Object.defineProperty(this, "isDir", {
-      value: true,
-      writable: false,
-      configurable: false,
-    });
   }
 
   read() {

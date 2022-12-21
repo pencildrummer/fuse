@@ -5,8 +5,9 @@ import path from "path";
 export default class FileManagerEntry {
   _stats; // For internal use only
 
-  path;
-  relativePath: string;
+  path: string;
+  url: string;
+  //relativePath: string;
   name;
 
   mtimeMs;
@@ -14,7 +15,8 @@ export default class FileManagerEntry {
 
   constructor(entryPath: string, meta?: { stats?: any }) {
     this.path = entryPath;
-    this.relativePath = path.relative(process.cwd(), entryPath);
+    this.url = `http://localhost:${process.env.HOST_HTTP_PORT}/${this.path}`;
+    //this.relativePath = path.relative(process.cwd(), entryPath);
     this.name = path.basename(entryPath);
     if (meta?.stats) this.setStats(meta?.stats);
     else if (fs.existsSync(entryPath)) this.readStats();

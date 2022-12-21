@@ -34,7 +34,7 @@ export default function DirectoryListing({
     // Add listener for newly added file in directory
     const fileAddedListener = (file) => {
       // Get dirname of stored file
-      let dirname = file.relativePath.match(/.*\//)[0] || ".";
+      let dirname = file.path.match(/.*\//)[0] || ".";
       if (cleanPath(path) == cleanPath(dirname)) {
         readDir();
       }

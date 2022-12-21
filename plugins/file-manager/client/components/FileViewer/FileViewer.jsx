@@ -5,34 +5,30 @@ import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvide
 import FileInfo from "./FileInfo.jsx";
 import FilePreview from "./FilePreview.jsx";
 
-export default function FileViewer({
-  className
-}) {
-  
-  const { file } = useFileManagerContext()
+export default function FileViewer({ className }) {
+  const { file } = useFileManagerContext();
 
-  if (!file) return null
+  if (!file) return null;
 
-  return <Widget full className={classNames(
-    'h-full',
-    className
-  )}>
-
-    <Group className="bg-black/60 px-1 h-9 !space-x-1">
-      <div className="flex-1">
-        <Button size="sm" mode="ghost">
-          Print
+  return (
+    <Widget full className={classNames("h-full", className)}>
+      <Group className="bg-black/60 px-1 h-9 !space-x-1">
+        <div className="flex-1">
+          <Button size="sm" mode="ghost">
+            Print
+          </Button>
+        </div>
+        <Separator orientation="vertical" />
+        <Button squared mode="ghost">
+          <TrashIcon />
         </Button>
+      </Group>
+
+      <div className="p-3 space-y-3">
+        <FilePreview file={file} />
+
+        <FileInfo file={file} />
       </div>
-      <Separator orientation="vertical"/>
-      <Button squared mode="ghost"><TrashIcon /></Button>
-    </Group>
-
-    <div className="p-3">
-      <FilePreview file={file}/>
-
-      <FileInfo file={file} />
-    </div>
-
-  </Widget>
+    </Widget>
+  );
 }
