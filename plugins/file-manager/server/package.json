@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "version": "0.1",
-  "exports": "./index.js",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.js",
   "dependencies": {
     "@fuse-labs/core": "workspace:^"
   }

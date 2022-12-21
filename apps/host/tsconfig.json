@@ -11,6 +11,7 @@
   "references": [
     { "path": "../../packages/core" },
     { "path": "../../packages/shared-utils" },
-    { "path": "../../plugins/marlin-core/server" }
+    { "path": "../../plugins/marlin-core/server" },
+    { "path": "../../plugins/file-manager/server" }
   ]
 }

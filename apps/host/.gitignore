@@ -92,6 +92,8 @@ out/
 dist
 dist/**/*
 
+# Storage
+storage/**/*
 # Devices added
 # TODO - Ignore all systemd irectory after creating default value sin package "@fuse-labs/core"
 system/devices/**/*

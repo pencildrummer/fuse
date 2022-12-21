@@ -19,18 +19,13 @@ export default async function _init_PluginsSocket() {
     // Register non-scoped plugin socket eg: localhost/@fuse-labs/terminal
     if (typeof plugin.initSocket === "function") {
       let path = `/${nsPluginName}`;
+
       // Create server namespace
-      io.of(path).on("connection", (socket) => {
+      let pluginNamespace = io.of(path);
+
+      pluginNamespace.on("connection", (socket) => {
         logger.ready(
           `Connected to plugin namespace ${chalk.bold(socket.nsp.name)}`
-        );
-
-        // Actually register socket listeners for plugin
-        plugin.initSocket(socket);
-        logger.info(
-          `Registered listeners for plugin socket for plugin ${chalk.bold(
-            plugin.name
-          )}`
         );
 
         // Add debug disconnect listener
@@ -39,7 +34,16 @@ export default async function _init_PluginsSocket() {
             `Disconnected from plugin socket ${chalk.bold(socket.nsp.name)}`
           );
         });
+
+        // Actually register socket listeners for plugin
+        plugin.initSocket(socket);
+        logger.info(
+          `Registered listeners for plugin socket for plugin ${chalk.bold(
+            plugin.name
+          )}`
+        );
       });
+
       logger.success(
         `Prepared registration for plugin socket ${chalk.green(plugin.name)}`
       );

@@ -4,9 +4,9 @@ import FileManager from "./FileManager.js";
 import FileManagerEntry from "./FileManagerEntry.js";
 
 export default class Directory extends FileManagerEntry {
-  isDir = true; // TODO : Make it readonly with Typescript laer on
+  readonly isDir = true;
 
-  entries;
+  entries: FileManagerEntry[];
 
   constructor(dirPath: string, meta?: any) {
     super(dirPath, meta);

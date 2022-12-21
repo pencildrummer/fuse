@@ -1,29 +1,37 @@
-import { CardStackIcon, DotsVerticalIcon, FilePlusIcon } from "@radix-ui/react-icons";
-import { coreSocket } from "@fuse-labs/core-client";
+import { usePlugin } from "@fuse-labs/core-client";
 import { Button, Group } from "@fuse-labs/core-ui";
+import {
+  CardStackIcon,
+  DotsVerticalIcon,
+  FilePlusIcon,
+} from "@radix-ui/react-icons";
 import { useRef } from "react";
 import { useFileManagerContext } from "../FileManagerProvider/FileManagerProvider";
 
 export default function FileManagerTabTopBar() {
-
-  const { setPendingFiles } = useFileManagerContext()
-  const fileInputRef = useRef()
+  const plugin = usePlugin("@fuse-labs/file-manager");
+  const { setPendingFiles } = useFileManagerContext();
+  const fileInputRef = useRef();
 
   function handleAddFileClick() {
-    fileInputRef.current.click()
+    fileInputRef.current.click();
   }
 
   function handleChangedFile(e) {
-    setPendingFiles(files => [...files, ...e.target.files])
+    setPendingFiles((files) => [...files, ...e.target.files]);
     // Request add file
-    let filesArray = [ ...e.target.files ]
+    let filesArray = [...e.target.files];
     filesArray.forEach((file, i) => {
       // Request file add
-      coreSocket.emit('file:add', { filename: file.name, data: file }, (file) => {
-        // Remove file from pending list
-        setPendingFiles(files => files.splice(i, 1))
-      })
-    })
+      plugin.socket.emit(
+        "file:add",
+        { filename: file.name, data: file },
+        (file) => {
+          // Remove file from pending list
+          setPendingFiles((files) => files.splice(i, 1));
+        }
+      );
+    });
   }
 
   return (
@@ -35,12 +43,17 @@ export default function FileManagerTabTopBar() {
       <div className="flex flex-row items-center space-x-0.5">
         <Button squared mode="ghost" onClick={handleAddFileClick}>
           <FilePlusIcon />
-          <input type="file" ref={fileInputRef} onChange={handleChangedFile} className="hidden invisible" />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleChangedFile}
+            className="hidden invisible"
+          />
         </Button>
         <Button squared mode="ghost">
           <CardStackIcon />
         </Button>
       </div>
     </Group>
-  )
+  );
 }

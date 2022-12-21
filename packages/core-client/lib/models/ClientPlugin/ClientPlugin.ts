@@ -100,28 +100,11 @@ export default class ClientPlugin implements PluginInterface {
       this.system = pluginData.system;
       this.deviceTypes = pluginData.deviceTypes;
 
-      // this._active = pluginData.active;
-
       // Init plugin socket if needed
       if (this.hasSocket) {
         this.socket = socket(this.name);
+        this.socket.connect();
       }
-
-      // Add listener for activation/deactivation
-      // coreSocket.on("plugins:activated", (pluginName) => {
-      //   if (pluginName != this.name) return;
-      //   console.info("Activated plugin");
-      //   this._active = true;
-      //   this.provision();
-      // });
-      // coreSocket.on("plugins:deactivated", (pluginName) => {
-      //   if (pluginName != this.name) return;
-      //   console.info("Deactivated plugin");
-      //   this._active = false;
-      // });
-
-      // Automatically provision plugin on initialization
-      //this.provision();
     } catch (error) {
       console.error("Validation error - " + error.message);
       console.error("Error creating ClientPlugin with data:");

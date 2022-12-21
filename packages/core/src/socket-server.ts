@@ -8,6 +8,8 @@ import { DeviceManager } from "./managers/index.js";
 import { Device } from "./models/index.js";
 import { Device as CoreDevice } from "@fuse-labs/types";
 import { getDeviceIdFromSocket } from "./utils/index.js";
+import { EventsMap } from "socket.io/dist/typed-events.js";
+import { chalkStderr } from "chalk";
 
 // --  Move into separate d file
 
@@ -104,11 +106,16 @@ export class CoreSocketServer extends SocketServer<
   }
 }
 
-export class CoreSocket extends Socket<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
+export class CoreSocket<
+  CTS extends EventsMap = {},
+  STC extends EventsMap = {},
+  ITS extends EventsMap = {},
+  SD = {}
+> extends Socket<
+  ClientToServerEvents & CTS,
+  ServerToClientEvents & STC,
+  InterServerEvents & ITS,
+  SocketData & SD
 > {}
 
 // Device socket
@@ -133,6 +140,18 @@ export class DeviceSocket<
 > extends Socket<CTS, STC, IS, DeviceSocketData> {
   device: Device;
 }
+
+// Plugin socket and namespace
+
+// export interface ServerToClientPluginEvents {}
+// export interface ClientToServerPluginEvents {}
+// export interface InterServerPluginEvents {}
+
+// export class PluginNamespace<
+//   CTS = ClientToServerPluginEvents,
+//   STC = ServerToClientPluginEvents,
+//   IS = InterServerPluginEvents
+// > extends Namespace<CTS, STC, IS> {}
 
 // --
 
